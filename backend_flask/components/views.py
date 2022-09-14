@@ -1,6 +1,3 @@
-from curses import meta
-from http.client import NOT_FOUND
-from unittest import result
 from flask import Blueprint, request, jsonify
 from .dbmodels import Articles
 from .schemas import article_schema, articles_schema

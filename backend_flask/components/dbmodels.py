@@ -1,3 +1,4 @@
+from csv import Dialect
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 
@@ -10,3 +11,4 @@ class Articles(db.Model):
     date = db.Column(db.DateTime, default = datetime.datetime.now)
     
     # sqlalchemy auto generate __init__ method, don't need to add to class
+    
