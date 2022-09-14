@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from .dbmodels import Articles
-from .schemas import article_schema, articles_schema
+from .dbmodels import *
+from .schemas import *
 from .__init__ import db
 
 bpviews = Blueprint('bpviews', __name__)
