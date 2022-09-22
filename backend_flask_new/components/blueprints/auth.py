@@ -3,6 +3,7 @@ import flask_jwt_extended as jwte
 from components.dbsettings import Session
 from components import dbmodels as dbm, dbschemas as dbs
 import argon2, os
+from components.config import SQLAlchemyConfig as cfg
 
 bpauth = Blueprint('bpauth', __name__)
 
@@ -31,7 +32,7 @@ def check_hash(old_hash, psw):
 @bpauth.route('/testpass', methods=['GET'])
 def testhash():
    text = request.json['text']
-   return (make_hash(text))
+   return (cfg.TEST)
 
 
 # Protect a route with jwt_required, which will kick out requests
