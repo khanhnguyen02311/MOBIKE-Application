@@ -17,8 +17,8 @@ import CustomButton from '../../components/common/customButton';
 import {useDispatch} from 'react-redux';
 import styles from './styles';
 import {useNavigation} from '@react-navigation/native';
-import {Checkbox} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Checkbox } from 'react-native-paper';
 
 const LoginComponent = () => {
   const {navigate} = useNavigation();

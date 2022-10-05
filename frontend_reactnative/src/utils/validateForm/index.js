@@ -35,7 +35,6 @@ export const ValidatePassword = password => {
     listErrors.push('6 characters');
   }
 
-  console.log('Hello');
   if (listErrors.length > 1) {
     let last = listErrors.pop();
     return `* Password must contain at least ${listErrors.join(

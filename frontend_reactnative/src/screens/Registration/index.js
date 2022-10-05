@@ -59,7 +59,7 @@ const Registration = ({navigation}) => {
 
   const onSubmit = () => {
     //validation
-    console.log({form});
+    //console.log({form});
     setFirstSubmit(false);
 
     if (!form.email) {
