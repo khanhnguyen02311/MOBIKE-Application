@@ -15,12 +15,8 @@ App.config.from_object(cfg)
 
 jwt = JWTManager(App)
 
-
-
 App.register_blueprint(bppost, url_prefix='/posts')
 App.register_blueprint(bpauth, url_prefix='/auth')
-
-
 
 @App.teardown_appcontext
 def cleanup(resp_or_exc):

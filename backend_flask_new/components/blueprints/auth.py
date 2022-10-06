@@ -115,7 +115,8 @@ def signin():
    # return jsonify(access_token=token)
    schema = dbs.AccountSchema()
    try:
-      userNameOrEmail = request.json["usernameoremail"]
+
+      userNameOrEmail = request.json["username_or_email"]
       password = request.json["password"]
       acc = Session.query(dbm.Account).filter(dbm.Account.Email==userNameOrEmail).first()
       if (acc is None):
