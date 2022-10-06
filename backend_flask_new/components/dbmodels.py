@@ -1,3 +1,4 @@
+from tokenize import Number
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects import mysql as ms
@@ -23,7 +24,14 @@ class AccountInfo (Base):
     rel_Account = relationship("Account", back_populates="rel_AccountInfo", lazy='select')
     rel_ProfileImage = relationship("ProfileImage", back_populates="rel_AccountInfo", lazy='select')
     rel_IdentityImage = relationship("IdentityImage", back_populates="rel_AccountInfo", lazy='select')
-    # Classes have been provided with __init__ method, don't need to redefine 
+    
+    def __init__(self, name: str, birthdate: datetime , gender: Number, phone_number: str, identification_number: str, general_rating: float):
+        self.Name = name
+        self.Birthdate = birthdate
+        self.Gender = gender
+        self.Phone_number = phone_number
+        self.Identification_number = identification_number
+        self.General_rating = general_rating
     
 
 class ProfileImage (Base):
@@ -95,7 +103,6 @@ class District (Base):
 
     rel_Ward = relationship("Ward", back_populates="rel_District", lazy='select')
     rel_Address = relationship("Address", back_populates="rel_District", lazy='select')
-
 class City (Base):
     __tablename__ = 'CITY'
     ID = Column(ms.INTEGER, primary_key=True)
@@ -120,7 +127,6 @@ class Address (Base):
     
     rel_Post = relationship("Post", back_populates="rel_Address", lazy='select')
     rel_AccountInfo = relationship("AccountInfo", back_populates="rel_Address", lazy='select')
-
 
 class Post(Base):
     __tablename__ = 'POST'
@@ -199,11 +205,9 @@ class Rating(Base):
 
 
 class Like(Base):
-    __tablename__ = 'LIKE'
-    ID = Column(ms.INTEGER, primary_key=True)
-    
-    ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
-    ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
+    __tablename__ = 'LIKE'    
+    ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), primary_key=True, nullable=False)
+    ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), primary_key=True, nullable=False)
     
     rel_Account = relationship("Account", back_populates="rel_Like", lazy='select')
     rel_Post = relationship("Post", back_populates="rel_Like", lazy='select')
