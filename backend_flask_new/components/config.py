@@ -10,7 +10,7 @@ class FlaskConfig:
    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 
 class SQLAlchemyConfig:
-   SQLALCHEMY_DATABASE_URL = (name == "Khoa") and "mysql://root@localhost/flask" or (name == "Khanh" and "mysql://mysqluser1:user1pwd@localhost/workingdatabase2?unix_socket=/var/run/mysqld/mysqld.sock" or "mysql://root@localhost/flask")
-   ECHO = True
+   SQLALCHEMY_DATABASE_URL = (name == "Khoa") and "mysql://root:123456789@localhost/flask" or (name == "Khanh" and "mysql://mysqluser1:user1pwd@localhost/workingdatabase2?unix_socket=/var/run/mysqld/mysqld.sock" or "mysql://root@localhost/flask")
+   ECHO = False
    AUTO_FLUSH = True
    AUTO_COMMIT = False

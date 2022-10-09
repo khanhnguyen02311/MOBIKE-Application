@@ -39,11 +39,13 @@ def testhash():
 # Protect a route with jwt_required, which will kick out requests
 # without a valid JWT present.
 @bpauth.route('/protected', methods = ['GET'])
+@bpauth.route('/me', methods = ['GET'])
 @jwte.jwt_required()
 def protected():
    # Access the identity of the current user with get_jwt_identity
    current_user = jwte.get_jwt_identity()
-   return jsonify(logged_in_as=current_user), 200 # ok
+   #return jsonify(logged_in_as=current_user), 200 # ok
+   return jsonify(current_user), 200 # ok
 
 
 # @bpauth.route('/all', methods=['GET'])
@@ -79,7 +81,6 @@ def protected():
 def signup():
    schema = dbs.AccountSchema()
    try:
-      
       email = request.json['email']
       permission = int(request.json['permission'])
       username = request.json['username']
@@ -129,9 +130,9 @@ def signin():
             if result[1]:
                Session.get(dbm.Account, acc.ID).update({"Password": make_hash(password)}, synchronize_session="fetch")
                Session.commit()
-            token = jwte.create_access_token(identity=schema.dump(acc))
+            token = jwte.create_access_token(identity=schema.dump(acc),expires_delta=False)
             print('\n\n\nUser {} has just signed in'.format(acc.Username))
-            return jsonify({"msg": "Login successfully", "access_token": token}), 200
+            return jsonify({"msg": "Successful", "token": token, "uid": acc.ID}), 200
          else: 
             # return jsonify({acc.Password: "a", "msg": "Wrong password"}), 401
             return jsonify({"msg": "Wrong password"}), 401

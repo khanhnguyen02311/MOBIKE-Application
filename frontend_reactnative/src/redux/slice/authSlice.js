@@ -1,23 +1,29 @@
 import {createSlice} from '@reduxjs/toolkit';
+import { signIn } from '../../backendAPI/database';
 
 const initialState = {
+  UID: null,
+  token: null,
   isLoggedIn: false,
-  date: {},
-  error: null,
-  loading: false,
 };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login: (state, action) => {
-      state.isLoggedIn = true;
-      state.date = action.payload;
+    logIn: (state, action) => {
+      state.UID = action.payload.UID;
+      state.token = action.payload.token;
+      state.isLoggedIn = state.UID != null && state.token != null
     },
+    logout: (state) => {
+      state.UID = null;
+      state.token = null;
+      state.isLoggedIn = false;
+    }
   },
 });
 
-export const {login} = authSlice.actions;
+export const {login, logout} = authSlice.actions;
 
 export default authSlice.reducer;
