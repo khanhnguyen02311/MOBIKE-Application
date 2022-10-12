@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
-from flask_sqlalchemy import SQLAlchemy
 
 from .blueprints.post import bppost
 from .blueprints.auth import bpauth
