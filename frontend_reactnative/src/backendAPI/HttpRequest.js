@@ -1,25 +1,24 @@
 const scheme = "http";
-const host = "192.168.1.161";
+const host = "192.168.1.99";  //Home IP
+// const host = "172.30.163.113";  //University IP
 const port = "3000";
 
-const GenerateRequestUrl = (path: String) => {
+const sleepTime = 1000;
 
-    return scheme + "://" + host + ":" + port + "/" + path;
+const GenerateRequestUrl = (path: String) => {
+    let request = scheme + "://" + host + ":" + port + "/" + path;
+    return request
 };
 
 const PostRequest = async (path: String, body: Object) => {
     try {
-        if (typeof(body) != "String") {
-            body = JSON.stringify(body);
-        }
-        // console.log("Debug: " + body);
         const response = await fetch(
             GenerateRequestUrl(path), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: body,
+            body: JSON.stringify(body),
             });
         let json = await response.json();
         return json;
@@ -27,11 +26,9 @@ const PostRequest = async (path: String, body: Object) => {
         if (error instanceof TypeError && error.message === "Network request failed") {
             console.log("Network request failed, retrying...");
             return await PostRequest(path, body);
-        } else {    
+        } else {
             console.log("Fetch Error:" + error)
-
         }
-
     }
 };
 
@@ -60,10 +57,6 @@ const GetRequest = async (path: String) => {
 
 const ProtectedPostRequest = async (path: String, body: Object, token: String) => {
     try {
-        if (typeof(body) != "String") {
-            body = JSON.stringify(body);
-        }
-        // console.log("Debug: " + body);
         const response = await fetch(
             GenerateRequestUrl(path), {
             method: 'POST',
@@ -71,7 +64,7 @@ const ProtectedPostRequest = async (path: String, body: Object, token: String) =
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token,
             },
-            body: body,
+            body: JSON.stringify(body),
             });
         let json = await response.json();
         return json;

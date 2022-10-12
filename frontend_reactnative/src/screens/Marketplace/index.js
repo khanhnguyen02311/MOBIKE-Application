@@ -14,7 +14,7 @@ const Marketplace = () => {
     <Container
       keyboardShouldPersistTaps="always"
       styleContainer={{backgroundColor: '#FFFFFF'}}>
-      <Text>{date.date}/{date.month}/{date.year}</Text>
+      {/* <Text>{date.date}/{date.month}/{date.year}</Text> */}
     </Container>
   );
 };

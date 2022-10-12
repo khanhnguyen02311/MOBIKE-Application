@@ -95,5 +95,13 @@ const getCurrentToken = async () => {
     }
 };
 
+const removeCurrentToken = () => {
+    try {
+        AsyncStorage.setItem('CurrentToken', "");
+    } catch (e) {
+        console.log("Remove current token error: " + e);
+    }
+}
 
-export default {init, print, getToken, addToken, removeToken, addUID, setCurrentToken, getCurrentToken};
+
+export default {init, print, getToken, addToken, removeToken, addUID, setCurrentToken, getCurrentToken, removeCurrentToken};

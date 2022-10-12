@@ -1,14 +1,14 @@
-import {Gesture} from 'react-native-gesture-handler';
-import {View, Text} from 'react-native';
+import { Gesture } from 'react-native-gesture-handler';
+import { View, Text } from 'react-native';
 import React, { useEffect } from 'react';
 import AppNavContainer from './src/navigations';
 import GlobalProvider from './src/context/Provider';
-import {store} from './src/redux/store';
-import {Provider} from 'react-redux';
+import { store } from './src/redux/store';
+import { Provider } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TokenStorage from './src/backendAPI/TokenStorage';
-import { signIn, me } from './src/backendAPI/database';
-import { login } from './src/redux/slice/authSlice';
+import BackendAPI from './src/backendAPI/BackendAPI';
+
 import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
@@ -26,21 +26,31 @@ const theme = {
   },
 };
 const App = () => {
-
   useEffect(() => {
     //AsyncStorage.clear();
     console.log('\n')
     const fetch = async () => {
       await TokenStorage.init();
-      await TokenStorage.print();
-      await signIn("Khoa", "123456789");
-      currentToken = await TokenStorage.getCurrentToken();
-      if (currentToken != "" && currentToken != null) {
-        console.log("Current token: " + currentToken);
-        me(currentToken);
 
-      }
-      
+      //await TokenStorage.print();
+      //TokenStorage.removeCurrentToken();
+      //await BackendAPI.signUp('testMail', 'testName', 'testPassword');
+      //await BackendAPI.signIn("Khoa", "123456789");
+      //let currentToken = await TokenStorage.getCurrentToken();
+      // if (currentToken != "" && currentToken != null) {
+      //   console.log("Current token: " + currentToken);
+      //   let myinfo = await me(currentToken);
+      //   console.log("Myinfo: " + myinfo.Email);
+      //   if (myinfo) {
+      //     store.dispatch({
+      //       type: 'auth/logIn',
+      //       payload: {
+      //         ID: myinfo.ID,
+      //         token: currentToken
+      //       }
+      //     });
+      //   }
+      // }
 
     }
     fetch();

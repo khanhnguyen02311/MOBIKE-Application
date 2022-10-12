@@ -1,4 +1,6 @@
-export const ValidateEmail = email => {
+import BackendAPI from "../../backendAPI/BackendAPI";
+
+export const ValidateEmail = (email) => {
   var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   if (email.match(mailformat)) {
     return '';
@@ -7,7 +9,7 @@ export const ValidateEmail = email => {
   }
 };
 
-export const ValidateUsername = username => {
+export const ValidateUsername = (username) => {
   var usernameformat = /^[a-zA-Z0-9]+$/;
   if (username.length < 6) {
     return '* Username must be at least 6 characters';
@@ -28,12 +30,10 @@ export const ValidatePassword = password => {
   if (!password.match(/[0-9]/g)) {
     listErrors.push('1 number');
   }
-  if (!password.match(/[^a-zA-Z\d]/g)) {
-    listErrors.push('1 special character');
-  }
-  if (password.length < 6) {
-    listErrors.push('6 characters');
-  }
+  // if (!password.match(/[^a-zA-Z\d]/g)) {
+  //   listErrors.push('1 special character');
+  // }
+
 
   if (listErrors.length > 1) {
     let last = listErrors.pop();
@@ -53,3 +53,4 @@ export const ValidateConfirmPassword = (password, confirmPassword) => {
   }
   return '';
 };
+

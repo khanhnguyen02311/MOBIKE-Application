@@ -1,4 +1,4 @@
-import {View, Text, Button} from 'react-native';
+import {View, Text, Button, BackHandler} from 'react-native';
 import React from 'react';
 import {LOGIN} from '../../constants/routeNames';
 import Container from '../../components/common/container';
@@ -9,18 +9,25 @@ import {
   ValidatePassword,
   ValidateConfirmPassword,
 } from '../../utils/validateForm';
+import BackendAPI from '../../backendAPI/BackendAPI';
 
 const Registration = ({navigation}) => {
   const [form, setForm] = React.useState({});
   const [errors, setErrors] = React.useState({});
   const [firstSubmit, setFirstSubmit] = React.useState(true);
 
+  let isEmailChecked = false;
+  let isUsernameChecked = false;
+  let isSubmitted = false;
+
   const onChange = ({name, value}) => {
     setForm({...form, [name]: value});
+    isSubmitted = false;
     if (!firstSubmit) {
       if (value !== '') {
         //email
         if (name === 'email') {
+          isEmailChecked = false;
           setErrors(prev => {
             return {...prev, [name]: ValidateEmail(value)};
           });
@@ -28,6 +35,7 @@ const Registration = ({navigation}) => {
 
         //username
         else if (name === 'username') {
+          isUsernameChecked = false;
           setErrors(prev => {
             return {...prev, [name]: ValidateUsername(value)};
           });
@@ -57,11 +65,89 @@ const Registration = ({navigation}) => {
     }
   };
 
+  const onEdited = ({name, value}) => {
+    if (value !== '') {
+      //email
+      if (name === 'email') {
+        checkEmail()
+      }
+
+      //username
+      else if (name === 'username') {
+        checkUsername()
+      }
+
+      console.log("Error list: ", errors);
+    }
+  }
+
+  const signUp = async () => {
+    console.log("Start sign up");
+    const response = await BackendAPI.signUp(form.username, form.email, form.password);
+    // if (response) {
+    //   setErrors(prev => {
+    //     return {...prev, general: response};
+    //   });
+    // } else {
+    //   navigation.navigate(LOGIN);
+    // }
+    console.log(response);
+  }
+
+
+  const checkEmail = async () => {
+    let exists = await BackendAPI.isEmailExist(form.email);
+    if (exists) {
+      setErrors(prev => {
+        return {...prev, email: '* Email already exists'};
+      });
+    } else {
+      setErrors(prev => {
+        if (prev) {
+          if (prev.email) {
+            if (prev.email === '* Email already exists') {
+              return {...prev, email: ''};
+            }
+          }
+        }
+      })
+      isEmailChecked = true;
+      if (isUsernameChecked && isSubmitted) {
+        signUp();
+      }
+    }
+  }
+
+
+  const checkUsername = async () => {
+    let exists = await BackendAPI.isUsernameExist(form.username);
+    if (exists) {
+      setErrors(prev => {
+        return {...prev, username: '* Username already exists'};
+      });
+    } else {
+      setErrors(prev => {
+        if (prev) {
+          if (prev.username) {
+            if (prev.username === '* Username already exists') {
+              return {...prev, username: ''};
+            }
+          }
+        }
+      });
+      isUsernameChecked = true;
+      if (isEmailChecked && isSubmitted) {
+        signUp();
+      }
+    }
+  }
+
+
   const onSubmit = () => {
     //validation
     //console.log({form});
     setFirstSubmit(false);
-
+    isSubmitted = true;
     if (!form.email) {
       setErrors(prev => {
         return {...prev, email: '* Please enter your email'};
@@ -110,11 +196,19 @@ const Registration = ({navigation}) => {
         };
       });
     }
+
+    console.log("Submit: " + isSubmitted + "\nEmail: " + isEmailChecked + "\nUsername: " + isUsernameChecked);
+
+    if (isEmailChecked && isUsernameChecked) {
+      signUp();
+    }
   };
+
   return (
     <RegistrationComponent
       onSubmit={onSubmit}
       onChange={onChange}
+      onEdited={onEdited}
       form={form}
       errors={errors}
     />

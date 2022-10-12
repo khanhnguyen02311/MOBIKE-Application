@@ -45,7 +45,7 @@ def protected():
    # Access the identity of the current user with get_jwt_identity
    current_user = jwte.get_jwt_identity()
    #return jsonify(logged_in_as=current_user), 200 # ok
-   return jsonify(current_user), 200 # ok
+   return jsonify(current_user)#, 200 # ok
 
 
 # @bpauth.route('/all', methods=['GET'])
@@ -90,18 +90,18 @@ def signup():
       existedUsername = Session.query(dbm.Account).filter(dbm.Account.Username == username).first()
 
       if (not existedEmail is None):
-         return jsonify({"Error": "Email existed", "Status": "Incompleted"}), 409
+         return jsonify({"Error": "Email existed", "msg": "Incompleted"})#, 409
       elif (not existedUsername is None):
-         return jsonify({"Error": "Username existed", "Status": "Incompleted"}), 409
+         return jsonify({"Error": "Username existed", "msg": "Incompleted"})#, 409
 
       new_account = dbm.Account(Username=username, Password=password, Email=email, ID_Permission=permission)
       Session.add(new_account)
       Session.commit()
-      return jsonify(schema.dump(new_account)), 201
+      return jsonify(schema.dump(new_account))#, 201
    
    except Exception as e:
       Session.rollback()
-      return jsonify({"Error": str(e), "Status": "Incompleted"}), 409
+      return jsonify({"Error": str(e), "msg": "Incompleted"})#, 409
 
 
 # Create a route to authenticate your users and return JWTs. The
@@ -116,7 +116,6 @@ def signin():
    # return jsonify(access_token=token)
    schema = dbs.AccountSchema()
    try:
-
       userNameOrEmail = request.json["username_or_email"]
       password = request.json["password"]
       acc = Session.query(dbm.Account).filter(dbm.Account.Email==userNameOrEmail).first()
@@ -132,12 +131,12 @@ def signin():
                Session.commit()
             token = jwte.create_access_token(identity=schema.dump(acc),expires_delta=False)
             print('\n\n\nUser {} has just signed in'.format(acc.Username))
-            return jsonify({"msg": "Successful", "token": token, "uid": acc.ID}), 200
+            return jsonify({"msg": "Successful", "token": token, "uid": acc.ID})#, 200
          else: 
             # return jsonify({acc.Password: "a", "msg": "Wrong password"}), 401
-            return jsonify({"msg": "Wrong password"}), 401
+            return jsonify({"msg": "Wrong password"})#, 401
       else:
-         return jsonify({"msg": "Account not exists"}), 401
+         return jsonify({"msg": "Account not exists"})#, 401
    except Exception as e:
       Session.rollback()
-      return jsonify({"Error": str(e), "Status": "Incompleted"}), 409
+      return jsonify({"Error": str(e), "Status": "Incompleted"})#, 409
