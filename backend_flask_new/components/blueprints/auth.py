@@ -97,7 +97,7 @@ def signup():
       new_account = dbm.Account(Username=username, Password=password, Email=email, ID_Permission=permission)
       Session.add(new_account)
       Session.commit()
-      return jsonify(schema.dump(new_account))#, 201
+      return jsonify({"msg": "Successful", "account": schema.dump(new_account)})#, 201
    
    except Exception as e:
       Session.rollback()

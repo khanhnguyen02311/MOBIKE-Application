@@ -5,7 +5,9 @@ import { store } from '../redux/store';
 
 const signUp = async (username: string, email: string, password: string) => {
     const response = await HttpRequest.PostRequest("auth/signup", {username: username, email: email, password: password, permission: 4});
-    if (response.msg == "Successful") {
+    console.log("Sign up request sent: " + response);
+    if (response.msg === 'Successful') {
+        console.log('Sign up successful, start signing in');
         await signIn(email, password);
     } else {
         console.log(response);
@@ -21,7 +23,7 @@ const signUp = async (username: string, email: string, password: string) => {
  */
 const signIn = async (usernameOrEmail: String, password: String, savePassword: Boolean = true) : String => {
     const response = await HttpRequest.PostRequest("auth/signin", {username_or_email: usernameOrEmail, password: password});
-    console.log(response);
+    console.log("Sign in request sent: " + response);
     if (response.msg == "Successful") {
         TokenStorage.setCurrentToken(response.token);
         if (savePassword) {

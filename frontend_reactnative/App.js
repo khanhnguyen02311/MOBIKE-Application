@@ -32,25 +32,24 @@ const App = () => {
     const fetch = async () => {
       await TokenStorage.init();
 
-      //await TokenStorage.print();
+      await TokenStorage.print();
       //TokenStorage.removeCurrentToken();
-      //await BackendAPI.signUp('testMail', 'testName', 'testPassword');
-      //await BackendAPI.signIn("Khoa", "123456789");
-      //let currentToken = await TokenStorage.getCurrentToken();
-      // if (currentToken != "" && currentToken != null) {
-      //   console.log("Current token: " + currentToken);
-      //   let myinfo = await me(currentToken);
-      //   console.log("Myinfo: " + myinfo.Email);
-      //   if (myinfo) {
-      //     store.dispatch({
-      //       type: 'auth/logIn',
-      //       payload: {
-      //         ID: myinfo.ID,
-      //         token: currentToken
-      //       }
-      //     });
-      //   }
-      // }
+
+      let currentToken = await TokenStorage.getCurrentToken();
+      if (currentToken != "" && currentToken != null) {
+        console.log("Current token: " + currentToken);
+        let myinfo = await BackendAPI.me(currentToken);
+        console.log("Myinfo: " + myinfo.Email);
+        if (myinfo) {
+          store.dispatch({
+            type: 'auth/logIn',
+            payload: {
+              ID: myinfo.ID,
+              token: currentToken
+            }
+          });
+        }
+      }
 
     }
     fetch();

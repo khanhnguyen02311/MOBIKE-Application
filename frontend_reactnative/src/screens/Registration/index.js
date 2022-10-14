@@ -19,6 +19,7 @@ const Registration = ({navigation}) => {
   let isEmailChecked = false;
   let isUsernameChecked = false;
   let isSubmitted = false;
+  let isSignUpRequestSent = false;
 
   const onChange = ({name, value}) => {
     setForm({...form, [name]: value});
@@ -67,7 +68,7 @@ const Registration = ({navigation}) => {
 
   const onEdited = ({name, value}) => {
     if (value !== '') {
-      //email
+      // email
       if (name === 'email') {
         checkEmail()
       }
@@ -82,15 +83,13 @@ const Registration = ({navigation}) => {
   }
 
   const signUp = async () => {
-    console.log("Start sign up");
+
+    if (errors.email || errors.username || errors.password || errors.confirmPassword) {     
+      return;
+    }
+
     const response = await BackendAPI.signUp(form.username, form.email, form.password);
-    // if (response) {
-    //   setErrors(prev => {
-    //     return {...prev, general: response};
-    //   });
-    // } else {
-    //   navigation.navigate(LOGIN);
-    // }
+
     console.log(response);
   }
 
@@ -103,16 +102,16 @@ const Registration = ({navigation}) => {
       });
     } else {
       setErrors(prev => {
-        if (prev) {
-          if (prev.email) {
-            if (prev.email === '* Email already exists') {
-              return {...prev, email: ''};
-            }
-          }
+        if (prev.email && prev.email === '* Email already exists') {
+
+          return {...prev, email: ''};
         }
-      })
+
+        return prev;
+      });
       isEmailChecked = true;
-      if (isUsernameChecked && isSubmitted) {
+      if (isUsernameChecked && isSubmitted && !isSignUpRequestSent) {
+        isSignUpRequestSent = true;
         signUp();
       }
     }
@@ -127,16 +126,14 @@ const Registration = ({navigation}) => {
       });
     } else {
       setErrors(prev => {
-        if (prev) {
-          if (prev.username) {
-            if (prev.username === '* Username already exists') {
-              return {...prev, username: ''};
-            }
-          }
+        if (prev.username && prev.username === '* Username already exists') {
+          return {...prev, username: ''};
         }
+        return prev;
       });
       isUsernameChecked = true;
-      if (isEmailChecked && isSubmitted) {
+      if (isEmailChecked && isSubmitted && !isSignUpRequestSent) {
+        isSignUpRequestSent = true;
         signUp();
       }
     }
@@ -148,6 +145,7 @@ const Registration = ({navigation}) => {
     //console.log({form});
     setFirstSubmit(false);
     isSubmitted = true;
+    isSignUpRequestSent = false;
     if (!form.email) {
       setErrors(prev => {
         return {...prev, email: '* Please enter your email'};
@@ -197,9 +195,13 @@ const Registration = ({navigation}) => {
       });
     }
 
+    checkEmail();
+    checkUsername();
+
     console.log("Submit: " + isSubmitted + "\nEmail: " + isEmailChecked + "\nUsername: " + isUsernameChecked);
 
     if (isEmailChecked && isUsernameChecked) {
+      isSignUpRequestSent = true;
       signUp();
     }
   };
