@@ -21,7 +21,10 @@ import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Checkbox } from 'react-native-paper';
 
-const LoginComponent = () => {
+const LoginComponent = ({
+  onChange,
+  onSubmit,
+}) => {
   const { navigate } = useNavigation();
   const [checked, setChecked] = useState();
   return (
@@ -33,6 +36,7 @@ const LoginComponent = () => {
             source={require('../../assets/images/MoBike.png')}
             style={styles.logo}
           />
+
           <Text style={styles.boldText}>Sign in to your account</Text>
 
           <View style={styles.form}>
@@ -43,7 +47,9 @@ const LoginComponent = () => {
               iconColor={'#90B4D3'}
               inputPadding={12}
               borderWidthtoTop={0}
-            //onChangeText={handleUsernameChange}
+              onChangeText={value => {
+                onChange({ name: 'username', value });
+              }}
             />
             <TextInputOutline
               label={'Password'}
@@ -53,7 +59,9 @@ const LoginComponent = () => {
               inputPadding={12}
               borderWidthtoTop={0}
               inputType="password"
-            //onChangeText={handlePasswordChange}
+              onChangeText={value => {
+                onChange({ name: 'password', value });
+              }}
             />
 
             <View
@@ -81,7 +89,7 @@ const LoginComponent = () => {
             </View>
 
             <CustomButton
-              //onPress={}
+              onPress={onSubmit}
               title="Sign in"
               primary
               styleTitle={{ fontSize: 18, fontWeight: 'bold' }}

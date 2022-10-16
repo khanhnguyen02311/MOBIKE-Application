@@ -1,6 +1,7 @@
 const scheme = "http";
-const host = "192.168.1.99";  //Home IP
+ const host = "192.168.1.160";  //Home IP
 // const host = "172.30.163.113";  //University IP
+// const host = "192.168.1.23" //Minh An IP
 const port = "3000";
 
 const sleepTime = 1000;

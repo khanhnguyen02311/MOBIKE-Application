@@ -15,6 +15,8 @@
 // import {useDispatch} from 'react-redux';
 // import {login} from '../../redux/slice/authSlice';
 // import CustomButton from '../../components/common/customButton';
+import BackendAPI from '../../backendAPI/BackendAPI';
+import React from 'react';
 
 import LoginComponent from '../../components/Login';
 
@@ -39,7 +41,25 @@ const Login = ({navigation}) => {
   //   }
   // };
 
-  return <LoginComponent />;
+  const [form, setForm] = React.useState({});
+
+  const onChange = ({name, value}) => {
+    setForm({...form, [name]: value});
+  };
+
+  const login = async () => {
+    console.log("Login Submitted")
+    await BackendAPI.signIn(form.username, form.password)
+  }
+
+  const onSubmit = () => {
+    login();
+  }
+
+  return <LoginComponent
+    onChange={onChange}
+    onSubmit={onSubmit}
+  />;
 };
 
 
