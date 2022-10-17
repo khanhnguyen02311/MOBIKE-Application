@@ -1,5 +1,5 @@
-import {View, Text, Button} from 'react-native';
-import React, {useEffect} from 'react';
+import {View, Text, Button, BackHandler} from 'react-native';
+import React from 'react';
 import {LOGIN} from '../../constants/routeNames';
 import Container from '../../components/common/container';
 import RegistrationComponent from '../../components/Registration';
@@ -9,23 +9,26 @@ import {
   ValidatePassword,
   ValidateConfirmPassword,
 } from '../../utils/validateForm';
-import {useDispatch, useSelector} from 'react-redux';
-import {login} from '../../redux/slice/authSlice';
+import BackendAPI from '../../backendAPI/BackendAPI';
 
 const Registration = ({navigation}) => {
   const [form, setForm] = React.useState({});
   const [errors, setErrors] = React.useState({});
   const [firstSubmit, setFirstSubmit] = React.useState(true);
 
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-  const dispatch = useDispatch();
+  let isEmailChecked = false;
+  let isUsernameChecked = false;
+  let isSubmitted = false;
+  let isSignUpRequestSent = false;
 
   const onChange = ({name, value}) => {
     setForm({...form, [name]: value});
+    isSubmitted = false;
     if (!firstSubmit) {
       if (value !== '') {
         //email
         if (name === 'email') {
+          isEmailChecked = false;
           setErrors(prev => {
             return {...prev, [name]: ValidateEmail(value)};
           });
@@ -33,6 +36,7 @@ const Registration = ({navigation}) => {
 
         //username
         else if (name === 'username') {
+          isUsernameChecked = false;
           setErrors(prev => {
             return {...prev, [name]: ValidateUsername(value)};
           });
@@ -69,11 +73,86 @@ const Registration = ({navigation}) => {
     }
   };
 
+  const onEdited = ({name, value}) => {
+    if (value !== '') {
+      // email
+      if (name === 'email') {
+        checkEmail()
+      }
+
+      //username
+      else if (name === 'username') {
+        checkUsername()
+      }
+
+      console.log("Error list: ", errors);
+    }
+  }
+
+  const signUp = async () => {
+
+    if (errors.email || errors.username || errors.password || errors.confirmPassword) {     
+      return;
+    }
+
+    const response = await BackendAPI.signUp(form.username, form.email, form.password);
+
+    console.log(response);
+  }
+
+
+  const checkEmail = async () => {
+    let exists = await BackendAPI.isEmailExist(form.email);
+    if (exists) {
+      setErrors(prev => {
+        return {...prev, email: '* Email already exists'};
+      });
+    } else {
+      setErrors(prev => {
+        if (prev.email && prev.email === '* Email already exists') {
+
+          return {...prev, email: ''};
+        }
+
+        return prev;
+      });
+      isEmailChecked = true;
+      if (isUsernameChecked && isSubmitted && !isSignUpRequestSent) {
+        isSignUpRequestSent = true;
+        signUp();
+      }
+    }
+  }
+
+
+  const checkUsername = async () => {
+    let exists = await BackendAPI.isUsernameExist(form.username);
+    if (exists) {
+      setErrors(prev => {
+        return {...prev, username: '* Username already exists'};
+      });
+    } else {
+      setErrors(prev => {
+        if (prev.username && prev.username === '* Username already exists') {
+          return {...prev, username: ''};
+        }
+        return prev;
+      });
+      isUsernameChecked = true;
+      if (isEmailChecked && isSubmitted && !isSignUpRequestSent) {
+        isSignUpRequestSent = true;
+        signUp();
+      }
+    }
+  }
+
+
   const onSubmit = () => {
     //validation
     //console.log({form});
     setFirstSubmit(false);
-
+    isSubmitted = true;
+    isSignUpRequestSent = false;
     if (!form.email) {
       setErrors(prev => {
         return {...prev, email: '* Please enter your email'};
@@ -123,21 +202,14 @@ const Registration = ({navigation}) => {
       });
     }
 
-    if (
-      !form.email ||
-      !form.username ||
-      !form.password ||
-      !form.confirmPassword
-    ) {
-      return;
-    }
-    if (
-      ValidateEmail(form.email) === '' &&
-      ValidateUsername(form.username) === '' &&
-      ValidatePassword(form.password) === '' &&
-      ValidateConfirmPassword(form.password, form.confirmPassword) === ''
-    ) {
-      dispatch(login());
+    checkEmail();
+    checkUsername();
+
+    console.log("Submit: " + isSubmitted + "\nEmail: " + isEmailChecked + "\nUsername: " + isUsernameChecked);
+
+    if (isEmailChecked && isUsernameChecked) {
+      isSignUpRequestSent = true;
+      signUp();
     }
   };
 
@@ -145,6 +217,7 @@ const Registration = ({navigation}) => {
     <RegistrationComponent
       onSubmit={onSubmit}
       onChange={onChange}
+      onEdited={onEdited}
       form={form}
       errors={errors}
     />

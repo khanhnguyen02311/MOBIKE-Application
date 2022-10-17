@@ -21,8 +21,9 @@ import {useNavigation} from '@react-navigation/native';
 import {Checkbox} from 'react-native-paper';
 
 const RegistrationComponent = ({
-  onChange,
   onSubmit,
+  onChange,
+  onEdited,
   form,
   errors = {errors},
 }) => {
@@ -50,6 +51,9 @@ const RegistrationComponent = ({
               onChangeText={value => {
                 onChange({name: 'email', value});
               }}
+              onEndEditing={value => {
+                onEdited({name: 'email', value});
+              }}
               error={errors.email}
               maxLength={32}
             />
@@ -64,6 +68,9 @@ const RegistrationComponent = ({
               marginBottomContainer={27}
               onChangeText={value => {
                 onChange({name: 'username', value});
+              }}
+              onEndEditing={value => {
+                onEdited({name: 'username', value});
               }}
               error={errors.username}
             />

@@ -16,14 +16,21 @@ class DataColumn(Enum):
     Username = 3,
 
 
-@bppost.route('/ifexists', methods = ['POST'])
-def ifexists():
-    data = request.json['data']
-    column = request.json['column']
-    if (Session.query(Post).filter(Post.title == title).first() is None):
-        return jsonify(exists=False)
-    else:
-        return jsonify(exists=True)
+@bppost.route('/isemailexists', methods = ['POST'])
+def ifemailexists():
+    data = request.get_json()
+    print("Checking if email exists: Data: ", data)
+    email = data['email']
+    user = Session.query(Account).filter(Account.Email == email).first()
+    return jsonify({"exists": not user is None})
+
+@bppost.route('/isusernameexists', methods = ['POST'])
+def ifusernameexists():
+    data = request.get_json()
+    print("Checking if username exists: Data: ", data)
+    username = data['username']
+    user = Session.query(Account).filter(Account.Username == username).first()
+    return jsonify({"exists": not user is None})
 
 @bppost.route('/insertlocations', methods = ['POST'])
 def insertlocations():
