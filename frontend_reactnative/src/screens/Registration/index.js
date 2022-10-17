@@ -1,5 +1,5 @@
 import {View, Text, Button} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {LOGIN} from '../../constants/routeNames';
 import Container from '../../components/common/container';
 import RegistrationComponent from '../../components/Registration';
@@ -9,11 +9,16 @@ import {
   ValidatePassword,
   ValidateConfirmPassword,
 } from '../../utils/validateForm';
+import {useDispatch, useSelector} from 'react-redux';
+import {login} from '../../redux/slice/authSlice';
 
 const Registration = ({navigation}) => {
   const [form, setForm] = React.useState({});
   const [errors, setErrors] = React.useState({});
   const [firstSubmit, setFirstSubmit] = React.useState(true);
+
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
 
   const onChange = ({name, value}) => {
     setForm({...form, [name]: value});
@@ -36,7 +41,14 @@ const Registration = ({navigation}) => {
         //password
         else if (name === 'password') {
           setErrors(prev => {
-            return {...prev, [name]: ValidatePassword(value)};
+            return {
+              ...prev,
+              [name]: ValidatePassword(value),
+              confirmPassword: ValidateConfirmPassword(
+                value,
+                form.confirmPassword,
+              ),
+            };
           });
         }
 
@@ -110,7 +122,25 @@ const Registration = ({navigation}) => {
         };
       });
     }
+
+    if (
+      !form.email ||
+      !form.username ||
+      !form.password ||
+      !form.confirmPassword
+    ) {
+      return;
+    }
+    if (
+      ValidateEmail(form.email) === '' &&
+      ValidateUsername(form.username) === '' &&
+      ValidatePassword(form.password) === '' &&
+      ValidateConfirmPassword(form.password, form.confirmPassword) === ''
+    ) {
+      dispatch(login());
+    }
   };
+
   return (
     <RegistrationComponent
       onSubmit={onSubmit}

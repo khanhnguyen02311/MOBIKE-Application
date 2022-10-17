@@ -64,6 +64,7 @@ export default class TextInputOutline extends BaseInput {
       error,
       borderWidthtoTop,
       marginBottomContainer,
+      bigContainerStyle,
       //add when change border of container
       ...props
     } = this.props;
@@ -79,11 +80,14 @@ export default class TextInputOutline extends BaseInput {
       <View
         style={[
           {
-            marginBottom: this.props.marginBottomContainer
-              ? this.props.marginBottomContainer
-              : 17,
-            height: 60,
+            // marginBottom: this.props.marginBottomContainer
+            //   ? this.props.marginBottomContainer
+            //   : 17,
+            // height: 60,
+
+            marginBottom: 12,
           },
+          bigContainerStyle,
         ]}>
         <View
           style={[

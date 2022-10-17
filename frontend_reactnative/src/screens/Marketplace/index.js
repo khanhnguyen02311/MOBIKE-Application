@@ -6,16 +6,18 @@ import {Kohana} from 'react-native-textinput-effects';
 import Container from '../../components/common/container';
 import TextInputOutline from '../../components/common/textInputOutline-Kohana';
 import {useSelector} from 'react-redux';
+import HeaderSearch from '../../components/HeaderSearch';
+import colors from '../../assets/theme/colors';
 
-const Marketplace = () => {
-  const date = useSelector(state => state.auth.date);
+const Marketplace = ({navigation}) => {
+  navigation.setOptions({
+    header: () => <HeaderSearch />,
+  });
 
   return (
     <Container
       keyboardShouldPersistTaps="always"
-      styleContainer={{backgroundColor: '#FFFFFF'}}>
-      <Text>{date.date}/{date.month}/{date.year}</Text>
-    </Container>
+      styleContainer={{backgroundColor: '#FFFFFF'}}></Container>
   );
 };
 
