@@ -24,6 +24,7 @@ def ifemailexists():
     user = Session.query(Account).filter(Account.Email == email).first()
     return jsonify({"exists": not user is None})
 
+
 @bppost.route('/isusernameexists', methods = ['POST'])
 def ifusernameexists():
     data = request.get_json()
@@ -32,10 +33,12 @@ def ifusernameexists():
     user = Session.query(Account).filter(Account.Username == username).first()
     return jsonify({"exists": not user is None})
 
+
 @bppost.route('/insertlocations', methods = ['POST'])
 def insertlocations():
     print("Inserting locations...")
     return InsertLocation()
+
 
 @bppost.route('/insertpermissions', methods = ['POST'])
 def insertpermission():
