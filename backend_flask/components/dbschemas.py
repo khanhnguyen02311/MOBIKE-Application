@@ -32,6 +32,5 @@ class AccountInfoSchema(Schema):
     Birthdate = auto_field()
     Gender = auto_field()
     Phone_number = auto_field()
-    Time_created = auto_field()
 
 
