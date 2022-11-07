@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import { signIn } from '../../backendAPI/BackendAPI';
 
 const initialState = {
   ID: null,

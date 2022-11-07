@@ -12,7 +12,6 @@ class AccountSchema(Schema):
     Username = auto_field()
     Email = auto_field()
         
-
 class PermissionSchema(Schema):
     class Meta:
         model = dbm.Permission
@@ -32,5 +31,49 @@ class AccountInfoSchema(Schema):
     Birthdate = auto_field()
     Gender = auto_field()
     Phone_number = auto_field()
+
+class WardSchema(Schema):
+    class Meta:
+        model = dbm.Ward
+        load_instance = True
+        
+    ID = auto_field()
+    Name = auto_field()
+    ID_District = auto_field()
+
+class DistrictSchema(Schema):
+    class Meta:
+        model = dbm.District
+        load_instance = True
+        
+    ID = auto_field()
+    Name = auto_field()
+    ID_City = auto_field()
+
+
+class CitySchema(Schema):
+    class Meta:
+        model = dbm.City
+        load_instance = True
+        
+    ID = auto_field()
+    Name = auto_field()
+
+class ImageTypeSchema(Schema):
+    class Meta:
+        model = dbm.ImageType
+        load_instance = True
+        
+    ID = auto_field()
+    Name = auto_field()
+
+class VersionSchema(Schema):
+    class Meta:
+        model = dbm.Version
+        load_instance = True
+        
+    ID = auto_field()
+    Name = auto_field()
+    Version = auto_field()
 
 

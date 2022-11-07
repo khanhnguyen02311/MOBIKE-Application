@@ -13,6 +13,9 @@ export default StyleSheet.create({
 
   logo: {
     alignSelf: 'center',
+    resizeMode: 'contain',
+    width: 200,
+    height: 200,
   },
 
   boldText: {

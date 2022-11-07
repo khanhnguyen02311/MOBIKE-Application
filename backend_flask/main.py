@@ -13,6 +13,6 @@ if isDebug:
     
 
 if __name__ == "__main__":
-    cpn.App.run(debug=True)
+    # cpn.App.run(debug=True)
     # print("Server IP: {}\t Port: {}".format(serverIP, serverPort))
-    # cpn.App.run(host = serverIP, port = serverPort, debug=isDebug)
+    cpn.App.run(host = serverIP, port = serverPort, debug=isDebug)

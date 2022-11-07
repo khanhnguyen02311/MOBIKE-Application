@@ -24,18 +24,44 @@ import { Checkbox } from 'react-native-paper';
 const LoginComponent = ({
   onChange,
   onSubmit,
+  onTest,
 }) => {
   const { navigate } = useNavigation();
   const [checked, setChecked] = useState();
+  const [image, setimage] = useState(require('../../assets/images/MoBike.png'));
+
+  useEffect(() => {
+    console.log('LoginComponent');
+    const fetchi = async () => {
+      try {
+        console.log('fetch');
+        
+        const res = await fetch("http://192.168.1.98:3001/download/restroom.png")
+
+        console.log('response: ', res);
+
+        // const blob = await res.blob();
+        // console.log('blob', blob);
+
+        setimage(blob);
+
+      } catch (error) {
+        console.log("Login fetch error: " + error);
+      }
+    }
+    fetchi();
+  },[])
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View
         style={[styles.wrapper, { height: '100%', backgroundColor: 'white' }]}>
         <View>
           <Image
-            source={require('../../assets/images/MoBike.png')}
+            //source={require('../../assets/images/MoBike.png')}
+            source={{uri: "http://172.30.163.113:3001/download/restroom.png"}}
             style={styles.logo}
           />
+
 
           <Text style={styles.boldText}>Sign in to your account</Text>
 
@@ -107,7 +133,7 @@ const LoginComponent = ({
                 Or login with:
               </Text>
               <View style={{ flexDirection: 'row' }}>
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={onTest}>
                   <Image
                     source={require('../../assets/images/logo_facebook.png')}
                     style={{ width: 40, height: 40, marginEnd: 10 }}

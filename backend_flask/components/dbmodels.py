@@ -202,6 +202,10 @@ class ImagePost (Base):
     # rel_ProfileImage = relationship("ProfileImage", back_populates="rel_Image", lazy='select')
     # rel_IdentityImage = relationship("IdentityImage", back_populates="rel_Image", lazy='select')
 
+class ImageType(Base):
+    __tablename__ = 'IMAGETYPE'
+    ID = Column(ms.INTEGER, primary_key=True)
+    Name = Column(ms.NVARCHAR(50), nullable=False, unique=True)
 
 # ==============================================================================
 class PostStatus (Base):
