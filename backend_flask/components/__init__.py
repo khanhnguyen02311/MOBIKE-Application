@@ -23,6 +23,6 @@ App.register_blueprint(bpimage, url_prefix='/image')
 App.register_blueprint(bpadmin, url_prefix='/admin')
 App.register_blueprint(bpget, url_prefix='/gets')
 
-@App.teardown_appcontext
-def cleanup(resp_or_exc):
-    Session.remove()
+# @App.teardown_appcontext
+# def cleanup(resp_or_exc):
+#     Session.remove()

@@ -6,5 +6,7 @@ from .config import SQLAlchemyConfig as cfg
 
 
 Engine = create_engine(url=cfg.SQLALCHEMY_DATABASE_URL, echo=cfg.ECHO)
-Session = scoped_session(sessionmaker(bind=Engine, autoflush=cfg.AUTO_FLUSH, autocommit=cfg.AUTO_COMMIT))
 Base = declarative_base()
+
+def new_Session():
+   return scoped_session(sessionmaker(bind=Engine, autoflush=cfg.AUTO_FLUSH, autocommit=cfg.AUTO_COMMIT))

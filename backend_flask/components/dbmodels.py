@@ -1,4 +1,3 @@
-from tokenize import Number
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects import mysql as ms
@@ -393,4 +392,5 @@ class ChatMessage (Base):
     
     
 # ==============================================================================
+# Base.metadata.drop_all(Engine)
 Base.metadata.create_all(Engine)
