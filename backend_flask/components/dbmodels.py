@@ -10,6 +10,15 @@ from datetime import datetime, timezone
 # SCHEMA ATTRIBUTES: https://docs.sqlalchemy.org/en/14/core/metadata.html
 
 # ==============================================================================
+class Permission (Base):
+    __tablename__ = 'PERMISSION'
+    ID = Column(ms.INTEGER, primary_key=True)
+    Name = Column(ms.NVARCHAR(50), nullable=False)
+    
+    rel_Account = relationship("Account", back_populates="rel_Permission")
+
+
+# ==============================================================================
 class AccountInfo (Base):
     __tablename__ = 'ACCOUNTINFO'
     ID = Column(ms.INTEGER, primary_key=True)
@@ -39,9 +48,9 @@ class AccountInfo (Base):
 class AccountStat (Base):
     __tablename__ = 'ACCOUNTSTAT'
     ID = Column(ms.INTEGER, primary_key=True)
-    General_rating = Column(ms.FLOAT, nullable=False)
-    Reply_percentage = Column(ms.FLOAT, nullable=False)
-    Avg_reply_time = Column(ms.FLOAT, nullable=False)
+    General_rating = Column(ms.FLOAT, nullable=False, default=-1)
+    Reply_percentage = Column(ms.FLOAT, nullable=False, default=-1)
+    Avg_reply_time = Column(ms.FLOAT, nullable=False, default=-1)
     
     ## AccountInfo reference
     rel_AccountInfo = relationship('AccountInfo', back_populates='rel_AccountStat', uselist=False)
@@ -63,35 +72,19 @@ class Account (Base):
     rel_AccountInfo = relationship("AccountInfo", back_populates="rel_Account")
 
     ## Post reference
-    rel_Post = relationship("Post", back_populates="rel_Account", uselist=False)
+    rel_Post = relationship("Post", back_populates="rel_Account")
     
+    ## Rating reference
+    rel_Rating = relationship("Rating", back_populates="rel_Account")
     
-    # rel_Rating = relationship("Rating", back_populates="rel_Account", lazy='select')
-    # rel_ChatroomMember = relationship("ChatroomMember", back_populates="rel_Account", lazy='select')
-    # rel_Message = relationship("Message", back_populates="rel_Account", lazy='select')
-    # rel_Like = relationship("Like", back_populates="rel_Account", lazy='select')
-
-
-# ==============================================================================
-class ImageAccount (Base):
-    __tablename__ = 'IMAGEACCOUNT'
-    ID = Column(ms.INTEGER, primary_key=True)
-    Filename = Column(ms.NVARCHAR(64), nullable=False)
+    ## Like reference
+    rel_Like = relationship("Like", back_populates="rel_Account")
     
-    ## AccountInfo reference
-    rel_AccountInfo_Profile = relationship('AccountInfo', back_populates='rel_ImageAccount_Profile')
+    ## View reference
+    rel_View = relationship("View", back_populates="rel_Account")
     
-    ## AccountInfo reference
-    rel_AccountInfo_Identity = relationship('AccountInfo', back_populates='rel_ImageAccount_Identity')
-
-
-# ==============================================================================
-class Permission (Base):
-    __tablename__ = 'PERMISSION'
-    ID = Column(ms.INTEGER, primary_key=True)
-    Name = Column(ms.NVARCHAR(50), nullable=False)
-    
-    rel_Account = relationship("Account", back_populates="rel_Permission")
+    ## ChatParticipant reference
+    rel_ChatParticipant = relationship("ChatParticipant", back_populates="rel_Account")
 
 
 # ==============================================================================
@@ -102,8 +95,7 @@ class Ward (Base):
 
     ID_District = Column(ms.INTEGER, ForeignKey("DISTRICT.ID"), nullable=False)
     rel_District = relationship("District", back_populates="rel_Ward")
-    
-    rel_Address = relationship("Address", back_populates="rel_Ward", uselist=False)
+
 
 # ==============================================================================
 class District (Base):
@@ -117,9 +109,6 @@ class District (Base):
     ## Ward reference
     rel_Ward = relationship('Ward', back_populates='rel_District')
     
-    ## Address reference
-    rel_Address = relationship("Address", back_populates="rel_District", uselist=False)
-    
     
 # ==============================================================================
 class City (Base):
@@ -130,9 +119,6 @@ class City (Base):
     ## District reference
     rel_District = relationship("District", back_populates="rel_City")
     
-    ## Address reference
-    rel_Address = relationship("Address", back_populates="rel_City", uselist=False)
-    
     
 # ==============================================================================
 class Address (Base):
@@ -141,19 +127,19 @@ class Address (Base):
     Detail_address = Column(ms.NVARCHAR(128))
     
     ID_City = Column(ms.INTEGER, ForeignKey("CITY.ID"), nullable=False)
-    rel_City = relationship("City", back_populates="rel_Address")
+    rel_City = relationship("City")
         
     ID_District = Column(ms.INTEGER, ForeignKey("DISTRICT.ID"), nullable=False)
-    rel_District = relationship("District", back_populates="rel_Address")
+    rel_District = relationship("District")
     
     ID_Ward = Column(ms.INTEGER, ForeignKey("WARD.ID"), nullable=False)
-    rel_Ward = relationship("Ward", back_populates="rel_Address")
+    rel_Ward = relationship("Ward")
 
     ## Post reference
-    rel_Post = relationship("Post", back_populates="rel_Address", uselist=False)
+    rel_Post = relationship("Post", back_populates="rel_Address")
     
     ## AccountInfo reference
-    rel_AccountInfo = relationship("AccountInfo", back_populates="rel_Address", uselist=False)
+    rel_AccountInfo = relationship("AccountInfo", back_populates="rel_Address")
         
     
 # ==============================================================================
@@ -184,10 +170,31 @@ class Post (Base):
     ## PostStatus reference
     rel_PostStatus = relationship("PostStatus", back_populates="rel_Post")
     
-    # rel_Rating = relationship("Rating", back_populates="rel_Post", lazy='select')
-    # rel_Chatroom = relationship("Chatroom", back_populates="rel_Post", lazy='select')
-    # rel_Like = relationship("Like", back_populates="rel_Post", lazy='select')
+    ## Rating reference
+    rel_Rating = relationship("Rating", back_populates="rel_Post")
     
+    ## Like reference
+    rel_Like = relationship("Like", back_populates="rel_Post")
+    
+    ## View reference
+    rel_View = relationship("View", back_populates="rel_Post")
+    
+    ## ChatRoom reference
+    rel_ChatRoom = relationship("Chatroom", back_populates="rel_Post", uselist=False)
+    
+
+# ==============================================================================
+class ImageAccount (Base):
+    __tablename__ = 'IMAGEACCOUNT'
+    ID = Column(ms.INTEGER, primary_key=True)
+    Filename = Column(ms.NVARCHAR(64), nullable=False)
+    
+    ## AccountInfo reference
+    rel_AccountInfo_Profile = relationship('AccountInfo', back_populates='rel_ImageAccount_Profile')
+    
+    ## AccountInfo reference
+    rel_AccountInfo_Identity = relationship('AccountInfo', back_populates='rel_ImageAccount_Identity')
+
     
 # ==============================================================================
 class ImagePost (Base):
@@ -198,14 +205,13 @@ class ImagePost (Base):
     ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
     rel_Post = relationship("Post", back_populates="rel_ImagePost")
 
-    # rel_Manufacturer = relationship("Manufacturer", back_populates="rel_Image", lazy='select')
-    # rel_ProfileImage = relationship("ProfileImage", back_populates="rel_Image", lazy='select')
-    # rel_IdentityImage = relationship("IdentityImage", back_populates="rel_Image", lazy='select')
 
-class ImageType(Base):
-    __tablename__ = 'IMAGETYPE'
+# ==============================================================================
+class ImageOther (Base):
+    __tablename__ = 'IMAGEOTHER'
     ID = Column(ms.INTEGER, primary_key=True)
-    Name = Column(ms.NVARCHAR(50), nullable=False, unique=True)
+    Filename = Column(ms.NVARCHAR(64), nullable=False)
+
 
 # ==============================================================================
 class PostStatus (Base):
@@ -237,22 +243,25 @@ class Rating (Base):
     Content = Column(ms.NVARCHAR(2000))
     Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
     
-    # ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
-    # ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
+    ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
+    rel_Post = relationship("Post", back_populates="rel_Rating")
     
-    # rel_Account = relationship("Account", back_populates="rel_Rating", lazy='select')
-    # rel_Post = relationship("Post", back_populates="rel_Rating", lazy='select')
+    ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
+    rel_Account = relationship("Account", back_populates="rel_Rating")
+    
     
     
 # ==============================================================================
 class Like (Base):
     __tablename__ = 'LIKE'
     ID = Column(ms.INTEGER, primary_key=True)
+    Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
     
-    # ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), primary_key=True, nullable=False)
-    # ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), primary_key=True, nullable=False)
-    # rel_Account = relationship("Account", back_populates="rel_Like", lazy='select')
-    # rel_Post = relationship("Post", back_populates="rel_Like", lazy='select')
+    ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
+    rel_Post = relationship("Post", back_populates="rel_Like")
+    
+    ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
+    rel_Account = relationship("Account", back_populates="rel_Like")
         
     
 # ==============================================================================
@@ -260,6 +269,12 @@ class View (Base):
     __tablename__ = 'VIEW'
     ID = Column(ms.INTEGER, primary_key=True)
     Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
+    
+    ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
+    rel_Post = relationship("Post", back_populates="rel_View")
+    
+    ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
+    rel_Account = relationship("Account", back_populates="rel_View")
         
     
 # ==============================================================================
@@ -272,17 +287,20 @@ class VehicleInfo (Base):
     Manufacture_year = Column(ms.SMALLINT)
     Cubic_power = Column(ms.INTEGER)
 
-    # ID_Manufacturer = Column(ms.INTEGER, ForeignKey("MANUFACTURER.ID"), nullable=False)
-    # ID_VehicleLineup = Column(ms.INTEGER, ForeignKey("VEHICLELINEUP.ID"), nullable=False)
-    # ID_VehicleType = Column(ms.INTEGER, ForeignKey("VEHICLETYPE.ID"), nullable=False)
-    # ID_Condition = Column(ms.INTEGER, ForeignKey("VEHICLECONDITION.ID"), nullable=True)
-    # ID_Color = Column(ms.INTEGER, ForeignKey("COLOR.ID"), nullable=True)
-
-    # rel_Manufacturer = relationship("Manufacturer", back_populates="rel_VehicleInfo", lazy='select')
-    # rel_VehicleLineup = relationship("VehicleLineup", back_populates="rel_VehicleInfo", lazy='select')
-    # rel_VehicleType = relationship("VehicleType", back_populates="rel_VehicleInfo", lazy='select')
-    # rel_Condition = relationship("VehicleCondition", back_populates="rel_VehicleInfo", lazy='select')
-    # rel_Color = relationship("Color", back_populates="rel_VehicleInfo", lazy='select')
+    ID_Manufacturer = Column(ms.INTEGER, ForeignKey("MANUFACTURER.ID"), nullable=False)
+    rel_Manufacturer = relationship("Manufacturer")
+    
+    ID_VehicleLineup = Column(ms.INTEGER, ForeignKey("VEHICLELINEUP.ID"), nullable=False)
+    rel_VehicleLineup = relationship("VehicleLineup")
+    
+    ID_VehicleType = Column(ms.INTEGER, ForeignKey("VEHICLETYPE.ID"), nullable=False)
+    rel_VehicleType = relationship("VehicleType")
+    
+    ID_Condition = Column(ms.INTEGER, ForeignKey("VEHICLECONDITION.ID"))
+    rel_Condition = relationship("VehicleCondition")
+    
+    ID_Color = Column(ms.INTEGER, ForeignKey("COLOR.ID"), nullable=True)
+    rel_Color = relationship("Color")
 
     ## Post reference
     rel_Post = relationship("Post", back_populates="rel_VehicleInfo", uselist=False)
@@ -294,12 +312,8 @@ class Manufacturer (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Name = Column(ms.NVARCHAR(50), nullable=False)
     
-    # ID_Image = Column(ms.INTEGER, ForeignKey("IMAGE.ID"), nullable=True)
-
-    # rel_Image = relationship("Image", back_populates="rel_Manufacturer", lazy='select')
-    
-    # rel_VehicleInfo = relationship("VehicleInfo", back_populates="rel_Manufacturer", lazy='select')
-    # rel_VehicleLineup = relationship("VehicleLineup", back_populates="rel_Manufacturer", lazy='select')
+    ID_ImageOther = Column(ms.INTEGER, ForeignKey("IMAGEOTHER.ID"), nullable=True)
+    rel_ImageOther = relationship("Image")
     
     
 # ==============================================================================
@@ -308,20 +322,14 @@ class VehicleLineup (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Lineup = Column(ms.NVARCHAR(50), nullable=False)
 
-    # ID_Manufacturer = Column(ms.INTEGER, ForeignKey("MANUFACTURER.ID"), nullable=False)
-
-    # rel_Manufacturer = relationship("Manufacturer", back_populates="rel_VehicleLineup", lazy='select')
-    
-    # rel_VehicleInfo = relationship("VehicleInfo", back_populates="rel_VehicleLineup", lazy='select')
-    
+    ID_Manufacturer = Column(ms.INTEGER, ForeignKey("MANUFACTURER.ID"), nullable=False)
+    rel_Manufacturer = relationship('Manufacturer')
     
 # ==============================================================================
 class VehicleType (Base):
     __tablename__ = 'VEHICLETYPE'
     ID = Column(ms.INTEGER, primary_key=True)
     Type = Column(ms.NVARCHAR(50), nullable=False)
-
-    # rel_VehicleInfo = relationship("VehicleInfo", back_populates="rel_VehicleType", lazy='select')
     
     
 # ==============================================================================
@@ -329,8 +337,6 @@ class VehicleCondition (Base):
     __tablename__ = 'VEHICLECONDITION'
     ID = Column(ms.INTEGER, primary_key=True)
     Condition = Column(ms.NVARCHAR(50), nullable=False)
-
-    # rel_VehicleInfo = relationship("VehicleInfo", back_populates="rel_Condition", lazy='select')
     
     
 # ==============================================================================
@@ -339,21 +345,22 @@ class Color (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Name = Column(ms.NVARCHAR(20), nullable=False)
     Color_hex = Column(ms.NVARCHAR(6), nullable=False)
-
-    # rel_VehicleInfo = relationship("VehicleInfo", back_populates="rel_Color", lazy='select')
     
     
 # ==============================================================================
 class ChatRoom (Base):
     __tablename__ = 'CHATROOM'
     ID = Column(ms.INTEGER, primary_key=True)
+    Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
     
-    # ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
-    
-    # rel_Post = relationship("Post", back_populates="rel_Chatroom", lazy='select')
+    ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"))
+    rel_Post = relationship("Post", back_populates="rel_ChatRoom")
 
-    # rel_ChatroomMember = relationship("ChatroomMember", back_populates="rel_Chatroom", lazy='select')
-    # rel_Message = relationship("Message", back_populates="rel_Chatroom", lazy='select')
+    ## ChatRoom reference
+    rel_ChatParticipant = relationship("ChatParticipant", back_populates="rel_ChatRoom")
+    
+    ## ChatMessage reference
+    rel_ChatMessage = relationship("ChatMessage", back_populates="rel_ChatRoom")
     
     
 # ==============================================================================
@@ -361,11 +368,14 @@ class ChatParticipant (Base):
     __tablename__ = 'CHATPARTICIPANT'
     ID = Column(ms.INTEGER, primary_key=True)
     
-    # ID_Chatroom = Column(ms.INTEGER, ForeignKey("CHATROOM.ID"), primary_key=True)
-    # ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), primary_key=True)
+    ID_ChatRoom = Column(ms.INTEGER, ForeignKey("CHATROOM.ID"), nullable=False)
+    rel_ChatRoom = relationship("ChatRoom", back_populates="rel_ChatParticipant")
     
-    # rel_Chatroom = relationship("Chatroom", back_populates="rel_ChatroomMember", lazy='select')
-    # rel_Account = relationship("Account", back_populates="rel_ChatroomMember", lazy='select')
+    ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
+    rel_Account = relationship("Account", back_populates="rel_ChatParticipant")
+    
+    ## ChatMessage reference
+    rel_ChatMessage = relationship("ChatMessage", back_populates="rel_ChatParticipant")
     
     
 # ==============================================================================
@@ -375,11 +385,11 @@ class ChatMessage (Base):
     Content = Column(ms.NVARCHAR(2000), nullable=False)
     Time_created = Column(ms.DATETIME, default=datetime.now(timezone.utc))
     
-    # ID_Chatroom = Column(ms.INTEGER, ForeignKey("CHATROOM.ID"), nullable=False)
-    # ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
+    ID_ChatRoom = Column(ms.INTEGER, ForeignKey("CHATROOM.ID"), nullable=False)
+    rel_ChatRoom = relationship("ChatRoom", back_populates="rel_Message")
     
-    # rel_Chatroom = relationship("Chatroom", back_populates="rel_Message", lazy='select')
-    # rel_Account = relationship("Account", back_populates="rel_Message", lazy='select')
+    ID_ChatParticipant = Column(ms.INTEGER, ForeignKey("CHATPARTICIPANT.ID"), nullable=False)
+    rel_ChatParticipant = relationship("ChatParticipant", back_populates="rel_ChatMessage")
     
     
 # ==============================================================================
