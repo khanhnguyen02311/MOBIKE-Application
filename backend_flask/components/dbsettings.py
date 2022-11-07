@@ -4,7 +4,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from .config import SQLAlchemyConfig as cfg
 
-
 Engine = create_engine(url=cfg.SQLALCHEMY_DATABASE_URL, echo=cfg.ECHO)
 Base = declarative_base()
 

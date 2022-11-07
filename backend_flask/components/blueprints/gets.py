@@ -7,6 +7,7 @@ from ..dbschemas import *
 
 bpget = Blueprint('bpget', __name__)
 
+
 @bpget.route('/version/<name>', methods = ['GET'])
 def getversions(name):
     schema = VersionSchema()
@@ -15,11 +16,13 @@ def getversions(name):
     print("Found: " + result.Name)
     return jsonify(schema.dump(result))
 
+
 @bpget.route('/permissions', methods = ['GET'])
 def getpermissions():
     schema = PermissionSchema(many=True)
     permissions = Session.query(Permission).all()
     return jsonify(schema.dump(permissions))
+
 
 @bpget.route('/cities', methods = ['GET'])
 def getcities():
@@ -27,17 +30,20 @@ def getcities():
     cities = Session.query(City).all()
     return jsonify(schema.dump(cities))
 
+
 @bpget.route('/districts', methods = ['GET'])
 def getdistricts():
     schema = DistrictSchema(many=True)
     districts = Session.query(District).all()
     return jsonify(schema.dump(districts))
 
+
 @bpget.route('/wards', methods = ['GET'])
 def getwards():
     schema = WardSchema(many=True)
     wards = Session.query(Ward).all()
     return jsonify(schema.dump(wards))
+
 
 @bpget.route('/imagetypes', methods = ['GET'])
 def getimagetypes():

@@ -14,6 +14,7 @@ class Permission (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Name = Column(ms.NVARCHAR(50), nullable=False)
     
+    ## Account reference
     rel_Account = relationship("Account", back_populates="rel_Permission")
 
 
@@ -33,11 +34,11 @@ class AccountInfo (Base):
     ID_Address = Column(ms.INTEGER, ForeignKey('ADDRESS.ID'))
     rel_Address = relationship('Address', back_populates='rel_AccountInfo')
     
-    ID_ImageAccount_Profile = Column(ms.INTEGER, ForeignKey('IMAGEACCOUNT.ID'))
-    rel_ImageAccount_Profile = relationship('ImageAccount', back_populates='rel_AccountInfo_Profile')
+    ID_Image_Profile = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
+    rel_Image_Profile = relationship('Image', back_populates='rel_AccountInfo_Profile')
     
-    ID_ImageAccount_Identity = Column(ms.INTEGER, ForeignKey('IMAGEACCOUNT.ID'))
-    rel_ImageAccount_Identity = relationship('ImageAccount', back_populates='rel_AccountInfo_Identity')
+    ID_Image_Identity = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
+    rel_Image_Identity = relationship('Image', back_populates='rel_AccountInfo_Identity')
     
     ## Account reference
     rel_Account = relationship("Account", back_populates="rel_AccountInfo", uselist=False)
@@ -164,7 +165,7 @@ class Post (Base):
     rel_PostStat = relationship('PostStat', back_populates='rel_Post')
 
     ## ImagePost reference
-    rel_ImagePost = relationship("ImagePost", back_populates="rel_Post")
+    rel_Image = relationship("Image", back_populates="rel_Post")
     
     ## PostStatus reference
     rel_PostStatus = relationship("PostStatus", back_populates="rel_Post")
@@ -183,33 +184,30 @@ class Post (Base):
     
 
 # ==============================================================================
-class ImageAccount (Base):
-    __tablename__ = 'IMAGEACCOUNT'
+class Image (Base):
+    __tablename__ = 'IMAGE'
     ID = Column(ms.INTEGER, primary_key=True)
     Filename = Column(ms.NVARCHAR(64), nullable=False)
     
-    ## AccountInfo reference
-    rel_AccountInfo_Profile = relationship('AccountInfo', back_populates='rel_ImageAccount_Profile')
+    ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"))
+    rel_Post = relationship("Post", back_populates="rel_Image")
+    
+    ID_ImageType = Column(ms.INTEGER, ForeignKey('IMAGETYPE.ID'))
+    rel_ImageType = relationship('ImageType')
     
     ## AccountInfo reference
-    rel_AccountInfo_Identity = relationship('AccountInfo', back_populates='rel_ImageAccount_Identity')
-
+    rel_AccountInfo_Profile = relationship('AccountInfo', back_populates='rel_Image_Profile')
     
-# ==============================================================================
-class ImagePost (Base):
-    __tablename__ = 'IMAGEPOST'
-    ID = Column(ms.INTEGER, primary_key=True)
-    Filename = Column(ms.NVARCHAR(64), nullable=False)
-    
-    ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
-    rel_Post = relationship("Post", back_populates="rel_ImagePost")
+    ## AccountInfo reference
+    rel_AccountInfo_Identity = relationship('AccountInfo', back_populates='rel_Image_Identity')
 
 
 # ==============================================================================
-class ImageOther (Base):
-    __tablename__ = 'IMAGEOTHER'
+class ImageType (Base):
+    __tablename__ = 'IMAGETYPE'
     ID = Column(ms.INTEGER, primary_key=True)
-    Filename = Column(ms.NVARCHAR(64), nullable=False)
+    Name = Column(ms.NVARCHAR(32), nullable=False)
+    Type = Column(ms.NVARCHAR(32), nullable=False)
 
 
 # ==============================================================================
@@ -231,6 +229,7 @@ class PostStat (Base):
     Like_amount = Column(ms.INTEGER, nullable=False)
     Contact_amount = Column(ms.INTEGER, nullable=False)
     
+    ## Post reference
     rel_Post = relationship("Post", back_populates="rel_PostStat", uselist=False)
     
     
@@ -311,8 +310,8 @@ class Manufacturer (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Name = Column(ms.NVARCHAR(50), nullable=False)
     
-    ID_ImageOther = Column(ms.INTEGER, ForeignKey("IMAGEOTHER.ID"), nullable=True)
-    rel_ImageOther = relationship("Image")
+    ID_Image = Column(ms.INTEGER, ForeignKey("IMAGE.ID"), nullable=True)
+    rel_Image = relationship("Image")
     
     
 # ==============================================================================
