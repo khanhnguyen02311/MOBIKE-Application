@@ -4,10 +4,12 @@ import React, { useEffect } from 'react';
 import AppNavContainer from './src/navigations';
 import GlobalProvider from './src/context/Provider';
 import { store } from './src/redux/store';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TokenStorage from './src/backendAPI/TokenStorage';
 import BackendAPI from './src/backendAPI/BackendAPI';
+import {test} from './src/backendAPI/ClientDatabase';
+
 
 import {
   MD3LightTheme as DefaultTheme,
@@ -28,31 +30,22 @@ const theme = {
 const App = () => {
   useEffect(() => {
     //AsyncStorage.clear();
-    console.log('\n')
+    console.log('Main')
     const fetch = async () => {
       await TokenStorage.init();
 
-      await TokenStorage.print();
-      TokenStorage.removeCurrentToken();
-
-      let currentToken = await TokenStorage.getCurrentToken();
-      if (currentToken != "" && currentToken != null) {
-        console.log("Current token: " + currentToken);
-        let myinfo = await BackendAPI.me(currentToken);
-        console.log("Myinfo: " + myinfo.Email);
-        if (myinfo) {
-          store.dispatch({
-            type: 'auth/logIn',
-            payload: {
-              ID: myinfo.ID,
-              token: currentToken
-            }
-          });
-        }
+    }
+    
+    const sandbox = async () => {
+      try {
+        await test();
+      } catch (error) {
+        console.log("Sandbox error: " + error);
       }
 
     }
     fetch();
+    sandbox();
 
   }, []);
 

@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {store} from '../redux/store';
 
 const init = async () => {
     try {
@@ -9,9 +10,20 @@ const init = async () => {
             AsyncStorage.setItem('CurrentToken', '');
             let tokenStorage = {}
             AsyncStorage.setItem('TokenStorage', JSON.stringify(tokenStorage));
-            console.log('Token storage initialized');
         } else {
-            console.log('TokenStorage has already initialized');
+            const currentToken = await getCurrentToken();
+            if (currentToken) {
+                const myinfo = await BackendAPI.me(currentToken);
+                if (myinfo) {
+                    store.dispatch({
+                        type: 'auth/logIn',
+                        payload: {
+                            ID: myinfo.ID,
+                            token: currentToken
+                        }
+                    });
+                }
+            }
         }
     } catch (e) {
         console.log("Init token storage error: " + e);

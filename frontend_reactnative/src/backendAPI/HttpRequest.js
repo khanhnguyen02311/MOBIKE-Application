@@ -1,5 +1,5 @@
 const scheme = "http";
- const host = "192.168.1.160";  //Home IP
+ const host = "192.168.1.98";  //Home IP
 // const host = "172.30.163.113";  //University IP
 // const host = "192.168.1.23" //Minh An IP
 const port = "3000";
@@ -38,16 +38,17 @@ const GetRequest = async (path: String) => {
         const response = await fetch(
             GenerateRequestUrl(path), {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            keepalive: true,
+            // headers: {
+            //     'Content-Type': 'application/json',
+            // },
             });
         let json = await response.json();
         return json;
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
             console.log("Network request failed, retrying...");
-            return await GetRequest(path);
+            //return await GetRequest(path);
         } else {    
             console.log("Fetch Error:" + error)
 
@@ -86,7 +87,7 @@ const ProtectedGetRequest = async (path: String, token: String) => {
             GenerateRequestUrl(path), {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
+                // 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token,
             },
             });
@@ -101,34 +102,5 @@ const ProtectedGetRequest = async (path: String, token: String) => {
         }
     }
 };
-
-
-
-// const logIn = async (usernameoremail: String, password: String) : String => {
-//     try {
-//         const response = await fetch(
-//             generateRequestUrl("auth/signin"), {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({usernameoremail: usernameoremail, password: password})
-//             })
-//         let json = await response.json();
-        
-//         console.log('Debug: ');
-//         console.log('Data: ' + json["msg"]);
-//     } catch (error) {
-//         if (error instanceof TypeError && error.message === "Network request failed") {
-//             console.log("Network request failed, retrying...");
-//             return logIn(usernameoremail, password);
-//         } else {    
-//             console.log("\n\nFetch Error:" + error)
-//         }
-
-//     }
-// }
-
-
 
 export default { PostRequest, GetRequest, ProtectedPostRequest, ProtectedGetRequest };

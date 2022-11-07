@@ -51,7 +51,7 @@ class IdentityImage (Base):
     rel_AccountInfo = relationship("AccountInfo", back_populates="rel_IdentityImage", lazy='select')
     rel_Image = relationship("Image", back_populates="rel_IdentityImage", lazy='select')
 
- 
+
 class Permission (Base):
     __tablename__ = 'PERMISSION'
     ID = Column(ms.INTEGER, primary_key=True)
@@ -103,6 +103,7 @@ class District (Base):
 
     rel_Ward = relationship("Ward", back_populates="rel_District", lazy='select')
     rel_Address = relationship("Address", back_populates="rel_District", lazy='select')
+
 class City (Base):
     __tablename__ = 'CITY'
     ID = Column(ms.INTEGER, primary_key=True)
@@ -157,17 +158,23 @@ class Post(Base):
 class Image(Base):
     __tablename__ = 'IMAGE'
     ID = Column(ms.INTEGER, primary_key=True)
-    Filename = Column(ms.NVARCHAR(128), nullable=False)
-    
-    ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
+    ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=True)
+    ID_ImageType = Column(ms.INTEGER, ForeignKey("IMAGETYPE.ID"), nullable=False)
+    ImageLocation = Column(ms.NVARCHAR(256), nullable=False)
     
     rel_Post = relationship("Post", back_populates="rel_Image", lazy='select')
+    rel_ImageType = relationship("ImageType", back_populates="rel_Image", lazy='select')
 
     rel_Manufacturer = relationship("Manufacturer", back_populates="rel_Image", lazy='select')
     rel_ProfileImage = relationship("ProfileImage", back_populates="rel_Image", lazy='select')
     rel_IdentityImage = relationship("IdentityImage", back_populates="rel_Image", lazy='select')
 
+class ImageType(Base):
+    __tablename__ = 'IMAGETYPE'
+    ID = Column(ms.INTEGER, primary_key=True)
+    Name = Column(ms.NVARCHAR(50), nullable=False, unique=True)
 
+    rel_Image = relationship("Image", back_populates="rel_ImageType", lazy='select')
 
 class PostStatus(Base):
     __tablename__ = 'POSTSTATUS'
@@ -318,5 +325,11 @@ class Message(Base):
     
     rel_Chatroom = relationship("Chatroom", back_populates="rel_Message", lazy='select')
     rel_Account = relationship("Account", back_populates="rel_Message", lazy='select')
+
+class Version(Base):
+    __tablename__ = 'VERSION'
+    ID = Column(ms.INTEGER, primary_key=True)
+    Name = Column(ms.NVARCHAR(50), nullable=False, unique=True)
+    Version = Column(ms.INTEGER, nullable=False)
 
 Base.metadata.create_all(Engine)

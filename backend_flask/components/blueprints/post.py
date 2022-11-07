@@ -4,6 +4,7 @@ from ..dbmodels import *
 from ..dbschemas import *
 from ..dbsettings import Session
 from ..inserter import *
+from ..dbschemas import *
 
 bppost = Blueprint('bppost', __name__)
 
@@ -24,20 +25,3 @@ def ifemailexists():
     user = Session.query(Account).filter(Account.Email == email).first()
     return jsonify({"exists": not user is None})
 
-@bppost.route('/isusernameexists', methods = ['POST'])
-def ifusernameexists():
-    data = request.get_json()
-    print("Checking if username exists: Data: ", data)
-    username = data['username']
-    user = Session.query(Account).filter(Account.Username == username).first()
-    return jsonify({"exists": not user is None})
-
-@bppost.route('/insertlocations', methods = ['POST'])
-def insertlocations():
-    print("Inserting locations...")
-    return InsertLocation()
-
-@bppost.route('/insertpermissions', methods = ['POST'])
-def insertpermission():
-    print("Inserting permissions...")
-    return InsertPermission()
