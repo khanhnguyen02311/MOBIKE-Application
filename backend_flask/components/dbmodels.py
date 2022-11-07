@@ -25,14 +25,6 @@ class AccountInfo (Base):
     rel_ProfileImage = relationship("ProfileImage", back_populates="rel_AccountInfo", lazy='select')
     rel_IdentityImage = relationship("IdentityImage", back_populates="rel_AccountInfo", lazy='select')
     
-    def __init__(self, name: str, birthdate: datetime , gender: Number, phone_number: str, identification_number: str, general_rating: float):
-        self.Name = name
-        self.Birthdate = birthdate
-        self.Gender = gender
-        self.Phone_number = phone_number
-        self.Identification_number = identification_number
-        self.General_rating = general_rating
-    
 
 class ProfileImage (Base):
     __tablename__ = 'PROFILEIMAGE'

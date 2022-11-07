@@ -1,2 +1,3 @@
 
-backend_flask_new/components/z_devname.py
+backend_flask/components/z_devname.py
+backend_flask/components/__pycache__/
