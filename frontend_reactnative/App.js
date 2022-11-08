@@ -33,7 +33,7 @@ const App = () => {
       await TokenStorage.init();
 
       await TokenStorage.print();
-      TokenStorage.removeCurrentToken();
+      //TokenStorage.removeCurrentToken();
 
       let currentToken = await TokenStorage.getCurrentToken();
       if (currentToken != "" && currentToken != null) {
