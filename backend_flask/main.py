@@ -13,6 +13,6 @@ if isDebug:
     
 
 if __name__ == "__main__":
-    #app.run(debug=True, ssl_context='adhoc')
-    print("Server IP: {}\t Port: {}".format(serverIP, serverPort))
+    # cpn.App.run(debug=True)
+    # print("Server IP: {}\t Port: {}".format(serverIP, serverPort))
     cpn.App.run(host = serverIP, port = serverPort, debug=isDebug)

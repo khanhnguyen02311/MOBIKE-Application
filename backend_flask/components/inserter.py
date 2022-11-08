@@ -3,6 +3,10 @@ from .dbmodels import *
 from .dbschemas import *
 from .dbsettings import *
 
+INITIALDATA = "components/initialData/"
+
+def InitialDataFile(name: str):
+    return INITIALDATA + name + ".xlsx"
 
 def EmptyTables(tables: list):
 
@@ -19,7 +23,7 @@ def InsertLocation():
     
     EmptyTables({"Ward", "District", "City"})
 
-    wb = openpyxl.load_workbook('components/Locations.xlsx')
+    wb = openpyxl.load_workbook(InitialDataFile("Locations"))
 
     sheet = wb.active
     i = 1
@@ -64,7 +68,7 @@ def InsertLocation():
 
 def InsertPermission():
     EmptyTables({"Permission"})
-    wb = openpyxl.load_workbook('components/Permissions.xlsx')
+    wb = openpyxl.load_workbook(InitialDataFile("Permissions"))
 
     sheet = wb.active
     i = 1
@@ -85,5 +89,27 @@ def InsertPermission():
 
     return "Inserted {} permissions".format(p)
 
+def InsertImageType():
+    EmptyTables({"ImageType"})
+    wb = openpyxl.load_workbook(InitialDataFile("ImageTypes"))
+
+    sheet = wb.active
+    i = 1
+    it = 0
+
+    while True:
+        i += 1
+        name = sheet.cell(row=i, column=1).value
+        if name == None:
+            break
+
+        imgType = Session.query(ImageType).filter(ImageType.Name == name).first()
+        if imgType == None or imgType.Name != name:
+            imgType = ImageType(Name=name)
+            Session.add(imgType)
+            Session.commit()
+            it += 1
+
+    return "Inserted {} image types".format(it)
 
 

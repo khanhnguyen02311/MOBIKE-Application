@@ -18,6 +18,8 @@
 import BackendAPI from '../../backendAPI/BackendAPI';
 import React from 'react';
 
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+
 import LoginComponent from '../../components/Login';
 
 const Login = ({navigation}) => {
@@ -50,15 +52,48 @@ const Login = ({navigation}) => {
   const login = async () => {
     console.log("Login Submitted")
     await BackendAPI.signIn(form.username, form.password)
-  }
+  };
 
   const onSubmit = () => {
     login();
+  };
+
+  const onTest = () => {
+    console.log("Test")
+    openGallery()
+  };
+
+  const openGallery = async () => {
+    const result = await launchImageLibrary();
+    console.log(result);
+    saveImageToServer(result.assets[0]);
+  }
+
+  const saveImageToServer = async (image) => {
+    try {
+    const formData = new FormData();
+    formData.append('file', {
+      uri: image.uri,
+      type: image.type,
+      name: image.fileName,
+    });
+    console.log("formData: ", JSON.stringify(formData));
+    const response = await fetch("http://172.30.163.113:3001/upload", {
+      method: 'POST',
+      body: formData,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    const data = await response.json();
+    console.log(data);
+    } catch (error) {
+      console.log("Save Image Error: " + error);
+    }
   }
 
   return <LoginComponent
     onChange={onChange}
     onSubmit={onSubmit}
+    onTest={onTest}
   />;
 };
 
