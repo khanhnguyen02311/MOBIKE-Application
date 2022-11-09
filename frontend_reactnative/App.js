@@ -3,18 +3,19 @@ import { View, Text } from 'react-native';
 import React, { useEffect } from 'react';
 import AppNavContainer from './src/navigations';
 import GlobalProvider from './src/context/Provider';
-import { store } from './src/redux/store';
+import Store from './src/redux/store';
 import { Provider, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TokenStorage from './src/backendAPI/TokenStorage';
-import BackendAPI from './src/backendAPI/BackendAPI';
-import {test} from './src/backendAPI/ClientDatabase';
-
+import BackendAPI from './src/backendAPI';
+import ClientDatabase from './src/backendAPI/ClientDatabase';
 
 import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
 } from 'react-native-paper';
+
+import { addImageType, setImageTypes } from './src/redux/clientDatabase/imageType';
 
 const theme = {
   ...DefaultTheme,
@@ -33,16 +34,20 @@ const App = () => {
     console.log('Main')
     const fetch = async () => {
       await TokenStorage.init();
+      await ClientDatabase.init();
 
     }
     
     const sandbox = async () => {
       try {
-        await test();
+        //await init();
+        //await printClientDatabase();
+
+
+
       } catch (error) {
         console.log("Sandbox error: " + error);
       }
-
     }
     fetch();
     sandbox();
@@ -50,7 +55,7 @@ const App = () => {
   }, []);
 
   return (
-    <Provider store={store}>
+    <Provider store={Store}>
       <PaperProvider theme={theme}>
         <AppNavContainer></AppNavContainer>
       </PaperProvider>

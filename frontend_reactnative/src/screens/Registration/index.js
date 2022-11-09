@@ -9,7 +9,7 @@ import {
   ValidatePassword,
   ValidateConfirmPassword,
 } from '../../utils/validateForm';
-import BackendAPI from '../../backendAPI/BackendAPI';
+import BackendAPI from '../../backendAPI';
 
 const Registration = ({navigation}) => {
   const [form, setForm] = React.useState({});

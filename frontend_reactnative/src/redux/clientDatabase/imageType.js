@@ -9,12 +9,13 @@ export const imageTypeSlice = createSlice({
         addImageType: (state, action) => {
             state.push(action.payload);
         },
-        setAll: (state, action) => {
-            state = [];
-            state = action.payload;
+        setImageTypes: (state, action) => {
+            return action.payload;
         }
     }
 
 });
 
 export default imageTypeSlice.reducer;
+
+export const {addImageType, setImageTypes} = imageTypeSlice.actions;

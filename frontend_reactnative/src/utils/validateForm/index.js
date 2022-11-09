@@ -1,4 +1,4 @@
-import BackendAPI from "../../backendAPI/BackendAPI";
+import BackendAPI from "../../backendAPI";
 
 export const ValidateEmail = (email) => {
   var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

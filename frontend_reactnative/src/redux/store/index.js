@@ -1,11 +1,21 @@
 import {configureStore} from '@reduxjs/toolkit';
 import authReducer from '../slice/authSlice';
-import imageTypeReducer from '../clientDatabase/imageType';
+import imageType from '../clientDatabase/imageType';
+import location from '../clientDatabase/location';
+import permission from '../clientDatabase/permission';
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     auth: authReducer,
-    imageTypes: imageTypeReducer,
+    locations: location,
+    imageTypes: imageType,
+    permissions: permission,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
+
+export default store;
 

@@ -15,7 +15,7 @@
 // import {useDispatch} from 'react-redux';
 // import {login} from '../../redux/slice/authSlice';
 // import CustomButton from '../../components/common/customButton';
-import BackendAPI from '../../backendAPI/BackendAPI';
+import BackendAPI from '../../backendAPI';
 import React from 'react';
 
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
