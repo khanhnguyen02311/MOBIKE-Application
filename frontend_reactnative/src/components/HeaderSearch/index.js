@@ -9,11 +9,12 @@ const HeaderSearch = () => {
   return (
     <View
       style={{
-        height: 80,
+        height: 70,
         flexDirection: 'row',
         backgroundColor: colors.secondary,
-        alignItems: 'center',
+        alignItems: 'flex-end',
         justifyContent: 'center',
+        paddingBottom: 10,
       }}>
       <TextInputOutline
         label={'Search (by name)'}
@@ -22,14 +23,14 @@ const HeaderSearch = () => {
         iconColor={'#90B4D3'}
         inputPadding={6}
         borderWidthtoTop={0}
-        bigContainerStyle={{flex: 1, marginStart: 20, marginBottom: 0}}
+        bigContainerStyle={{flex: 1, marginStart: 15, marginBottom: 0}}
         containerStyle={{height: 44, borderColor: '#305080'}}
         labelStyle={{fontSize: 12}}
         inputStyle={{fontSize: 14}}
         labelContainerStyle={{padding: 13}}
         iconSize={20}
       />
-      <View style={{padding: 5, paddingHorizontal: 15}}>
+      <View style={{paddingBottom: 10, paddingHorizontal: 20}}>
         <SimpleLineIcon name="equalizer" size={24} color="#292D32" />
       </View>
     </View>

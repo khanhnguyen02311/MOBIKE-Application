@@ -12,6 +12,7 @@ import Notifications from '../screens/Notifications';
 import YourPosts from '../screens/YourPosts';
 import Profile from '../screens/Profile';
 import Icon from 'react-native-vector-icons/Ionicons';
+import HeaderSearch from '../components/HeaderSearch';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,7 +43,11 @@ const BottomNavigator = () => {
         tabBarLabelStyle: {fontSize: 12},
         tabBarStyle: {backgroundColor: '#EDF8FF', minHeight: 60, maxHeight: 80},
       })}>
-      <Tab.Screen name={MARKETPLACE} component={Marketplace} />
+      <Tab.Screen
+        name={MARKETPLACE}
+        component={Marketplace}
+        options={{header: () => <HeaderSearch />}}
+      />
       <Tab.Screen
         name={YOUR_POSTS}
         component={YourPosts}
