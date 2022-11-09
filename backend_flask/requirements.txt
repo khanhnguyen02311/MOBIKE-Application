@@ -8,5 +8,4 @@ sqlalchemy
 flask-socketio
 mysqlclient
 openpyxl
-dotenv
 gunicorn
