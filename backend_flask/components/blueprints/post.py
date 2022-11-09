@@ -2,7 +2,7 @@ from enum import Enum
 from flask import Blueprint, request, jsonify
 from ..dbmodels import *
 from ..dbschemas import *
-from ..dbsettings import Session
+from ..dbsettings import new_Session
 from ..inserter import *
 from ..dbschemas import *
 
@@ -22,6 +22,7 @@ def ifemailexists():
     data = request.get_json()
     print("Checking if email exists: Data: ", data)
     email = data['email']
+    Session = new_Session()
     user = Session.query(Account).filter(Account.Email == email).first()
     return jsonify({"exists": not user is None})
 

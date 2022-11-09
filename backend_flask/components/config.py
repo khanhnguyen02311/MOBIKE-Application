@@ -2,12 +2,12 @@ from dotenv import load_dotenv
 from os import environ
 from argon2 import Type as ArgonType
 
-HOME_DIRECTORY = '/var/lib/jenkins/workspace/Mobike-Deployment/'
+HOME_DIRECTORY = '../'
 load_dotenv(dotenv_path=HOME_DIRECTORY + '.env')
 
-DB_USERNAME = environ.get('DBUSERNAME')
-DB_PASSWORD = environ.get('DBPASSWORD')
-DB_NAME = environ.get('DBNAME')
+DB_USERNAME = environ.get('DBUSERNAME') or 'mysqluser1'
+DB_PASSWORD = environ.get('DBPASSWORD') or 'user1pwd'
+DB_NAME = environ.get('DBNAME') or 'workingdatabase2'
 
 class FlaskConfig:
    SECRET_KEY = environ.get('SECRET_KEY')
