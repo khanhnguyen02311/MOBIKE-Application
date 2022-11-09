@@ -389,6 +389,14 @@ class ChatMessage (Base):
     ID_ChatParticipant = Column(ms.INTEGER, ForeignKey("CHATPARTICIPANT.ID"), nullable=False)
     rel_ChatParticipant = relationship("ChatParticipant", back_populates="rel_ChatMessage")
     
+
+# ==============================================================================
+class Version (Base):
+    __tablename__ = 'VERSION'
+    ID = Column(ms.INTEGER, primary_key=True)
+    Name = Column(ms.NVARCHAR(16), nullable=False)
+    Version = Column(ms.NVARCHAR(16), nullable=False)
+    
     
 # ==============================================================================
 # Base.metadata.drop_all(Engine)
