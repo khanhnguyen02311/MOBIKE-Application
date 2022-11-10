@@ -1,5 +1,7 @@
+const axios = require('axios');
+
 const scheme = "http";
- const host = "192.168.1.14";  //Home IP
+ const host = "192.168.1.12";  //Home IP
 // const host = "172.30.163.113";  //University IP
 // const host = "192.168.1.23" //Minh An IP
 const port = "3000";
@@ -48,7 +50,7 @@ const GetRequest = async (path: String) => {
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
             console.log("Network request failed, retrying...");
-            //return await GetRequest(path);
+            return await GetRequest(path);
         } else {    
             console.log("Fetch Error:" + error)
 
@@ -102,5 +104,26 @@ const ProtectedGetRequest = async (path: String, token: String) => {
         }
     }
 };
+
+export const BigGetRequest = async (path: String) => {
+    const count = await GetRequest("gets/count/" + path);
+    const step = await GetRequest("gets/step");
+    let result = [];
+    const pros = [];
+    let i = 1;
+
+    while (i <= count) {
+        pros.push(GetRequest("gets/" + path + "/" + i));
+        i += step;
+    }
+
+    await Promise.all(pros).then((values) => {
+        values.forEach((value) => {
+            result = result.concat(value);
+        });
+    });
+
+    return result;
+}
 
 export default { PostRequest, GetRequest, ProtectedPostRequest, ProtectedGetRequest };
