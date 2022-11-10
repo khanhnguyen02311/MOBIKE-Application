@@ -45,11 +45,12 @@ const BottomNavigator = () => {
         tabBarLabelStyle: {fontSize: 12},
         tabBarStyle: {backgroundColor: '#EDF8FF', minHeight: 60, maxHeight: 80},
         tabBarHideOnKeyboard: true,
+        headerShown: false,
       })}>
       <Tab.Screen
         name={MARKETPLACE_NAVIGATOR}
         component={MarketplaceNavigator}
-        options={{headerShown: false}}
+        options={{tabBarLabel: 'Marketplace'}}
       />
       <Tab.Screen
         name={YOUR_POSTS}
