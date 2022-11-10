@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {store} from '../redux/store';
-import BackendAPI from './BackendAPI';
+import Store from '../redux/store';
+import {login} from '../redux/slice/authSlice';
 
-const init = async () => {
+export const init = async () => {
     try {
         let isTokenStorageInitialized = await AsyncStorage.getItem('TokenStorageInitted');
         if (!isTokenStorageInitialized) {
@@ -16,13 +16,17 @@ const init = async () => {
             if (currentToken) {
                 const myinfo = await BackendAPI.me(currentToken);
                 if (myinfo) {
-                    store.dispatch({
-                        type: 'auth/logIn',
-                        payload: {
-                            ID: myinfo.ID,
-                            token: currentToken
-                        }
-                    });
+                    // Store.dispatch({
+                    //     type: 'auth/logIn',
+                    //     payload: {
+                    //         ID: myinfo.ID,
+                    //         token: currentToken
+                    //     }
+                    // });
+                    Store.dispatch(login({
+                        ID: myinfo.ID,
+                        token: currentToken
+                    }))
                 }
             }
         }
@@ -31,7 +35,7 @@ const init = async () => {
     }
 };
 
-const print = async () => {
+export const print = async () => {
     try {
         let isTokenStorageInitialized = await AsyncStorage.getItem('TokenStorageInitted');
         if (isTokenStorageInitialized) {
@@ -48,7 +52,7 @@ const print = async () => {
     }
 };
 
-const getToken = async (UID) => {
+export const getToken = async (UID) => {
     try {
         let tokenStorage = await AsyncStorage.getItem('TokenStorage');
         tokenStorage = JSON.parse(tokenStorage);
@@ -58,7 +62,7 @@ const getToken = async (UID) => {
     }
 };
 
-const addToken = async (UID, token) => {
+export const addToken = async (UID, token) => {
     try {
         let tokenStorage = await AsyncStorage.getItem('TokenStorage');
         tokenStorage = JSON.parse(tokenStorage);
@@ -69,7 +73,7 @@ const addToken = async (UID, token) => {
     }
 };
 
-const removeToken = async (UID) => {
+export const removeToken = async (UID) => {
     try {
         let tokenStorage = await AsyncStorage.getItem('TokenStorage');
         tokenStorage = JSON.parse(tokenStorage);
@@ -80,7 +84,7 @@ const removeToken = async (UID) => {
     }
 };
 
-const addUID = async (UID) => {
+export const addUID = async (UID) => {
     try {
         let tokenStorage = await AsyncStorage.getItem('TokenStorage');
         tokenStorage = JSON.parse(tokenStorage);
@@ -91,7 +95,7 @@ const addUID = async (UID) => {
     }
 };
 
-const setCurrentToken = async (token) => {
+export const setCurrentToken = async (token) => {
     try {
         AsyncStorage.setItem('CurrentToken', token);
     } catch (e) {
@@ -99,7 +103,7 @@ const setCurrentToken = async (token) => {
     }
 };
 
-const getCurrentToken = async () => {
+export const getCurrentToken = async () => {
     try {
         let token = await AsyncStorage.getItem('CurrentToken');
         return token;
@@ -108,7 +112,7 @@ const getCurrentToken = async () => {
     }
 };
 
-const removeCurrentToken = () => {
+export const removeCurrentToken = () => {
     try {
         AsyncStorage.setItem('CurrentToken', "");
     } catch (e) {

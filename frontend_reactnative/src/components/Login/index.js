@@ -30,27 +30,6 @@ const LoginComponent = ({
   const [checked, setChecked] = useState();
   const [image, setimage] = useState(require('../../assets/images/MoBike.png'));
 
-  useEffect(() => {
-    console.log('LoginComponent');
-    const fetchi = async () => {
-      try {
-        console.log('fetch');
-        
-        const res = await fetch("http://192.168.1.98:3001/download/restroom.png")
-
-        console.log('response: ', res);
-
-        // const blob = await res.blob();
-        // console.log('blob', blob);
-
-        setimage(blob);
-
-      } catch (error) {
-        console.log("Login fetch error: " + error);
-      }
-    }
-    fetchi();
-  },[])
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View
@@ -58,7 +37,7 @@ const LoginComponent = ({
         <View>
           <Image
             source={require('../../assets/images/MoBike.png')}
-            //source={{uri: "http://172.30.163.113:3001/download/restroom.png"}}
+            // source={{uri: "http://172.30.163.113:3001/download/restroom.png"}}
             style={styles.logo}
           />
 
