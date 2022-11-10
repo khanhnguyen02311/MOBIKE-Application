@@ -180,7 +180,7 @@ class Post (Base):
     rel_View = relationship("View", back_populates="rel_Post")
     
     ## ChatRoom reference
-    rel_ChatRoom = relationship("Chatroom", back_populates="rel_Post", uselist=False)
+    rel_ChatRoom = relationship("ChatRoom", back_populates="rel_Post", uselist=False)
     
 
 # ==============================================================================
