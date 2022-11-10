@@ -38,7 +38,7 @@ export const signIn = async (usernameOrEmail: String, password: String, savePass
             ID: response.uid,
             token: response.token
         }))
-        
+
         return response.token;
     }
     return "";
@@ -55,14 +55,14 @@ export const me = async (token) => {
 export const isEmailExist = async (email: String) => {
     email = email || "";
     console.log("Checking email: " + email);
-    const response = await HttpRequest.PostRequest("posts/isemailexists", { email: email });
+    const response = await HttpRequest.GetRequest("posts/isemailexists/" + email );
     return response.exists;
 }
 
 export const isUsernameExist = async (username: String) => {
     username = username || "";
     console.log("Checking username: " + username);
-    const response = await HttpRequest.PostRequest("posts/isusernameexists", { username: username });
+    const response = await HttpRequest.PostRequest("posts/isusernameexists/" + username );
     return response.exists;
 }
 

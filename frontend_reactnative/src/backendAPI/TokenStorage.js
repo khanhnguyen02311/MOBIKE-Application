@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Store from '../redux/store';
 import {login} from '../redux/slice/authSlice';
+import BackendAPI from './index';
+
 
 export const init = async () => {
     try {

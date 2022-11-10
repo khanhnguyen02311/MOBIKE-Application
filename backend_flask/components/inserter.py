@@ -65,7 +65,6 @@ def InsertLocation():
 
     return "Inserted {} cities, {} districts, {} wards".format(c, d, w)
 
-
 def InsertPermission():
     EmptyTables({"Permission"})
     wb = openpyxl.load_workbook(InitialDataFile("Permissions"))
@@ -111,5 +110,4 @@ def InsertImageType():
             it += 1
 
     return "Inserted {} image types".format(it)
-
 
