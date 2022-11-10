@@ -15,7 +15,7 @@ const AppNavContainer = () => {
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   return (
     <NavigationContainer>
-      {false ? (
+      {isLoggedIn ? (
         <BottomNavigator></BottomNavigator>
       ) : (
         <AuthenticationNavigator></AuthenticationNavigator>

@@ -25,3 +25,10 @@ def ifemailexists():
     user = Session.query(Account).filter(Account.Email == email).first()
     return jsonify({"exists": not user is None})
 
+@bppost.route('/isusernameexists', methods = ['POST'])
+def ifusernameexists():
+    data = request.get_json()
+    print("Checking if username exists: Data: ", data)
+    username = data['username']
+    user = Session.query(Account).filter(Account.Username == username).first()
+    return jsonify({"exists": not user is None})

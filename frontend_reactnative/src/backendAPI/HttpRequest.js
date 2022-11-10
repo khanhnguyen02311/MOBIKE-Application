@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const scheme = "http";
- const host = "192.168.1.12";  //Home IP
+ const host = "192.168.1.98";  //Home IP
 // const host = "172.30.163.113";  //University IP
 // const host = "192.168.1.23" //Minh An IP
 const port = "3000";
@@ -27,7 +27,7 @@ const PostRequest = async (path: String, body: Object) => {
         return json;
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
-            console.log("Network request failed, retrying...");
+            console.log("Network request failed ( " + path + " ), retrying...");
             return await PostRequest(path, body);
         } else {
             console.log("Fetch Error:" + error)
@@ -49,7 +49,7 @@ const GetRequest = async (path: String) => {
         return json;
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
-            console.log("Network request failed, retrying...");
+            console.log("Network request failed ( " + path + " ), retrying...");
             return await GetRequest(path);
         } else {    
             console.log("Fetch Error:" + error)
@@ -74,7 +74,7 @@ const ProtectedPostRequest = async (path: String, body: Object, token: String) =
         return json;
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
-            console.log("Network request failed, retrying...");
+            console.log("Network request failed ( " + path + " ), retrying...");
             return await ProtectedPostRequest(path, body, token);
         } else {    
             console.log("Fetch Error:" + error)
@@ -97,7 +97,7 @@ const ProtectedGetRequest = async (path: String, token: String) => {
         return json;
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
-            console.log("Network request failed, retrying...");
+            console.log("Network request failed ( " + path + " ), retrying...");
             return await ProtectedGetRequest(path, token);
         } else {    
             console.log("Fetch Error:" + error)

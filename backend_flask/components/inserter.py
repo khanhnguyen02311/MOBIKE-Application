@@ -21,7 +21,7 @@ def EmptyTables(tables: list):
 
 def InsertLocation():
     
-    EmptyTables({"Ward", "District", "City"})
+    EmptyTables({"City", "District", "Ward"})
 
     wb = openpyxl.load_workbook(InitialDataFile("Locations"))
 

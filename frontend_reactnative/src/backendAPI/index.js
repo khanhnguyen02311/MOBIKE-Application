@@ -1,6 +1,7 @@
 import HttpRequest, {BigGetRequest} from "./HttpRequest.js";
 import TokenStorage from "./TokenStorage.js";
-import { store } from '../redux/store';
+import Store from '../redux/store';
+import { login } from "../redux/slice/authSlice.js";
 import { resolvePlugin } from "@babel/core";
 
 
@@ -24,7 +25,7 @@ export const signUp = async (username: string, email: string, password: string) 
  */
 export const signIn = async (usernameOrEmail: String, password: String, savePassword: Boolean = true): String => {
     const response = await HttpRequest.PostRequest("auth/signin", { username_or_email: usernameOrEmail, password: password });
-    console.log("Sign in request sent: " + response);
+    console.log("Sign in request sent: " + JSON.stringify(response));
     if (response.msg == "Successful") {
         TokenStorage.setCurrentToken(response.token);
         if (savePassword) {
@@ -32,13 +33,12 @@ export const signIn = async (usernameOrEmail: String, password: String, savePass
         } else {
             TokenStorage.addUID(response.uid);
         }
-        store.dispatch({
-            type: 'auth/logIn',
-            payload: {
-                ID: response.uid,
-                token: response.token
-            }
-        });
+
+        Store.dispatch(login({
+            ID: response.uid,
+            token: response.token
+        }))
+        
         return response.token;
     }
     return "";
