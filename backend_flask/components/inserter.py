@@ -1,15 +1,15 @@
 import openpyxl
 from .dbmodels import *
 from .dbschemas import *
-from .dbsettings import *
+from .dbsettings import new_Session
 
-INITIALDATA = "components/initialData/"
+INITIALDATA = "components/initial_data/"
 
 def InitialDataFile(name: str):
     return INITIALDATA + name + ".xlsx"
 
 def EmptyTables(tables: list):
-
+    Session = new_Session()
     Session.execute("SET FOREIGN_KEY_CHECKS=0;")
     Session.commit()
     for table in tables:
@@ -39,7 +39,7 @@ def InsertLocation():
             break
         districtName = sheet.cell(row=i, column=3).value
         wardName = sheet.cell(row=i, column=5).value
-
+        Session = new_Session()
         city = Session.query(City).filter(City.Name == cityName).first()
         if city == None or city.Name != cityName:
             city = City(Name=cityName)
@@ -79,7 +79,7 @@ def InsertPermission():
         name = sheet.cell(row=i, column=1).value
         if name == None:
             break
-
+        Session = new_Session()
         perm = Session.query(Permission).filter(Permission.Name == name).first()
         if perm == None or perm.Name != name:
             perm = Permission(Name=name)
@@ -102,7 +102,7 @@ def InsertImageType():
         name = sheet.cell(row=i, column=1).value
         if name == None:
             break
-
+        Session = new_Session()
         imgType = Session.query(ImageType).filter(ImageType.Name == name).first()
         if imgType == None or imgType.Name != name:
             imgType = ImageType(Name=name)

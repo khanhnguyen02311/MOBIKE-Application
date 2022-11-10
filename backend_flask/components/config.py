@@ -1,16 +1,26 @@
 from dotenv import load_dotenv
-import os
-from .z_devname import name
+from os import environ
+from argon2 import Type as ArgonType
 
+HOME_DIRECTORY = '/var/lib/jenkins/workspace/mobike-testbranch/backend_flask/'
+load_dotenv(dotenv_path=HOME_DIRECTORY + '.env')
 
-load_dotenv(dotenv_path='./../.env')
+DB_USERNAME = environ.get('DBUSERNAME')
+DB_PASSWORD = environ.get('DBPASSWORD')
+DB_NAME = environ.get('DBNAME')
 
 class FlaskConfig:
-   SECRET_KEY = os.getenv('SECRET_KEY')
-   JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+   SECRET_KEY = environ.get('SECRET_KEY')
+   JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
 
 class SQLAlchemyConfig:
-   SQLALCHEMY_DATABASE_URL = (name == "Khoa") and "mysql://root:123456789@localhost/flask" or (name == "Khanh" and "mysql://mysqluser1:user1pwd@localhost/workingdatabase2?unix_socket=/var/run/mysqld/mysqld.sock" or "mysql://root@localhost/flask")
+   SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + "?unix_socket=/var/run/mysqld/mysqld.sock"
    ECHO = False
    AUTO_FLUSH = True
    AUTO_COMMIT = False
+   
+class SecurityConfig:
+   ARGON_TIMECOST = 4
+   ARGON_HASHLEN = 64
+   ARGON_SALTLEN = 32
+   ARGON_TYPE = ArgonType.D

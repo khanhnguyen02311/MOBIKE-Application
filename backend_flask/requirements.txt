@@ -1,3 +1,4 @@
+wheel
 argon2-cffi
 flask
 flask-jwt-extended
@@ -7,4 +8,4 @@ sqlalchemy
 flask-socketio
 mysqlclient
 openpyxl
-dotenv
+gunicorn
