@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {store} from '../redux/store';
+import BackendAPI from './BackendAPI';
 
 const init = async () => {
     try {

@@ -3,6 +3,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   MARKETPLACE,
+  MARKETPLACE_NAVIGATOR,
   NOTIFICATIONS,
   PROFILE,
   YOUR_POSTS,
@@ -13,6 +14,7 @@ import YourPosts from '../screens/YourPosts';
 import Profile from '../screens/Profile';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HeaderSearch from '../components/HeaderSearch';
+import MarketplaceNavigator from './MarketplaceNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +25,7 @@ const BottomNavigator = () => {
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
-          if (route.name === MARKETPLACE) {
+          if (route.name === MARKETPLACE_NAVIGATOR) {
             iconName = focused ? 'cart' : 'cart-outline';
           } else if (route.name === YOUR_POSTS) {
             iconName = focused ? 'browsers' : 'browsers-outline';
@@ -42,11 +44,12 @@ const BottomNavigator = () => {
         tabBarIconStyle: {marginBottom: -7},
         tabBarLabelStyle: {fontSize: 12},
         tabBarStyle: {backgroundColor: '#EDF8FF', minHeight: 60, maxHeight: 80},
+        tabBarHideOnKeyboard: true,
       })}>
       <Tab.Screen
-        name={MARKETPLACE}
-        component={Marketplace}
-        options={{header: () => <HeaderSearch />}}
+        name={MARKETPLACE_NAVIGATOR}
+        component={MarketplaceNavigator}
+        options={{headerShown: false}}
       />
       <Tab.Screen
         name={YOUR_POSTS}

@@ -57,8 +57,8 @@ const LoginComponent = ({
         style={[styles.wrapper, { height: '100%', backgroundColor: 'white' }]}>
         <View>
           <Image
-            //source={require('../../assets/images/MoBike.png')}
-            source={{uri: "http://172.30.163.113:3001/download/restroom.png"}}
+            source={require('../../assets/images/MoBike.png')}
+            //source={{uri: "http://172.30.163.113:3001/download/restroom.png"}}
             style={styles.logo}
           />
 
