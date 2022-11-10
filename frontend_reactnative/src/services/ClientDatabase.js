@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getVersion, getPermissions, getCities, getDistricts, getWards, getImageTypes } from '.';
+import { getVersion, getPermissions, getCities, getDistricts, getWards, getImageTypes } from '../backendAPI';
 import Store from '../redux/store';
 import { setCities, setDistricts, setWards } from '../redux/clientDatabase/location';
 import { setImageTypes } from '../redux/clientDatabase/imageType';
