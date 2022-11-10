@@ -196,10 +196,10 @@ class Image (Base):
     rel_ImageType = relationship('ImageType')
     
     ## AccountInfo reference
-    rel_AccountInfo_Profile = relationship('AccountInfo', back_populates='rel_Image_Profile')
+    rel_AccountInfo_Profile = relationship('AccountInfo', foreign_keys=[AccountInfo.ID_Image_Profile], back_populates='rel_Image_Profile')
     
     ## AccountInfo reference
-    rel_AccountInfo_Identity = relationship('AccountInfo', back_populates='rel_Image_Identity')
+    rel_AccountInfo_Identity = relationship('AccountInfo', foreign_keys=[AccountInfo.ID_Image_Identity], back_populates='rel_Image_Identity')
 
 
 # ==============================================================================
@@ -384,7 +384,7 @@ class ChatMessage (Base):
     Time_created = Column(ms.DATETIME, default=datetime.now(timezone.utc))
     
     ID_ChatRoom = Column(ms.INTEGER, ForeignKey("CHATROOM.ID"), nullable=False)
-    rel_ChatRoom = relationship("ChatRoom", back_populates="rel_Message")
+    rel_ChatRoom = relationship("ChatRoom", back_populates="rel_ChatMessage")
     
     ID_ChatParticipant = Column(ms.INTEGER, ForeignKey("CHATPARTICIPANT.ID"), nullable=False)
     rel_ChatParticipant = relationship("ChatParticipant", back_populates="rel_ChatMessage")
