@@ -2,12 +2,12 @@ from dotenv import load_dotenv
 from os import environ
 from argon2 import Type as ArgonType
 
-HOME_DIRECTORY = '../'
+HOME_DIRECTORY = '/media/knguyen02311/Data Disk/Learn Programming/ReactDEV/React Native/Mobike-application-stack/backend_flask/'
 load_dotenv(dotenv_path=HOME_DIRECTORY + '.env')
 
-DB_USERNAME = environ.get('DBUSERNAME') or 'mysqluser1'
-DB_PASSWORD = environ.get('DBPASSWORD') or 'user1pwd'
-DB_NAME = environ.get('DBNAME') or 'workingdatabase2'
+DB_USERNAME = environ.get('DBUSERNAME')
+DB_PASSWORD = environ.get('DBPASSWORD')
+DB_NAME = environ.get('DBNAME')
 
 class FlaskConfig:
    SECRET_KEY = environ.get('SECRET_KEY')

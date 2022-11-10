@@ -35,10 +35,10 @@ class AccountInfo (Base):
     rel_Address = relationship('Address', back_populates='rel_AccountInfo')
     
     ID_Image_Profile = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
-    rel_Image_Profile = relationship('Image', back_populates='rel_AccountInfo_Profile')
+    rel_Image_Profile = relationship('Image', foreign_keys=[ID_Image_Profile], back_populates='rel_AccountInfo_Profile')
     
     ID_Image_Identity = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
-    rel_Image_Identity = relationship('Image', back_populates='rel_AccountInfo_Identity')
+    rel_Image_Identity = relationship('Image', foreign_keys=[ID_Image_Identity], back_populates='rel_AccountInfo_Identity')
     
     ## Account reference
     rel_Account = relationship("Account", back_populates="rel_AccountInfo", uselist=False)
