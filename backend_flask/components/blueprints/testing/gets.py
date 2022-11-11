@@ -8,10 +8,21 @@ from ...dbschemas import *
 STEP = 100
 bpget = Blueprint('bpget', __name__)
 
+
+@bpget.route('/isemailexists/<email>', methods = ['GET'])
+def ifemailexists(email):
+    user = Session.query(Account).filter(Account.Email == email).first()
+    return jsonify({"exists": not user is None})
+
+@bpget.route('/isusernameexists/<username>', methods = ['GET'])
+def ifusernameexists(username):
+    user = Session.query(Account).filter(Account.Username == username).first()
+    return jsonify({"exists": not user is None})
+
+
 @bpget.route('/step', methods=['GET'])
 def getStep():
     return jsonify(STEP)
-
 
 @bpget.route('/version/<name>', methods = ['GET'])
 def getversions(name):

@@ -6,9 +6,9 @@ import GlobalProvider from './src/context/Provider';
 import Store from './src/redux/store';
 import { Provider, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import TokenStorage from './src/backendAPI/TokenStorage';
+import TokenStorage from './src/services/TokenStorage';
 import BackendAPI from './src/backendAPI';
-import ClientDatabase from './src/backendAPI/ClientDatabase';
+import ClientDatabase from './src/services/ClientDatabase';
 
 import {
   MD3LightTheme as DefaultTheme,

@@ -15,14 +15,3 @@ def get_articles():
 class DataColumn(Enum):
     Email = 1,
     Username = 3,
-
-
-@bppost.route('/isemailexists', methods = ['POST'])
-def ifemailexists():
-    data = request.get_json()
-    print("Checking if email exists: Data: ", data)
-    email = data['email']
-    Session = new_Session()
-    user = Session.query(Account).filter(Account.Email == email).first()
-    return jsonify({"exists": not user is None})
-

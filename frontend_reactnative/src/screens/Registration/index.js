@@ -10,6 +10,7 @@ import {
   ValidateConfirmPassword,
 } from '../../utils/validateForm';
 import BackendAPI from '../../backendAPI';
+import TokenStorage from '../../services/TokenStorage';
 
 const Registration = ({navigation}) => {
   const [form, setForm] = React.useState({});
@@ -95,7 +96,7 @@ const Registration = ({navigation}) => {
       return;
     }
 
-    const response = await BackendAPI.signUp(form.username, form.email, form.password);
+    const response = await TokenStorage.signUp(form.username, form.email, form.password);
 
     console.log(response);
   }
@@ -123,7 +124,6 @@ const Registration = ({navigation}) => {
       }
     }
   }
-
 
   const checkUsername = async () => {
     let exists = await BackendAPI.isUsernameExist(form.username);
