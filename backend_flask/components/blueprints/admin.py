@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from ..dbmodels import *
 from ..dbschemas import *
-from ..dbsettings import Session
+from ..dbsettings import new_Session
 from ..inserter import *
 import glob, os
 from .image import STORAGE_PATH
@@ -10,10 +10,11 @@ bpadmin = Blueprint('bpadmin', __name__)
 
 @bpadmin.route('/isusernameexists', methods = ['POST'])
 def ifusernameexists():
-    data = request.get_json()
-    print("Checking if username exists: Data: ", data)
-    username = data['username']
-    user = Session.query(Account).filter(Account.Username == username).first()
+    with new_Session() as Session:
+        data = request.get_json()
+        print("Checking if username exists: Data: ", data)
+        username = data['username']
+        user = Session.query(Account).filter(Account.Username == username).first()
     return jsonify({"exists": not user is None})
 
 @bpadmin.route('/insertlocations', methods = ['POST'])
@@ -33,12 +34,13 @@ def insertimagetype():
 
 @bpadmin.route('/initversions', methods = ['POST'])
 def initversions():
-    print("Initializing version...")
-    EmptyTables({"Version"})
-    Session.add(Version(Name="Locations", Version=1))
-    Session.add(Version(Name="Permissions", Version=1))
-    Session.add(Version(Name="ImageTypes", Version=1))
-    Session.commit()
+    with new_Session() as Session:
+        print("Initializing version...")
+        EmptyTables({"Version"})
+        Session.add(Version(Name="Locations", Version=1))
+        Session.add(Version(Name="Permissions", Version=1))
+        Session.add(Version(Name="ImageTypes", Version=1))
+        Session.commit()
     return jsonify({"msg": "Success"})
 
 
