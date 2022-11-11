@@ -17,7 +17,7 @@ def create_app():
     
     @App.route("/")
     def hello():
-        return "<h1>Hello from server!</h1>"
+        return "<h1>ABC!</h1>"
     
     # App.register_blueprint(bppost, url_prefix='/posts')
     # App.register_blueprint(bpauth, url_prefix='/auth')
