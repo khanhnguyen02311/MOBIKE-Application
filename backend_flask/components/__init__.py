@@ -1,11 +1,11 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 
-from .blueprints.admin.admin import bpadmin
-from .blueprints.auth.auth import bpauth
-from .blueprints.gets.gets import bpget
-from .blueprints.image.image import bpimage
-from .blueprints.posts.post import bppost
+from .blueprints.admin import bpadmin
+from .blueprints.auth import bpauth
+from .blueprints.gets import bpget
+from .blueprints.image import bpimage
+from .blueprints.post import bppost
 from .config import FlaskConfig as cfg
 
 
