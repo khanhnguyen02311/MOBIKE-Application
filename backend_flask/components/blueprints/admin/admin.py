@@ -4,7 +4,7 @@ from ...dbschemas import *
 from ...dbsettings import Session
 from ...inserter import *
 import glob, os
-from .image import STORAGE_PATH
+from ..image.image import STORAGE_PATH
 
 bpadmin = Blueprint('bpadmin', __name__)
 

@@ -8,6 +8,9 @@ from ...dbschemas import *
 STEP = 100
 bpget = Blueprint('bpget', __name__)
 
+@bpget.route('/', methods = ['GET'])
+def get_articles():
+    return "Hello from gets"
 
 @bpget.route('/isemailexists/<email>', methods = ['GET'])
 def ifemailexists(email):
