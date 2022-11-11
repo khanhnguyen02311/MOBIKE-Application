@@ -10,11 +10,12 @@ bpadmin = Blueprint('bpadmin', __name__)
 
 @bpadmin.route('/isusernameexists', methods = ['POST'])
 def ifusernameexists():
-    with new_Session() as Session:
-        data = request.get_json()
-        print("Checking if username exists: Data: ", data)
-        username = data['username']
-        user = Session.query(Account).filter(Account.Username == username).first()
+    Session = new_Session()
+    data = request.get_json()
+    print("Checking if username exists: Data: ", data)
+    username = data['username']
+    user = Session.query(Account).filter(Account.Username == username).first()
+    Session.close()
     return jsonify({"exists": not user is None})
 
 @bpadmin.route('/insertlocations', methods = ['POST'])
@@ -34,13 +35,14 @@ def insertimagetype():
 
 @bpadmin.route('/initversions', methods = ['POST'])
 def initversions():
-    with new_Session() as Session:
-        print("Initializing version...")
-        EmptyTables({"Version"})
-        Session.add(Version(Name="Locations", Version=1))
-        Session.add(Version(Name="Permissions", Version=1))
-        Session.add(Version(Name="ImageTypes", Version=1))
-        Session.commit()
+    Session = new_Session()
+    print("Initializing version...")
+    EmptyTables({"Version"})
+    Session.add(Version(Name="Locations", Version=1))
+    Session.add(Version(Name="Permissions", Version=1))
+    Session.add(Version(Name="ImageTypes", Version=1))
+    Session.commit()
+    Session.close()
     return jsonify({"msg": "Success"})
 
 

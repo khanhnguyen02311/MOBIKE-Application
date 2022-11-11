@@ -15,7 +15,8 @@ class FlaskConfig:
    JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
 
 class SQLAlchemyConfig:
-   SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + "?unix_socket=/var/run/mysqld/mysqld.sock"
+   # SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + "?unix_socket=/var/run/mysqld/mysqld.sock"
+   SQLALCHEMY_DATABASE_URL = "mysql://root:123456789@localhost/flask"
    ECHO = False
    AUTO_FLUSH = True
    AUTO_COMMIT = False
