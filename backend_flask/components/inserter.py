@@ -13,7 +13,7 @@ def EmptyTables(tables: list):
     Session.execute("SET FOREIGN_KEY_CHECKS=0;")
     Session.commit()
     for table in tables:
-        Session.execute("TRUNCATE TABLE {};".format(table))
+        Session.execute("TRUNCATE TABLE IF EXISTS {};".format(table))
     Session.execute("SET FOREIGN_KEY_CHECKS=1;")
     Session.commit()
     Session.close()
