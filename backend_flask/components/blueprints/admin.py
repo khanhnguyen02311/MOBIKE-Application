@@ -33,7 +33,7 @@ def insertimagetype():
 def initversions():
     Session = new_Session()
     print("Initializing version...")
-    EmptyTables({"Version"})
+    TruncateTables({"Version"})
     Session.add(Version(Name="Locations", Version=1))
     Session.add(Version(Name="Permissions", Version=1))
     Session.add(Version(Name="ImageTypes", Version=1))
@@ -45,7 +45,7 @@ def initversions():
 @bpadmin.route('/clearimages', methods = ['POST'])
 def clearimages():
     print("Clearing images...")
-    EmptyTables({"Image"})
+    TruncateTables({"Image"})
     images = glob.glob(STORAGE_PATH + "*")
     for image in images:
         os.remove(image)
@@ -77,25 +77,10 @@ def dropalltables():
     insertpermission()
     insertimagetype()
 
-    # commands = Session.execute("SELECT concat('DROP TABLE IF EXISTS `', table_name, '`;') FROM information_schema.tables WHERE table_schema = '" + DB_NAME + "';")
-    # commands = Session.execute("SELECT concat('DROP TABLE IF EXISTS `', table_name, '`;') FROM information_schema.tables WHERE table_schema = 'flask';")
-
-
-
-    # print ("Commands: ", commands)
-
     return "Done"
 
-
-    Session.execute("SET FOREIGN_KEY_CHECKS = 0")
-    Session.commit()
+@bpadmin.route('/test', methods = ['GET', 'POST'])
+def test():
     
-    # Base.metadata.drop_all(Engine)
+    return "Done"
 
-    Session.execute("SET FOREIGN_KEY_CHECKS = 1")
-    Session.commit()
-
-    Session.close()
-
-
-    return jsonify("Done")

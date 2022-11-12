@@ -7,12 +7,19 @@ INITIALDATA = "components/initial_data/"
 def InitialDataFile(name: str):
     return INITIALDATA + name + ".xlsx"
 
-def EmptyTables(tables: list):
+def TruncateTables(tables: list):
     Session = new_Session()
     Session.execute("SET FOREIGN_KEY_CHECKS=0;")
     Session.commit()
     for table in tables:
-        Session.execute("TRUNCATE TABLE IF EXISTS {};".format(table))
+        try:
+            Session.execute("TRUNCATE TABLE {};".format(table))
+        except Exception as e:
+            if "1146" in str(e):
+                print("Table {} does not exist".format(table))
+            else:
+                print("Truncate table {} error: {}".format(table,e))
+
     Session.execute("SET FOREIGN_KEY_CHECKS=1;")
     Session.commit()
     Session.close()
@@ -20,7 +27,7 @@ def EmptyTables(tables: list):
 
 def InsertLocation():
     
-    EmptyTables({"City", "District", "Ward"})
+    TruncateTables({"City", "District", "Ward"})
 
     wb = openpyxl.load_workbook(InitialDataFile("Locations"))
 
@@ -64,7 +71,7 @@ def InsertLocation():
     return "Inserted {} cities, {} districts, {} wards".format(c, d, w)
 
 def InsertPermission():
-    EmptyTables({"Permission"})
+    TruncateTables({"Permission"})
     wb = openpyxl.load_workbook(InitialDataFile("Permissions"))
 
     sheet = wb.active
@@ -88,7 +95,7 @@ def InsertPermission():
     return "Inserted {} permissions".format(p)
 
 def InsertImageType():
-    EmptyTables({"ImageType"})
+    TruncateTables({"ImageType"})
     wb = openpyxl.load_workbook(InitialDataFile("ImageTypes"))
     Session = new_Session()
     sheet = wb.active
