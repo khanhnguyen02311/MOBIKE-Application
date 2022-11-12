@@ -11,7 +11,7 @@ DB_USERNAME = environ.get('DBUSERNAME')
 DB_PASSWORD = environ.get('DBPASSWORD')
 DB_NAME = environ.get('DBNAME')
 
-IsTrueServer = (platform.system() == 'Linux')
+IsTrueServer = True
 
 if (platform.system() == "Windows"):
    IsTrueServer = False
