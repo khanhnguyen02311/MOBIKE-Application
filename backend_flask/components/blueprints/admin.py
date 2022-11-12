@@ -5,7 +5,7 @@ from ..dbsettings import new_Session, Base, Engine
 from ..inserter import *
 import glob, os
 from ..config import DB_NAME
-from .image import STORAGE_PATH
+from ..config import STORAGE_PATH
 import json
 import platform
 
@@ -62,7 +62,7 @@ def dropalltables():
 
     Session.execute("SET FOREIGN_KEY_CHECKS = 0")
     
-    commands = Session.execute("SELECT concat('DROP TABLE IF EXISTS `', table_name, '`;') FROM information_schema.tables WHERE table_schema = 'flask';")
+    commands = Session.execute("SELECT concat('DROP TABLE IF EXISTS `', table_name, '`;') FROM information_schema.tables WHERE table_schema = '" + DB_NAME + "';")
 
     for command in commands:
         Session.execute(command[0])

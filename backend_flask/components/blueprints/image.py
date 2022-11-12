@@ -2,10 +2,11 @@ from flask import Flask, Blueprint, jsonify, request, send_file
 import flask_jwt_extended as jwte
 from components.dbsettings import new_Session
 from components import dbmodels as dbm, dbschemas as dbs
+from config import STORAGE_PATH
 
 bpimage = Blueprint('bpimage', __name__)
 
-STORAGE_PATH = ".\Storage\\"
+
 
 @bpimage.route('/test', methods = ['GET'])
 def test():

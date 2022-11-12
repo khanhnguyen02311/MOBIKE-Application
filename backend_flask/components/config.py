@@ -4,6 +4,7 @@ from argon2 import Type as ArgonType
 import platform
 
 HOME_DIRECTORY = '/var/lib/jenkins/workspace/mobike-development/backend_flask/'
+STORAGE_PATH = HOME_DIRECTORY + 'Storage/'
 
 load_dotenv(dotenv_path=HOME_DIRECTORY + '.env')
 
@@ -18,6 +19,8 @@ if (platform.system() == "Windows"):
    DB_NAME = "flask"
    DB_USERNAME = "root"
    DB_PASSWORD = "123456789"
+   STORAGE_PATH = ".\Storage\\"
+
 
 class FlaskConfig:
    SECRET_KEY = environ.get('SECRET_KEY')
