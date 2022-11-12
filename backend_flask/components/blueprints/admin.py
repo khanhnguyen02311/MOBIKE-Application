@@ -4,8 +4,7 @@ from ..dbschemas import *
 from ..dbsettings import new_Session, Base, Engine
 from ..inserter import *
 import glob, os
-from ..config import DB_NAME
-from ..config import STORAGE_PATH
+from ..config import DB_NAME, STORAGE_PATH
 import json
 import platform
 
