@@ -2,7 +2,6 @@ import openpyxl
 from .dbmodels import *
 from .dbschemas import *
 from .dbsettings import new_Session
-
 INITIALDATA = "components/initial_data/"
 
 def InitialDataFile(name: str):
