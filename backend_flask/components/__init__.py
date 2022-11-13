@@ -1,11 +1,7 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 
-# from .blueprints.post import bppost
-# from .blueprints.auth import bpauth
-# from .blueprints.image import bpimage
-# from .blueprints.gets import bpget
-# from .blueprints.admin import bpadmin
+from .blueprints.testing import post, image, gets, admin
 from .blueprints.authentication import signup, signin
 
 from .config import FlaskConfig as cfg
@@ -20,11 +16,10 @@ def create_app():
     def hello():
         return "<h1>ABC!</h1>"
     
-    # App.register_blueprint(bppost, url_prefix='/posts')
-    # App.register_blueprint(bpauth, url_prefix='/auth')
-    # App.register_blueprint(bpimage, url_prefix='/image')
-    # App.register_blueprint(bpget, url_prefix='/gets')
-    # App.register_blueprint(bpadmin, url_prefix='/admin')
+    App.register_blueprint(post.bppost, url_prefix='/posts')
+    App.register_blueprint(image.bpimage, url_prefix='/image')
+    App.register_blueprint(gets.bpget, url_prefix='/gets')
+    App.register_blueprint(admin.bpadmin, url_prefix='/admin')
     
     App.register_blueprint(signup.bpsignup, url_prefix='/auth')
     App.register_blueprint(signin.bpsignin, url_prefix='/auth')
