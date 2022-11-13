@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import HttpRequest from '../backendAPI/HttpRequest';
 import Store from '../redux/store';
 import {login} from '../redux/slice/authSlice';
+import BackendAPI from '../backendAPI';
+
 
 export const init = async () => {
     try {
@@ -16,13 +19,6 @@ export const init = async () => {
             if (currentToken) {
                 const myinfo = await BackendAPI.me(currentToken);
                 if (myinfo) {
-                    // Store.dispatch({
-                    //     type: 'auth/logIn',
-                    //     payload: {
-                    //         ID: myinfo.ID,
-                    //         token: currentToken
-                    //     }
-                    // });
                     Store.dispatch(login({
                         ID: myinfo.ID,
                         token: currentToken
@@ -34,6 +30,39 @@ export const init = async () => {
         console.log("Init token storage error: " + e);
     }
 };
+
+export const signUp = async (username: string, email: string, password: string) => {
+    const response = await HttpRequest.PostRequest("auth/signup", { username: username, email: email, password: password, permission: 4 });
+    console.log("Sign up request sent: " + response);
+    if (response.msg === 'Successful') {
+        console.log('Sign up successful, start signing in');
+        await signIn(email, password);
+    } else {
+        console.log(response);
+        return response.Error;
+    }
+}
+
+export const signIn = async (usernameOrEmail: String, password: String, savePassword: Boolean = true): String => {
+    const response = await HttpRequest.PostRequest("auth/signin", { username_or_email: usernameOrEmail, password: password });
+    console.log("Sign in request sent: " + JSON.stringify(response));
+    if (response.msg == "Successful") {
+        setCurrentToken(response.token);
+        if (savePassword) {
+            addToken(response.uid, response.token);
+        } else {
+            addUID(response.uid);
+        }
+
+        Store.dispatch(login({
+            ID: response.uid,
+            token: response.token
+        }))
+
+        return response.token;
+    }
+    return "";
+}
 
 export const print = async () => {
     try {
@@ -121,4 +150,4 @@ export const removeCurrentToken = () => {
 }
 
 
-export default {init, print, getToken, addToken, removeToken, addUID, setCurrentToken, getCurrentToken, removeCurrentToken};
+export default {init, signUp, signIn, print, getToken, addToken, removeToken, addUID, setCurrentToken, getCurrentToken, removeCurrentToken};

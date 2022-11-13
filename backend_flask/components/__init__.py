@@ -6,6 +6,7 @@ from .blueprints.authentication import signup, signin
 
 from .config import FlaskConfig as cfg
 
+
 def create_app():
     App = Flask(__name__)
     App.config.from_object(cfg)
@@ -15,7 +16,7 @@ def create_app():
     @App.route("/")
     def hello():
         return "<h1>ABC!</h1>"
-    
+
     App.register_blueprint(post.bppost, url_prefix='/posts')
     App.register_blueprint(image.bpimage, url_prefix='/image')
     App.register_blueprint(gets.bpget, url_prefix='/gets')

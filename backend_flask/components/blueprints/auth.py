@@ -1,4 +1,5 @@
 from flask import Flask, Blueprint, request, jsonify
+
 import flask_jwt_extended as jwte
 from components.dbsettings import new_Session
 from components import dbmodels as dbm, dbschemas as dbs
@@ -9,6 +10,7 @@ bpauth = Blueprint('bpauth', __name__)
 # Protect a route with jwt_required, which will kick out requests
 # without a valid JWT present.
 @bpauth.route('/protected', methods = ['GET'])
+@bpauth.route('/me', methods = ['GET'])
 @jwte.jwt_required()
 def protected():
    # Access the identity of the current user with get_jwt_identity
@@ -31,17 +33,21 @@ def signup():
       existedUsername = Session.query(dbm.Account).filter(dbm.Account.Username == username).first()
 
       if (not existedEmail is None):
+         Session.close()
          return jsonify({"Error": "Email existed", "msg": "Incompleted"})#, 409
       elif (not existedUsername is None):
+         Session.close()
          return jsonify({"Error": "Username existed", "msg": "Incompleted"})#, 409
 
       new_account = dbm.Account(Username=username, Password=password, Email=email, ID_Permission=permission)
       Session.add(new_account)
       Session.commit()
+      Session.close()
       return jsonify({"msg": "Successful", "account": schema.dump(new_account)})#, 201
    
    except Exception as e:
       Session.rollback()
+      Session.close()
       return jsonify({"Error": str(e), "msg": "Incompleted"})#, 409
 
 
@@ -72,12 +78,16 @@ def signin():
                Session.get(dbm.Account, acc.ID).update({"Password": make_hash(password)}, synchronize_session="fetch")
                Session.commit()
             token = jwte.create_access_token(identity=schema.dump(acc),expires_delta=False)
+            Session.close()
             return jsonify({"msg": "Successful", "token": token, "uid": acc.ID})#, 200
          else: 
             # return jsonify({acc.Password: "a", "msg": "Wrong password"}), 401
+            Session.close()
             return jsonify({"msg": "Wrong password"})#, 401
       else:
+         Session.close()
          return jsonify({"msg": "Account not exists"})#, 401
    except Exception as e:
       Session.rollback()
+      Session.close()
       return jsonify({"Error": str(e), "Status": "Incompleted"})#, 409

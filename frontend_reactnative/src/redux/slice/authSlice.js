@@ -10,7 +10,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logIn: (state, action) => {
+    login: (state, action) => {
       state.ID = action.payload.ID;
       state.token = action.payload.token;
       state.isLoggedIn = state.ID != null && state.token != null

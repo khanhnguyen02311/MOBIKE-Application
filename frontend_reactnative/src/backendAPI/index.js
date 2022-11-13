@@ -1,48 +1,6 @@
 import HttpRequest, {BigGetRequest} from "./HttpRequest.js";
-import TokenStorage from "./TokenStorage.js";
-import { store } from '../redux/store';
 import { resolvePlugin } from "@babel/core";
 
-
-export const signUp = async (username: string, email: string, password: string) => {
-    const response = await HttpRequest.PostRequest("auth/signup", { username: username, email: email, password: password, permission: 4 });
-    console.log("Sign up request sent: " + response);
-    if (response.msg === 'Successful') {
-        console.log('Sign up successful, start signing in');
-        await signIn(email, password);
-    } else {
-        console.log(response);
-        return response.Error;
-    }
-}
-
-/**
- * 
- * @param {String} usernameOrEmail 
- * @param {String} password 
- * @returns {String} if successful, returns the token. If not, returns an empty string.
- */
-export const signIn = async (usernameOrEmail: String, password: String, savePassword: Boolean = true): String => {
-    const response = await HttpRequest.PostRequest("auth/signin", { username_or_email: usernameOrEmail, password: password });
-    console.log("Sign in request sent: " + response);
-    if (response.msg == "Successful") {
-        TokenStorage.setCurrentToken(response.token);
-        if (savePassword) {
-            TokenStorage.addToken(response.uid, response.token);
-        } else {
-            TokenStorage.addUID(response.uid);
-        }
-        store.dispatch({
-            type: 'auth/logIn',
-            payload: {
-                ID: response.uid,
-                token: response.token
-            }
-        });
-        return response.token;
-    }
-    return "";
-}
 
 export const me = async (token) => {
     const response = await HttpRequest.ProtectedGetRequest("auth/me", token);
@@ -55,14 +13,14 @@ export const me = async (token) => {
 export const isEmailExist = async (email: String) => {
     email = email || "";
     console.log("Checking email: " + email);
-    const response = await HttpRequest.PostRequest("posts/isemailexists", { email: email });
+    const response = await HttpRequest.GetRequest("posts/isemailexists/" + email );
     return response.exists;
 }
 
 export const isUsernameExist = async (username: String) => {
     username = username || "";
     console.log("Checking username: " + username);
-    const response = await HttpRequest.PostRequest("posts/isusernameexists", { username: username });
+    const response = await HttpRequest.PostRequest("posts/isusernameexists/" + username );
     return response.exists;
 }
 
@@ -99,4 +57,4 @@ export const getImageTypes = async () => {
     return response;
 }
 
-export default { signUp, signIn, me, isEmailExist, isUsernameExist };
+export default { me, isEmailExist, isUsernameExist };

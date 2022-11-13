@@ -207,7 +207,6 @@ class ImageType (Base):
     __tablename__ = 'IMAGETYPE'
     ID = Column(ms.INTEGER, primary_key=True)
     Name = Column(ms.NVARCHAR(32), nullable=False)
-    Type = Column(ms.NVARCHAR(32), nullable=False)
 
 
 # ==============================================================================
