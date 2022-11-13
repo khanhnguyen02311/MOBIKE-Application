@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager
 # from .blueprints.image import bpimage
 # from .blueprints.gets import bpget
 # from .blueprints.admin import bpadmin
+from .blueprints.authentication import signup, signin
 
 from .config import FlaskConfig as cfg
 
@@ -24,6 +25,9 @@ def create_app():
     # App.register_blueprint(bpimage, url_prefix='/image')
     # App.register_blueprint(bpget, url_prefix='/gets')
     # App.register_blueprint(bpadmin, url_prefix='/admin')
+    
+    App.register_blueprint(signup.bpsignup, url_prefix='/auth')
+    App.register_blueprint(signin.bpsignin, url_prefix='/auth')
     
     return App
 
