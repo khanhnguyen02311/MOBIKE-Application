@@ -2,8 +2,7 @@ from dotenv import load_dotenv
 from os import environ
 from argon2 import Type as ArgonType
 
-#HOME_DIRECTORY = '/var/lib/jenkins/workspace/mobike-development/backend_flask/'
-HOME_DIRECTORY = '/media/knguyen02311/Data Disk/Learn Programming/ReactDEV/React Native/Mobike-application-stack/backend_flask/'
+HOME_DIRECTORY = '/var/lib/jenkins/workspace/mobike-development/backend_flask/'
 load_dotenv(dotenv_path=HOME_DIRECTORY + '.env')
 
 DB_USERNAME = environ.get('DBUSERNAME')
