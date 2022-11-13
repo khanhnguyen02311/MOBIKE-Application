@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
-from ..dbmodels import *
-from ..dbschemas import *
-from ..dbsettings import new_Session
-from ..inserter import *
-from ..dbschemas import *
+from ...dbmodels import *
+from ...dbschemas import *
+from ...dbsettings import new_Session
+from ...inserter import *
+from ...dbschemas import *
 
 STEP = 100
 bpget = Blueprint('bpget', __name__)
