@@ -37,6 +37,10 @@ def InsertLocation():
     d = 0
     w = 0
     Session = new_Session()
+    cities = []
+    districts = []
+    wards = []
+    
     while True:
         i += 1
         cityName = sheet.cell(row=i, column=1).value
@@ -44,28 +48,43 @@ def InsertLocation():
             break
         districtName = sheet.cell(row=i, column=3).value
         wardName = sheet.cell(row=i, column=5).value
-        city = Session.query(City).filter(City.Name == cityName).first()
-        if city == None or city.Name != cityName:
+
+        if cityName not in cities:
             city = City(Name=cityName)
             Session.add(city)
-            Session.commit()
+            cities.append(cityName)
             c += 1
+        
+        cityID = c
 
-        district = Session.query(District).filter(District.ID_City == city.ID).filter(District.Name == districtName).first()
-        if district == None or district.Name != districtName:
-            district = District(Name=districtName, ID_City=city.ID)
+        tempDistrict = {
+            "Name": districtName,
+            "CityID": cityID
+        }
+
+        if tempDistrict not in districts:
+            district = District(Name=districtName, ID_City=cityID)
             Session.add(district)
-            Session.commit()
+            districts.append(tempDistrict)
             d += 1
+
+        districtID = d
 
         if wardName == None:
             continue
-        ward = Session.query(Ward).filter(Ward.ID_District == district.ID).filter(Ward.Name == wardName).first()
-        if ward == None or ward.Name!=wardName:
-            ward = Ward(Name=wardName, ID_District=district.ID)
+
+        tempWard = {
+            "Name": wardName,
+            "DistrictID": districtID
+        }
+
+        if tempWard not in wards:
+            ward = Ward(Name=wardName, ID_District=districtID)
             Session.add(ward)
-            Session.commit()
+            wards.append(tempWard)
             w += 1
+
+    Session.commit()
     Session.close()
 
     return "Inserted {} cities, {} districts, {} wards".format(c, d, w)
@@ -88,8 +107,9 @@ def InsertPermission():
         if perm == None or perm.Name != name:
             perm = Permission(Name=name)
             Session.add(perm)
-            Session.commit()
             p += 1
+
+    Session.commit()
     Session.close()
 
     return "Inserted {} permissions".format(p)
@@ -110,8 +130,9 @@ def InsertImageType():
         if imgType == None or imgType.Name != name:
             imgType = ImageType(Name=name)
             Session.add(imgType)
-            Session.commit()
             it += 1
+
+    Session.commit()
     Session.close
 
     return "Inserted {} image types".format(it)
