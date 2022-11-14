@@ -6,6 +6,7 @@ from components.security import make_hash, check_hash
 
 bpsignup = Blueprint('bpsignup', __name__)
 
+
 @bpsignup.route('/signup', methods=['POST'])
 def signup():
    Session = new_Session()
@@ -23,7 +24,7 @@ def signup():
 
       password = make_hash(request.json['password'])
       
-      new_account = dbm.Account(Username=username, Password=password, Email=email, ID_Permission=3)
+      new_account = dbm.Account(Username=username, Password=password, Email=email, ID_Permission=4)
       Session.add(new_account)
       Session.commit()
       Session.close()

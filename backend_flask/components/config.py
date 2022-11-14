@@ -13,22 +13,12 @@ DB_USERNAME = environ.get('DBUSERNAME')
 DB_PASSWORD = environ.get('DBPASSWORD')
 DB_NAME = environ.get('DBNAME')
 
-IsTrueServer = True
-
-if (platform.system() == "Windows"):
-   IsTrueServer = False
-   DB_NAME = "flask"
-   DB_USERNAME = "root"
-   DB_PASSWORD = "123456789"
-   STORAGE_PATH = ".\Storage\\"
-
-
 class FlaskConfig:
    SECRET_KEY = environ.get('SECRET_KEY')
    JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
 
 class SQLAlchemyConfig:
-   SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + (IsTrueServer and "?unix_socket=/var/run/mysqld/mysqld.sock" or "")
+   SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + "?unix_socket=/var/run/mysqld/mysqld.sock"
    ECHO = False
    AUTO_FLUSH = True
    AUTO_COMMIT = False

@@ -9,3 +9,4 @@ flask-socketio
 mysqlclient
 openpyxl
 gunicorn
+Authlib
