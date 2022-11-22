@@ -1,4 +1,4 @@
-import secrets, json
+import secrets
 from flask import Flask, Blueprint, request, jsonify, url_for
 import flask_jwt_extended as jwte
 from components.dbsettings import new_Session
