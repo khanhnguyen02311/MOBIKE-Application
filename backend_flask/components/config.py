@@ -16,13 +16,19 @@ DB_NAME = environ.get('DBNAME')
 class FlaskConfig:
    SECRET_KEY = environ.get('SECRET_KEY')
    JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
-   JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=14)
+   JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=21)
 
 class SQLAlchemyConfig:
    SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + "?unix_socket=/var/run/mysqld/mysqld.sock"
    ECHO = False
    AUTO_FLUSH = True
    AUTO_COMMIT = False
+   
+class RedisConfig:
+   HOST = "127.0.0.1"
+   PORT = 6379
+   DB = 0
+   DECODE_RESPONSES = True
    
 class SecurityConfig:
    ARGON_TIMECOST = 4

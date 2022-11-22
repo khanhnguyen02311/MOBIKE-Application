@@ -1,12 +1,19 @@
 import secrets
 from flask import Flask, Blueprint, request, jsonify, url_for
-import flask_jwt_extended as jwte
+from flask_jwt_extended import create_access_token
 from components.dbsettings import new_Session
 from components import dbmodels as dbm, dbschemas as dbs
 from components.security import make_hash, check_hash, oauth
 
 bpsignin = Blueprint('bpsignin', __name__)
 
+
+def signin_output(message, error, access_token):
+   return jsonify({
+      "message": message, 
+      "error": error, 
+      "token": access_token})
+   
 
 @bpsignin.route('/signin', methods = ['GET'])
 def signin():
@@ -25,33 +32,17 @@ def signin():
             if result[1]:
                Session.get(dbm.Account, acc.ID).update({"Password": make_hash(password)}, synchronize_session="fetch")
                Session.commit()
-            access_token = jwte.create_access_token(identity=schema.dump(acc))
+            access_token = create_access_token(identity=schema.dump(acc))
             Session.close()
-            return jsonify({
-               "message": "Completed", 
-               "error": "", 
-               "token": access_token}), 200
-         else: 
-            Session.close()
-            return jsonify({
-               "message": "Incompleted", 
-               "error": "Wrong username or password", 
-               "token": ""}), 401
+            return signin_output("Completed", "", access_token)
          
-      else:
-         Session.close()
-         return jsonify({
-            "message": "Incompleted", 
-            "error": "Wrong username or password", 
-            "token": ""}), 401
+      Session.close()
+      return signin_output("Incompleted", "Wrong username or password", "")
       
    except Exception as e:
       Session.rollback()
       Session.close()
-      return jsonify({
-         "message": "Incompleted", 
-         "error": str(e), 
-         "token": "None"}), 409
+      return signin_output("Incompleted", str(e), "")
 
 
 @bpsignin.route('/signin/google/')
@@ -73,34 +64,24 @@ def googleauthorize():
       picture_location = profile["picture"]
       
       email = profile["email"]
-      username = "accounts.google.com" + profile["id"]
-      
-      acc = Session.query(dbm.Account).filter(dbm.Account.Username==username, dbm.Account.Account_type==1).first()
+      username = "accounts.google." + profile["id"]
+      acc = Session.query(dbm.Account).filter(dbm.Account.Email==email, dbm.Account.Account_type==1).first()
       if acc is not None:
-         access_token = jwte.create_access_token(identity=schema.dump(acc))
+         access_token = create_access_token(identity=schema.dump(acc))
          Session.close()
-         return jsonify({
-            "message": "Completed", 
-            "error": "", 
-            "token": access_token})
+         return signin_output("Completed", "", access_token)
       
       password = make_hash(secrets.token_urlsafe(64))
       
       new_Account = dbm.Account(Email=email, Username=username, Password=password, Account_type=1, ID_Permission=4)
-      access_token = jwte.create_access_token(identity=schema.dump(new_Account))
+      access_token = create_access_token(identity=schema.dump(new_Account))
       Session.add(new_Account)
       Session.commit()
       Session.close()
-      return jsonify({
-         "message": "Completed", 
-         "error": "", 
-         "token": access_token})
+      return signin_output("Completed", "", access_token)
       
    except Exception as e:
       Session.rollback()
       Session.close()
-      return jsonify({
-         "message": "Incompleted", 
-         "error": str(e), 
-         "token": ""})
+      return signin_output("Incompleted", str(e), "")
     

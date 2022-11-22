@@ -1,7 +1,11 @@
-import argon2
+import argon2, redis
 from os import environ
-from components.config import SecurityConfig as scfg, AuthConfig as acfg
+from components.config import SecurityConfig as scfg, AuthConfig as acfg, RedisConfig as rcfg
 from authlib.integrations.flask_client import OAuth
+
+blocklistJWT = redis.StrictRedis(
+   host=rcfg.HOST, port=rcfg.PORT, db=rcfg.DB, decode_responses=rcfg.DECODE_RESPONSES
+)
 
 oauth = OAuth()
 
@@ -45,5 +49,5 @@ def check_hash(old_hash, psw):
       return [False] # incorrect pass
    
 
-def testhash(psw):
-   return make_hash(psw)
+def update_access_token():
+   pass
