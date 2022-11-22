@@ -60,9 +60,10 @@ class AccountStat (Base):
 class Account (Base):
     __tablename__ = 'ACCOUNT'
     ID = Column(ms.INTEGER, primary_key=True)
-    Username = Column(ms.NVARCHAR(128), nullable=False, unique=True)
+    Username = Column(ms.NVARCHAR(128), nullable=False)
     Password = Column(ms.NVARCHAR(256), nullable=False)
-    Email = Column(ms.NVARCHAR(128), nullable=False, unique=True)
+    Email = Column(ms.NVARCHAR(128), nullable=False)
+    Account_type = Column(ms.TINYINT, nullable=False) # 0: default account, 1: google account, 2: facebook account
     Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
     
     ID_Permission = Column(ms.INTEGER, ForeignKey("PERMISSION.ID"), nullable=False)

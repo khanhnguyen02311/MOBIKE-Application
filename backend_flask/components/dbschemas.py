@@ -10,7 +10,9 @@ class AccountSchema(Schema):
         
     ID = auto_field()
     Username = auto_field()
-    Email = auto_field()
+    ID_Permission = auto_field()
+    ID_AccountInfo = auto_field()
+        
         
 class PermissionSchema(Schema):
     class Meta:
