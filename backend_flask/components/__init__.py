@@ -4,14 +4,15 @@ from flask_jwt_extended import JWTManager
 from .blueprints.testing import post, image, gets, admin
 from .blueprints.authentication import signup, signin
 
-from .config import FlaskConfig as cfg
+from .config import FlaskConfig as fcfg
+from .security import oauth
 
 
 def create_app():
     App = Flask(__name__)
-    App.config.from_object(cfg)
-
+    App.config.from_object(fcfg)
     jwt = JWTManager(App)
+    oauth.init_app(App)
     
     @App.route("/")
     def hello():

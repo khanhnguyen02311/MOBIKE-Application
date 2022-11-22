@@ -1,7 +1,7 @@
+from datetime import timedelta
 from dotenv import load_dotenv
 from os import environ
 from argon2 import Type as ArgonType
-import platform
 
 #HOME_DIRECTORY = '/var/lib/jenkins/workspace/mobike-development/backend_flask/'
 HOME_DIRECTORY = '/media/knguyen02311/Data Disk/Learn Programming/ReactDEV/React Native/Mobike-application-stack/backend_flask/'
@@ -16,6 +16,7 @@ DB_NAME = environ.get('DBNAME')
 class FlaskConfig:
    SECRET_KEY = environ.get('SECRET_KEY')
    JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
+   JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=14)
 
 class SQLAlchemyConfig:
    SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + "?unix_socket=/var/run/mysqld/mysqld.sock"
@@ -28,3 +29,7 @@ class SecurityConfig:
    ARGON_HASHLEN = 64
    ARGON_SALTLEN = 32
    ARGON_TYPE = ArgonType.D
+
+class AuthConfig:
+   GOOGLE_CLIENT_ID = environ.get('GOOGLE_CLIENT_ID')
+   GOOGLE_CLIENT_SECRET = environ.get('GOOGLE_CLIENT_SECRET')
