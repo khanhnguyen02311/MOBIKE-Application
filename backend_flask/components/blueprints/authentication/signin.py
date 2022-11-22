@@ -27,19 +27,31 @@ def signin():
                Session.commit()
             access_token = jwte.create_access_token(identity=schema.dump(acc))
             Session.close()
-            return jsonify({"message": "Completed", "error": "", "token": access_token}), 200
+            return jsonify({
+               "message": "Completed", 
+               "error": "", 
+               "token": access_token}), 200
          else: 
             Session.close()
-            return jsonify({"message": "Incompleted", "error": "Wrong username or password"}), 401
+            return jsonify({
+               "message": "Incompleted", 
+               "error": "Wrong username or password", 
+               "token": ""}), 401
          
       else:
          Session.close()
-         return jsonify({"message": "Incompleted", "error": "Wrong username or password"}), 401
+         return jsonify({
+            "message": "Incompleted", 
+            "error": "Wrong username or password", 
+            "token": ""}), 401
       
    except Exception as e:
       Session.rollback()
       Session.close()
-      return jsonify({"message": "Incompleted", "error": str(e)}), 409
+      return jsonify({
+         "message": "Incompleted", 
+         "error": str(e), 
+         "token": "None"}), 409
 
 
 @bpsignin.route('/signin/google/')
@@ -67,7 +79,10 @@ def googleauthorize():
       if acc is not None:
          access_token = jwte.create_access_token(identity=schema.dump(acc))
          Session.close()
-         return jsonify({"message": "Completed", "error": "", "token": access_token})
+         return jsonify({
+            "message": "Completed", 
+            "error": "", 
+            "token": access_token})
       
       password = make_hash(secrets.token_urlsafe(64))
       
@@ -76,11 +91,16 @@ def googleauthorize():
       Session.add(new_Account)
       Session.commit()
       Session.close()
-      return jsonify({"message": "Completed", "error": "", "token": access_token})
+      return jsonify({
+         "message": "Completed", 
+         "error": "", 
+         "token": access_token})
       
    except Exception as e:
       Session.rollback()
       Session.close()
-      return jsonify({"message": "Incompleted", "error": str(e)})
-   # do something with the token and profile
+      return jsonify({
+         "message": "Incompleted", 
+         "error": str(e), 
+         "token": ""})
     
