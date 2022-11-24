@@ -25,10 +25,11 @@ class SQLAlchemyConfig:
    AUTO_COMMIT = False
    
 class RedisConfig:
-   HOST = "127.0.0.1"
+   HOST = "localhost"
    PORT = 6379
    DB = 0
    DECODE_RESPONSES = True
+   PASSWORD = environ.get('REDISPASSWORD')
    
 class SecurityConfig:
    ARGON_TIMECOST = 4

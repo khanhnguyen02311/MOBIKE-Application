@@ -4,7 +4,7 @@ from components.config import SecurityConfig as scfg, AuthConfig as acfg, RedisC
 from authlib.integrations.flask_client import OAuth
 
 blocklistJWT = redis.StrictRedis(
-   host=rcfg.HOST, port=rcfg.PORT, db=rcfg.DB, decode_responses=rcfg.DECODE_RESPONSES
+   host=rcfg.HOST, port=rcfg.PORT, db=rcfg.DB, decode_responses=rcfg.DECODE_RESPONSES, password=rcfg.PASSWORD
 )
 
 oauth = OAuth()
@@ -47,7 +47,3 @@ def check_hash(old_hash, psw):
          return [True, False] # correct pass, don't need rehash
    except:
       return [False] # incorrect pass
-   
-
-def update_access_token():
-   pass

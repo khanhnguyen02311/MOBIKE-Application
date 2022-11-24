@@ -11,4 +11,4 @@ bpsignout = Blueprint('bpsignout', __name__)
 def signout():
    jti = get_jwt()['jti']
    blocklistJWT.set(jti, "", ex=fcfg.JWT_ACCESS_TOKEN_EXPIRES)
-   return jsonify({"message": "Token revoked"})
+   return jsonify({"message": "Token revoked successfully"})

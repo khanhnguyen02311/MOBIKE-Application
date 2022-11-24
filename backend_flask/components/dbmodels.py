@@ -24,7 +24,7 @@ class AccountInfo (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Name = Column(ms.NVARCHAR(128), nullable=False)
     Birthdate = Column(ms.DATETIME)
-    Gender = Column(ms.TINYINT)
+    Gender = Column(ms.TINYINT) # 1: male, 2: female
     Phone_number = Column(ms.VARCHAR(12), nullable=False)
     Identification_number = Column(ms.VARCHAR(12))
     
