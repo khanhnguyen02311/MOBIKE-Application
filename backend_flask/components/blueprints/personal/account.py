@@ -73,21 +73,26 @@ def changeinfo():
       Session.rollback()
       Session.close()
       return jsonify({"message": "Incompleted", "error": str(e)})
+   
 
-
-@bpaccount.route("/setaddress", methods = ['POST', 'PUT'])
+## UNDONE
+@bpaccount.route("/addaddress", methods = ['POST'])
 @jwt_required()
-def setaddress():
+def addaddress():
    current_user = get_jwt_identity()   
    if current_user is None:
       return jsonify({"message": "Incompleted", "error": "Invalid token", "info": ""})
    
    Session = new_Session()
    try:
-      new_address = request.get_json()
-      
-      
+      pass
    except Exception as e:
       Session.rollback()
       Session.close()
       return jsonify({"message": "Incompleted", "error": str(e)})
+   
+   
+@bpaccount.route("/deladdress", methods = ['DELETE'])
+@jwt_required()
+def deladdress():
+   pass
