@@ -17,7 +17,9 @@ def serverinfo():
 @bpadmin.route('/insertlocations', methods = ['POST'])
 def insertlocations():
     print("Inserting locations...")
-    return InsertLocation()
+    return InsertLocationNoDau()
+    return InsertLocation() 
+
 
 @bpadmin.route('/insertpermissions', methods = ['POST'])
 def insertpermission():
@@ -51,6 +53,7 @@ def clearimages():
         os.remove(image)
     return jsonify({"msg": "Images cleared"})
 
+
 @bpadmin.route('/resetdatabase', methods = ['POST'])
 def dropalltables():
 
@@ -81,6 +84,5 @@ def dropalltables():
 
 @bpadmin.route('/test', methods = ['GET', 'POST'])
 def test():
-    
     return "Done"
 

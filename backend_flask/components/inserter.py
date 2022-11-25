@@ -1,4 +1,4 @@
-import openpyxl
+import openpyxl, unicodedata
 from .dbmodels import *
 from .dbschemas import *
 from .dbsettings import new_Session
@@ -25,9 +25,17 @@ def TruncateTables(tables: list):
     Session.close()
 
 
+def remove_accents(input_str = None):
+    print(f"Debug: {input_str}")
+    if input_str == None:
+        return ''
+    nkfd_form = unicodedata.normalize('NFKD', input_str)
+    only_ascii = nkfd_form.encode('ASCII', 'ignore')
+    return only_ascii.decode()
+
 def InsertLocation():
     
-    TruncateTables({"City", "District", "Ward"})
+    TruncateTables({"CITY", "DISTRICT", "WARD"})
 
     wb = openpyxl.load_workbook(InitialDataFile("Locations"))
 
@@ -44,6 +52,51 @@ def InsertLocation():
             break
         districtName = sheet.cell(row=i, column=3).value
         wardName = sheet.cell(row=i, column=5).value
+        city = Session.query(City).filter(City.Name == cityName).first()
+        if city == None or city.Name != cityName:
+            city = City(Name=cityName)
+            Session.add(city)
+            Session.commit()
+            c += 1
+        district = Session.query(District).filter(District.ID_City == city.ID).filter(District.Name == districtName).first()
+        if district == None or district.Name != districtName:
+            district = District(Name=districtName, ID_City=city.ID)
+            Session.add(district)
+            Session.commit()
+            d += 1
+
+        if wardName == None:
+            continue
+        ward = Session.query(Ward).filter(Ward.ID_District == district.ID).filter(Ward.Name == wardName).first()
+        if ward == None or ward.Name!=wardName:
+            ward = Ward(Name=wardName, ID_District=district.ID)
+            Session.add(ward)
+            Session.commit()
+            w += 1
+    Session.close()
+
+    return "Inserted {} cities, {} districts, {} wards".format(c, d, w)
+
+
+def InsertLocationNoDau():
+    
+    TruncateTables({"CITY", "DISTRICT", "WARD"})
+
+    wb = openpyxl.load_workbook(InitialDataFile("Locations"))
+
+    sheet = wb.active
+    i = 1
+    c = 0
+    d = 0
+    w = 0
+    Session = new_Session()
+    while True:
+        i += 1
+        cityName = remove_accents(sheet.cell(row=i, column=1).value)
+        if cityName == None:
+            break
+        districtName = remove_accents(sheet.cell(row=i, column=3).value)
+        wardName = remove_accents(sheet.cell(row=i, column=5).value)
         city = Session.query(City).filter(City.Name == cityName).first()
         if city == None or city.Name != cityName:
             city = City(Name=cityName)

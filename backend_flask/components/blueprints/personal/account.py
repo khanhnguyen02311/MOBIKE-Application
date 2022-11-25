@@ -91,7 +91,7 @@ def addaddress():
       Session.close()
       return jsonify({"message": "Incompleted", "error": str(e)})
    
-   
+
 @bpaccount.route("/deladdress", methods = ['DELETE'])
 @jwt_required()
 def deladdress():

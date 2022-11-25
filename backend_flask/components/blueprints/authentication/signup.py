@@ -13,7 +13,6 @@ def signup_output(message, error, access_token):
       "error": error, 
       "token": access_token})
    
-   
 @bpsignup.route('/signup', methods=['POST'])
 def signup():
    schema = dbs.AccountSchema()
