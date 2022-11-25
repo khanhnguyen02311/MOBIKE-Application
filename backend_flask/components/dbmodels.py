@@ -195,6 +195,9 @@ class Image (Base):
     
     ID_ImageType = Column(ms.INTEGER, ForeignKey('IMAGETYPE.ID'))
     rel_ImageType = relationship('ImageType')
+
+    def __str__(self) -> str:
+        return f"ID: {self.ID}, Filename: {self.Filename}, ID_Post: {self.ID_Post}, ID_ImageType: {self.ID_ImageType}"
     
     ## AccountInfo reference
     rel_AccountInfo_Profile = relationship('AccountInfo', foreign_keys=[AccountInfo.ID_Image_Profile], back_populates='rel_Image_Profile')

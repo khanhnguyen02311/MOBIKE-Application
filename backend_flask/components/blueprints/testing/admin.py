@@ -42,7 +42,7 @@ def initversions():
     return jsonify({"msg": "Success"})
 
 
-@bpadmin.route('/clearimages', methods = ['POST'])
+@bpadmin.route('/clearimages', methods = ['GET','POST'])
 def clearimages():
     print("Clearing images...")
     TruncateTables({"Image", "IMAGE"})
