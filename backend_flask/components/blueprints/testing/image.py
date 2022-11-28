@@ -15,20 +15,26 @@ def upload():
     if 'file' not in request.files:
         return jsonify({'msg': 'No file part'}), 400
     f = request.files['file']
+    f.read()
     if f.filename == '':
         return jsonify({'msg': 'No selected file'}), 400
     ext = f.filename.split('.')[-1]
     new_image = dbm.Image()
     new_image.Filename = f.filename
     Session = new_Session()
-    Session.add(new_image)
-    Session.commit()
-    new_image.Filename = str(new_image.ID) + '.' + ext
-    Session.merge(new_image)
-    Session.commit()
-    f.save(STORAGE_PATH + str(new_image.ID) + "." + ext)
-    Session.close()
-    return jsonify({'msg': 'File uploaded successfully', 'id': new_image.ID}), 200
+    try:
+        Session.add(new_image)
+        Session.commit()
+        new_image.Filename = str(new_image.ID) + '.' + ext
+        Session.merge(new_image)
+        Session.commit()
+        f.save(STORAGE_PATH + str(new_image.ID) + '.' + ext)
+        Session.close()
+        return jsonify({'msg': 'File uploaded successfully', 'id': new_image.ID}), 200
+    except Exception as e:
+        Session.rollback()
+        return jsonify({'msg': 'Incompleted', 'error': str(e)}), 401
+    
     
 @bpimage.route('/get/<int:id>', methods = ['GET'])
 def get(id):
