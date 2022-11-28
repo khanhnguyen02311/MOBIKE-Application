@@ -45,6 +45,7 @@ def upload():
     
 @bpimage.route('/get/<id>', methods = ['GET'])
 def get(id):
+    id = int(id)
     Session = new_Session()
     image = Session.query(dbm.Image).filter(dbm.Image.ID == id).first()
     Session.close()
