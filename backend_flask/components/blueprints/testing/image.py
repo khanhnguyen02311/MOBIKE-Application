@@ -27,7 +27,7 @@ def upload():
         Session.flush()
         Session.refresh(new_image)
         new_image.Filename = str(new_image.ID) + '.' + ext
-        # Session.flush()
+        Session.flush()
         # Session.refresh(new_image)
         f.save(os.path.join(STORAGE_PATH, str(new_image.ID) + '.' + ext))
         Session.commit()
