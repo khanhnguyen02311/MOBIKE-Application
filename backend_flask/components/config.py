@@ -5,7 +5,7 @@ from os import environ
 from argon2 import Type as ArgonType
 
 HOME_DIRECTORY = '/var/lib/jenkins/workspace/mobike-development/backend_flask/'
-STORAGE_PATH = '/var/lib/jenkins/workspace/mobike-development/ImageStorage/'
+STORAGE_PATH = '/var/lib/jenkins/workspace/mobike-development/MobikeStorage/'
 
 load_dotenv(dotenv_path=HOME_DIRECTORY + '.env')
 
