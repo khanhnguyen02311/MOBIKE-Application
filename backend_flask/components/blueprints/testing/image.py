@@ -16,14 +16,17 @@ def upload():
     if 'file' not in request.files:
         return jsonify({'msg': 'No file part'}), 400
     f = request.files['file']
-    f.read()
-    if f.filename == '':
-        return jsonify({'msg': 'No selected file'}), 400
-    ext = f.filename.split('.')[-1]
     new_image = dbm.Image()
+    
     new_image.Filename = f.filename
     Session = new_Session()
     try:
+        f.read()
+        if f.filename == '':
+            Session.commit()
+            Session.close()
+            return jsonify({'msg': 'No selected file'}), 400
+        ext = f.filename.split('.')[-1]
         Session.add(new_image)
         Session.flush()
         Session.refresh(new_image)
