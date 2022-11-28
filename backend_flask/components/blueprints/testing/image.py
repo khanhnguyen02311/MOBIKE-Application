@@ -25,7 +25,7 @@ def upload():
         new_image = dbm.Image(Filename=f.filename)
         Session.add(new_image)
         Session.flush()
-        return jsonify({'msg': new_image.ID}), 200
+        # return jsonify({'msg': new_image.ID}), 200
         new_image.Filename = str(new_image.ID) + '.' + ext
         Session.flush()
         # Session.refresh(new_image)
