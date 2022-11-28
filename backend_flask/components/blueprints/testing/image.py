@@ -20,15 +20,16 @@ def upload():
     if f.filename == '':
         return jsonify({'msg': 'No selected file'}), 400
     ext = f.filename.split('.')[-1]
-    new_image = dbm.Image()
-    new_image.Filename = f.filename
     Session = new_Session()
     try:
+        new_image = dbm.Image()
+        new_image.Filename = f.filename
         Session.add(new_image)
         Session.flush()
         Session.refresh(new_image)
         new_image.Filename = str(new_image.ID) + '.' + ext
         Session.flush()
+        Session.refresh(new_image)
         f.save(os.path.join(STORAGE_PATH, new_image.Filename))
         Session.commit()
         Session.close()
