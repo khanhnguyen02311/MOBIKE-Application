@@ -1,3 +1,4 @@
+import os
 from flask import Flask, Blueprint, jsonify, request, send_file
 import flask_jwt_extended as jwte
 from components.dbsettings import new_Session
@@ -30,12 +31,13 @@ def upload():
         Session.merge(new_image)
         Session.flush()
         Session.refresh(new_image)
-        f.save(STORAGE_PATH + new_image.Filename)
+        f.save(os.path.join(STORAGE_PATH, new_image.Filename))
         Session.commit()
         Session.close()
         return jsonify({'msg': 'File uploaded successfully', 'id': new_image.ID}), 200
     except Exception as e:
         Session.rollback()
+        Session.close()
         return jsonify({'msg': 'Incompleted', 'error': str(e)}), 401
     
     

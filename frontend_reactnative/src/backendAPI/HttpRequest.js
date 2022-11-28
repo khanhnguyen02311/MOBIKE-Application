@@ -52,7 +52,7 @@ const GetRequest = async (path: String) => {
             return await GetRequest(path);
         } else {    
             console.log("Fetch Error:" + error)
-
+            
         }
 
     }
