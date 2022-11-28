@@ -22,8 +22,7 @@ def upload():
     ext = f.filename.split('.')[-1]
     Session = new_Session()
     try:
-        new_image = dbm.Image()
-        new_image.Filename = f.filename
+        new_image = dbm.Image(Filename=f.filename)
         Session.add(new_image)
         Session.flush()
         Session.refresh(new_image)
