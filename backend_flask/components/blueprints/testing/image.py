@@ -24,11 +24,14 @@ def upload():
     Session = new_Session()
     try:
         Session.add(new_image)
-        Session.commit()
+        Session.flush()
+        Session.refresh(new_image)
         new_image.Filename = str(new_image.ID) + '.' + ext
         Session.merge(new_image)
+        Session.flush()
+        Session.refresh(new_image)
+        f.save(STORAGE_PATH + new_image.Filename)
         Session.commit()
-        f.save(STORAGE_PATH + str(new_image.ID) + '.' + ext)
         Session.close()
         return jsonify({'msg': 'File uploaded successfully', 'id': new_image.ID}), 200
     except Exception as e:
