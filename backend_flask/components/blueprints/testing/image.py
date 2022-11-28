@@ -43,7 +43,7 @@ def upload():
         return jsonify({'msg': 'Incompleted', 'error': str(e)}), 401
     
     
-@bpimage.route('/get/<int:id>', methods = ['GET'])
+@bpimage.route('/get/<id>', methods = ['GET'])
 def get(id):
     Session = new_Session()
     image = Session.query(dbm.Image).filter(dbm.Image.ID == id).first()
