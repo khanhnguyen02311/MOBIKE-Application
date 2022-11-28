@@ -26,7 +26,7 @@ def upload():
     new_image.Filename = str(new_image.ID) + '.' + ext
     Session.merge(new_image)
     Session.commit()
-    f.save(STORAGE_PATH)
+    f.save(STORAGE_PATH + str(new_image.ID) + "." + ext)
     Session.close()
     return jsonify({'msg': 'File uploaded successfully', 'id': new_image.ID}), 200
     
