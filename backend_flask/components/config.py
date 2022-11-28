@@ -33,6 +33,7 @@ class SQLAlchemyConfig:
    ECHO = False
    AUTO_FLUSH = True
    AUTO_COMMIT = False
+   EXPIRE_ON_COMMIT = True
    
 class SecurityConfig:
    ARGON_TIMECOST = 4

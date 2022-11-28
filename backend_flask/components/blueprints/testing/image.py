@@ -29,14 +29,12 @@ def upload():
         Session.refresh(new_image)
         new_image.Filename = str(new_image.ID) + '.' + ext
         Session.flush()
-        Session.refresh(new_image)
         f.save(os.path.join(STORAGE_PATH, new_image.Filename))
         Session.commit()
         Session.close()
         return jsonify({'msg': 'File uploaded successfully', 'id': new_image.ID}), 200
     except Exception as e:
         Session.rollback()
-        Session.close()
         return jsonify({'msg': 'Incompleted', 'error': str(e)}), 401
     
     
