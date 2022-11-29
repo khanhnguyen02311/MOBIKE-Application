@@ -48,10 +48,8 @@ const App = () => {
         //   console.log("Host set to: " + v);
         // })
 
-        console.log("Here 1")
-        let res = Requester.GetRequest('')
-        console.log("Here 2")
-        console.log(res);
+        let res = await Requester.GetRequest('gets/step')
+        console.log(JSON.stringify(res));
 
 
       } catch (error) {
