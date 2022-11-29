@@ -45,7 +45,7 @@ def initversions():
 @bpadmin.route('/clearimages', methods = ['GET','POST'])
 def clearimages():
     print("Clearing images...")
-    TruncateTables({"Image", "IMAGE"})
+    TruncateTables({"IMAGE"})
     images = glob.glob(STORAGE_PATH + "*")
     for image in images:
         os.remove(image)
