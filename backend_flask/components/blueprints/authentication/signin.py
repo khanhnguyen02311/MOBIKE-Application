@@ -30,8 +30,8 @@ def signin():
             return jsonify({
                "message": "Completed", 
                "error": "", 
-               "token": access_token},
-               "uid": acc.ID), 200
+               "token": access_token,
+               "uid": acc.ID}), 200
          else: 
             Session.close()
             return jsonify({
