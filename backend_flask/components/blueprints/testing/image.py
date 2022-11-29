@@ -31,11 +31,11 @@ def upload():
         # if (test is new_image):
         #     return jsonify({'msg': 'Success'}), 200
         new_image.Filename = str(new_image.ID) + '.' + ext
-        Session.flush()
-        Session.refresh(new_image)
+        # Session.flush()
+        # Session.refresh(new_image)
         print(new_image.ID)
         f.save(os.path.join(STORAGE_PATH, str(new_image.ID) + '.' + ext))
-        Session.flush()
+        
         Session.commit()
         Session.close()
         return jsonify({'msg': 'File uploaded successfully', 'id': new_image.ID}), 200
