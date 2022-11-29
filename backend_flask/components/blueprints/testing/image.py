@@ -16,7 +16,6 @@ def upload():
     if 'file' not in request.files:
         return jsonify({'msg': 'No file part'}), 400
     f = request.files['file']
-    f.read()
     if f.filename == '':
         return jsonify({'msg': 'No selected file'}), 400
     ext = f.filename.split('.')[-1]
@@ -24,8 +23,7 @@ def upload():
     try:
         new_image = dbm.Image(Filename=f.filename)
         Session.add(new_image)
-        Session.flush()
-        # Session.refresh(new_image)
+        Session.commit()
         # return jsonify({'msg': new_image.ID}), 200
         # test = Session.query(dbm.Image).get(new_image.ID)
         # if (test is new_image):
@@ -33,11 +31,9 @@ def upload():
         # new_image.Filename = str(new_image.ID) + '.' + ext
         # Session.flush()
         # Session.refresh(new_image)
-        print(new_image.ID)
         f.save(os.path.join(STORAGE_PATH, str(new_image.ID) + '.' + ext))
         
-        Session.commit()
-        Session.close()
+        
         return jsonify({'msg': 'File uploaded successfully', 'id': new_image.ID}), 200
     except Exception as e:
         Session.rollback()
