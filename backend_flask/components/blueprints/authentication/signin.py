@@ -30,20 +30,23 @@ def signin():
             return jsonify({
                "message": "Completed", 
                "error": "", 
-               "token": access_token}), 200
+               "token": access_token},
+               "uid": acc.ID), 200
          else: 
             Session.close()
             return jsonify({
                "message": "Incompleted", 
                "error": "Wrong username or password", 
-               "token": ""}), 401
+               "token": "",
+               "uid": ""}), 401
          
       else:
          Session.close()
          return jsonify({
             "message": "Incompleted", 
             "error": "Wrong username or password", 
-            "token": ""}), 401
+            "token": "",
+            "uid": ""}), 401
       
    except Exception as e:
       Session.rollback()
