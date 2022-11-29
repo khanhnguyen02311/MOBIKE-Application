@@ -5,7 +5,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import AuthenticationNavigator from './AuthenticationNavigator';
 import {GlobalContext} from '../context/Provider';
 import BottomNavigator from './BottomNavigator';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import YourPosts from '../screens/YourPosts';
 
 const AppNavContainer = () => {
   // const {
@@ -13,12 +14,13 @@ const AppNavContainer = () => {
   // } = useContext(GlobalContext);
 
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const isLoading = useSelector(state => state.loading.loading);
   return (
     <NavigationContainer>
       {false ? (
         <BottomNavigator></BottomNavigator>
       ) : (
-        <AuthenticationNavigator></AuthenticationNavigator>
+        <AuthenticationNavigator />
       )}
     </NavigationContainer>
   );

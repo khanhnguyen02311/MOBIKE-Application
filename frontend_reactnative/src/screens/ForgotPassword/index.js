@@ -5,7 +5,7 @@ import ForgotPasswordComponent from '../../components/ForgotPassword';
 import LoadingComponent from '../../components/Loading';
 
 const ForgotPassword = ({navigation}) => {
-  return <LoadingComponent/>;
+  return <ForgotPasswordComponent />;
 };
 
 export default ForgotPassword;

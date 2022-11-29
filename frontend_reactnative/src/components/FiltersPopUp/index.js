@@ -1,12 +1,13 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-
+import {View, Text} from 'react-native';
+import React from 'react';
+import Container from '../common/container';
+import FilterProp from './FilterProp';
 const FiltersPopUpComponent = () => {
   return (
-    <View>
-      <Text>FiltersPopUpComponent</Text>
-    </View>
-  )
-}
+    <Container styleScrollView={{backgroundColor: 'white'}}>
+      <FilterProp />
+    </Container>
+  );
+};
 
-export default FiltersPopUpComponent
+export default FiltersPopUpComponent;
