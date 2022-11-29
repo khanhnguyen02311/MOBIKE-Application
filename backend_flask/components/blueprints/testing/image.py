@@ -35,8 +35,8 @@ def upload():
         Session.refresh(new_image)
         print(new_image.ID)
         f.save(os.path.join(STORAGE_PATH, str(new_image.ID) + '.' + ext))
-        # Session.commit()
-        # Session.close()
+        Session.commit()
+        Session.close()
         return jsonify({'msg': 'File uploaded successfully', 'id': new_image.ID}), 200
     except Exception as e:
         Session.rollback()
