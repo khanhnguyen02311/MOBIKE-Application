@@ -16,6 +16,7 @@
 // import {login} from '../../redux/slice/authSlice';
 // import CustomButton from '../../components/common/customButton';
 import BackendAPI from '../../backendAPI';
+import TokenStorage from '../../services/TokenStorage';
 import React from 'react';
 
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -51,7 +52,7 @@ const Login = ({navigation}) => {
 
   const login = async () => {
     console.log("Login Submitted")
-    await BackendAPI.signIn(form.username, form.password)
+    await TokenStorage.signIn(form.username, form.password)
   };
 
   const onSubmit = () => {

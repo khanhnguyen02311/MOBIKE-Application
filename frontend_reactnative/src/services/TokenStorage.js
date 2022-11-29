@@ -33,7 +33,7 @@ export const init = async () => {
 
 export const signUp = async (username: string, email: string, password: string) => {
     const response = await HttpRequest.PostRequest("auth/signup", { username: username, email: email, password: password, permission: 4 });
-    console.log("Sign up request sent: " + response);
+    console.log("Sign up request sent: " + JSON.stringify(response));
     if (response.msg === 'Successful') {
         console.log('Sign up successful, start signing in');
         await signIn(email, password);

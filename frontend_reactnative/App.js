@@ -48,16 +48,12 @@ const App = () => {
         //   console.log("Host set to: " + v);
         // })
 
-        let res = await Requester.GetRequest('gets/step')
-        console.log(JSON.stringify(res));
-
-
       } catch (error) {
         console.log("Sandbox error: " + error);
       }
     }
-    // fetch();
-    sandbox();
+    fetch();
+    //sandbox();
 
   }, []);
 

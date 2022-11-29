@@ -8,7 +8,7 @@ from components.security import make_hash, check_hash, oauth
 bpsignin = Blueprint('bpsignin', __name__)
 
 
-@bpsignin.route('/signin', methods = ['GET'])
+@bpsignin.route('/signin', methods = ['POST'])
 def signin():
    schema = dbs.AccountSchema()
    Session = new_Session()
