@@ -5,7 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import TextInputOutline from '../common/textInputOutline-Kohana';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import colors from '../../assets/theme/colors';
-import { YOUR_POSTS, FILTERS_POP_UP } from '../../constants/routeNames';
+import {YOUR_POSTS, FILTERS_POP_UP} from '../../constants/routeNames';
 import {useNavigation} from '@react-navigation/native';
 const HeaderSearch = () => {
   const {navigate} = useNavigation();
@@ -35,7 +35,6 @@ const HeaderSearch = () => {
       />
       <TouchableWithoutFeedback
         onPress={() => {
-          console.log('Pressed');
           navigate(FILTERS_POP_UP);
         }}>
         <View style={{paddingBottom: 10, paddingHorizontal: 20}}>

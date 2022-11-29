@@ -1,11 +1,13 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import LoadingComponent from '../../components/Loading'
+import {View, Text} from 'react-native';
+import React from 'react';
+import LoadingComponent from '../../components/Loading';
 
 const YourPosts = () => {
   return (
-    <LoadingComponent></LoadingComponent>
-  )
-}
+    <View>
+      <Text>Your Posts</Text>
+    </View>
+  );
+};
 
-export default YourPosts
+export default YourPosts;
