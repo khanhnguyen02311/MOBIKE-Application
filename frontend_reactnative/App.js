@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import TokenStorage from './src/services/TokenStorage';
 import BackendAPI from './src/backendAPI';
 import ClientDatabase from './src/services/ClientDatabase';
+import Requester, { SetHost } from './src/backendAPI/HttpRequest';
 
 import {
   MD3LightTheme as DefaultTheme,
@@ -35,22 +36,30 @@ const App = () => {
     const fetch = async () => {
       await TokenStorage.init();
       await ClientDatabase.init();
-
     }
     
     const sandbox = async () => {
       try {
         //await init();
         //await printClientDatabase();
+        console.log("Sandbox");
 
+        // SetHost().then((v) => {
+        //   console.log("Host set to: " + v);
+        // })
+
+        console.log("Here 1")
+        let res = Requester.GetRequest('')
+        console.log("Here 2")
+        console.log(res);
 
 
       } catch (error) {
         console.log("Sandbox error: " + error);
       }
     }
-    fetch();
-    // sandbox();
+    // fetch();
+    sandbox();
 
   }, []);
 

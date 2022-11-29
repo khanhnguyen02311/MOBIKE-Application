@@ -1,13 +1,51 @@
-const axios = require('axios');
+import { setHostAddress } from "../redux/slice/hostAddressSlice";
+import Store from "../redux/store";
 
-const scheme = "http";
-const host = "https://abcdavid-knguyen.ddns.net";
+const scheme = "https";
+
+const actualHost = "abcdavid-knguyen.ddns.net";
+const localhost = "192.168.1.198";
 
 const port = "30001";
 
 const sleepTime = 1000;
 
-const GenerateRequestUrl = (path: String) => {
+export const SetHost = async () => {
+    await Promise.race([
+        new Promise((resolve, reject) => {
+            let host = GenerateRequestUrl("", actualHost)
+            console.log("1. Fetching: " + host);
+            fetch(host, {
+                method: 'GET',
+            }).then((v)=> {
+                resolve(0);
+            })
+            
+        }),
+        new Promise((resolve, reject) => {
+            let host = GenerateRequestUrl("", localhost)
+            console.log("2. Fetching: " + host);
+            fetch(host, {
+                method: 'GET',
+            }).then((v)=> {
+                resolve(1);
+            })
+        })
+    ]).then((value) => {
+        console.log("SetHost: " + value);
+        if (value == 0) {
+            console.log("Using actual host");
+            Store.dispatch(setHostAddress(actualHost));
+            return actualHost;
+        } else {
+            console.log("Using localhost");
+            Store.dispatch(setHostAddress(localhost));
+            return localhost;
+        }
+    })
+};
+
+const GenerateRequestUrl = (path: String, host: String = actualHost) => {
     let request = scheme + "://" + host + ":" + port + "/" + path;
     return request
 };
@@ -125,4 +163,4 @@ export const BigGetRequest = async (path: String) => {
     return result;
 }
 
-export default { PostRequest, GetRequest, ProtectedPostRequest, ProtectedGetRequest };
+export default {PostRequest, GetRequest, ProtectedPostRequest, ProtectedGetRequest };

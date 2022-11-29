@@ -3,6 +3,7 @@ import authReducer from '../slice/authSlice';
 import imageType from '../clientDatabase/imageType';
 import location from '../clientDatabase/location';
 import permission from '../clientDatabase/permission';
+import hostAddressReducer from '../slice/hostAddressSlice';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     locations: location,
     imageTypes: imageType,
     permissions: permission,
+    hostAddress: hostAddressReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

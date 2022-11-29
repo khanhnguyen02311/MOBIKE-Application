@@ -16,7 +16,7 @@ def create_app():
     
     @App.route("/")
     def hello():
-        return "<h1>Test running state.</h1>"
+        return "MOBIKE SERVER"
 
     App.register_blueprint(post.bppost, url_prefix='/posts')
     App.register_blueprint(image.bpimage, url_prefix='/image')
