@@ -11,3 +11,4 @@ mysqlclient
 openpyxl
 gunicorn
 Authlib
+pandas
