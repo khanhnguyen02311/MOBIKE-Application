@@ -89,6 +89,7 @@ def addaddress():
    
    Session = new_Session()
    try:
+      Session.commit()
       pass
    except Exception as e:
       Session.rollback()
