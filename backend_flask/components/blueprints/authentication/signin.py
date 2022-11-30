@@ -8,7 +8,7 @@ from components.security import make_hash, check_hash, oauth
 bpsignin = Blueprint('bpsignin', __name__)
 
 
-@bpsignin.route('/me', methods = ['POST'])
+@bpsignin.route('/me', methods = ['GET'])
 @jwt_required()
 def me():
    current_user = get_jwt_identity()

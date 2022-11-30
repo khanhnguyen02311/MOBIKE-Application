@@ -4,8 +4,9 @@ import { resolvePlugin } from "@babel/core";
 
 export const me = async (token) => {
     const response = await HttpRequest.ProtectedGetRequest("auth/me", token);
+    console.log("Me: " + JSON.stringify(response));
     if (response.ID) {
-        console.log(response);
+        
         return response
     }
 }
