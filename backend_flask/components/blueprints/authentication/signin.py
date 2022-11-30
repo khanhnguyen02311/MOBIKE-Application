@@ -1,12 +1,18 @@
 import secrets
 from flask import Flask, Blueprint, request, jsonify, url_for
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from components.dbsettings import new_Session
 from components import dbmodels as dbm, dbschemas as dbs
 from components.security import make_hash, check_hash, oauth
 
 bpsignin = Blueprint('bpsignin', __name__)
 
+
+@bpsignin.route('/me', methods = ['POST'])
+@jwt_required()
+def me():
+   current_user = get_jwt_identity()
+   return jsonify(current_user)
 
 def signin_output(message, error, access_token, uid = ""):
    return jsonify({

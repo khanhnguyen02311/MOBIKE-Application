@@ -38,7 +38,7 @@ const App = () => {
       await TokenStorage.init();
       await ClientDatabase.init();
       TokenStorage.print();
-      ClientDatabase.print();
+      // ClientDatabase.print();
       Store.dispatch(setLoading(false));
     }
     
