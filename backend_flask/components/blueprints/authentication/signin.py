@@ -15,7 +15,7 @@ def signin_output(message, error, access_token):
       "token": access_token})
    
 
-@bpsignin.route('/signin', methods = ['GET'])
+@bpsignin.route('/signin', methods = ['POST'])
 def signin():
    schema = dbs.AccountSchema()
    Session = new_Session()
