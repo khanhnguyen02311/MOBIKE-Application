@@ -8,11 +8,12 @@ from components.security import make_hash, check_hash, oauth
 bpsignin = Blueprint('bpsignin', __name__)
 
 
-def signin_output(message, error, access_token):
+def signin_output(message, error, access_token, uid = ""):
    return jsonify({
       "message": message, 
       "error": error, 
-      "token": access_token})
+      "token": access_token,
+      "uid": uid})
    
 
 @bpsignin.route('/signin', methods = ['POST'])
@@ -34,7 +35,7 @@ def signin():
                Session.commit()
             access_token = create_access_token(identity=schema.dump(acc))
             Session.close()
-            return signin_output("Completed", "", access_token)
+            return signin_output("Completed", "", access_token, acc.ID)
          
       Session.close()
       return signin_output("Incompleted", "Wrong username or password", "")

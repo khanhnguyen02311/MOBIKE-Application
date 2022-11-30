@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import AppNavContainer from './src/navigations';
 import GlobalProvider from './src/context/Provider';
 import Store from './src/redux/store';
+import { setLoading } from './src/redux/slice/loadingSlice';
 import { Provider, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TokenStorage from './src/services/TokenStorage';
@@ -33,9 +34,12 @@ const App = () => {
   useEffect(() => {
     //AsyncStorage.clear();
     console.log('Main')
-    const fetch = async () => {
+    const Init = async () => {
       await TokenStorage.init();
       await ClientDatabase.init();
+      TokenStorage.print();
+      ClientDatabase.print();
+      Store.dispatch(setLoading(false));
     }
     
     const sandbox = async () => {
@@ -52,7 +56,7 @@ const App = () => {
         console.log("Sandbox error: " + error);
       }
     }
-    fetch();
+    Init();
     //sandbox();
 
   }, []);
