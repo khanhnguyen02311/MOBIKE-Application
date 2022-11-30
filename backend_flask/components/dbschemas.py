@@ -11,6 +11,7 @@ class AccountSchema(Schema):
     ID = auto_field()
     Username = auto_field()
     ID_Permission = auto_field()
+    ID_AccountInfo = auto_field()
         
         
 class PermissionSchema(Schema):
@@ -33,6 +34,18 @@ class AccountInfoSchema(Schema):
     Gender = auto_field()
     Phone_number = auto_field()
     Identification_number = auto_field()
+    
+    
+class AddressSchema(Schema):
+    class Meta:
+        model = dbm.Address
+        load_instance = True
+        
+    ID = auto_field()
+    Detail_address = auto_field()
+    ID_City = auto_field()
+    ID_District = auto_field()
+    ID_Ward = auto_field()
 
 class WardSchema(Schema):
     class Meta:

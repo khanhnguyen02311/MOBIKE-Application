@@ -26,9 +26,12 @@ def getinfo():
    schema = dbs.AccountInfoSchema()
    Session = new_Session()
    try:
-      acc_info = Session.query(dbm.Account, dbm.AccountInfo).join("rel_AccountInfo").filter(dbm.Account.ID==current_user['ID']).first()
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc.ID_AccountInfo == None:
+         return jsonify({"message": "Incompleted", "error": "No AccountInfo created", "info": ""})
+      acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
       Session.close()
-      return jsonify({"message": "Completed", "error": "", "info": schema.dump(acc_info[1])})
+      return jsonify({"message": "Completed", "error": "", "info": schema.dump(acc_info)})
       
    except Exception as e:
       Session.close()
@@ -79,18 +82,28 @@ def changeinfo():
       return jsonify({"message": "Incompleted", "error": str(e)})
    
 
-## UNDONE
 @bpaccount.route("/addaddress", methods = ['POST'])
 @jwt_required()
 def addaddress():
    current_user = get_jwt_identity()   
    if current_user is None:
       return jsonify({"message": "Incompleted", "error": "Invalid token", "info": ""})
-   
+   info = request.get_json()
+   schema = dbs.AddressSchema()
    Session = new_Session()
    try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc.ID_AccountInfo == None:
+         return jsonify({"message": "Incompleted", "error": "No AccountInfo created", "info": ""})
+      new_address = dbm.Address(
+         Detail_address=info['detail'], 
+         ID_AccountInfo=acc.ID_AccountInfo, 
+         ID_City=info['city'], 
+         ID_District=info['district'], 
+         ID_Ward=info['ward'])
+      Session.add(new_address)
       Session.commit()
-      pass
+      return jsonify({"message": "Completed", "error": "", "info": schema.dump(new_address)})
    except Exception as e:
       Session.rollback()
       return jsonify({"message": "Incompleted", "error": str(e)})
