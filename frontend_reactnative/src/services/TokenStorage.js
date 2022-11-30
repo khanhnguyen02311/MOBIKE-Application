@@ -33,8 +33,8 @@ export const init = async () => {
 
 export const signUp = async (username: string, email: string, password: string) => {
     const response = await HttpRequest.PostRequest("auth/signup", { username: username, email: email, password: password, permission: 4 });
-    console.log("Sign up request sent: " + response);
-    if (response.msg === 'Successful') {
+    console.log("Sign up request sent: " + JSON.stringify(response));
+    if (response.message === 'Completed') {
         console.log('Sign up successful, start signing in');
         await signIn(email, password);
     } else {
@@ -46,7 +46,7 @@ export const signUp = async (username: string, email: string, password: string) 
 export const signIn = async (usernameOrEmail: String, password: String, savePassword: Boolean = true): String => {
     const response = await HttpRequest.PostRequest("auth/signin", { username_or_email: usernameOrEmail, password: password });
     console.log("Sign in request sent: " + JSON.stringify(response));
-    if (response.msg == "Successful") {
+    if (response.message == "Completed") {
         setCurrentToken(response.token);
         if (savePassword) {
             addToken(response.uid, response.token);

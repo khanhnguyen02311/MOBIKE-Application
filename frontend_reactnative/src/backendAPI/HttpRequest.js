@@ -1,16 +1,29 @@
-const axios = require('axios');
-
 const scheme = "https";
+
+<<<<<<< HEAD
+const scheme = "https";
+=======
+>>>>>>> fade66b9a22c5ce8c31c07ec462aea94a4680f64
 const host = "abcdavid-knguyen.ddns.net";
 
 const port = "30001";
 
-const sleepTime = 1000;
 
 const GenerateRequestUrl = (path: String) => {
     let request = scheme + "://" + host + ":" + port + "/" + path;
     return request
 };
+
+const ProcessResponse = async (response: Object) => {
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.indexOf("application/json") !== -1) {
+        const json = await response.json();
+        return json;
+    } else {
+        const text = await response.text();
+        return text;
+    }
+}
 
 const PostRequest = async (path: String, body: Object) => {
     try {
@@ -22,8 +35,7 @@ const PostRequest = async (path: String, body: Object) => {
             },
             body: JSON.stringify(body),
             });
-        let json = await response.json();
-        return json;
+        return await ProcessResponse(response);
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
             console.log("Network request failed ( " + path + " ), retrying...");
@@ -36,16 +48,17 @@ const PostRequest = async (path: String, body: Object) => {
 
 const GetRequest = async (path: String) => {
     try {
+        const url = GenerateRequestUrl(path);
+        console.log("Get request url: " + url);
         const response = await fetch(
-            GenerateRequestUrl(path), {
+            url, {
             method: 'GET',
             keepalive: true,
             // headers: {
             //     'Content-Type': 'application/json',
             // },
             });
-        let json = await response.json();
-        return json;
+        return await ProcessResponse(response);
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
             console.log("Network request failed ( " + path + " ), retrying...");
@@ -69,8 +82,7 @@ const ProtectedPostRequest = async (path: String, body: Object, token: String) =
             },
             body: JSON.stringify(body),
             });
-        let json = await response.json();
-        return json;
+        return await ProcessResponse(response);
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
             console.log("Network request failed ( " + path + " ), retrying...");
@@ -92,8 +104,7 @@ const ProtectedGetRequest = async (path: String, token: String) => {
                 'Authorization': 'Bearer ' + token,
             },
             });
-        let json = await response.json();
-        return json;
+        return await ProcessResponse(response);
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
             console.log("Network request failed ( " + path + " ), retrying...");
@@ -125,4 +136,4 @@ export const BigGetRequest = async (path: String) => {
     return result;
 }
 
-export default { PostRequest, GetRequest, ProtectedPostRequest, ProtectedGetRequest };
+export default {PostRequest, GetRequest, ProtectedPostRequest, ProtectedGetRequest };
