@@ -1,7 +1,8 @@
-import openpyxl
+import openpyxl, unicodedata
 from .dbmodels import *
 from .dbschemas import *
 from .dbsettings import new_Session
+import pandas as pd
 INITIALDATA = "components/initial_data/"
 
 def InitialDataFile(name: str):
@@ -25,10 +26,17 @@ def TruncateTables(tables: list):
     Session.close()
 
 
-def InsertLocation():
-    
-    TruncateTables({"City", "District", "Ward"})
+def remove_accents(input_str = None):
+    print(f"Debug: {input_str}")
+    if input_str == None:
+        return ''
+    nkfd_form = unicodedata.normalize('NFKD', input_str)
+    only_ascii = nkfd_form.encode('ASCII', 'ignore')
+    return only_ascii.decode()
 
+def InsertLocation1():
+    
+    TruncateTables({"CITY", "DISTRICT", "WARD"})
     wb = openpyxl.load_workbook(InitialDataFile("Locations"))
 
     sheet = wb.active
@@ -86,9 +94,31 @@ def InsertLocation():
 
     Session.commit()
     Session.close()
-
     return "Inserted {} cities, {} districts, {} wards".format(c, d, w)
 
+
+def InsertLocation2():
+    TruncateTables({"CITY", "DISTRICT", "WARD"})
+    city_table = pd.read_csv(INITIALDATA + 'Locations_City.csv', index_col=False)
+    district_table = pd.read_csv(INITIALDATA + 'Locations_District.csv', index_col=False)
+    ward_table = pd.read_csv(INITIALDATA + 'Locations_Ward.csv', index_col=False)
+    print(city_table)
+    Session = new_Session()
+    try:
+        for table in [city_table, district_table, ward_table]:
+            for i, row in table.iterrows():
+                if table is city_table: new_row = City(ID=row['City_UID'], Name=row['City'])
+                elif table is district_table: new_row = District(ID=row['District_UID'], Name=row['District'], ID_City=row['City_UID'])
+                else: new_row = Ward(ID=row['Ward_UID'], Name=row['Ward'], ID_District=row['District_UID'])
+                Session.add(new_row)
+            Session.flush()
+        Session.commit()
+        return "Inserted {} cities, {} districts, {} wards".format(city_table.shape[0], district_table.shape[0], ward_table.shape[0])
+    except Exception as e:
+        Session.rollback()
+        return "Error: " + str(e)
+    
+    
 def InsertPermission():
     TruncateTables({"Permission"})
     wb = openpyxl.load_workbook(InitialDataFile("Permissions"))

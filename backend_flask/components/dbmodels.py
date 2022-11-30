@@ -24,15 +24,12 @@ class AccountInfo (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Name = Column(ms.NVARCHAR(128), nullable=False)
     Birthdate = Column(ms.DATETIME)
-    Gender = Column(ms.TINYINT)
+    Gender = Column(ms.TINYINT) # 1: male, 2: female
     Phone_number = Column(ms.VARCHAR(12), nullable=False)
     Identification_number = Column(ms.VARCHAR(12))
     
     ID_AccountStat = Column(ms.INTEGER, ForeignKey('ACCOUNTSTAT.ID'), nullable=False)
     rel_AccountStat = relationship('AccountStat', back_populates='rel_AccountInfo')
-    
-    ID_Address = Column(ms.INTEGER, ForeignKey('ADDRESS.ID'))
-    rel_Address = relationship('Address', back_populates='rel_AccountInfo')
     
     ID_Image_Profile = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
     rel_Image_Profile = relationship('Image', foreign_keys=[ID_Image_Profile], back_populates='rel_AccountInfo_Profile')
@@ -42,6 +39,9 @@ class AccountInfo (Base):
     
     ## Account reference
     rel_Account = relationship("Account", back_populates="rel_AccountInfo", uselist=False)
+    
+    ## Address reference
+    rel_Address = relationship('Address', back_populates='rel_AccountInfo')
     
     
 # ==============================================================================
@@ -127,6 +127,9 @@ class Address (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Detail_address = Column(ms.NVARCHAR(128))
     
+    ID_AccountInfo = Column(ms.INTEGER, ForeignKey("ACCOUNTINFO.ID"), nullable=False)
+    rel_AccountInfo = relationship("AccountInfo", back_populates="rel_Address")
+    
     ID_City = Column(ms.INTEGER, ForeignKey("CITY.ID"), nullable=False)
     rel_City = relationship("City")
         
@@ -138,9 +141,6 @@ class Address (Base):
 
     ## Post reference
     rel_Post = relationship("Post", back_populates="rel_Address")
-    
-    ## AccountInfo reference
-    rel_AccountInfo = relationship("AccountInfo", back_populates="rel_Address")
         
     
 # ==============================================================================

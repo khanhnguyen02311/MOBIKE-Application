@@ -11,7 +11,6 @@ class AccountSchema(Schema):
     ID = auto_field()
     Username = auto_field()
     ID_Permission = auto_field()
-    ID_AccountInfo = auto_field()
         
         
 class PermissionSchema(Schema):
@@ -33,6 +32,7 @@ class AccountInfoSchema(Schema):
     Birthdate = auto_field()
     Gender = auto_field()
     Phone_number = auto_field()
+    Identification_number = auto_field()
 
 class WardSchema(Schema):
     class Meta:

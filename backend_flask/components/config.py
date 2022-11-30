@@ -26,14 +26,21 @@ if (platform.system() == "Windows"):
 class FlaskConfig:
    SECRET_KEY = environ.get('SECRET_KEY')
    JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
-   JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=14)
+   JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=21)
 
 class SQLAlchemyConfig:
-   SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + (IsTrueServer and "?unix_socket=/var/run/mysqld/mysqld.sock" or "")
+   SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + (IsTrueServer and "?unix_socket=/var/run/mysqld/mysqld.sock&charset=utf8mb4" or "")
    ECHO = False
    AUTO_FLUSH = True
    AUTO_COMMIT = False
    EXPIRE_ON_COMMIT = True
+   
+class RedisConfig:
+   HOST = "localhost"
+   PORT = 6379
+   DB = 0
+   DECODE_RESPONSES = True
+   PASSWORD = environ.get('REDISPASSWORD')
    
 class SecurityConfig:
    ARGON_TIMECOST = 4
