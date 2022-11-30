@@ -32,13 +32,11 @@ def signup():
       password = make_hash(request.json['password'])
       
       new_account = dbm.Account(Username=username, Password=password, Email=email, Account_type=0, ID_Permission=4)
-      access_token = create_access_token(identity=schema.dump(new_account))
       Session.add(new_account)
       Session.commit()
-      Session.close()
+      access_token = create_access_token(identity=schema.dump(new_account))
       return signup_output("Completed", "", access_token)
    
    except Exception as e:
       Session.rollback()
-      Session.close()
       return signup_output("Incompleted", str(e), "")

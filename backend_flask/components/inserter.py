@@ -2,6 +2,7 @@ import openpyxl, unicodedata
 from .dbmodels import *
 from .dbschemas import *
 from .dbsettings import new_Session
+import pandas as pd
 INITIALDATA = "components/initial_data/"
 
 def InitialDataFile(name: str):
@@ -33,10 +34,9 @@ def remove_accents(input_str = None):
     only_ascii = nkfd_form.encode('ASCII', 'ignore')
     return only_ascii.decode()
 
-def InsertLocation():
+def InsertLocation1():
     
     TruncateTables({"CITY", "DISTRICT", "WARD"})
-
     wb = openpyxl.load_workbook(InitialDataFile("Locations"))
 
     sheet = wb.active
@@ -74,55 +74,31 @@ def InsertLocation():
             Session.commit()
             w += 1
     Session.close()
-
     return "Inserted {} cities, {} districts, {} wards".format(c, d, w)
 
 
-def InsertLocationNoDau():
-    
+def InsertLocation2():
     TruncateTables({"CITY", "DISTRICT", "WARD"})
-
-    wb = openpyxl.load_workbook(InitialDataFile("Locations"))
-
-    sheet = wb.active
-    i = 1
-    c = 0
-    d = 0
-    w = 0
+    city_table = pd.read_csv(INITIALDATA + 'Locations_City.csv', index_col=False)
+    district_table = pd.read_csv(INITIALDATA + 'Locations_District.csv', index_col=False)
+    ward_table = pd.read_csv(INITIALDATA + 'Locations_Ward.csv', index_col=False)
+    print(city_table)
     Session = new_Session()
-    while True:
-        i += 1
-        cityName = remove_accents(sheet.cell(row=i, column=1).value)
-        if cityName == None:
-            break
-        districtName = remove_accents(sheet.cell(row=i, column=3).value)
-        wardName = remove_accents(sheet.cell(row=i, column=5).value)
-        city = Session.query(City).filter(City.Name == cityName).first()
-        if city == None or city.Name != cityName:
-            city = City(Name=cityName)
-            Session.add(city)
-            Session.commit()
-            c += 1
-
-        district = Session.query(District).filter(District.ID_City == city.ID).filter(District.Name == districtName).first()
-        if district == None or district.Name != districtName:
-            district = District(Name=districtName, ID_City=city.ID)
-            Session.add(district)
-            Session.commit()
-            d += 1
-
-        if wardName == None:
-            continue
-        ward = Session.query(Ward).filter(Ward.ID_District == district.ID).filter(Ward.Name == wardName).first()
-        if ward == None or ward.Name!=wardName:
-            ward = Ward(Name=wardName, ID_District=district.ID)
-            Session.add(ward)
-            Session.commit()
-            w += 1
-    Session.close()
-
-    return "Inserted {} cities, {} districts, {} wards".format(c, d, w)
-
+    try:
+        for table in [city_table, district_table, ward_table]:
+            for i, row in table.iterrows():
+                if table is city_table: new_row = City(ID=row['City_UID'], Name=row['City'])
+                elif table is district_table: new_row = District(ID=row['District_UID'], Name=row['District'], ID_City=row['City_UID'])
+                else: new_row = Ward(ID=row['Ward_UID'], Name=row['Ward'], ID_District=row['District_UID'])
+                Session.add(new_row)
+            Session.flush()
+        Session.commit()
+        return "Inserted {} cities, {} districts, {} wards".format(city_table.shape[0], district_table.shape[0], ward_table.shape[0])
+    except Exception as e:
+        Session.rollback()
+        return "Error: " + str(e)
+    
+    
 def InsertPermission():
     TruncateTables({"Permission"})
     wb = openpyxl.load_workbook(InitialDataFile("Permissions"))

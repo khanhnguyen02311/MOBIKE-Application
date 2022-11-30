@@ -17,8 +17,7 @@ def serverinfo():
 @bpadmin.route('/insertlocations', methods = ['POST'])
 def insertlocations():
     print("Inserting locations...")
-    return InsertLocationNoDau()
-    return InsertLocation() 
+    return InsertLocation2()
 
 
 @bpadmin.route('/insertpermissions', methods = ['POST'])

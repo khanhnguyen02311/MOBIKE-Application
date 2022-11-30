@@ -77,11 +77,9 @@ def googleauthorize():
       access_token = create_access_token(identity=schema.dump(new_Account))
       Session.add(new_Account)
       Session.commit()
-      Session.close()
       return signin_output("Completed", "", access_token)
       
    except Exception as e:
       Session.rollback()
-      Session.close()
       return signin_output("Incompleted", str(e), "")
     

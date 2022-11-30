@@ -7,6 +7,15 @@ from components import dbmodels as dbm, dbschemas as dbs
 bpaccount = Blueprint('bpaccount', __name__)
 
 
+@bpaccount.route('/me', methods = ['GET'])
+@jwt_required()
+def protected():
+   # Access the identity of the current user with get_jwt_identity
+   current_user = get_jwt_identity()
+   #return jsonify(logged_in_as=current_user), 200 # ok
+   return jsonify(current_user)#, 200 # ok
+
+
 @bpaccount.route("/getinfo", methods=['GET'])
 @jwt_required()
 def getinfo():
@@ -42,7 +51,6 @@ def changeinfo():
          new_stat = dbm.AccountStat()
          Session.add(new_stat)
          Session.flush()
-         Session.refresh(new_stat)
          new_info = dbm.AccountInfo(
             Name = info['name'], 
             Birthdate = datetime.strptime(info['birth'], '%m/%d/%Y'), 
@@ -52,10 +60,8 @@ def changeinfo():
             ID_AccountStat = new_stat.ID)
          Session.add(new_info)
          Session.flush()
-         Session.refresh(new_info) # load the database information back to the variable
          acc.ID_AccountInfo = new_info.ID
          Session.commit()
-         Session.close()
          return jsonify({"message": "Completed", "error": ""})
       
       else:
@@ -66,12 +72,10 @@ def changeinfo():
             "Phone_number": info['phone'],
             "Identification_number": info['idt']}, synchronize_session="fetch")
          Session.commit()
-         Session.close()
          return jsonify({"message": "Completed", "error": ""})
    
    except Exception as e:
       Session.rollback()
-      Session.close()
       return jsonify({"message": "Incompleted", "error": str(e)})
    
 
@@ -88,7 +92,6 @@ def addaddress():
       pass
    except Exception as e:
       Session.rollback()
-      Session.close()
       return jsonify({"message": "Incompleted", "error": str(e)})
    
 

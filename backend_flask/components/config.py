@@ -19,7 +19,7 @@ class FlaskConfig:
    JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=21)
 
 class SQLAlchemyConfig:
-   SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + "?unix_socket=/var/run/mysqld/mysqld.sock"
+   SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + "?unix_socket=/var/run/mysqld/mysqld.sock&charset=utf8mb4"
    ECHO = False
    AUTO_FLUSH = True
    AUTO_COMMIT = False
