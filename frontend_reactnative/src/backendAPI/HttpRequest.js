@@ -1,9 +1,5 @@
 const scheme = "https";
 
-<<<<<<< HEAD
-const scheme = "https";
-=======
->>>>>>> fade66b9a22c5ce8c31c07ec462aea94a4680f64
 const host = "abcdavid-knguyen.ddns.net";
 
 const port = "30001";
