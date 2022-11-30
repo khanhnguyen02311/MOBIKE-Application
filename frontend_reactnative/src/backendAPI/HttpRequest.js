@@ -1,7 +1,7 @@
 const axios = require('axios');
 
-const scheme = "http";
-const host = "https://abcdavid-knguyen.ddns.net";
+const scheme = "https";
+const host = "abcdavid-knguyen.ddns.net";
 
 const port = "30001";
 

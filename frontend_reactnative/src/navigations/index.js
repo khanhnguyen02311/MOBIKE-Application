@@ -17,7 +17,7 @@ const AppNavContainer = () => {
   const isLoading = useSelector(state => state.loading.loading);
   return (
     <NavigationContainer>
-      {false ? (
+      {true ? (
         <BottomNavigator></BottomNavigator>
       ) : (
         <AuthenticationNavigator />
