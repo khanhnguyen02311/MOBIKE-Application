@@ -45,59 +45,57 @@ const Login = ({navigation}) => {
   // };
 
   const [form, setForm] = React.useState({});
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const onChange = ({name, value}) => {
     setForm({...form, [name]: value});
   };
 
   const login = async () => {
-    console.log("Login Submitted")
-    await TokenStorage.signIn(form.username, form.password)
+    console.log('Login Submitted');
+    await TokenStorage.signIn(form.username, form.password);
   };
 
   const onSubmit = () => {
+    setIsLoading(true);
     login();
   };
 
   const onTest = () => {
-    console.log("Test")
-    openGallery()
+    console.log('Test');
+    openGallery();
   };
 
   const openGallery = async () => {
     const result = await launchImageLibrary();
     console.log(result);
     saveImageToServer(result.assets[0]);
-  }
+  };
 
-  const saveImageToServer = async (image) => {
+  const saveImageToServer = async image => {
     try {
-    const formData = new FormData();
-    formData.append('file', {
-      uri: image.uri,
-      type: image.type,
-      name: image.fileName,
-    });
-    console.log("formData: ", JSON.stringify(formData));
-    const response = await fetch("http://172.30.163.113:3001/upload", {
-      method: 'POST',
-      body: formData,
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-    const data = await response.json();
-    console.log(data);
+      const formData = new FormData();
+      formData.append('file', {
+        uri: image.uri,
+        type: image.type,
+        name: image.fileName,
+      });
+      console.log('formData: ', JSON.stringify(formData));
+      const response = await fetch('http://172.30.163.113:3001/upload', {
+        method: 'POST',
+        body: formData,
+        headers: {'Content-Type': 'multipart/form-data'},
+      });
+      const data = await response.json();
+      console.log(data);
     } catch (error) {
-      console.log("Save Image Error: " + error);
+      console.log('Save Image Error: ' + error);
     }
-  }
+  };
 
-  return <LoginComponent
-    onChange={onChange}
-    onSubmit={onSubmit}
-    onTest={onTest}
-  />;
+  return (
+    <LoginComponent onChange={onChange} onSubmit={onSubmit} onTest={onTest} />
+  );
 };
-
-
 
 export default Login;

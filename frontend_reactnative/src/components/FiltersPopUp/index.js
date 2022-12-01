@@ -6,6 +6,14 @@ const FiltersPopUpComponent = () => {
   return (
     <Container styleScrollView={{backgroundColor: 'white'}}>
       <FilterProp />
+      <FilterProp />
+      <FilterProp />
+      <FilterProp />
+      <FilterProp />
+      <FilterProp />
+      <FilterProp />
+      <FilterProp/>
+      <View style={{marginTop: 50}}></View>
     </Container>
   );
 };

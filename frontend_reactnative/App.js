@@ -52,7 +52,7 @@ const App = () => {
         console.log("Sandbox error: " + error);
       }
     }
-    fetch();
+    // fetch();
     //sandbox();
 
   }, []);
