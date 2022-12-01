@@ -23,8 +23,10 @@ const ProcessResponse = async (response: Object) => {
 
 const PostRequest = async (path: String, body: Object, retry: Number = 0) => {
     try {
+        const url = GenerateRequestUrl(path);
+        console.log("Post request url: " + url);
         const response = await fetch(
-            GenerateRequestUrl(path), {
+            url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -79,8 +81,10 @@ const GetRequest = async (path: String, retry: Number = 0) => {
 
 const ProtectedPostRequest = async (path: String, body: Object, token: String, retry: Number = 0) => {
     try {
+        const url = GenerateRequestUrl(path);
+        console.log("Protected Post request url: " + url);
         const response = await fetch(
-            GenerateRequestUrl(path), {
+            url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -108,11 +112,12 @@ const ProtectedPostRequest = async (path: String, body: Object, token: String, r
 
 const ProtectedGetRequest = async (path: String, token: String) => {
     try {
+        const url = GenerateRequestUrl(path);
+        console.log("Protected Get request url: " + url);
         const response = await fetch(
-            GenerateRequestUrl(path), {
+            url, {
             method: 'GET',
             headers: {
-                // 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token,
             },
         });

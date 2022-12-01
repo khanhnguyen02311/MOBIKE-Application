@@ -5,6 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import AuthenticationNavigator from './AuthenticationNavigator';
 import {GlobalContext} from '../context/Provider';
 import BottomNavigator from './BottomNavigator';
+import 
 import {useSelector} from 'react-redux';
 import YourPosts from '../screens/YourPosts';
 
@@ -17,11 +18,20 @@ const AppNavContainer = () => {
   const isLoading = useSelector(state => state.loading.loading);
   return (
     <NavigationContainer>
-      {isLoggedIn ? (
-        <BottomNavigator></BottomNavigator>
-      ) : (
-        <AuthenticationNavigator />
-      )}
+      {
+        isLoading ? (
+
+        ):(
+          {
+            {isLoggedIn ? (
+              <BottomNavigator></BottomNavigator>
+            ) : (
+              <AuthenticationNavigator />
+            )}
+            }
+          )
+      }
+
     </NavigationContainer>
   );
 };
