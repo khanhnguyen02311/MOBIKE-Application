@@ -1,6 +1,6 @@
 import secrets
 from flask import Flask, Blueprint, request, jsonify, url_for
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from components.dbsettings import new_Session
 from components import dbmodels as dbm, dbschemas as dbs
 from components.security import make_hash, check_hash, oauth
@@ -8,14 +8,21 @@ from components.security import make_hash, check_hash, oauth
 bpsignin = Blueprint('bpsignin', __name__)
 
 
-def signin_output(message, error, access_token):
+@bpsignin.route('/me', methods = ['GET'])
+@jwt_required()
+def me():
+   current_user = get_jwt_identity()
+   return jsonify(current_user)
+
+def signin_output(message, error, access_token, uid = ""):
    return jsonify({
       "message": message, 
       "error": error, 
-      "token": access_token})
+      "token": access_token,
+      "uid": uid})
    
 
-@bpsignin.route('/signin', methods = ['GET'])
+@bpsignin.route('/signin', methods = ['POST'])
 def signin():
    schema = dbs.AccountSchema()
    Session = new_Session()
@@ -34,7 +41,7 @@ def signin():
                Session.commit()
             access_token = create_access_token(identity=schema.dump(acc))
             Session.close()
-            return signin_output("Completed", "", access_token)
+            return signin_output("Completed", "", access_token, acc.ID)
          
       Session.close()
       return signin_output("Incompleted", "Wrong username or password", "")

@@ -1,9 +1,9 @@
 const scheme = "https";
-
 const host = "abcdavid-knguyen.ddns.net";
-
 const port = "30001";
 
+const retryInterval = 100;
+const maxRetry = 10;
 
 const GenerateRequestUrl = (path: String) => {
     let request = scheme + "://" + host + ":" + port + "/" + path;
@@ -21,28 +21,37 @@ const ProcessResponse = async (response: Object) => {
     }
 }
 
-const PostRequest = async (path: String, body: Object) => {
+const PostRequest = async (path: String, body: Object, retry: Number = 0) => {
     try {
+        const url = GenerateRequestUrl(path);
+        console.log("Post request url: " + url);
         const response = await fetch(
-            GenerateRequestUrl(path), {
+            url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(body),
-            });
+        });
         return await ProcessResponse(response);
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
-            console.log("Network request failed ( " + path + " ), retrying...");
-            return await PostRequest(path, body);
+            retry += 1;
+            console.log("PostRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
+            if (retry <= maxRetry) {
+                return await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(PostRequest(path, body, retry));
+                    }, retryInterval);
+                });
+            }
         } else {
             console.log("Fetch Error:" + error)
         }
     }
 };
 
-const GetRequest = async (path: String) => {
+const GetRequest = async (path: String, retry: Number = 0) => {
     try {
         const url = GenerateRequestUrl(path);
         console.log("Get request url: " + url);
@@ -50,62 +59,81 @@ const GetRequest = async (path: String) => {
             url, {
             method: 'GET',
             keepalive: true,
-            // headers: {
-            //     'Content-Type': 'application/json',
-            // },
-            });
+        });
         return await ProcessResponse(response);
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
-            console.log("Network request failed ( " + path + " ), retrying...");
-            return await GetRequest(path);
-        } else {    
+            retry += 1;
+            console.log("GetRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
+            if (retry <= maxRetry) {
+                return await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(GetRequest(path, retry));
+                    }, retryInterval);
+                });
+            }
+        } else {
             console.log("Fetch Error:" + error)
-            
         }
 
     }
 };
 
-const ProtectedPostRequest = async (path: String, body: Object, token: String) => {
+const ProtectedPostRequest = async (path: String, body: Object, token: String, retry: Number = 0) => {
     try {
+        const url = GenerateRequestUrl(path);
+        console.log("Protected Post request url: " + url);
         const response = await fetch(
-            GenerateRequestUrl(path), {
+            url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token,
             },
             body: JSON.stringify(body),
-            });
+        });
         return await ProcessResponse(response);
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
-            console.log("Network request failed ( " + path + " ), retrying...");
-            return await ProtectedPostRequest(path, body, token);
-        } else {    
+            retry += 1;
+            console.log("ProtectedPostRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
+            if (retry <= maxRetry) {
+                return await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(ProtectedPostRequest(path, body, token, retry));
+                    }, retryInterval);
+                });
+            }
+        } else {
             console.log("Fetch Error:" + error)
-
         }
     }
 };
 
 const ProtectedGetRequest = async (path: String, token: String) => {
     try {
+        const url = GenerateRequestUrl(path);
+        console.log("Protected Get request url: " + url);
         const response = await fetch(
-            GenerateRequestUrl(path), {
+            url, {
             method: 'GET',
             headers: {
-                // 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token,
             },
-            });
+        });
         return await ProcessResponse(response);
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
-            console.log("Network request failed ( " + path + " ), retrying...");
-            return await ProtectedGetRequest(path, token);
-        } else {    
+            retry += 1;
+            console.log("ProtectedGetRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
+            if (retry <= maxRetry) {
+                return await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(ProtectedGetRequest(path, token, retry));
+                    }, retryInterval);
+                });
+            }
+        } else {
             console.log("Fetch Error:" + error)
         }
     }
@@ -132,4 +160,4 @@ export const BigGetRequest = async (path: String) => {
     return result;
 }
 
-export default {PostRequest, GetRequest, ProtectedPostRequest, ProtectedGetRequest };
+export default { PostRequest, GetRequest, ProtectedPostRequest, ProtectedGetRequest };

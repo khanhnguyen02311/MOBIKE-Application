@@ -18,6 +18,7 @@ export const init = async () => {
             const currentToken = await getCurrentToken();
             if (currentToken) {
                 const myinfo = await BackendAPI.me(currentToken);
+                console.log("Current acccount: " + JSON.stringify(myinfo));
                 if (myinfo) {
                     Store.dispatch(login({
                         ID: myinfo.ID,

@@ -17,11 +17,19 @@ const AppNavContainer = () => {
   const isLoading = useSelector(state => state.loading.loading);
   return (
     <NavigationContainer>
-      {true ? (
-        <BottomNavigator></BottomNavigator>
-      ) : (
-        <AuthenticationNavigator />
-      )}
+      {
+        isLoading ? (
+          
+        ):(
+          {
+            {isLoggedIn ? (
+              <BottomNavigator></BottomNavigator>
+            ) : (
+              <AuthenticationNavigator />
+            )}
+            }
+          )
+      }
     </NavigationContainer>
   );
 };
