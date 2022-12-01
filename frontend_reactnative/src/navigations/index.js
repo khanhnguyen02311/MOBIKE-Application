@@ -7,6 +7,7 @@ import {GlobalContext} from '../context/Provider';
 import BottomNavigator from './BottomNavigator';
 import {useSelector} from 'react-redux';
 import YourPosts from '../screens/YourPosts';
+import LoadingNavigator from './LoadingNavigator';
 
 const AppNavContainer = () => {
   // const {
@@ -17,19 +18,13 @@ const AppNavContainer = () => {
   const isLoading = useSelector(state => state.loading.loading);
   return (
     <NavigationContainer>
-      {
-        isLoading ? (
-          
-        ):(
-          {
-            {isLoggedIn ? (
-              <BottomNavigator></BottomNavigator>
-            ) : (
-              <AuthenticationNavigator />
-            )}
-            }
-          )
-      }
+      {isLoading ? (
+        <LoadingNavigator />
+      ) : isLoggedIn ? (
+        <BottomNavigator />
+      ) : (
+        <AuthenticationNavigator />
+      )}
     </NavigationContainer>
   );
 };
