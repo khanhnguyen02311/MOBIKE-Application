@@ -62,7 +62,6 @@ def googleauthorize():
       # for AccountInfo later
       name = profile["name"]
       picture_location = profile["picture"]
-      
       email = profile["email"]
       username = "accounts.google." + profile["id"]
       acc = Session.query(dbm.Account).filter(dbm.Account.Email==email, dbm.Account.Account_type==1).first()
