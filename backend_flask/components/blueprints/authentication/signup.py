@@ -13,6 +13,7 @@ def signup_output(message, error, access_token):
       "error": error, 
       "token": access_token})
    
+
 @bpsignup.route('/signup', methods=['POST'])
 def signup():
    schema = dbs.AccountSchema()
@@ -20,13 +21,14 @@ def signup():
    try:
       email = request.json['email']
       username = request.json['username']
+      phone = request.json['phone']
       
-      existedEmail = Session.query(dbm.Account.Email).filter(dbm.Account.Email==email, dbm.Account.Account_type==0).first()
-      if (not existedEmail is None):
+      existed_email = Session.query(dbm.Account.Email).filter(dbm.Account.Email==email, dbm.Account.Account_type==0).first()
+      if (not existed_email is None):
          return signup_output("Incompleted", "Email existed", "")
       
-      existedUsername = Session.query(dbm.Account.Username).filter(dbm.Account.Username==username, dbm.Account.Account_type==0).first()
-      if (not existedUsername is None):
+      existed_username = Session.query(dbm.Account.Username).filter(dbm.Account.Username==username, dbm.Account.Account_type==0).first()
+      if (not existed_username is None):
          return signup_output("Incompleted", "Username existed", "")
 
       password = make_hash(request.json['password'])

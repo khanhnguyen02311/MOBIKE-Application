@@ -20,11 +20,11 @@ def signin():
    schema = dbs.AccountSchema()
    Session = new_Session()
    try:
-      usernameOrEmail = request.json["username_or_email"]
+      username_or_email = request.json["username_or_email"]
       password = request.json["password"]
       
-      acc = Session.query(dbm.Account).filter(dbm.Account.Email==usernameOrEmail, dbm.Account.Account_type==0).first() or \
-            Session.query(dbm.Account).filter(dbm.Account.Username==usernameOrEmail, dbm.Account.Account_type==0).first()
+      acc = Session.query(dbm.Account).filter(dbm.Account.Email==username_or_email, dbm.Account.Account_type==0).first() or \
+            Session.query(dbm.Account).filter(dbm.Account.Username==username_or_email, dbm.Account.Account_type==0).first()
          
       if (acc != None):
          result = check_hash(acc.Password, password)
@@ -83,3 +83,4 @@ def googleauthorize():
       Session.rollback()
       return signin_output("Incompleted", str(e), "")
     
+
