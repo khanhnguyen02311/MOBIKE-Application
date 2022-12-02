@@ -170,6 +170,7 @@ export const print = async () => {
             let locations = JSON.parse(await AsyncStorage.getItem(LOCATIONS));
             console.log("Locations: ");
             console.log("\tCities: " + locations.Cities.length);
+            console.log(locations.Cities);
             console.log("\tDistricts: " + locations.Districts.length);
             console.log("\tWards: " + locations.Wards.length);
             let permissions = await AsyncStorage.getItem(PERMISSIONS);

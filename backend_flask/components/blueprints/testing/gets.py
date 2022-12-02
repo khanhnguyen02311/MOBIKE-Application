@@ -37,6 +37,18 @@ def ifusernameexists(username):
         Session.close()
         return jsonify({"exists": False})
 
+@bpget.route('/isphoneexists/<phone>', methods = ['GET'])
+def ifphoneexists(phone):
+    Session = new_Session()
+    try:
+        user = Session.query(AccountInfo).filter(AccountInfo.Phone_number == phone).first()
+        Session.close()
+        return jsonify({"exists": not user is None})
+    except Exception as e:
+        Session.rollback()
+        Session.close()
+        return jsonify({"exists": False})
+
 @bpget.route('/step', methods=['GET'])
 def getStep():
     return jsonify(STEP)

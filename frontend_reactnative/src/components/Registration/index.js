@@ -74,6 +74,24 @@ const RegistrationComponent = ({
               }}
               error={errors.username}
             />
+
+            <TextInputOutline
+              label={'Phone'}
+              iconClass={Ionicons}
+              iconName={'call'}
+              iconColor={'#90B4D3'}
+              inputPadding={12}
+              borderWidthtoTop={0}
+              marginBottomContainer={27}
+              onChangeText={value => {
+                onChange({name: 'phone', value});
+              }}
+              onEndEditing={value => {
+                onEdited({name: 'phone', value});
+              }}
+              error={errors.phone}
+            />
+
             <TextInputOutline
               label={'Password'}
               iconClass={MaterialCommunityIcons}
