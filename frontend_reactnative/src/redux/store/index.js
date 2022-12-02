@@ -8,10 +8,10 @@ import permission from '../clientDatabase/permission';
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    locations: location,
     imageTypes: imageType,
     permissions: permission,
     loading: loadingReducer,
+    locations: location,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
