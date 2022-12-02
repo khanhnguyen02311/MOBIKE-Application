@@ -142,6 +142,7 @@ const ProtectedGetRequest = async (path: String, token: String, retry: Number = 
 export const BigGetRequest = async (path: String) => {
     const count = await GetRequest("gets/count/" + path);
     const step = await GetRequest("gets/step");
+    const concurrent = await GetRequest("gets/concurrent");
     let result = [];
     const pros = [];
     let i = 1;
@@ -151,11 +152,19 @@ export const BigGetRequest = async (path: String) => {
         i += step;
     }
 
-    await Promise.all(pros).then((values) => {
-        values.forEach((value) => {
-            result = result.concat(value);
-        });
-    });
+    i = 0;
+    while (i < pros.length) {
+        const pro = pros.slice(i, i + concurrent);
+        const res = await Promise.all(pro);
+        result = result.concat(res);
+        i += concurrent;
+    }
+
+    // await Promise.all(pros).then((values) => {
+    //     values.forEach((value) => {
+    //         result = result.concat(value);
+    //     });
+    // });
 
     return result;
 }

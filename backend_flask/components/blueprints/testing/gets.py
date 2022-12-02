@@ -6,6 +6,7 @@ from ...inserter import *
 from ...dbschemas import *
 
 STEP = 100
+CONCURRENT = 5
 bpget = Blueprint('bpget', __name__)
 
 @bpget.route('/', methods = ['GET'])
@@ -30,6 +31,10 @@ def ifusernameexists(username):
 @bpget.route('/step', methods=['GET'])
 def getStep():
     return jsonify(STEP)
+
+@bpget.route('/concurrent', methods=['GET'])
+def getConcurrent():
+    return jsonify(CONCURRENT)
 
 @bpget.route('/version/<name>', methods = ['GET'])
 def getversions(name):
