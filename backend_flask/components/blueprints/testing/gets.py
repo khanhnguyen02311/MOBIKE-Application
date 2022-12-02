@@ -38,7 +38,7 @@ def getversions(name):
     print("Here: " + name)
     result = Session.query(Version).filter(Version.Name == name).first()
     print("Found: " + result.Name)
-    Session = new_Session()
+    Session.close()
     return jsonify(schema.dump(result))
 
 @bpget.route('/permissions', methods = ['GET'])
