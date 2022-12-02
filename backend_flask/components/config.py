@@ -33,8 +33,8 @@ class SQLAlchemyConfig:
    ECHO = False
    AUTO_FLUSH = True
    AUTO_COMMIT = False
-   POOL_SIZE = 10
-   MAX_OVERFLOW = 20
+   POOL_SIZE = 15
+   MAX_OVERFLOW = 10
    
 class RedisConfig:
    HOST = "localhost"
