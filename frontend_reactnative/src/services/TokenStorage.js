@@ -4,7 +4,6 @@ import Store from '../redux/store';
 import {login} from '../redux/slice/authSlice';
 import BackendAPI from '../backendAPI';
 
-
 export const init = async () => {
     try {
         let isTokenStorageInitialized = await AsyncStorage.getItem('TokenStorageInitted');

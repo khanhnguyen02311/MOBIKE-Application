@@ -110,7 +110,7 @@ const ProtectedPostRequest = async (path: String, body: Object, token: String, r
     }
 };
 
-const ProtectedGetRequest = async (path: String, token: String) => {
+const ProtectedGetRequest = async (path: String, token: String, retry: Number = 0) => {
     try {
         const url = GenerateRequestUrl(path);
         console.log("Protected Get request url: " + url);
