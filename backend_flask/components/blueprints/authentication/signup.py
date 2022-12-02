@@ -14,8 +14,7 @@ def signup_output(message, error, access_token):
       "token": access_token})
    
       
-def setup_account(a_email, a_username, a_password, a_type, a_permission, i_name, i_phone, i_image=None):
-   Session = new_Session()
+def setup_account(Session, a_email, a_username, a_password, a_type, a_permission, i_name, i_phone, i_image=None):
    try:
       accountstat = dbm.AccountStat()
       account = dbm.Account(Username=a_username, Password=a_password, Email=a_email, Account_type=a_type, ID_Permission=a_permission)
@@ -30,10 +29,9 @@ def setup_account(a_email, a_username, a_password, a_type, a_permission, i_name,
       Session.flush()
       account.ID_AccountInfo = accountinfo.ID
       Session.add(account)
-      Session.commit()
+      Session.flush()
       return [True, account]
    except Exception as e:
-      Session.rollback()
       return [False, str(e)]
 
    
@@ -56,20 +54,20 @@ def signup():
 
       password = make_hash(request.json['password'])
       
-      new_account = dbm.Account(Username=username, Password=password, Email=email, Account_type=0, ID_Permission=4)
-      Session.add(new_account)
-      Session.commit()
-      access_token = create_access_token(identity=schema.dump(new_account))
-      return signup_output("Completed", "", access_token)
+      # new_account = dbm.Account(Username=username, Password=password, Email=email, Account_type=0, ID_Permission=4)
+      # Session.add(new_account)
+      # Session.commit()
+      # access_token = create_access_token(identity=schema.dump(new_account))
+      # return signup_output("Completed", "", access_token)
       
-      # output = setup_account(email, username, password, 0, 4, username, phone)
-      # if output[0] == True:
-      #    Session.close()
-      #    access_token = create_access_token(identity=schema.dump(output[1]))
-      #    return signup_output("Completed", "", access_token)
-      # else:
-      #    Session.close()
-      #    signup_output("Incompleted", output[1], "")
+      output = setup_account(Session, email, username, password, 0, 4, username, phone)
+      if output[0] == True:
+         Session.commit()
+         access_token = create_access_token(identity=schema.dump(output[1]))
+         return signup_output("Completed", "", access_token)
+      else:
+         Session.rollback()
+         signup_output("Incompleted", output[1], "")
    
    except Exception as e:
       Session.rollback()
