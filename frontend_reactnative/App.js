@@ -35,10 +35,11 @@ const App = () => {
     //AsyncStorage.clear();
     console.log('Main')
     const Init = async () => {
+      await AsyncStorage.clear();
+      console.log("AsyncStorage cleared");
       await TokenStorage.init();
       await ClientDatabase.init();
       TokenStorage.print();
-      // ClientDatabase.print();
       Store.dispatch(setLoading(false));
     }
     
