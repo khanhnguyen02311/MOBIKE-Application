@@ -126,10 +126,8 @@ const Registration = ({navigation}) => {
     } else {
       setErrors(prev => {
         if (prev.email && prev.email === '* Email already exists') {
-
           return {...prev, email: ''};
         }
-
         return prev;
       });
       isEmailChecked = true;
@@ -208,6 +206,16 @@ const Registration = ({navigation}) => {
       });
     }
 
+    if (!form.phone) {
+      setErrors(prev => {
+        return {...prev, phone: '* Please enter your phone'};
+      });
+    } else {
+      setErrors(prev => {
+        return {...prev, phone: ValidatePhone(form.phone)};
+      });
+    }
+
     if (!form.password) {
       setErrors(prev => {
         return {...prev, password: '* Please enter your password'};
@@ -239,6 +247,7 @@ const Registration = ({navigation}) => {
 
     checkEmail();
     checkUsername();
+    checkPhone();
 
     console.log("Submit: " + isSubmitted + "\nEmail: " + isEmailChecked + "\nUsername: " + isUsernameChecked + "\nPhone: " + isPhoneChecked + "\nRequest: " + isSignUpRequestSent);
 
