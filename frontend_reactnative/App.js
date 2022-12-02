@@ -32,7 +32,7 @@ const theme = {
 };
 const App = () => {
   useEffect(() => {
-    AsyncStorage.clear();
+    // AsyncStorage.clear();
     console.log('Main')
     const Init = async () => {
       await TokenStorage.init();
