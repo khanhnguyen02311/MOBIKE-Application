@@ -16,8 +16,8 @@ def create_app():
     jwt = JWTManager(App)
     oauth.init_app(App)
     
-    @App.teardown_appcontext
-    def teardown_context(res):
+    @App.teardown_request
+    def teardown_request(res):
         Engine.dispose()
             
     @App.route("/")
