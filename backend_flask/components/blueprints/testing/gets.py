@@ -129,7 +129,7 @@ def getdistricts(fid):
     try:
         FirstID = int(fid)
         schema = DistrictSchema(many=True)
-        districts = Session.query(District).filter(District.ID >= FirstID).limit(STEP)
+        districts = Session.query(District).where(District.ID >= FirstID).limit(STEP)
         Session.close()
         return jsonify(schema.dump(districts))
     except Exception as e:
@@ -155,7 +155,7 @@ def getwards(fid):
     try:
         firstID = int(fid)
         schema = WardSchema(many=True)
-        wards = Session.query(Ward).filter(Ward.ID >= firstID).limit(STEP)
+        wards = Session.query(Ward).where(Ward.ID >= firstID).limit(STEP)
         Session.close()
         return jsonify(schema.dump(wards))
     except Exception as e:
