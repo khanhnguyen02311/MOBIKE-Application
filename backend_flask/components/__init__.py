@@ -16,10 +16,10 @@ def create_app():
     jwt = JWTManager(App)
     oauth.init_app(App)
     
-    @App.teardown_request
-    def teardown_request(res):
+    @App.teardown_appcontext
+    def teardown_context(res):
         Engine.dispose()
-    
+            
     @App.route("/")
     def hello():
         return "<h1>Test running state.</h1>"
