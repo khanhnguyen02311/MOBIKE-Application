@@ -1,7 +1,6 @@
 from datetime import datetime, timezone, timedelta
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager, get_jwt, get_jwt_identity, create_access_token
-from .dbsettings import Engine
 from .blueprints.testing import post, image, gets, admin
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account
