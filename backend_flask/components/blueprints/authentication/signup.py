@@ -14,7 +14,7 @@ def signup_output(message, error, access_token):
       "token": access_token})
    
       
-def setup_account(Session, a_email, a_username, a_password, a_type, a_permission, i_name, i_phone, i_image=None):
+def setup_account(Session, a_email, a_username, a_password, a_type, a_permission, i_name, i_phone=None, i_image=None):
    try:
       accountstat = dbm.AccountStat()
       account = dbm.Account(Username=a_username, Password=a_password, Email=a_email, Account_type=a_type, ID_Permission=a_permission)
@@ -23,10 +23,9 @@ def setup_account(Session, a_email, a_username, a_password, a_type, a_permission
          # SAVE IMAGE TO SYSTEM AND ADD TO IMAGE TABLE
          pass
       Session.add(accountstat)
-      Session.flush()
-      accountinfo.ID_AccountStat = accountstat.ID
       Session.add(accountinfo)
       Session.flush()
+      account.ID_AccountStat = accountstat.ID
       account.ID_AccountInfo = accountinfo.ID
       Session.add(account)
       Session.flush()

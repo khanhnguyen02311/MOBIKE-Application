@@ -28,8 +28,9 @@ def getinfo():
    Session = new_Session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
-      if acc.ID_AccountInfo == None:
-         return jsonify({"message": "Incompleted", "error": "No AccountInfo created", "info": ""})
+      if acc == None:
+         Session.close()
+         return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
       acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
       Session.close()
       return jsonify({"message": "Completed", "error": "", "info": schema.dump(acc_info)})
@@ -51,30 +52,16 @@ def changeinfo():
    Session = new_Session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
-      if acc.ID_AccountInfo == None:
-         new_stat = dbm.AccountStat()
-         Session.add(new_stat)
-         Session.flush()
-         new_info = dbm.AccountInfo(
-            Name = info['name'], 
-            Birthdate = datetime.strptime(info['birth'], '%m/%d/%Y'), 
-            Gender = info['gender'],
-            Phone_number = info['phone'],
-            Identification_number = info['idt'],
-            ID_AccountStat = new_stat.ID)
-         Session.add(new_info)
-         Session.flush()
-         acc.ID_AccountInfo = new_info.ID
-         Session.commit()
-         return jsonify({"message": "Completed", "error": ""})
-      
+      if acc == None:
+         Session.close()
+         return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
       else:
-         Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo).update({
-            "Name": info['name'], 
-            "Birthdate": datetime.strptime(info['birth'], '%m/%d/%Y'), 
-            "Gender": info['gender'],
-            "Phone_number": info['phone'],
-            "Identification_number": info['idt']}, synchronize_session="fetch")
+         acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
+         acc_info.Name = info['name']
+         acc_info.Birthdate = datetime.strptime(info['birth'], '%m/%d/%Y'), 
+         acc_info.Gender = info['gender']
+         acc_info.Phone_number = info['phone']
+         acc_info.Identification_number = info['idt']
          Session.commit()
          return jsonify({"message": "Completed", "error": ""})
    
@@ -93,8 +80,9 @@ def getaddress():
    Session = new_Session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
-      if acc.ID_AccountInfo == None:
-         return jsonify({"message": "Incompleted", "error": "No AccountInfo created", "info": ""})
+      if acc == None:
+         Session.close()
+         return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
       addresses = Session.query(dbm.Address).filter(dbm.Address.ID_AccountInfo==acc.ID_AccountInfo).order_by(dbm.Address.ID.desc()).all()
       Session.commit()
       json_addresses = {}
@@ -118,8 +106,9 @@ def addaddress():
    Session = new_Session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
-      if acc.ID_AccountInfo == None:
-         return jsonify({"message": "Incompleted", "error": "No AccountInfo created", "info": ""})
+      if acc == None:
+         Session.close()
+         return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
       new_address = dbm.Address(
          Detail_address=info['detail'], 
          ID_AccountInfo=acc.ID_AccountInfo, 
@@ -144,8 +133,12 @@ def deladdress(id):
    Session = new_Session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
       address = Session.query(dbm.Address).get(id)
       if acc.ID_AccountInfo != address.ID_AccountInfo:
+         Session.close()
          return jsonify({"message": "Incompleted", "error": "Cannot delete other user's address"})
       Session.remove(address)
       Session.commit()

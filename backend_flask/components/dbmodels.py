@@ -25,11 +25,9 @@ class AccountInfo (Base):
     Name = Column(ms.NVARCHAR(128), nullable=False)
     Birthdate = Column(ms.DATETIME)
     Gender = Column(ms.TINYINT) # 1: male, 2: female
-    Phone_number = Column(ms.VARCHAR(12), nullable=False)
+    Phone_number = Column(ms.VARCHAR(12))
     Identification_number = Column(ms.VARCHAR(12))
-    
-    ID_AccountStat = Column(ms.INTEGER, ForeignKey('ACCOUNTSTAT.ID'), nullable=False)
-    rel_AccountStat = relationship('AccountStat', back_populates='rel_AccountInfo')
+    Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
     
     ID_Image_Profile = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
     rel_Image_Profile = relationship('Image', foreign_keys=[ID_Image_Profile], back_populates='rel_AccountInfo_Profile')
@@ -52,8 +50,8 @@ class AccountStat (Base):
     Reply_percentage = Column(ms.FLOAT, nullable=False, default=-1)
     Avg_reply_time = Column(ms.FLOAT, nullable=False, default=-1)
     
-    ## AccountInfo reference
-    rel_AccountInfo = relationship('AccountInfo', back_populates='rel_AccountStat', uselist=False)
+    ## Account reference
+    rel_Account = relationship('Account', back_populates='rel_AccountStat', uselist=False)
     
     
 # ==============================================================================
@@ -64,12 +62,14 @@ class Account (Base):
     Password = Column(ms.NVARCHAR(256), nullable=False)
     Email = Column(ms.NVARCHAR(128), nullable=False)
     Account_type = Column(ms.TINYINT, nullable=False) # 0: default account, 1: google account, 2: facebook account
-    Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
+    
+    ID_AccountStat = Column(ms.INTEGER, ForeignKey('ACCOUNTSTAT.ID'), nullable=False)
+    rel_AccountStat = relationship('AccountStat', back_populates='rel_Account')
     
     ID_Permission = Column(ms.INTEGER, ForeignKey("PERMISSION.ID"), nullable=False)
     rel_Permission = relationship("Permission", back_populates="rel_Account")
     
-    ID_AccountInfo = Column(ms.INTEGER, ForeignKey("ACCOUNTINFO.ID"))
+    ID_AccountInfo = Column(ms.INTEGER, ForeignKey("ACCOUNTINFO.ID"), nullable=False)
     rel_AccountInfo = relationship("AccountInfo", back_populates="rel_Account")
 
     ## Post reference
@@ -195,9 +195,6 @@ class Image (Base):
     
     ID_ImageType = Column(ms.INTEGER, ForeignKey('IMAGETYPE.ID'))
     rel_ImageType = relationship('ImageType')
-
-    def __str__(self) -> str:
-        return f"ID: {self.ID}, Filename: {self.Filename}, ID_Post: {self.ID_Post}, ID_ImageType: {self.ID_ImageType}"
     
     ## AccountInfo reference
     rel_AccountInfo_Profile = relationship('AccountInfo', foreign_keys=[AccountInfo.ID_Image_Profile], back_populates='rel_Image_Profile')
