@@ -162,7 +162,7 @@ def InsertImageType():
             it += 1
 
     Session.commit()
-    Session.close
+    Session.close()
 
     return "Inserted {} image types".format(it)
 

@@ -69,6 +69,7 @@ def dropalltables():
         Session.execute(command[0])
 
     Session.execute("SET FOREIGN_KEY_CHECKS = 1")
+    Session.commit()
 
     print("Recreating all tables...")
     Base.metadata.create_all(Engine)
