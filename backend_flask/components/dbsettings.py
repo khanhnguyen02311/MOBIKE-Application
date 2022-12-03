@@ -9,4 +9,5 @@ Engine = create_engine(url=scfg.SQLALCHEMY_DATABASE_URL, echo=scfg.ECHO, pool_si
 Base = declarative_base()
 
 def new_Session():
+   Engine.connect()
    return scoped_session(sessionmaker(bind=Engine, autoflush=scfg.AUTO_FLUSH, autocommit=scfg.AUTO_COMMIT))
