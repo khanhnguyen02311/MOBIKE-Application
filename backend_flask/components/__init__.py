@@ -15,11 +15,8 @@ def create_app():
     App.config.from_object(fcfg)
     jwt = JWTManager(App)
     oauth.init_app(App)
-    
-    @App.teardown_request
-    def teardown_request(res):
-        Engine.dispose()
-            
+
+
     @App.route("/")
     def hello():
         return "<h1>Test running state.</h1>"
