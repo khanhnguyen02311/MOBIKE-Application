@@ -102,7 +102,6 @@ def InsertLocation2():
     city_table = pd.read_csv(INITIALDATA + 'Locations_City.csv', index_col=False)
     district_table = pd.read_csv(INITIALDATA + 'Locations_District.csv', index_col=False)
     ward_table = pd.read_csv(INITIALDATA + 'Locations_Ward.csv', index_col=False)
-    print(city_table)
     Session = new_Session()
     try:
         for table in [city_table, district_table, ward_table]:
