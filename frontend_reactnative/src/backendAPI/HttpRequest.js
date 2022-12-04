@@ -155,8 +155,10 @@ export const BigGetRequest = async (path: String) => {
     i = 0;
     while (i < pros.length) {
         const pro = pros.slice(i, i + concurrent);
-        const res = await Promise.all(pro);
-        result = result.concat(res);
+        const values = await Promise.all(pro);
+        values.forEach(value => {
+            result = result.concat(value);
+        });
         i += concurrent;
     }
 
