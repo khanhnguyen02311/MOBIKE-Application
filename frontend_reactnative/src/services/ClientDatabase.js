@@ -46,7 +46,7 @@ export const init = async () => {
 
 const updateAndLoadClientDatabase = async () => {
     try {
-        await Promise.all([updateLocations(), updatePermissions(), updateImageTypes()]).then((res) => {
+        await Promise.all([updateLocations(), updatePermissions(), updateImageTypes()]).then((res) => { 
             Store.dispatch(setCities(JSON.parse(res[0]).Cities));
             Store.dispatch(setDistricts(JSON.parse(res[0]).Districts));
             Store.dispatch(setWards(JSON.parse(res[0]).Wards));
