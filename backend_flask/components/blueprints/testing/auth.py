@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, request, jsonify
 
 import flask_jwt_extended as jwte
-from components.dbsettings import new_Session
+from components.dbsettings import new_Scoped_session
 from components import dbmodels as dbm, dbschemas as dbs
 from components.security import make_hash, check_hash
 
@@ -22,7 +22,7 @@ def protected():
 @bpauth.route('/signup', methods=['POST'])
 def signup():
    schema = dbs.AccountSchema()
-   Session = new_Session()
+   Session = new_Scoped_session()
    try:
       email = request.json['email']
       permission = int(request.json['permission'])
@@ -62,7 +62,7 @@ def signin():
    # token = jwte.create_access_token(identity=username)
    # return jsonify(access_token=token)
    schema = dbs.AccountSchema()
-   Session = new_Session()
+   Session = new_Scoped_session()
    try:
       userNameOrEmail = request.json["username_or_email"]
       password = request.json["password"]

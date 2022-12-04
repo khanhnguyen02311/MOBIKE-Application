@@ -2,7 +2,7 @@ from enum import Enum
 from flask import Blueprint, request, jsonify
 from ...dbmodels import *
 from ...dbschemas import *
-from ...dbsettings import new_Session
+from ...dbsettings import new_Scoped_session
 from ...inserter import *
 from ...dbschemas import *
 

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from ...dbmodels import *
 from ...dbschemas import *
-from ...dbsettings import new_Session, create_session
+from ...dbsettings import new_Scoped_session, new_Session
 from ...inserter import *
 from ...dbschemas import *
 
@@ -16,7 +16,7 @@ def get_articles():
 
 @bpget.route('/isemailexists/<email>', methods = ['GET'])
 def ifemailexists(email):
-    Session = new_Session()
+    Session = new_Scoped_session()
     try:
         user = Session.query(Account).filter(Account.Email == email).first()
         Session.close()
@@ -28,7 +28,7 @@ def ifemailexists(email):
 
 @bpget.route('/isusernameexists/<username>', methods = ['GET'])
 def ifusernameexists(username):
-    Session = new_Session()
+    Session = new_Scoped_session()
     try:
         user = Session.query(Account).filter(Account.Username == username).first()
         Session.close()
@@ -40,7 +40,7 @@ def ifusernameexists(username):
 
 @bpget.route('/isphoneexists/<phone>', methods = ['GET'])
 def ifphoneexists(phone):
-    Session = new_Session()
+    Session = new_Scoped_session()
     try:
         user = Session.query(AccountInfo).filter(AccountInfo.Phone_number == phone).first()
         Session.close()
@@ -60,7 +60,7 @@ def getConcurrent():
 
 @bpget.route('/version/<name>', methods = ['GET'])
 def getversions(name):
-    Session = new_Session()
+    Session = new_Scoped_session()
     try:
         schema = VersionSchema()
         print("Here: " + name)
@@ -75,7 +75,7 @@ def getversions(name):
 
 @bpget.route('/permissions', methods = ['GET'])
 def getpermissions():
-    Session = new_Session()
+    Session = new_Scoped_session()
     try:
         schema = PermissionSchema(many=True)
         permissions = Session.query(Permission).all()
@@ -88,7 +88,7 @@ def getpermissions():
 
 @bpget.route('/count/cities/', methods = ['GET'])
 def countcities():
-    with create_session() as Session:
+    with new_Session() as Session:
         try:
             count = Session.query(City).count()
             return jsonify(count)
@@ -98,7 +98,7 @@ def countcities():
 
 @bpget.route('/cities/<fid>', methods = ['GET'])
 def getcities(fid):
-    with create_session() as Session:
+    with new_Session() as Session:
         try:
             FirstID = int(fid)
             schema = CitySchema(many=True)
@@ -110,7 +110,7 @@ def getcities(fid):
 
 @bpget.route('/count/districts', methods = ['GET'])
 def countdistricts():
-    with create_session() as Session:
+    with new_Session() as Session:
         try:
             count = Session.query(District).count()
             return jsonify(count)
@@ -120,7 +120,7 @@ def countdistricts():
 
 @bpget.route('/districts/<fid>', methods = ['GET'])
 def getdistricts(fid):
-    with create_session() as Session:
+    with new_Session() as Session:
         try:
             FirstID = int(fid)
             schema = DistrictSchema(many=True)
@@ -132,7 +132,7 @@ def getdistricts(fid):
 
 @bpget.route('/count/wards', methods = ['GET'])
 def countwards():
-    with create_session() as Session:
+    with new_Session() as Session:
         try:
             count = Session.query(Ward).count()
             return jsonify(count)
@@ -142,7 +142,7 @@ def countwards():
 
 @bpget.route('/wards/<fid>', methods = ['GET'])
 def getwards(fid):
-    with create_session() as Session:
+    with new_Session() as Session:
         try:
             firstID = int(fid)
             schema = WardSchema(many=True)
@@ -155,7 +155,7 @@ def getwards(fid):
 
 @bpget.route('/imagetypes', methods = ['GET'])
 def getimagetypes():
-    with create_session() as Session:
+    with new_Session() as Session:
         try:
             schema = ImageTypeSchema(many=True)
             imagetypes = Session.query(ImageType).all()
