@@ -88,7 +88,7 @@ def getpermissions():
 
 @bpget.route('/count/cities/', methods = ['GET'])
 def countcities():
-    with new_Session().begin() as Session:
+    with create_session() as Session:
         try:
             count = Session.query(City).count()
             return jsonify(count)
@@ -98,7 +98,7 @@ def countcities():
 
 @bpget.route('/cities/<fid>', methods = ['GET'])
 def getcities(fid):
-    with new_Session().begin() as Session:
+    with create_session() as Session:
         try:
             FirstID = int(fid)
             schema = CitySchema(many=True)
@@ -110,7 +110,7 @@ def getcities(fid):
 
 @bpget.route('/count/districts', methods = ['GET'])
 def countdistricts():
-    with new_Session().begin() as Session:
+    with create_session() as Session:
         try:
             count = Session.query(District).count()
             return jsonify(count)
@@ -120,7 +120,7 @@ def countdistricts():
 
 @bpget.route('/districts/<fid>', methods = ['GET'])
 def getdistricts(fid):
-    with new_Session().begin() as Session:
+    with create_session() as Session:
         try:
             FirstID = int(fid)
             schema = DistrictSchema(many=True)
@@ -132,7 +132,7 @@ def getdistricts(fid):
 
 @bpget.route('/count/wards', methods = ['GET'])
 def countwards():
-    with new_Session().begin() as Session:
+    with create_session() as Session:
         try:
             count = Session.query(Ward).count()
             return jsonify(count)
@@ -142,7 +142,7 @@ def countwards():
 
 @bpget.route('/wards/<fid>', methods = ['GET'])
 def getwards(fid):
-    with new_Session().begin() as Session:
+    with create_session() as Session:
         try:
             firstID = int(fid)
             schema = WardSchema(many=True)
@@ -155,7 +155,7 @@ def getwards(fid):
 
 @bpget.route('/imagetypes', methods = ['GET'])
 def getimagetypes():
-    with new_Session().begin() as Session:
+    with create_session() as Session:
         try:
             schema = ImageTypeSchema(many=True)
             imagetypes = Session.query(ImageType).all()
