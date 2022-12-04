@@ -152,7 +152,6 @@ class Post (Base):
     Pricetag = Column(ms.BIGINT)
     Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
     
-    
     ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
     rel_Account = relationship("Account", back_populates="rel_Post")
     
@@ -281,12 +280,12 @@ class VehicleInfo (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Vehicle_name = Column(ms.NVARCHAR(128), nullable=False)
     Odometer = Column(ms.INTEGER)
-    Registration_year = Column(ms.SMALLINT)
+    License_plate = Column(ms.NVARCHAR(10), nullable=False)
     Manufacture_year = Column(ms.SMALLINT)
     Cubic_power = Column(ms.INTEGER)
 
-    ID_Manufacturer = Column(ms.INTEGER, ForeignKey("MANUFACTURER.ID"), nullable=False)
-    rel_Manufacturer = relationship("Manufacturer")
+    ID_VehicleBrand = Column(ms.INTEGER, ForeignKey("VEHICLEBRAND.ID"), nullable=False)
+    rel_VehicleBrand = relationship("VehicleBrand")
     
     ID_VehicleLineup = Column(ms.INTEGER, ForeignKey("VEHICLELINEUP.ID"), nullable=False)
     rel_VehicleLineup = relationship("VehicleLineup")
@@ -297,7 +296,7 @@ class VehicleInfo (Base):
     ID_Condition = Column(ms.INTEGER, ForeignKey("VEHICLECONDITION.ID"))
     rel_Condition = relationship("VehicleCondition")
     
-    ID_Color = Column(ms.INTEGER, ForeignKey("COLOR.ID"), nullable=True)
+    ID_Color = Column(ms.INTEGER, ForeignKey("COLOR.ID"))
     rel_Color = relationship("Color")
 
     ## Post reference
@@ -305,8 +304,8 @@ class VehicleInfo (Base):
     
     
 # ==============================================================================
-class Manufacturer (Base):
-    __tablename__ = 'MANUFACTURER'
+class VehicleBrand (Base):
+    __tablename__ = 'VEHICLEBRAND'
     ID = Column(ms.INTEGER, primary_key=True)
     Name = Column(ms.NVARCHAR(50), nullable=False)
     
@@ -320,8 +319,8 @@ class VehicleLineup (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Lineup = Column(ms.NVARCHAR(50), nullable=False)
 
-    ID_Manufacturer = Column(ms.INTEGER, ForeignKey("MANUFACTURER.ID"), nullable=False)
-    rel_Manufacturer = relationship('Manufacturer')
+    ID_VehicleBrand = Column(ms.INTEGER, ForeignKey("VEHICLEBRAND.ID"), nullable=False)
+    rel_VehicleBrand = relationship('VehicleBrand')
     
 # ==============================================================================
 class VehicleType (Base):
