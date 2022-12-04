@@ -25,11 +25,9 @@ class AccountInfo (Base):
     Name = Column(ms.NVARCHAR(128), nullable=False)
     Birthdate = Column(ms.DATETIME)
     Gender = Column(ms.TINYINT) # 1: male, 2: female
-    Phone_number = Column(ms.VARCHAR(12), nullable=False)
+    Phone_number = Column(ms.VARCHAR(12))
     Identification_number = Column(ms.VARCHAR(12))
-    
-    ID_AccountStat = Column(ms.INTEGER, ForeignKey('ACCOUNTSTAT.ID'), nullable=False)
-    rel_AccountStat = relationship('AccountStat', back_populates='rel_AccountInfo')
+    Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
     
     ID_Image_Profile = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
     rel_Image_Profile = relationship('Image', foreign_keys=[ID_Image_Profile], back_populates='rel_AccountInfo_Profile')
@@ -52,8 +50,8 @@ class AccountStat (Base):
     Reply_percentage = Column(ms.FLOAT, nullable=False, default=-1)
     Avg_reply_time = Column(ms.FLOAT, nullable=False, default=-1)
     
-    ## AccountInfo reference
-    rel_AccountInfo = relationship('AccountInfo', back_populates='rel_AccountStat', uselist=False)
+    ## Account reference
+    rel_Account = relationship('Account', back_populates='rel_AccountStat', uselist=False)
     
     
 # ==============================================================================
@@ -64,12 +62,14 @@ class Account (Base):
     Password = Column(ms.NVARCHAR(256), nullable=False)
     Email = Column(ms.NVARCHAR(128), nullable=False)
     Account_type = Column(ms.TINYINT, nullable=False) # 0: default account, 1: google account, 2: facebook account
-    Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
+    
+    ID_AccountStat = Column(ms.INTEGER, ForeignKey('ACCOUNTSTAT.ID'), nullable=False)
+    rel_AccountStat = relationship('AccountStat', back_populates='rel_Account')
     
     ID_Permission = Column(ms.INTEGER, ForeignKey("PERMISSION.ID"), nullable=False)
     rel_Permission = relationship("Permission", back_populates="rel_Account")
     
-    ID_AccountInfo = Column(ms.INTEGER, ForeignKey("ACCOUNTINFO.ID"))
+    ID_AccountInfo = Column(ms.INTEGER, ForeignKey("ACCOUNTINFO.ID"), nullable=False)
     rel_AccountInfo = relationship("AccountInfo", back_populates="rel_Account")
 
     ## Post reference
@@ -152,7 +152,6 @@ class Post (Base):
     Pricetag = Column(ms.BIGINT)
     Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
     
-    
     ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
     rel_Account = relationship("Account", back_populates="rel_Post")
     
@@ -195,9 +194,6 @@ class Image (Base):
     
     ID_ImageType = Column(ms.INTEGER, ForeignKey('IMAGETYPE.ID'))
     rel_ImageType = relationship('ImageType')
-
-    def __str__(self) -> str:
-        return f"ID: {self.ID}, Filename: {self.Filename}, ID_Post: {self.ID_Post}, ID_ImageType: {self.ID_ImageType}"
     
     ## AccountInfo reference
     rel_AccountInfo_Profile = relationship('AccountInfo', foreign_keys=[AccountInfo.ID_Image_Profile], back_populates='rel_Image_Profile')
@@ -284,12 +280,12 @@ class VehicleInfo (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Vehicle_name = Column(ms.NVARCHAR(128), nullable=False)
     Odometer = Column(ms.INTEGER)
-    Registration_year = Column(ms.SMALLINT)
+    License_plate = Column(ms.NVARCHAR(10), nullable=False)
     Manufacture_year = Column(ms.SMALLINT)
     Cubic_power = Column(ms.INTEGER)
 
-    ID_Manufacturer = Column(ms.INTEGER, ForeignKey("MANUFACTURER.ID"), nullable=False)
-    rel_Manufacturer = relationship("Manufacturer")
+    ID_VehicleBrand = Column(ms.INTEGER, ForeignKey("VEHICLEBRAND.ID"), nullable=False)
+    rel_VehicleBrand = relationship("VehicleBrand")
     
     ID_VehicleLineup = Column(ms.INTEGER, ForeignKey("VEHICLELINEUP.ID"), nullable=False)
     rel_VehicleLineup = relationship("VehicleLineup")
@@ -300,7 +296,7 @@ class VehicleInfo (Base):
     ID_Condition = Column(ms.INTEGER, ForeignKey("VEHICLECONDITION.ID"))
     rel_Condition = relationship("VehicleCondition")
     
-    ID_Color = Column(ms.INTEGER, ForeignKey("COLOR.ID"), nullable=True)
+    ID_Color = Column(ms.INTEGER, ForeignKey("COLOR.ID"))
     rel_Color = relationship("Color")
 
     ## Post reference
@@ -308,8 +304,8 @@ class VehicleInfo (Base):
     
     
 # ==============================================================================
-class Manufacturer (Base):
-    __tablename__ = 'MANUFACTURER'
+class VehicleBrand (Base):
+    __tablename__ = 'VEHICLEBRAND'
     ID = Column(ms.INTEGER, primary_key=True)
     Name = Column(ms.NVARCHAR(50), nullable=False)
     
@@ -323,8 +319,8 @@ class VehicleLineup (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Lineup = Column(ms.NVARCHAR(50), nullable=False)
 
-    ID_Manufacturer = Column(ms.INTEGER, ForeignKey("MANUFACTURER.ID"), nullable=False)
-    rel_Manufacturer = relationship('Manufacturer')
+    ID_VehicleBrand = Column(ms.INTEGER, ForeignKey("VEHICLEBRAND.ID"), nullable=False)
+    rel_VehicleBrand = relationship('VehicleBrand')
     
 # ==============================================================================
 class VehicleType (Base):

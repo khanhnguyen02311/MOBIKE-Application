@@ -8,6 +8,7 @@ import {
   ValidateUsername,
   ValidatePassword,
   ValidateConfirmPassword,
+  ValidatePhone,
 } from '../../utils/validateForm';
 import BackendAPI from '../../backendAPI';
 import TokenStorage from '../../services/TokenStorage';
@@ -19,6 +20,7 @@ const Registration = ({navigation}) => {
 
   let isEmailChecked = false;
   let isUsernameChecked = false;
+  let isPhoneChecked = false;
   let isSubmitted = false;
   let isSignUpRequestSent = false;
 
@@ -40,6 +42,14 @@ const Registration = ({navigation}) => {
           isUsernameChecked = false;
           setErrors(prev => {
             return {...prev, [name]: ValidateUsername(value)};
+          });
+        }
+
+        //phone
+        else if (name === 'phone') {
+          isPhoneChecked = false;
+          setErrors(prev => {
+            return {...prev, [name]: ValidatePhone};
           });
         }
 
@@ -86,6 +96,11 @@ const Registration = ({navigation}) => {
         checkUsername()
       }
 
+      //phone
+      else if (name === 'phone') {
+        checkPhone()
+      }
+
       console.log("Error list: ", errors);
     }
   }
@@ -96,7 +111,7 @@ const Registration = ({navigation}) => {
       return;
     }
 
-    const response = await TokenStorage.signUp(form.username, form.email, form.password);
+    const response = await TokenStorage.signUp(form.username, form.email, form.phone, form.password);
 
     console.log(response);
   }
@@ -111,14 +126,12 @@ const Registration = ({navigation}) => {
     } else {
       setErrors(prev => {
         if (prev.email && prev.email === '* Email already exists') {
-
           return {...prev, email: ''};
         }
-
         return prev;
       });
       isEmailChecked = true;
-      if (isUsernameChecked && isSubmitted && !isSignUpRequestSent) {
+      if (isUsernameChecked && isPhoneChecked && isSubmitted && !isSignUpRequestSent) {
         isSignUpRequestSent = true;
         signUp();
       }
@@ -139,13 +152,33 @@ const Registration = ({navigation}) => {
         return prev;
       });
       isUsernameChecked = true;
-      if (isEmailChecked && isSubmitted && !isSignUpRequestSent) {
+      if (isEmailChecked && isPhoneChecked && isSubmitted && !isSignUpRequestSent) {
         isSignUpRequestSent = true;
         signUp();
       }
     }
   }
 
+  const checkPhone= async () => {
+    let exists = await BackendAPI.isPhoneExist(form.phone);
+    if (exists) {
+      setErrors(prev => {
+        return {...prev, phone: '* Phone already exists'};
+      });
+    } else {
+      setErrors(prev => {
+        if (prev.phone && prev.phone === '* Phone already exists') {
+          return {...prev, phone: ''};
+        }
+        return prev;
+      });
+      isPhoneChecked = true;
+      if (isEmailChecked && isEmailChecked && isSubmitted && !isSignUpRequestSent) {
+        isSignUpRequestSent = true;
+        signUp();
+      }
+    }
+  }
 
   const onSubmit = () => {
     //validation
@@ -170,6 +203,16 @@ const Registration = ({navigation}) => {
     } else {
       setErrors(prev => {
         return {...prev, username: ValidateUsername(form.username)};
+      });
+    }
+
+    if (!form.phone) {
+      setErrors(prev => {
+        return {...prev, phone: '* Please enter your phone'};
+      });
+    } else {
+      setErrors(prev => {
+        return {...prev, phone: ValidatePhone(form.phone)};
       });
     }
 
@@ -204,10 +247,11 @@ const Registration = ({navigation}) => {
 
     checkEmail();
     checkUsername();
+    checkPhone();
 
-    console.log("Submit: " + isSubmitted + "\nEmail: " + isEmailChecked + "\nUsername: " + isUsernameChecked);
+    console.log("Submit: " + isSubmitted + "\nEmail: " + isEmailChecked + "\nUsername: " + isUsernameChecked + "\nPhone: " + isPhoneChecked + "\nRequest: " + isSignUpRequestSent);
 
-    if (isEmailChecked && isUsernameChecked) {
+    if (isEmailChecked && isUsernameChecked && isPhoneChecked) {
       isSignUpRequestSent = true;
       signUp();
     }

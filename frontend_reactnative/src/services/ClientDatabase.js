@@ -22,23 +22,39 @@ export const init = async () => {
             }));
         }
 
-        let Locations = undefined;
-        let Permissions = undefined;
-        let ImageTypes = undefined;
+        // let Locations = undefined;
+        // let Permissions = undefined;
+        // let ImageTypes = undefined;
         
-        await Promise.all([updateLocations(), updatePermissions(), updateImageTypes()]).then((res) => {
-            [Locations, Permissions, ImageTypes] = res;
-        });
+        // await Promise.all([updateLocations(), updatePermissions(), updateImageTypes()]).then((res) => {
+        //     [Locations, Permissions, ImageTypes] = res;
+        // });
 
-        Store.dispatch(setCities(JSON.parse(Locations).Cities));
-        Store.dispatch(setDistricts(JSON.parse(Locations).Districts));
-        Store.dispatch(setWards(JSON.parse(Locations).Wards));
-        Store.dispatch(setPermissions(JSON.parse(Permissions)));
-        Store.dispatch(setImageTypes(JSON.parse(ImageTypes)));
+        // Store.dispatch(setCities(JSON.parse(Locations).Cities));
+        // Store.dispatch(setDistricts(JSON.parse(Locations).Districts));
+        // Store.dispatch(setWards(JSON.parse(Locations).Wards));
+        // Store.dispatch(setPermissions(JSON.parse(Permissions)));
+        // Store.dispatch(setImageTypes(JSON.parse(ImageTypes)));
+
+        await updateAndLoadClientDatabase();
         
         console.log('Client database initialized');
     } catch (error) {
         console.log("Init client database error: " + error);
+    }
+}
+
+const updateAndLoadClientDatabase = async () => {
+    try {
+        await Promise.all([updateLocations(), updatePermissions(), updateImageTypes()]).then((res) => { 
+            Store.dispatch(setCities(JSON.parse(res[0]).Cities));
+            Store.dispatch(setDistricts(JSON.parse(res[0]).Districts));
+            Store.dispatch(setWards(JSON.parse(res[0]).Wards));
+            Store.dispatch(setPermissions(JSON.parse(res[1])));
+            Store.dispatch(setImageTypes(JSON.parse(res[2])));
+        });
+    } catch (error) {
+        console.log("Update and load client database error: " + error);
     }
 }
 
@@ -168,5 +184,5 @@ export const print = async () => {
     }
 }
 
-export default {init, printClientDatabase: print}
+export default {init, print}
 

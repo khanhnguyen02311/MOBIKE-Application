@@ -1,7 +1,8 @@
+import json
 from datetime import datetime
 from flask import Flask, Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from components.dbsettings import new_Session
+from components.dbsettings import new_Scoped_session
 from components import dbmodels as dbm, dbschemas as dbs
 
 bpaccount = Blueprint('bpaccount', __name__)
@@ -24,11 +25,15 @@ def getinfo():
       return jsonify({"message": "Incompleted", "error": "Invalid token", "info": ""})
    
    schema = dbs.AccountInfoSchema()
-   Session = new_Session()
+   Session = new_Scoped_session()
    try:
-      acc_info = Session.query(dbm.Account, dbm.AccountInfo).join("rel_AccountInfo").filter(dbm.Account.ID==current_user['ID']).first()
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
+      acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
       Session.close()
-      return jsonify({"message": "Completed", "error": "", "info": schema.dump(acc_info[1])})
+      return jsonify({"message": "Completed", "error": "", "info": schema.dump(acc_info)})
       
    except Exception as e:
       Session.close()
@@ -44,33 +49,19 @@ def changeinfo():
    
    schema = dbs.AccountInfoSchema()
    info = request.get_json()
-   Session = new_Session()
+   Session = new_Scoped_session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
-      if acc.ID_AccountInfo == None:
-         new_stat = dbm.AccountStat()
-         Session.add(new_stat)
-         Session.flush()
-         new_info = dbm.AccountInfo(
-            Name = info['name'], 
-            Birthdate = datetime.strptime(info['birth'], '%m/%d/%Y'), 
-            Gender = info['gender'],
-            Phone_number = info['phone'],
-            Identification_number = info['idt'],
-            ID_AccountStat = new_stat.ID)
-         Session.add(new_info)
-         Session.flush()
-         acc.ID_AccountInfo = new_info.ID
-         Session.commit()
-         return jsonify({"message": "Completed", "error": ""})
-      
+      if acc == None:
+         Session.close()
+         return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
       else:
-         Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo).update({
-            "Name": info['name'], 
-            "Birthdate": datetime.strptime(info['birth'], '%m/%d/%Y'), 
-            "Gender": info['gender'],
-            "Phone_number": info['phone'],
-            "Identification_number": info['idt']}, synchronize_session="fetch")
+         acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
+         acc_info.Name = info['name']
+         acc_info.Birthdate = datetime.strptime(info['birth'], '%m/%d/%Y'), 
+         acc_info.Gender = info['gender']
+         acc_info.Phone_number = info['phone']
+         acc_info.Identification_number = info['idt']
          Session.commit()
          return jsonify({"message": "Completed", "error": ""})
    
@@ -79,24 +70,79 @@ def changeinfo():
       return jsonify({"message": "Incompleted", "error": str(e)})
    
 
-## UNDONE
+@bpaccount.route("/getaddress", methods = ['GET'])
+@jwt_required()
+def getaddress():
+   current_user = get_jwt_identity()   
+   if current_user is None:
+      return jsonify({"message": "Incompleted", "error": "Invalid token", "info": ""})
+   schema = dbs.AddressSchema()
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
+      addresses = Session.query(dbm.Address).filter(dbm.Address.ID_AccountInfo==acc.ID_AccountInfo).order_by(dbm.Address.ID.desc()).all()
+      Session.commit()
+      json_addresses = {}
+      for index, item in enumerate(addresses):
+         json_addresses[index] = schema.dump(item)
+      print(json_addresses)
+      return jsonify({"message": "Completed", "error": "", "info": json_addresses})
+   except Exception as e:
+      Session.rollback()
+      return jsonify({"message": "Incompleted", "error": str(e)})
+   
+
 @bpaccount.route("/addaddress", methods = ['POST'])
 @jwt_required()
 def addaddress():
    current_user = get_jwt_identity()   
    if current_user is None:
       return jsonify({"message": "Incompleted", "error": "Invalid token", "info": ""})
-   
-   Session = new_Session()
+   info = request.get_json()
+   schema = dbs.AddressSchema()
+   Session = new_Scoped_session()
    try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
+      new_address = dbm.Address(
+         Detail_address=info['detail'], 
+         ID_AccountInfo=acc.ID_AccountInfo, 
+         ID_City=info['city'], 
+         ID_District=info['district'], 
+         ID_Ward=info['ward'])
+      Session.add(new_address)
       Session.commit()
-      pass
+      return jsonify({"message": "Completed", "error": "", "info": schema.dump(new_address)})
    except Exception as e:
       Session.rollback()
       return jsonify({"message": "Incompleted", "error": str(e)})
    
 
-@bpaccount.route("/deladdress", methods = ['DELETE'])
+@bpaccount.route("/deladdress/<int:id>", methods = ['DELETE'])
 @jwt_required()
-def deladdress():
-   pass
+def deladdress(id):
+   current_user = get_jwt_identity()   
+   if current_user is None:
+      return jsonify({"message": "Incompleted", "error": "Invalid token"})
+   info = request.get_json()
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
+      address = Session.query(dbm.Address).get(id)
+      if acc.ID_AccountInfo != address.ID_AccountInfo:
+         Session.close()
+         return jsonify({"message": "Incompleted", "error": "Cannot delete other user's address"})
+      Session.remove(address)
+      Session.commit()
+      return jsonify({"message": "Completed", "error": ""})
+   except Exception as e:
+      Session.rollback()
+      return jsonify({"message": "Incompleted", "error": str(e)})

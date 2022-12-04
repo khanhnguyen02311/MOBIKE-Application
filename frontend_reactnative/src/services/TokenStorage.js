@@ -4,7 +4,6 @@ import Store from '../redux/store';
 import {login} from '../redux/slice/authSlice';
 import BackendAPI from '../backendAPI';
 
-
 export const init = async () => {
     try {
         let isTokenStorageInitialized = await AsyncStorage.getItem('TokenStorageInitted');
@@ -32,8 +31,8 @@ export const init = async () => {
     }
 };
 
-export const signUp = async (username: string, email: string, password: string) => {
-    const response = await HttpRequest.PostRequest("auth/signup", { username: username, email: email, password: password, permission: 4 });
+export const signUp = async (username: string, email: string, phone: string, password: string) => {
+    const response = await HttpRequest.PostRequest("auth/signup", { username: username, email: email, phone: phone, password: password, permission: 4 });
     console.log("Sign up request sent: " + JSON.stringify(response));
     if (response.message === 'Completed') {
         console.log('Sign up successful, start signing in');

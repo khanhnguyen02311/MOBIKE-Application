@@ -47,6 +47,15 @@ export const ValidatePassword = password => {
   return '';
 };
 
+export const ValidatePhone = phone => {
+  let phoneno = /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/;
+  if (phone.match(phoneno)) {
+    return '';
+  } else {
+    return '* Invalid phone number';
+  }
+}
+
 export const ValidateConfirmPassword = (password, confirmPassword) => {
   if (password !== confirmPassword) {
     return '* Password does not match';

@@ -9,11 +9,11 @@ import filterReducer from '../slice/filterSlice';
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    locations: location,
     imageTypes: imageType,
     permissions: permission,
     loading: loadingReducer,
     filter: filterReducer,
+    locations: location,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

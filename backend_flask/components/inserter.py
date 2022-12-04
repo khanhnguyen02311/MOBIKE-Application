@@ -1,7 +1,7 @@
 import openpyxl, unicodedata
 from .dbmodels import *
 from .dbschemas import *
-from .dbsettings import new_Session
+from .dbsettings import new_Scoped_session
 import pandas as pd
 INITIALDATA = "components/initial_data/"
 
@@ -9,7 +9,7 @@ def InitialDataFile(name: str):
     return INITIALDATA + name + ".xlsx"
 
 def TruncateTables(tables: list):
-    Session = new_Session()
+    Session = new_Scoped_session()
     Session.execute("SET FOREIGN_KEY_CHECKS=0;")
     Session.commit()
     for table in tables:
@@ -44,7 +44,7 @@ def InsertLocation1():
     c = 0
     d = 0
     w = 0
-    Session = new_Session()
+    Session = new_Scoped_session()
     cities = []
     districts = []
     wards = []
@@ -102,8 +102,7 @@ def InsertLocation2():
     city_table = pd.read_csv(INITIALDATA + 'Locations_City.csv', index_col=False)
     district_table = pd.read_csv(INITIALDATA + 'Locations_District.csv', index_col=False)
     ward_table = pd.read_csv(INITIALDATA + 'Locations_Ward.csv', index_col=False)
-    print(city_table)
-    Session = new_Session()
+    Session = new_Scoped_session()
     try:
         for table in [city_table, district_table, ward_table]:
             for i, row in table.iterrows():
@@ -127,7 +126,7 @@ def InsertPermission():
     i = 1
     p = 0
 
-    Session = new_Session()
+    Session = new_Scoped_session()
     while True:
         i += 1
         name = sheet.cell(row=i, column=1).value
@@ -147,7 +146,7 @@ def InsertPermission():
 def InsertImageType():
     TruncateTables({"ImageType"})
     wb = openpyxl.load_workbook(InitialDataFile("ImageTypes"))
-    Session = new_Session()
+    Session = new_Scoped_session()
     sheet = wb.active
     i = 1
     it = 0
@@ -163,7 +162,7 @@ def InsertImageType():
             it += 1
 
     Session.commit()
-    Session.close
+    Session.close()
 
     return "Inserted {} image types".format(it)
 

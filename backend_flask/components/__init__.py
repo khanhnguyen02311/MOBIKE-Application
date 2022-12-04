@@ -1,11 +1,9 @@
 from datetime import datetime, timezone, timedelta
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager, get_jwt, get_jwt_identity, create_access_token
-
 from .blueprints.testing import post, image, gets, admin
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account
-
 from .config import FlaskConfig as fcfg
 from .security import oauth, blocklistJWT
 
@@ -15,7 +13,11 @@ def create_app():
     App.config.from_object(fcfg)
     jwt = JWTManager(App)
     oauth.init_app(App)
-    
+
+    # @App.after_request
+    # def after_request_callback(response):
+    #     Session.remove()
+
     @App.route("/")
     def hello():
         return "<h1>Test running state.</h1>"

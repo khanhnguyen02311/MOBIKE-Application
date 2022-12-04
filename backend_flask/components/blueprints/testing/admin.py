@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from ...dbmodels import *
 from ...dbschemas import *
-from ...dbsettings import new_Session, Base, Engine
+from ...dbsettings import new_Scoped_session, Base, Engine
 from ...inserter import *
 import glob, os
 from ...config import DB_NAME, STORAGE_PATH
@@ -32,7 +32,7 @@ def insertimagetype():
 
 @bpadmin.route('/initversions', methods = ['POST'])
 def initversions():
-    Session = new_Session()
+    Session = new_Scoped_session()
     print("Initializing version...")
     TruncateTables({"Version"})
     Session.add(Version(Name="Locations", Version=1))
@@ -59,7 +59,7 @@ def dropalltables():
     clearimages()
 
     print("Dropping all tables...")  
-    Session = new_Session()
+    Session = new_Scoped_session()
 
     Session.execute("SET FOREIGN_KEY_CHECKS = 0")
     
@@ -69,6 +69,7 @@ def dropalltables():
         Session.execute(command[0])
 
     Session.execute("SET FOREIGN_KEY_CHECKS = 1")
+    Session.commit()
 
     print("Recreating all tables...")
     Base.metadata.create_all(Engine)

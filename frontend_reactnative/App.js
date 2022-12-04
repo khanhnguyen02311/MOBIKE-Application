@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import TokenStorage from './src/services/TokenStorage';
 import BackendAPI from './src/backendAPI';
 import ClientDatabase from './src/services/ClientDatabase';
-import Requester, { SetHost } from './src/backendAPI/HttpRequest';
+import Requester, { BigGetRequest } from './src/backendAPI/HttpRequest';
 
 import {
   MD3LightTheme as DefaultTheme,
@@ -18,6 +18,7 @@ import {
 } from 'react-native-paper';
 
 import { addImageType, setImageTypes } from './src/redux/clientDatabase/imageType';
+import HttpRequest from './src/backendAPI/HttpRequest';
 
 const theme = {
   ...DefaultTheme,
@@ -32,32 +33,29 @@ const theme = {
 };
 const App = () => {
   useEffect(() => {
-    AsyncStorage.clear();
+    
     console.log('Main')
     const Init = async () => {
+      await AsyncStorage.clear();
       await TokenStorage.init();
       await ClientDatabase.init();
-      // TokenStorage.print();
-      // ClientDatabase.print();
+      TokenStorage.print();
+      ClientDatabase.print();
       Store.dispatch(setLoading(false));
     }
     
     const sandbox = async () => {
       try {
-        //await init();
-        //await printClientDatabase();
-        console.log("Sandbox");
 
-        // SetHost().then((v) => {
-        //   console.log("Host set to: " + v);
-        // })
+        // const cities = await BigGetRequest("cities");
+        // console.log(cities);
 
       } catch (error) {
         console.log("Sandbox error: " + error);
       }
     }
     Init();
-    //sandbox();
+    sandbox();
 
   }, []);
 

@@ -14,14 +14,21 @@ export const me = async (token) => {
 export const isEmailExist = async (email: String) => {
     email = email || "";
     console.log("Checking email: " + email);
-    const response = await HttpRequest.GetRequest("posts/isemailexists/" + email );
+    const response = await HttpRequest.GetRequest("gets/isemailexists/" + email );
     return response.exists;
 }
 
 export const isUsernameExist = async (username: String) => {
     username = username || "";
     console.log("Checking username: " + username);
-    const response = await HttpRequest.PostRequest("posts/isusernameexists/" + username );
+    const response = await HttpRequest.GetRequest("gets/isusernameexists/" + username );
+    return response.exists;
+}
+
+export const isPhoneExist = async (phone: String) => {
+    phone = phone || "";
+    console.log("Checking phone: " + phone);
+    const response = await HttpRequest.GetRequest("gets/isphoneexists/" + phone );
     return response.exists;
 }
 
@@ -58,4 +65,4 @@ export const getImageTypes = async () => {
     return response;
 }
 
-export default { me, isEmailExist, isUsernameExist };
+export default { me, isEmailExist, isUsernameExist, isPhoneExist };
