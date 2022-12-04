@@ -1,7 +1,7 @@
 import redis
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 from .config import SQLAlchemyConfig as scfg
 
@@ -10,3 +10,6 @@ Base = declarative_base()
 
 def new_Session():
    return scoped_session(sessionmaker(bind=Engine, autoflush=scfg.AUTO_FLUSH, autocommit=scfg.AUTO_COMMIT))
+
+def create_session():
+   return Session(Engine)
