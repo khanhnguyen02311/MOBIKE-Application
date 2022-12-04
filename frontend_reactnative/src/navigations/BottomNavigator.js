@@ -6,15 +6,16 @@ import {
   MARKETPLACE_NAVIGATOR,
   NOTIFICATIONS,
   PROFILE,
-  YOUR_POSTS,
+  YOU,
+  YOUR_POSTS_NAVIGATOR,
 } from '../constants/routeNames';
 import Marketplace from '../screens/Marketplace';
 import Notifications from '../screens/Notifications';
-import YourPosts from '../screens/YourPosts';
 import Profile from '../screens/Profile';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HeaderSearch from '../components/HeaderSearch';
 import MarketplaceNavigator from './MarketplaceNavigator';
+import YourPostsNavigator from './YourPostsNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +28,7 @@ const BottomNavigator = () => {
 
           if (route.name === MARKETPLACE_NAVIGATOR) {
             iconName = focused ? 'cart' : 'cart-outline';
-          } else if (route.name === YOUR_POSTS) {
+          } else if (route.name === YOUR_POSTS_NAVIGATOR) {
             iconName = focused ? 'browsers' : 'browsers-outline';
           } else if (route.name === NOTIFICATIONS) {
             iconName = focused ? 'notifications' : 'notifications-outline';
@@ -38,13 +39,15 @@ const BottomNavigator = () => {
           // You can return any component that you like here!
           return <Icon name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'black',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: '#384653',
+        tabBarInactiveTintColor: '#8D8D8D',
         tabBarItemStyle: {marginBottom: 7},
         tabBarIconStyle: {marginBottom: -7},
         tabBarLabelStyle: {fontSize: 12},
         tabBarStyle: {backgroundColor: '#EDF8FF', minHeight: 60, maxHeight: 80},
         tabBarHideOnKeyboard: true,
+        tabBarActiveBackgroundColor: '#EDF8FF',
+        tabBarInactiveBackgroundColor: '#EDF8FF',
         headerShown: false,
       })}>
       <Tab.Screen
@@ -53,8 +56,8 @@ const BottomNavigator = () => {
         options={{tabBarLabel: 'Marketplace'}}
       />
       <Tab.Screen
-        name={YOUR_POSTS}
-        component={YourPosts}
+        name={YOUR_POSTS_NAVIGATOR}
+        component={YourPostsNavigator}
         options={{title: 'Your posts'}}
       />
       <Tab.Screen

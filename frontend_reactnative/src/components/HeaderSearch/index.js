@@ -12,12 +12,11 @@ const HeaderSearch = () => {
   return (
     <View
       style={{
-        height: 70,
+        height: 76,
         flexDirection: 'row',
         backgroundColor: colors.secondary,
-        alignItems: 'flex-end',
+        alignItems: 'center',
         justifyContent: 'center',
-        paddingBottom: 10,
       }}>
       <TextInputOutline
         label={'Search (by name)'}
@@ -37,7 +36,7 @@ const HeaderSearch = () => {
         onPress={() => {
           navigate(FILTERS_POP_UP);
         }}>
-        <View style={{paddingBottom: 10, paddingHorizontal: 20}}>
+        <View style={{paddingHorizontal: 20}}>
           <SimpleLineIcon name="equalizer" size={24} color="#292D32" />
         </View>
       </TouchableWithoutFeedback>
