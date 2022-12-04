@@ -1,37 +1,20 @@
-import {
-  View,
-  Text,
-  TouchableWithoutFeedback,
-  Easing,
-  LayoutAnimation,
-  UIManager,
-  Platform,
-} from 'react-native';
-import Animated, {
-  FadeInDown,
-  Layout,
-  SlideInLeft,
-  SlideInRight,
-  ZoomInLeft,
-} from 'react-native-reanimated';
+import {View, Text, TouchableWithoutFeedback} from 'react-native';
+import Animated, {Easing, EasingNode, Layout} from 'react-native-reanimated';
 import React, {useEffect, useRef, useState} from 'react';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import TextInputOutline from '../../common/textInputOutline-Kohana';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-UIManager.setLayoutAnimationEnabledExperimental(true);
-const FilterProp = () => {
-  const [show, setShow] = useState(false);
+const FilterPropFrame = ({onToggle, children, type, show}) => {
   const rotateAnim = useRef(new Animated.Value(0)).current;
   const durationLayout = 300;
   const toggle = () => {
-    setShow(prevState => !prevState);
-    
+    onToggle();
     Animated.timing(rotateAnim, {
       toValue: show ? 0 : 1,
       duration: 200,
-      easing: Easing.linear,
+      easing: EasingNode.linear,
       useNativeDriver: true,
     }).start();
   };
@@ -39,7 +22,6 @@ const FilterProp = () => {
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
   });
-
   return (
     <Animated.View
       layout={Layout.stiffness(100).damping(10).duration(durationLayout)}>
@@ -56,11 +38,11 @@ const FilterProp = () => {
           style={{
             marginStart: 25,
             color: 'black',
-            fontSize: 15,
+            fontSize: 16,
             fontStyle: 'italic',
             fontWeight: '700',
           }}>
-          Name
+          {type}
         </Animated.Text>
         <TouchableWithoutFeedback onPress={toggle}>
           <Animated.View
@@ -70,38 +52,18 @@ const FilterProp = () => {
           </Animated.View>
         </TouchableWithoutFeedback>
       </View>
-      {show && (
-        <Animated.View
-          entering={SlideInLeft.duration(300).delay(150)}
-          layout={Layout.stiffness(100).damping(10).duration(durationLayout)}
-          style={{marginStart: 5, marginEnd: 20}}>
-          <TextInputOutline
-            label={'Honda Wave...'}
-            iconClass={MaterialIcons}
-            iconName={'drive-file-rename-outline'}
-            iconColor={'#90B4D3'}
-            inputPadding={6}
-            borderWidthtoTop={0}
-            bigContainerStyle={{flex: 1, marginStart: 15, marginBottom: 0}}
-            containerStyle={{height: 44, borderColor: '#305080'}}
-            labelStyle={{fontSize: 12}}
-            inputStyle={{fontSize: 16}}
-            labelContainerStyle={{padding: 13}}
-            iconSize={20}
-          />
-        </Animated.View>
-      )}
+      {children}
       <Animated.View
         layout={Layout.stiffness(100).damping(10).duration(durationLayout)}
         style={{
           backgroundColor: '#A9A9A9',
           height: 1,
           marginStart: 25,
-          marginTop: show ? 10 : 5,
+          marginTop: show ? 10 : 6,
         }}
       />
     </Animated.View>
   );
 };
 
-export default FilterProp;
+export default FilterPropFrame;
