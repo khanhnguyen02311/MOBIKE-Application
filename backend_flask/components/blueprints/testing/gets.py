@@ -7,7 +7,7 @@ from ...dbschemas import *
 
 
 STEP = 100
-CONCURRENT = 2
+CONCURRENT = 50
 bpget = Blueprint('bpget', __name__)
 
 @bpget.route('/', methods = ['GET'])
@@ -75,16 +75,16 @@ def getversions(name):
 
 @bpget.route('/permissions', methods = ['GET'])
 def getpermissions():
-    Session = new_Scoped_session()
-    try:
-        schema = PermissionSchema(many=True)
-        permissions = Session.query(Permission).all()
-        Session.close()
-        return jsonify(schema.dump(permissions))
-    except Exception as e:
-        Session.rollback()
-        Session.close()
-        return jsonify({"error": str(e)})
+    with new_Session() as Session:
+        try:
+            schema = PermissionSchema(many=True)
+            permissions = Session.query(Permission).all()
+            Session.close()
+            return jsonify(schema.dump(permissions))
+        except Exception as e:
+            Session.rollback()
+            Session.close()
+            return jsonify({"error": str(e)})
 
 @bpget.route('/count/cities/', methods = ['GET'])
 def countcities():
