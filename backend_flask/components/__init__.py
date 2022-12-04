@@ -4,7 +4,6 @@ from flask_jwt_extended import JWTManager, get_jwt, get_jwt_identity, create_acc
 from .blueprints.testing import post, image, gets, admin
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account
-from .dbsettings import Session
 from .config import FlaskConfig as fcfg
 from .security import oauth, blocklistJWT
 
@@ -15,9 +14,9 @@ def create_app():
     jwt = JWTManager(App)
     oauth.init_app(App)
 
-    @App.after_request
-    def after_request_callback(response):
-        Session.remove()
+    # @App.after_request
+    # def after_request_callback(response):
+    #     Session.remove()
 
     @App.route("/")
     def hello():
