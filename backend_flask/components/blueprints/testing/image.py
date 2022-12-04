@@ -1,7 +1,7 @@
 import os
 from flask import Flask, Blueprint, jsonify, request, send_file
 import flask_jwt_extended as jwte
-from components.dbsettings import new_Session
+from components.dbsettings import new_Scoped_session
 from components import dbmodels as dbm, dbschemas as dbs
 from ...config import STORAGE_PATH
 
@@ -19,7 +19,7 @@ def upload():
     if f.filename == '':
         return jsonify({'msg': 'No selected file'}), 400
     ext = f.filename.split('.')[-1]
-    Session = new_Session()
+    Session = new_Scoped_session()
     try:
         new_image = dbm.Image(Filename=f.filename)
         Session.add(new_image)
@@ -44,7 +44,7 @@ def upload():
 @bpimage.route('/get/<id>', methods = ['GET'])
 def get(id):
     id = int(id)
-    Session = new_Session()
+    Session = new_Scoped_session()
     image = Session.query(dbm.Image).filter(dbm.Image.ID == id).first()
     Session.close()
     if image is None:

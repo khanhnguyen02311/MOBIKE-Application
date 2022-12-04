@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from flask import Flask, Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from components.dbsettings import new_Session
+from components.dbsettings import new_Scoped_session
 from components import dbmodels as dbm, dbschemas as dbs
 
 bpaccount = Blueprint('bpaccount', __name__)
@@ -25,7 +25,7 @@ def getinfo():
       return jsonify({"message": "Incompleted", "error": "Invalid token", "info": ""})
    
    schema = dbs.AccountInfoSchema()
-   Session = new_Session()
+   Session = new_Scoped_session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
       if acc == None:
@@ -49,7 +49,7 @@ def changeinfo():
    
    schema = dbs.AccountInfoSchema()
    info = request.get_json()
-   Session = new_Session()
+   Session = new_Scoped_session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
       if acc == None:
@@ -77,7 +77,7 @@ def getaddress():
    if current_user is None:
       return jsonify({"message": "Incompleted", "error": "Invalid token", "info": ""})
    schema = dbs.AddressSchema()
-   Session = new_Session()
+   Session = new_Scoped_session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
       if acc == None:
@@ -103,7 +103,7 @@ def addaddress():
       return jsonify({"message": "Incompleted", "error": "Invalid token", "info": ""})
    info = request.get_json()
    schema = dbs.AddressSchema()
-   Session = new_Session()
+   Session = new_Scoped_session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
       if acc == None:
@@ -130,7 +130,7 @@ def deladdress(id):
    if current_user is None:
       return jsonify({"message": "Incompleted", "error": "Invalid token"})
    info = request.get_json()
-   Session = new_Session()
+   Session = new_Scoped_session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
       if acc == None:

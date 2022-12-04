@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
-from components.dbsettings import new_Session
+from components.dbsettings import new_Scoped_session
 from components import dbmodels as dbm, dbschemas as dbs
 from components.security import make_hash
 
@@ -37,7 +37,7 @@ def setup_account(Session, a_email, a_username, a_password, a_type, a_permission
 @bpsignup.route('/signup', methods=['POST'])
 def signup():
    schema = dbs.AccountSchema()
-   Session = new_Session()
+   Session = new_Scoped_session()
    try:
       email = request.json['email']
       username = request.json['username']

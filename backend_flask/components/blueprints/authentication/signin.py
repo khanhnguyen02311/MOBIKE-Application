@@ -1,7 +1,7 @@
 import secrets
 from flask import Flask, Blueprint, request, jsonify, url_for
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from components.dbsettings import new_Session
+from components.dbsettings import new_Scoped_session
 from .signup import setup_account
 from components import dbmodels as dbm, dbschemas as dbs
 from components.security import make_hash, check_hash, oauth
@@ -25,7 +25,7 @@ def signin_output(message, error, access_token):
 @bpsignin.route('/signin', methods = ['POST'])
 def signin():
    schema = dbs.AccountSchema()
-   Session = new_Session()
+   Session = new_Scoped_session()
    try:
       username_or_email = request.json["username_or_email"]
       password = request.json["password"]
@@ -59,7 +59,7 @@ def googlesignup():
 @bpsignin.route('/signin/google/authorize')
 def googleauthorize():
    schema = dbs.AccountSchema()
-   Session = new_Session()
+   Session = new_Scoped_session()
    try:
       token = oauth.google.authorize_access_token()
       profile = oauth.google.get('userinfo').json()
