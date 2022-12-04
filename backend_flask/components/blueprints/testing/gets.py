@@ -88,78 +88,78 @@ def getpermissions():
 
 @bpget.route('/count/cities/', methods = ['GET'])
 def countcities():
-    with new_Session() as Session:
-        try:
-            count = Session.query(City).count()
-            return jsonify(count)
-        except Exception as e:
-            Session.rollback()
-            return jsonify({"error": str(e)})
+    Session = new_Scoped_session() #
+    try:
+        count = Session.query(City).count()
+        return jsonify(count)
+    except Exception as e:
+        Session.rollback()
+        return jsonify({"error": str(e)})
 
 @bpget.route('/cities/<fid>', methods = ['GET'])
 def getcities(fid):
-    with new_Session() as Session:
-        try:
-            FirstID = int(fid)
-            schema = CitySchema(many=True)
-            cities = Session.query(City).where(City.ID >= FirstID).limit(STEP)
-            return jsonify(schema.dump(cities))
-        except Exception as e:
-            Session.rollback()
-            return jsonify({"error": str(e)})
+    Session = new_Scoped_session() #
+    try:
+        FirstID = int(fid)
+        schema = CitySchema(many=True)
+        cities = Session.query(City).where(City.ID >= FirstID).limit(STEP)
+        return jsonify(schema.dump(cities))
+    except Exception as e:
+        Session.rollback()
+        return jsonify({"error": str(e)})
 
 @bpget.route('/count/districts', methods = ['GET'])
 def countdistricts():
-    with new_Session() as Session:
-        try:
-            count = Session.query(District).count()
-            return jsonify(count)
-        except Exception as e:
-            Session.rollback()
-            return jsonify({"error": str(e)})
+    Session = new_Scoped_session() #
+    try:
+        count = Session.query(District).count()
+        return jsonify(count)
+    except Exception as e:
+        Session.rollback()
+        return jsonify({"error": str(e)})
 
 @bpget.route('/districts/<fid>', methods = ['GET'])
 def getdistricts(fid):
-    with new_Session() as Session:
-        try:
-            FirstID = int(fid)
-            schema = DistrictSchema(many=True)
-            districts = Session.query(District).where(District.ID >= FirstID).limit(STEP)
-            return jsonify(schema.dump(districts))
-        except Exception as e:
-            Session.rollback()
-            return jsonify({"error": str(e)})
+    Session = new_Scoped_session() #
+    try:
+        FirstID = int(fid)
+        schema = DistrictSchema(many=True)
+        districts = Session.query(District).where(District.ID >= FirstID).limit(STEP)
+        return jsonify(schema.dump(districts))
+    except Exception as e:
+        Session.rollback()
+        return jsonify({"error": str(e)})
 
 @bpget.route('/count/wards', methods = ['GET'])
 def countwards():
-    with new_Session() as Session:
-        try:
-            count = Session.query(Ward).count()
-            return jsonify(count)
-        except Exception as e:
-            Session.rollback()
-            return jsonify({"error": str(e)})
+    Session = new_Scoped_session() #
+    try:
+        count = Session.query(Ward).count()
+        return jsonify(count)
+    except Exception as e:
+        Session.rollback()
+        return jsonify({"error": str(e)})
 
 @bpget.route('/wards/<fid>', methods = ['GET'])
 def getwards(fid):
-    with new_Session() as Session:
-        try:
-            firstID = int(fid)
-            schema = WardSchema(many=True)
-            wards = Session.query(Ward).where(Ward.ID >= firstID).limit(STEP)
-            return jsonify(schema.dump(wards))
-        except Exception as e:
-            Session.rollback()
-            return jsonify({"error": str(e)})
+    Session = new_Scoped_session() #
+    try:
+        firstID = int(fid)
+        schema = WardSchema(many=True)
+        wards = Session.query(Ward).where(Ward.ID >= firstID).limit(STEP)
+        return jsonify(schema.dump(wards))
+    except Exception as e:
+        Session.rollback()
+        return jsonify({"error": str(e)})
 
 
 @bpget.route('/imagetypes', methods = ['GET'])
 def getimagetypes():
-    with new_Session() as Session:
-        try:
-            schema = ImageTypeSchema(many=True)
-            imagetypes = Session.query(ImageType).all()
-            return jsonify(schema.dump(imagetypes))
-        except Exception as e:
-            Session.rollback()
-            return jsonify({"error": str(e)})
+    Session = new_Scoped_session() #
+    try:
+        schema = ImageTypeSchema(many=True)
+        imagetypes = Session.query(ImageType).all()
+        return jsonify(schema.dump(imagetypes))
+    except Exception as e:
+        Session.rollback()
+        return jsonify({"error": str(e)})

@@ -9,7 +9,7 @@ Session = scoped_session(sessionmaker(bind=Engine, autoflush=scfg.AUTO_FLUSH, au
 Base = declarative_base()
 
 def new_Scoped_session():
-   return scoped_session(sessionmaker(bind=Engine, autoflush=scfg.AUTO_FLUSH, autocommit=scfg.AUTO_COMMIT))
+   return Session()
 
 def new_Session():
    return sessionmaker(bind=Engine, autoflush=scfg.AUTO_FLUSH, autocommit=scfg.AUTO_COMMIT).begin()
