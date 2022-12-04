@@ -12,4 +12,4 @@ def new_Session():
    return scoped_session(sessionmaker(bind=Engine, autoflush=scfg.AUTO_FLUSH, autocommit=scfg.AUTO_COMMIT))
 
 def create_session():
-   return Session(Engine)
+   return sessionmaker(bind=Engine, autoflush=scfg.AUTO_FLUSH, autocommit=scfg.AUTO_COMMIT).begin()
