@@ -3,29 +3,35 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Text, TouchableWithoutFeedback} from 'react-native';
 import Header from '../components/common/header';
 import HeaderSearch from '../components/HeaderSearch';
-import {FILTERS_POP_UP, LOADING, MARKETPLACE} from '../constants/routeNames';
+import {
+  ADD_POST,
+  FILTERS_POP_UP,
+  LOADING,
+  YOUR_POSTS,
+} from '../constants/routeNames';
+import AddPost from '../screens/AddPost';
 import FiltersPopUp from '../screens/FiltersPopUp';
 import Loading from '../screens/Loading';
 import Marketplace from '../screens/Marketplace';
+import YourPosts from '../screens/YourPosts';
 
 const Stack = createNativeStackNavigator();
 
-const MarketplaceNavigator = () => {
+const YourPostsNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName={MARKETPLACE}>
+    <Stack.Navigator initialRouteName={YOUR_POSTS}>
       <Stack.Screen
-        name={MARKETPLACE}
-        component={Marketplace}
-        options={{header: () => <HeaderSearch />}}
+        name={YOUR_POSTS}
+        component={YourPosts}
+        //options={{header: () => <HeaderSearch />}}
       />
       <Stack.Screen
-        name={FILTERS_POP_UP}
-        component={FiltersPopUp}
+        name={ADD_POST}
+        component={AddPost}
         options={{
           header: ({navigation}) => (
             <Header
-              title={'Filters'}
-              textRight={'Reset'}
+              title={'Add New Post'}
               onLeftClick={() => {
                 navigation.goBack();
               }}
@@ -37,4 +43,4 @@ const MarketplaceNavigator = () => {
   );
 };
 
-export default MarketplaceNavigator;
+export default YourPostsNavigator;

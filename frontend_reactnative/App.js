@@ -38,8 +38,8 @@ const App = () => {
     const Init = async () => {
       await TokenStorage.init();
       await ClientDatabase.init();
-      TokenStorage.print();
-      ClientDatabase.print();
+      // TokenStorage.print();
+      // ClientDatabase.print();
       Store.dispatch(setLoading(false));
     }
     
