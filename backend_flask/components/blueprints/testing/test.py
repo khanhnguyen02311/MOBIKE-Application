@@ -1,10 +1,13 @@
 from flask import Blueprint, request, jsonify, render_template_string
-from flask_socketio import SocketIO, emit
-from components import Socketio, App
+
 
 bptest = Blueprint('bptest', __name__)
 
-@App.route("/test/chat", methods=['GET', 'POST'])
+@bptest.route('/')
+def hello():
+    return "<h1>Hello from test.</h1>"
+
+@bptest.route("/chat", methods=['GET', 'POST'])
 def chat():
     return render_template_string('''
     <!DOCTYPE html>
@@ -53,8 +56,3 @@ def chat():
 </body>
     ''')
     
-@Socketio.on('connect')
-def handle_message(message):
-    print('received message: ' + message)
-    if message != 'User connected!':
-        Socketio.send(message, broadcast=True)
