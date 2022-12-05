@@ -22,15 +22,7 @@ const MarketplaceNavigator = () => {
         name={FILTERS_POP_UP}
         component={FiltersPopUp}
         options={{
-          header: ({navigation}) => (
-            <Header
-              title={'Filters'}
-              textRight={'Reset'}
-              onLeftClick={() => {
-                navigation.goBack();
-              }}
-            />
-          ),
+          header: () => <Header title={'Filters'} textRight={'Reset'} />,
         }}
       />
     </Stack.Navigator>

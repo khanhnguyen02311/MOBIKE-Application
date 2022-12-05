@@ -20,7 +20,7 @@ const AppNavContainer = () => {
     <NavigationContainer>
       {isLoading ? (
         <LoadingNavigator />
-      ) : true ? (
+      ) : isLoggedIn ? (
         <BottomNavigator />
       ) : (
         <AuthenticationNavigator />

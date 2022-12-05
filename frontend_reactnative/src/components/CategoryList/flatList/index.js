@@ -1,20 +1,16 @@
 import {View, Text, FlatList, ScrollView} from 'react-native';
 import React from 'react';
 import ListItem from '../listItem';
-import colors from '../../../assets/theme/colors';
-
-var typeEventClick = '';
 
 const renderItem = ({item, index}) => {
-  return <ListItem item={item} index={index} type={typeEventClick} />;
+  return <ListItem item={item} index={index} />;
 };
 
 const keyExtractor = item => {
   return item.id;
 };
 
-const CategoryList = ({data, type, ...props}) => {
-  typeEventClick = type;
+const CategoryList = ({data, ...props}) => {
   return (
     // <ScrollView horizontal showsHorizontalScrollIndicator={false}>
     <FlatList

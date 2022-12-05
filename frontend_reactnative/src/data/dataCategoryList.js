@@ -24,46 +24,46 @@ const data = [
     url: require('../assets/images/category.png'),
     id: '5',
   },
-  // {
-  //   title: 'Hello',
-  //   url: require('../assets/images/category.png'),
-  //   id: '6',
-  // },
-  // {
-  //   title: 'Hello',
-  //   url: require('../assets/images/category.png'),
-  //   id: '7',
-  // },
-  // {
-  //   title: 'Hello',
-  //   url: require('../assets/images/category.png'),
-  //   id: '8',
-  // },
-  // {
-  //   title: 'Hello',
-  //   url: require('../assets/images/category.png'),
-  //   id: '9',
-  // },
-  // {
-  //   title: 'Hello',
-  //   url: require('../assets/images/category.png'),
-  //   id: '10',
-  // },
-  // {
-  //   title: 'Hello',
-  //   url: require('../assets/images/category.png'),
-  //   id: '11',
-  // },
-  // {
-  //   title: 'Hello',
-  //   url: require('../assets/images/category.png'),
-  //   id: '12',
-  // },
-  // {
-  //   title: 'Hello',
-  //   url: require('../assets/images/category.png'),
-  //   id: '13',
-  // },
+  {
+    title: 'Hello',
+    url: require('../assets/images/category.png'),
+    id: '6',
+  },
+  {
+    title: 'Hello',
+    url: require('../assets/images/category.png'),
+    id: '7',
+  },
+  {
+    title: 'Hello',
+    url: require('../assets/images/category.png'),
+    id: '8',
+  },
+  {
+    title: 'Hello',
+    url: require('../assets/images/category.png'),
+    id: '9',
+  },
+  {
+    title: 'Hello',
+    url: require('../assets/images/category.png'),
+    id: '10',
+  },
+  {
+    title: 'Hello',
+    url: require('../assets/images/category.png'),
+    id: '11',
+  },
+  {
+    title: 'Hello',
+    url: require('../assets/images/category.png'),
+    id: '12',
+  },
+  {
+    title: 'Hello',
+    url: require('../assets/images/category.png'),
+    id: '13',
+  },
 ];
 
 export default data;
