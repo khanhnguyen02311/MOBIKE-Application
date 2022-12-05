@@ -1,10 +1,10 @@
 from flask import Blueprint, request, jsonify, render_template_string
 from flask_socketio import SocketIO, emit
-from components import Socketio, App
+from components import Socketio
 
 bptest = Blueprint('bptest', __name__)
 
-@App.route("/test/chat", methods=['GET', 'POST'])
+@bptest.route("/chat", methods=['GET', 'POST'])
 def chat():
     return render_template_string('''
     <!DOCTYPE html>
