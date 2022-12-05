@@ -280,7 +280,7 @@ class VehicleInfo (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Vehicle_name = Column(ms.NVARCHAR(128), nullable=False)
     Odometer = Column(ms.INTEGER)
-    License_plate = Column(ms.NVARCHAR(10), nullable=False)
+    License_plate = Column(ms.NVARCHAR(10))
     Manufacture_year = Column(ms.SMALLINT)
     Cubic_power = Column(ms.INTEGER)
 

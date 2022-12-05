@@ -1,0 +1,1246 @@
+id,name,brand_id
+1,Caponord,1
+3,SR Motard,1
+5,RSV4,1
+6,Tuono V4,1
+1159,Dorsoduro,1
+1163,S4,1
+1164,Shiver,1
+1166,Tuono,1
+9,Avenger,2
+1170,Pulsar,2
+1171,Adventure,2
+10,Pepe,3
+11,BN,3
+12,Caffe Nero,3
+13,T,3
+14,VLM,3
+15,TNT,3
+16,TRK,3
+17,Leoncino,3
+18,R,3
+19,Benelli Tornado,3
+1219,Tornado Tre ,3
+1220,Tornado,3
+1221,Turismo,3
+20,C1,4
+21,C400,4
+22,Sports Enduro,4
+23,Concept,4
+24,C600,4
+25,C650,4
+26,F650,4
+27,F700,4
+28,F800,4
+29,F750,4
+30,Concept,4
+1048,S1000,4
+1174,K1600,4
+1178,R1250,4
+1180,F900,4
+1181,G310,4
+1184,Sports Enduro,4
+1185,Funduro,4
+1186,F650GS,4
+1187,F650GS,4
+31,BX,5
+32,Glanville,5
+33,Saxby,5
+1201,Classic,5
+1203,Scrambler,5
+1205,Cafe Racer,5
+1206,Comwell,5
+1208,Sunray,5
+1209,Rayburn,5
+1210,Crossfire,5
+1213,SK8,5
+1215,Felsberg,5
+34,Hussar,6
+35,Popcorn,6
+36,GTR,6
+37,SM,6
+38,SMX,6
+39,Supercross,6
+40,Supermoto,6
+41,SX,6
+42,Aragon,6
+43,Bravo,6
+44,Formula,6
+45,Oliver City,6
+46,Oliver Sport,6
+47,Vogue,6
+48,XR,6
+49,VGO,6
+50,X-Large,6
+1218,ATV,6
+51,VUN,7
+52,E-Five,8
+53,A-Four,8
+54,Bonita,8
+55,Cordi,8
+56,S-Five,8
+57,Beagle,8
+58,Cub,8
+59,S4,8
+60,S5,8
+61,CiTi Ace,8
+62,RoadWin,8
+63,B-Bone,8
+64,Besbi,8
+65,Altino,8
+66,Daystar,8
+68,RoadSport,8
+69,S3,8
+70,Aroma,8
+71,Dart,8
+72,S1,8
+73,Steezer,8
+74,Delfino,8
+75,Freewing,8
+76,History,8
+77,Otello,8
+78,S2,8
+79,NS,8
+80,S-One,8
+1047,VS,8
+1222,VJF,8
+1223,VL,8
+1224,VC,8
+1635,Kea,8
+1669,Wave,8
+81,Diavel,9
+82,Multistrada,9
+83,Panigale,9
+84,Scrambler,9
+85,Hypermotard,9
+86,Monster,9
+87,SuperSport,9
+88,XDiavel,9
+1075,Mini,9
+1589,StreetFighter,9
+1590,E-MTB,9
+1712,City Hunter 110cc,9
+89,150,10
+1225,350,10
+90,Onyx,11
+91,Toxic,11
+92,Cracker,11
+93,Epico,11
+94,Jump,11
+95,Race 2,11
+96,ROC,11
+97,Sirion,11
+98,Vendetta,11
+99,Vertigo,11
+100,Mini Trigger,11
+101,Trigger,11
+102,Ideo,11
+103,Racy XOR,11
+104,XOR,11
+105,Code,11
+107,Inox,11
+108,Worx,11
+109,Soho,11
+110,Zion,11
+111,TR,11
+1226,Urano,11
+1227,Stream,11
+112,Cub,12
+1119,Sirius,12
+1229,Wave,12
+113,Sportster,13
+114,Forty-Eight,13
+115,Forty-Eight,13
+116,Dyna,13
+117,V-Rod,13
+119,Super Glide,13
+122,Fat Bob,13
+125,Trike,13
+126,Road Glide,13
+127,Street Glide,13
+128,Road King,13
+1230,Street,13
+1231,Street,13
+1239,Softail,13
+1240,V-Rod,13
+1242,Touring,13
+1249,CVO,13
+1677,Iron,13
+129,Hunk,14
+130,1967,15
+131,CD,15
+132,Dream,15
+133,Super Cub,15
+134,Crea,15
+135,Vision,15
+136,Sport Cup,15
+137,Chaly,15
+138,Julio,15
+139,DD,15
+141,CB,15
+142,Win,15
+143,Spacy,15
+144,SCV Lead,15
+145,LEAD,15
+146,NHX110 Lead,15
+147,Cross Cub,15
+148,Air Blade,15
+149,Scoopy,15
+150,Super Dream,15
+151,Avitor,15
+152,Astrea,15
+153,Blade,15
+154,Zoomer,15
+155,SCR,15
+156,PS,15
+157,TM Racing,15
+158,Nova Dash,15
+159,Hartford My Dream,15
+160,CA,15
+161,CG,15
+162,Pantheon,15
+163,Click,15
+165,MSX,15
+166,PCX,15
+167,SH,15
+168,CBR,15
+169,CM,15
+170,GL Max,15
+171,GL Pro,15
+172,Master,15
+173,Nova,15
+174,Shadow,15
+175,@ (A Còng),15
+176,Dylan,15
+177,Joying,15
+178,Vario,15
+179,Keeway Dream,15
+180,Winner,15
+181,Rebel,15
+182,CMX,15
+184,Freeway,15
+185,CH,15
+186,Shadow Custom 400,15
+187,Steed,15
+188,CX,15
+191,750 Shadow,15
+192,VF,15
+193,CBF,15
+194,VT,15
+195,Shadow ACE,15
+196,F6C Valkyrie,15
+197,Covingtons,15
+198,Future,15
+199,M8,15
+200,A6,15
+201,A7,15
+202,A8,15
+203,M6,15
+204,A6,15
+205,A8,15
+206,A3,15
+207,A1,15
+208,M7,15
+209,A5,15
+210,Cool,15
+211,Harricane,15
+1036,Bros,15
+1037,150,15
+1038,Citi,15
+1042,LA,15
+1055,Wave Alpha,15
+1074,Sonic,15
+1076,Winner X,15
+1252,1966,15
+1253,1968,15
+1254,1969,15
+1256,Zoomer X,15
+1257,GL,15
+1260,Future 2,15
+1261,Future 1,15
+1262,Vsun V3,15
+1263,Tonly Sport,15
+1264,Joker,15
+1265,Q1,15
+1266,Mono,15
+1268,EV,15
+1269,H,15
+1270,T2,15
+1271,V-GO,15
+1536,Beat,15
+1537,Genio,15
+1539,599,15
+1540,Hornet,15
+1541,Activa,15
+1542,ADV,15
+1543,ANF,15
+1544,APE,15
+1545,Aviator,15
+1546,AX1,15
+1548,Big Ruckus,15
+1549,Bulldog,15
+1550,CBZ,15
+1551,CLR,15
+1552,CR,15
+1553,CRF,15
+1554,Deauville,15
+1555,Dio,15
+1556,DN,15
+1557,Elite,15
+1558,EVO,15
+1559,Faze,15
+1560,FES,15
+1561,FMX,15
+1562,Foresight,15
+1563,Forza,15
+1564,FSC,15
+1565,FT,15
+1566,FTR,15
+1567,Fury,15
+1568,GB,15
+1569,Glamour,15
+1570,Gold Wing,15
+1571,Gold,15
+1572,Grom,15
+1573,GTR,15
+1575,Helix,15
+1576,Q2,15
+1577,Hunk,15
+1578,Integra,15
+1579,Interceptor,15
+1580,Interstate,15
+1581,Karizma,15
+1582,Livo,15
+1583,Magna,15
+1584,Monkey,15
+1585,Passion,15
+1586,Plearsure,15
+1587,Splendor,15
+1588,X-ADV,15
+1599,Cub,15
+1601,Fortune,15
+1605,Nova Tena,15
+1626,Fuma,15
+1691,Vsun V2,15
+1692,Today,15
+1700,Wave S,15
+212,ST,16
+213,GT,16
+214,Aquila,16
+1273,ST7,16
+1624,CREA,16
+215,Max,17
+216,KSR,17
+217,Leo,17
+218,Z,17
+219,KLX,17
+221,Estrella,17
+222,W,17
+223,KX,17
+224,Ninja,17
+225,Versys,17
+227,ZX,17
+228,ER,17
+229,Vulcan,17
+231,Boss,17
+1034,Kawasaki,17
+1275,ER,17
+1276,ER-5,17
+1277,ER-6F,17
+1591,MEGURO,17
+1681,Bajaj,17
+232,Blackster,18
+1278,Agora,18
+1280,Ajax,18
+1281,ARN,18
+1284,Arsen,18
+1286,ATV,18
+1292,Brusco,18
+1293,Cafe Racer,18
+1294,City,18
+1296,Cityblade,18
+1299,Cooper,18
+1302,Cruiser,18
+1304,CS,18
+1305,Cub,18
+1307,CUB Partner,18
+1309,Dorado,18
+1310,Dream,18
+1311,E-Sunday,18
+1312,Electric ,18
+1314,F-Act,18
+1320,F-Act EVO,18
+1324,Flash,18
+1326,Focus,18
+1328,Gallop,18
+1329,Goccia,18
+1335,Hacker,18
+233,R,19
+234,350,19
+235,X,19
+237,Custom,19
+1336,Classic,19
+238,105,20
+239,Enduro Sport,20
+240,RS,20
+242,SX,20
+243,XC-W,20
+244,Duke,20
+245,LC2,20
+247,RC,20
+248,1050,20
+249,1090,20
+250,1190,20
+251,1290 Super Adventure,20
+1043,1290 Super,20
+1089,RC ABS,20
+1090,RC,20
+1091,Duke ABS,20
+1092,Super Duke R SE,20
+1093,Super Duke GT,20
+1094,Adventure,20
+1096,Adventure Super,20
+1339,Enduro,20
+1342,EXC,20
+1352,RC8,20
+1357,RC8R Akrapovic,20
+1359,RC8 R ,20
+1363,1290 Super Adventure R,20
+1364,Duke 200,20
+1365,Duke 200 ABS,20
+1366,Duke 390,20
+1367,Duke 250 ABS,20
+252,K-Pipe,21
+256,DJ,21
+257,Like,21
+262,Filly,21
+264,Caro,21
+265,Spike,21
+266,Pulscar CK,21
+269,Hipster 4V,21
+270,Stryker,21
+273,CK1,21
+275,Solona,21
+276,Venox,21
+277,K,21
+278,Candy ,21
+1040,,21
+1368,Hermosa,21
+1369,Visar,21
+1372,Active,21
+1376,Agility,21
+1381,City,21
+1384,DJS,21
+1386,Like,21
+1388,Kymco,21
+1389,Bet and Win,21
+1393,Compagno,21
+1395,Dink Yager,21
+1398,Dink,21
+1402,Many,21
+1407,Cruiser,21
+1409,Grand King,21
+1411,Hipster,21
+1414,Downtown,21
+1420,CK1 150,21
+1424,People,21
+1427,Candy S 50,21
+1428,Candy HI,21
+279,Pato,22
+280,Due,22
+281,LJ,22
+283,125D,22
+286,C,22
+287,GP,22
+288,LI,22
+290,125LD,22
+291,125LDA,22
+292,LD,22
+293,150D,22
+294,SX,22
+295,TV,22
+1044,Model,22
+296,Drakon,23
+297,F15,23
+298,Fifty HF,23
+299,PhanTom,23
+300,Grizzly,23
+301,A2,23
+302,Ciak,23
+303,DVD,23
+304,F10,23
+305,Firefox,23
+306,RST,23
+307,Centro,23
+308,YLC,23
+309,Blog,23
+310,Madison,23
+311,F18,23
+312,Password,23
+313,GT500,23
+314,Mobylette,24
+315,V7,25
+316,V9,25
+317,F3,26
+318,F4,26
+319,Brutale,26
+320,Dragster,26
+321,Rivale,26
+322,Stradale,26
+323,Turismo Veloce,26
+324,Commando,27
+325,Dominator,27
+326,Elystar,28
+327,Jet,28
+328,JetForce,28
+329,Ludix,28
+330,Django,28
+331,Blaster,28
+333,Citystar,28
+335,Ludix 2,28
+337,Kisbee,28
+339,Rally Victories,28
+340,Looxor Advantage,28
+341,LXR,28
+342,BlackSat,28
+343,Geopolis,28
+344,Satelis,28
+345,Belville,28
+346,S,28
+347,Metropolis,28
+348,Zip,29
+349,Vespa,29
+350,Grand,29
+351,X9,29
+352,Medley,29
+353,Beverly,29
+354,Fly,29
+355,Liberty,29
+356,Typhon,29
+357,ET,29
+358,T5,29
+359,ET8,29
+360,Excel,29
+1049,Deluxe,29
+1671,Vespa,29
+361,CBR,30
+362,CDR,30
+363,Notus,30
+364,Deluxe,30
+365,NC,30
+1592,CB,30
+1593,Notus RC,30
+1594,Custom,30
+366,AJS Regal-Raptor Daytona,31
+367,Euro Reibel,31
+368,Bobber,31
+369,Daytona,31
+370,Cruiser,31
+371,Saxonette,32
+372,Saxy ,32
+373,Dirty Devil,32
+374,49,32
+375,SpeedForce,32
+376,SpeedJet,32
+377,SX,32
+378,SX-1,32
+379,Eagle,32
+380,Bee,32
+381,MadAss,32
+382,Roadster,32
+383,VS,32
+384,XTC,32
+385,ZX,32
+386,ZZ,32
+387,Futuro,32
+388,SR,32
+389,X-Road,32
+390,LF,32
+391,Hercules,32
+392,Amici,32
+393,150,32
+394,FYM,32
+395,Quattrocento,32
+396,Big Roadster,32
+397,B,32
+398,Beast,32
+399,Boss,33
+400,DR-Z,34
+401,Address,34
+402,Raider,34
+403,Hayate,34
+404,REVO,34
+405,Royal,34
+406,Sport,34
+407,Smash,34
+408,GD,34
+409,VIVA,34
+410,Sport/ Xipo,34
+411,Stinger,34
+412,AXELO,34
+413,GN,34
+414,GZ,34
+415,Intruder,34
+416,Thunder,34
+417,Best,34
+418,EN,34
+419,Husky,34
+420,FX,34
+421,Xbike,34
+422,Crystal,34
+423,Impulse,34
+424,Sky,34
+425,Amity,34
+426,Avenis,34
+427,Bella,34
+428,Sapphire,34
+429,Vecstar,34
+430,Epicuro,34
+431,GSX,34
+432,Satria,34
+433,V-Strom,34
+434,RGV,34
+1430,RG Sport,34
+1431,Skydrive,34
+1597,HJ,34
+435,Elegant,35
+436,Amigo,35
+437,Angela,35
+438,Angel,35
+439,Bonus,35
+440,Magic,35
+441,Galaxy,35
+442,Star,35
+443,Husky,35
+444,Wolf,35
+445,Elite,35
+446,Elizabeth,35
+447,Joyride,35
+448,Attila,35
+449,Shark,35
+450,Venus,35
+451,Acruzo,35
+452,Cello,35
+453,Enjoy,35
+454,Fiddle,35
+455,Symphony,35
+456,Excel,35
+457,EV,35
+458,Z,35
+1039,Amity,35
+1432,Venus EFI,35
+1680,Passing,35
+459,3TA,36
+460,Bandit,36
+461,Grand Prix,36
+462,6TP,36
+463,Bonneville,36
+464,America,36
+466,Adventurer,36
+468,Street,36
+469,Bonneviller,36
+470,Tiger Explorer ,36
+471,Spider,37
+472,Lithium,37
+473,Proton,37
+474,Triton,37
+475,Zip,37
+476,Spectra,37
+477,Ant,37
+478,Phantom,37
+479,Street,37
+480,Terra,37
+481,Vortex,37
+482,Hot Rod,37
+483,Hotrod RT,37
+484,Phantera,37
+485,Reptile,37
+486,Energy,37
+487,Rebellian,37
+488,Ryder,37
+489,Thunderstar,37
+490,Urban,37
+491,Gladiator,37
+492,Xtreet,37
+493,Viking,37
+494,Nitrox RZ,37
+495,Colt,37
+496,V-Thunder,37
+497,Crossover,37
+498,Lucky 7,37
+499,Vegas,38
+500,Cross Country Tours,38
+501,Gunner,38
+502,Hammer,38
+503,High-Ball,38
+504,Magnum,38
+505,Vision,38
+506,Bios,39
+507,Phoenix,39
+508,Helios,39
+509,Classic,39
+1711,Latte,40
+1634,VIXION,40
+1600,Freego,40
+1438,METIS,40
+1437,Cute Girl,40
+1434,Vega ,40
+1433,Fino,40
+1136,Sport,40
+1084,Nouvo 6,40
+1083,Nouvo 5,40
+1082,Nouvo 4,40
+1081,Nouvo 3,40
+1080,Nouvo 2,40
+1079,Nouvo 1,40
+1078,R15 V3,40
+1077,R15 V2,40
+1052,R6,40
+1051,R3,40
+564,Scooter Passol,40
+553,HX,40
+550,ICATS,40
+548,Virago,40
+547,R1,40
+544,YP Majesty ,40
+542,NVX,40
+541,NM,40
+540,R15,40
+539,TFX,40
+538,YZF,40
+537,FZ,40
+536,FZS,40
+535,Exciter,40
+534,Force,40
+533,Flame,40
+532,125ZR,40
+531,MT,40
+530,XV,40
+529,Taurus,40
+528,Jupiter,40
+527,Nouvo,40
+526,Majesty,40
+525,Janus,40
+524,BWs,40
+523,Bianco,40
+522,Acruzo,40
+521,Luvias,40
+520,Grande,40
+519,Cygnus,40
+518,Maximo,40
+517,Lexam,40
+516,Mio,40
+515,Classico,40
+514,Nozza Grande,40
+513,Cuxi,40
+512,Sirius,40
+511,Yass,40
+510,X1,40
+567,Mini,41
+568,A2 ,41
+569,A9,41
+570,M133,41
+571,Monster,41
+572,A1,41
+573,A3,41
+574,V,41
+575,X,41
+576,S,41
+1141,Bike,41
+1439,A8,41
+1440,Small,41
+1441,AFA,41
+578,EBK ,42
+581,ASH,42
+582,Martin MTE,42
+584,ASF,42
+585,ASG,42
+1133,Sport,42
+1442,A48,42
+587,PS,43
+589,Khung Sơn,43
+590,Inox,43
+591,Aven,44
+592,Toma,44
+593,Pemo,44
+595,I City,44
+599,Milano,44
+600,Vectrix,44
+602,Emax,44
+603,Xmen,44
+605,911S,44
+606,911,44
+607,Ebike,44
+608,Emotion,44
+609,Anmshi,45
+611,Zoomer,45
+612,Vespa Anmshi,45
+614,Passiun,45
+615,F1,45
+617,Milo,45
+618,M133,45
+621,Xman,45
+622,Vespas,45
+623,D1,45
+625,Viper,45
+626,Gopro,45
+627,133,45
+628,Z5,45
+629,Xmen,45
+630,Mocha,45
+631,K1,45
+632,Bike,45
+633,Amy,45
+634,Cap,45
+635,Nijia ,45
+637,Freedom,46
+638,Mine,46
+639,Pround,46
+640,Milan,46
+641,Explorer,46
+642,Jeek,46
+643,Viper,46
+644,Ecool,46
+645,Ilook,46
+646,Camo,46
+647,Xmen,46
+648,Challenger,46
+649,Zoomer,46
+651,Moka,46
+652,Mocha,46
+654,Speed,46
+655,ED,46
+656,EL,46
+661,Poke,47
+662,Zipp,47
+663,Samurai,47
+664,Dk Tron,47
+667,Juno,47
+668,18,47
+671,DYQ,47
+672,Harumi,47
+673,Luxury,47
+674,MBI,47
+680,Romar,47
+681,Jeek,47
+682,Yadea,47
+683,Vespa Roma,47
+684,Mumar,47
+685,Xman,47
+686,Rùa,47
+687,SH,47
+1062,Sparta,47
+1063,Miku,47
+1064,133,47
+1446,Roma,47
+1448,Aima Jeek,47
+1450,DK ,47
+1613,GOGOS,47
+1650,Retro Cub,47
+1682,Siri,47
+688,A8,48
+689,SS,48
+690,E9,48
+691,Navi,48
+692,18Y,48
+695,E10,48
+696,Inox,48
+697,F2 ,48
+699,E4,48
+1451,A9,48
+1452,A10,48
+1453,Classic,48
+1454,Emy,48
+1455,Joker,48
+709,Xmen,49
+713,Dina,50
+715,Jeek,50
+716,Xman S,50
+717,V5,50
+719,Diamond,50
+720,137S,50
+721,Zoe,50
+722,Zoomer,50
+725,Bat,50
+730,AP,50
+1458,Twister,50
+1612,Valerio,50
+1637,Gogo,50
+731,Bat,51
+732,Titan,51
+734,Napoli,51
+736,Nagaki,51
+737,Volt School,51
+738,Top Men,51
+739,133F,51
+742,Xmen,51
+743,FH,51
+744,S2,51
+745,Sun,51
+746,Venus,51
+1123,S3,51
+1124,Latina,51
+1125,Gopath,51
+1157,Captain,51
+1158,M3,51
+1484,Libecta,51
+1488,Liv,51
+749,Vespas,52
+750,Jeek,52
+752,Butterfly,52
+753,133,52
+755,Nami,52
+756,Xmen,52
+758,Vip Rider,52
+759,Haoda,52
+760,Buffalo,52
+762,Zoomer,52
+763,Xman,52
+764,Gogolo,52
+1148,Gogo,52
+1461,Nijia,52
+1701,Creer,52
+1702,RS,52
+1703,SIR,52
+1705,R1,52
+1706,M-One,52
+1707,Tesla,52
+1708,Pansy,52
+1709,Gofast,52
+1710,Leo,52
+765,KEVA,53
+766,Vespa,53
+767,Xman,53
+768,V5,53
+769,M133S,53
+771,S6,53
+772,S4,53
+774,HX,53
+1525,Gogo,53
+1526,133M,53
+777,M133,54
+781,M133S,54
+783,133,54
+784,M137,54
+787,Detech Espero,54
+790,M186,54
+791,Kazuki,55
+793,Giant,55
+794,12A,55
+796,Skybike,55
+797,Zip Bike,55
+798,Kaizen,55
+834,S10,55
+836,JEEK MAN,55
+837,S9,55
+838,FDI,55
+839,Vespa,55
+840,Vecra,55
+843,Xmen,55
+844,133SH,55
+1464,Hero,55
+1465,BELLA,55
+801,Vespa,56
+807,Detech ,56
+809,Xmen,56
+810,Milan,56
+813,Giant,56
+815,Cap,56
+816,M133D,56
+1513,Dream,56
+1514,Sirius,56
+818,IQ,57
+819,EM,57
+825,TDW,58
+826,TDR,58
+831,TDP,58
+1469,TDN Couple,58
+1470,CITY ELF,58
+845,6,59
+846,17,59
+847,2,59
+848,29,59
+849,3,59
+1024,GA,59
+1025,Zoomer,59
+850,E21,60
+851,E2,60
+852,E1,60
+853,H1,60
+1473,W1,60
+854,H4,61
+855,22,61
+856,2211,61
+857,18,61
+858,22inch,62
+862,Ruby,62
+863,18inch,62
+865,Sport,62
+868,Bike,62
+869,Z1,63
+870,F008,63
+871,M007,63
+872,C1,63
+873,C2,63
+874,Vespas ,64
+875,Vespa,64
+876,Xmen,64
+878,M,64
+880,Pega ,65
+883,Crazybull,65
+884,Maxxer,65
+885,Top Class,65
+886,Xmen,65
+1475,Cap,65
+1476,ITrend,65
+1512,Zinger,65
+887,Gogo,66
+888,One Nispa,66
+892,Xmen,66
+894,S1,66
+895,S8,66
+1108,Vespa,66
+1132,Star,66
+1135,Alpha,66
+1138,Racing,66
+1628,Vecpa,66
+1660,133M,66
+896,Aima,67
+897,Mini,67
+898,Max,67
+899,Sunra,67
+900,X6,67
+902,S141,67
+903,Men,67
+904,V-LI,67
+906,188S,68
+907,Xmen,68
+908,188X,68
+909,SH,68
+910,Aima,69
+912,S,69
+913,ALASKAN,69
+914,5G,70
+915,Xmen,70
+916,M133S ,70
+918,Xtreme,70
+1070,Vespa,70
+1071,133M,70
+1072,12AH,70
+1073,25AH,70
+1130,Sasuke,70
+1672,12A,70
+1689,Jeek,70
+1690,GOGO,70
+919,NewTech,71
+920,Aura,71
+921,Crazybull,71
+922,Trans,71
+1068,Xmen,71
+1069,Cap,71
+1144,S,71
+924,133,72
+925,Vespa,72
+926,Xmen,72
+928,Z3 ,72
+931,Zoomer,72
+932,Xmen,73
+933,Xman,73
+934,Vespa,73
+935,Zoomer,73
+936,Sport,73
+937,Fashion ,73
+939,City,73
+940,Mocha ,73
+944,Vespa,74
+945,Xmen,74
+946,M133S,74
+1477,Nioshima,74
+947,Zoomer,75
+948,Pretty,75
+949,Super,75
+951,Nozza,75
+952,Victory,75
+953,Spacy,75
+954,Air Blade,75
+955,Liberty,75
+956,Vespa,75
+957,Gogo,76
+958,Sport,76
+959,Vespa,76
+960,Xwinter,76
+961,Maybach,76
+963,Vespas,76
+964,Royal,76
+966,Jeek,76
+1113,XMen,76
+967,S188,77
+969,S141 ,77
+970,Zoomer,77
+971,Xmen,78
+972,Roma,78
+973,Nozza,78
+974,Victory,78
+975,Liberty,78
+976,Vespa,78
+1120,Wave,78
+1121,Cub,78
+1122,Win,78
+1657,Sirius,78
+1688,Venus,78
+977,Xman,79
+978,Diamond,79
+979,C-Umi,79
+981,X5,79
+982,EM,79
+985,Millet,79
+987,YD,79
+988,Zoomer,79
+990,Batman,79
+991,Z3,79
+992,Xmen,79
+1149,Ulike,79
+1150,E3,79
+1155,Buye,79
+1156,G,79
+1607,TTFAR,79
+1611,S3,79
+993,Vespa,80
+994,Xmen,80
+995,S,80
+1032,GT133,80
+1033,JP9,80
+996,S9,81
+998,S8,81
+999,S2,81
+1000,S1,81
+1491,10,81
+1492,G1,81
+1494,S6,81
+1499,Sport,81
+1500,JFM,81
+1001,Ludo,82
+1003,Klara,82
+1606,Feliz,82
+1630,Klara,82
+1654,Klara,82
+1004,D1,83
+1005,D3,83
+1006,D2,83
+1497,A1F,83
+1007,FAJ7,84
+1008,FCS,84
+1009,Alaskan,84
+1534,Vespa,84
+1010,M133 ,85
+1011,NJ,85
+1012,Vespa,85
+1013,133,86
+1014,Xmen ,86
+1015,Milan,86
+1016,Q7,87
+1017,City,87
+1018,Challenger,88
+1019,Candy,88
+1595,Nijia,88
+1020,Boy,89
+1021,Unisex,89
+1501,Girl,89
+1502,Classic,89
+1503,Sport,89
+1504,Lady,89
+1505,Asean,89
+1022,Khung Sơn,90
+1026,F2,91
+1027,S8,91
+1126,Xmen,91
+1127,V8,91
+1137,V6,91
+1530,Vespa,91
+1661,Xmen,91
+1029,E1,92
+1030,N1,93
+1031,M1,93
+1041,Khác,94
+1046,Bazan,94
+1056,MAD ,95
+1058,RAPTOR ,95
+1061,Legend,95
+1507,Demon,95
+1509,Razer,95
+1097,Classic,96
+1099,Thunderbird,96
+1102,Himalayan,96
+1106,Interceptor,96
+1107,Continental GT ,96
+1109,Sunny,97
+1110,S9,97
+1111,Bike,98
+1114,H9,100
+1115,Cap,100
+1116,MaxPro,100
+1665,133,100
+1128,Vespa,102
+1129,I3,102
+1151,Xmen,102
+1152,Gogo,102
+1153,Cap,102
+1131,Xmen,104
+1134,Martin,105
+1139,Cherry Cherry,106
+1142,EB,107
+1143,Bomelli,108
+1259,Tangerine Dream,110
+1521,Vespa,114
+1522,Gogoro,114
+1523,Xmen,114
+1524,133m,114
+1527,133M,115
+1641,PKD18,115
+1596,Cub,116
+1687,AGUSTA,116
+1602,KPR,117
+1675,Super Cup,117
+1532,TH Ceo,118
+1603,Cub New,118
+1636,Diamond,118
+1604,S50,119
+1614,Vespa,119
+1618,CREA,119
+1619,VECPA,119
+1620,VECPA,119
+1622,VECPA,119
+1713,NIO F1,119
+1615,Vespa,120
+1616,ESPERO,121
+1674,Wave,121
+1625,Mono,122
+1627,Detech,123
+1629,1 Series,124
+1652,G20,124
+1631,LX150,125
+1633,ROMA SX,125
+1638,Vespa,126
+1639,Vespa,127
+1642,Vinsky,128
+1643,Gogo,129
+1645,Cub,130
+1649,Xman,132
+1653,VES3,134
+1656,Xmen,135
+1658,Wave,136
+1659,Vepsa,137
+1662,Trái Nho,138
+1663,KPR,139
+1666,Cub 50,139
+1667,PK,139
+1668,Wave,140
+1670,Xmen,141
+1676,Giorno,141
+1678,Vespa,143
+1679,D,144
+1693,C,144
+1694,A,144
+1683,Enduro,145
+1684,Supermoto,145
+1685,Svartpilen,145
