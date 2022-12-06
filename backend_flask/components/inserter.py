@@ -7,6 +7,7 @@ import pandas as pd
 from .config import STORAGE_PATH
 import requests
 from .config import STORAGE_PATH
+from components.blueprints.authentication.signup import setup_account
 import requests
 INITIALDATA = "components/initial_data/"
 
