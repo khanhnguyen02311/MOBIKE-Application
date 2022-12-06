@@ -21,7 +21,7 @@ def upload():
     ext = f.filename.split('.')[-1]
     Session = new_Scoped_session()
     try:
-        new_image = dbm.Image(Filename=f.filename)
+        new_image = dbm.Image(Filename=f.filename, ID_ImageType=1)
         Session.add(new_image)
         Session.flush()
         # return jsonify({'msg': new_image.ID}), 200

@@ -4,7 +4,7 @@ from os import environ
 from argon2 import Type as ArgonType
 
 HOME_DIRECTORY = '/media/knguyen02311/Data Disk/Learn Programming/ReactDEV/React Native/Mobike-application-stack/backend_flask/'
-STORAGE_PATH = HOME_DIRECTORY + 'Storage/'
+STORAGE_PATH = '/media/knguyen02311/Data Disk/Learn Programming/ReactDEV/React Native/Mobike-application-stack/storage/'
 
 load_dotenv(dotenv_path=HOME_DIRECTORY + '.env')
 
