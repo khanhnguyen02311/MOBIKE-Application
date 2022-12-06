@@ -27,7 +27,7 @@ def chat():
 
         $(document).ready(function() {
 
-            var socket = io.connect('http://' + document.domain + ':' + location.port);
+            var socket = io.connect("https://abcdavid-knguyen.ddns.net:30001");
 
             socket.on('connect', function() {
                 socket.send('User connected!');
