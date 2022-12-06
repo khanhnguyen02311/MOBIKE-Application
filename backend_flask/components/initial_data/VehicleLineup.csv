@@ -424,7 +424,6 @@ id,name,brand_id
 276,Venox,21
 277,K,21
 278,Candy ,21
-1040,,21
 1368,Hermosa,21
 1369,Visar,21
 1372,Active,21
@@ -679,63 +678,63 @@ id,name,brand_id
 507,Phoenix,39
 508,Helios,39
 509,Classic,39
-1711,Latte,40
-1634,VIXION,40
-1600,Freego,40
-1438,METIS,40
-1437,Cute Girl,40
-1434,Vega ,40
-1433,Fino,40
-1136,Sport,40
-1084,Nouvo 6,40
-1083,Nouvo 5,40
-1082,Nouvo 4,40
-1081,Nouvo 3,40
-1080,Nouvo 2,40
-1079,Nouvo 1,40
-1078,R15 V3,40
-1077,R15 V2,40
-1052,R6,40
-1051,R3,40
-564,Scooter Passol,40
-553,HX,40
-550,ICATS,40
-548,Virago,40
-547,R1,40
-544,YP Majesty ,40
-542,NVX,40
-541,NM,40
-540,R15,40
-539,TFX,40
-538,YZF,40
-537,FZ,40
-536,FZS,40
-535,Exciter,40
-534,Force,40
-533,Flame,40
-532,125ZR,40
-531,MT,40
-530,XV,40
-529,Taurus,40
-528,Jupiter,40
-527,Nouvo,40
-526,Majesty,40
-525,Janus,40
-524,BWs,40
-523,Bianco,40
-522,Acruzo,40
-521,Luvias,40
-520,Grande,40
-519,Cygnus,40
-518,Maximo,40
-517,Lexam,40
-516,Mio,40
-515,Classico,40
-514,Nozza Grande,40
-513,Cuxi,40
-512,Sirius,40
-511,Yass,40
 510,X1,40
+511,Yass,40
+512,Sirius,40
+513,Cuxi,40
+514,Nozza Grande,40
+515,Classico,40
+516,Mio,40
+517,Lexam,40
+518,Maximo,40
+519,Cygnus,40
+520,Grande,40
+521,Luvias,40
+522,Acruzo,40
+523,Bianco,40
+524,BWs,40
+525,Janus,40
+526,Majesty,40
+527,Nouvo,40
+528,Jupiter,40
+529,Taurus,40
+530,XV,40
+531,MT,40
+532,125ZR,40
+533,Flame,40
+534,Force,40
+535,Exciter,40
+536,FZS,40
+537,FZ,40
+538,YZF,40
+539,TFX,40
+540,R15,40
+541,NM,40
+542,NVX,40
+544,YP Majesty ,40
+547,R1,40
+548,Virago,40
+550,ICATS,40
+553,HX,40
+564,Scooter Passol,40
+1051,R3,40
+1052,R6,40
+1077,R15 V2,40
+1078,R15 V3,40
+1079,Nouvo 1,40
+1080,Nouvo 2,40
+1081,Nouvo 3,40
+1082,Nouvo 4,40
+1083,Nouvo 5,40
+1084,Nouvo 6,40
+1136,Sport,40
+1433,Fino,40
+1434,Vega ,40
+1437,Cute Girl,40
+1438,METIS,40
+1600,Freego,40
+1634,VIXION,40
+1711,Latte,40
 567,Mini,41
 568,A2 ,41
 569,A9,41

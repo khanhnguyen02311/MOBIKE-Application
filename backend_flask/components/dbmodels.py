@@ -278,7 +278,7 @@ class View (Base):
 class VehicleInfo (Base):
     __tablename__ = 'VEHICLEINFO'
     ID = Column(ms.INTEGER, primary_key=True)
-    Vehicle_name = Column(ms.NVARCHAR(128), nullable=False)
+    Vehicle_name = Column(ms.NVARCHAR(128))
     Odometer = Column(ms.INTEGER)
     License_plate = Column(ms.NVARCHAR(10))
     Manufacture_year = Column(ms.SMALLINT)
@@ -287,7 +287,7 @@ class VehicleInfo (Base):
     ID_VehicleBrand = Column(ms.INTEGER, ForeignKey("VEHICLEBRAND.ID"), nullable=False)
     rel_VehicleBrand = relationship("VehicleBrand")
     
-    ID_VehicleLineup = Column(ms.INTEGER, ForeignKey("VEHICLELINEUP.ID"), nullable=False)
+    ID_VehicleLineup = Column(ms.INTEGER, ForeignKey("VEHICLELINEUP.ID"))
     rel_VehicleLineup = relationship("VehicleLineup")
     
     ID_VehicleType = Column(ms.INTEGER, ForeignKey("VEHICLETYPE.ID"), nullable=False)
