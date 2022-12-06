@@ -4,6 +4,7 @@ from .dbschemas import *
 from .dbsettings import new_Scoped_session
 import pandas as pd
 from .config import STORAGE_PATH
+from components.blueprints.authentication.signup import setup_account
 import requests
 INITIALDATA = "components/initial_data/"
 
@@ -212,3 +213,21 @@ def InsertVehicleSupportTable():
     except Exception as e:
         Session.rollback()
         return "Error: " + str(e)
+    
+    
+def InsertTestPost():
+    TruncateTables({"VEHICLEINFO", "POST"})
+    post_table = pd.read_csv('Post.csv', index_col=False)
+    vehicleinfo_table = pd.read_csv('VehicleInfo.csv', index_col=False)
+    Session = new_Scoped_session()
+    try:
+        list_testuser = Session.query(Account).filter_by(Account.Username == 'TESTUSER_MOBIKE1' or 
+                                                         Account.Username == 'TESTUSER_MOBIKE2' or 
+                                                         Account.Username == 'TESTUSER_MOBIKE3').all()
+        print(list_testuser)
+        Session.commit()
+        return "Insert completed"
+    except Exception as e:
+        Session.rollback()
+        return "Error: " + str(e)
+    
