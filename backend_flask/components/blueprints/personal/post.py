@@ -11,7 +11,7 @@ bppost = Blueprint('bppost', __name__)
 def create():
     data = request.get_json()
     print(data)
-    return jsonify({'message': 'Post created.'}), 200
+    return jsonify({'message': 'Post created.','data': data}), 200
 
 @bppost.route('/modify/<ID>', methods=['POST'])
 def modify(ID):

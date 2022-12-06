@@ -40,7 +40,24 @@ def upload():
         Session.rollback()
         return jsonify({'msg': 'Incompleted', 'error': str(e)}), 401
     
-    
+
+def saveImage(file, imageTypeID:int = 1):
+    if file.filename == "":
+        return "No file selected", -1
+    ext = file.filename.split('.')[-1]
+    Session = new_Scoped_session()
+    try:
+        new_image = dbm.Image(Filename = "", ID_ImageType=imageTypeID)
+        Session.add(new_image)
+        Session.flush()
+        new_image.FileName = str(new_image.ID) + '.' + ext
+        Session.commit()
+        file.save(os.path.join(STORAGE_PATH, str(new_image.ID) + '.' + ext))
+        return "File uploaded successfully", new_image.ID
+    except Exception as e:
+        return f"Image save error: '{e}'", -1
+        
+
 @bpimage.route('/get/<id>', methods = ['GET'])
 def get(id):
     id = int(id)
