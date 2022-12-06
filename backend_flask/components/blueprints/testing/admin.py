@@ -14,6 +14,12 @@ bpadmin = Blueprint('bpadmin', __name__)
 def serverinfo():
     return jsonify({"system": platform.system(), "release": platform.release(), "version": platform.version()})
 
+
+@bpadmin.route('/insertvehiclesupport', methods = ['POST'])
+def insertvehiclesupport():
+    print("Inserting Vehicle support tables...")
+    return InsertVehicleSupportTable()
+
 @bpadmin.route('/insertlocations', methods = ['POST'])
 def insertlocations():
     print("Inserting locations...")
