@@ -281,7 +281,7 @@ class VehicleInfo (Base):
     Vehicle_name = Column(ms.NVARCHAR(128))
     Odometer = Column(ms.INTEGER)
     License_plate = Column(ms.NVARCHAR(10))
-    Manufacture_year = Column(ms.SMALLINT)
+    Manufacture_year = Column(ms.MEDIUMINT)
     Cubic_power = Column(ms.INTEGER)
 
     ID_VehicleBrand = Column(ms.INTEGER, ForeignKey("VEHICLEBRAND.ID"), nullable=False)
@@ -293,7 +293,7 @@ class VehicleInfo (Base):
     ID_VehicleType = Column(ms.INTEGER, ForeignKey("VEHICLETYPE.ID"), nullable=False)
     rel_VehicleType = relationship("VehicleType")
     
-    ID_Condition = Column(ms.INTEGER, ForeignKey("VEHICLECONDITION.ID"))
+    ID_Condition = Column(ms.INTEGER, ForeignKey("VEHICLECONDITION.ID"), nullable=False)
     rel_Condition = relationship("VehicleCondition")
     
     ID_Color = Column(ms.INTEGER, ForeignKey("COLOR.ID"))
