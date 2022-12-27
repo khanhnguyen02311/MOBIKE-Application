@@ -20,11 +20,15 @@ def insertvehiclesupport():
     print("Inserting Vehicle support tables...")
     return InsertVehicleSupportTable()
 
+@bpadmin.route('/inserttestaccounts', methods = ['POST'])
+def inserttestaccounts():
+    print("Inserting test accounts...")
+    return InsertTestAccounts()
+
 @bpadmin.route('/insertlocations', methods = ['POST'])
 def insertlocations():
     print("Inserting locations...")
     return InsertLocation2()
-
 
 @bpadmin.route('/insertpermissions', methods = ['POST'])
 def insertpermission():
@@ -53,18 +57,21 @@ def initversions():
 def clearimages():
     print("Clearing images...")
     TruncateTables({"IMAGE"})
-    images = glob.glob(STORAGE_PATH + "*")
-    for image in images:
-        os.remove(image)
+    posts = glob.glob(STORAGE_PATH + "post/*")
+    logos = glob.glob(STORAGE_PATH + "logo/*")
+    users = glob.glob(STORAGE_PATH + "user/*")
+    identities = glob.glob(STORAGE_PATH + "identity/*")
+    for folder in [posts, logos, users, identities]:
+        for i in folder:
+            os.remove(i)
     return jsonify({"msg": "Images cleared"})
 
 
 @bpadmin.route('/resetdatabase', methods = ['POST'])
 def dropalltables():
-
     clearimages()
 
-    print("Dropping all tables...")  
+    print("Dropping all tables...")
     Session = new_Scoped_session()
 
     Session.execute("SET FOREIGN_KEY_CHECKS = 0")
@@ -80,13 +87,24 @@ def dropalltables():
     print("Recreating all tables...")
     Base.metadata.create_all(Engine)
 
-    print("Initializing database...")
-    initversions()
-    insertlocations()
-    insertpermission()
-    insertimagetype()
-
     return "Done"
+
+
+@bpadmin.route('/initdatabase/<int:index>', methods = ['POST'])
+def initdatabase(index):
+    if index==1:
+        print("Initializing database...")
+        initversions()
+        insertlocations()
+        insertpermission()
+        insertimagetype()
+    elif index==2:
+        insertvehiclesupport()
+        inserttestaccounts()
+    else: 
+        return "Index not valid"
+    return f"Done {index}"
+
 
 @bpadmin.route('/test', methods = ['GET', 'POST'])
 def test():

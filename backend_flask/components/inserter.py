@@ -1,10 +1,10 @@
+from flask import jsonify
 import openpyxl, unicodedata
 from .dbmodels import *
 from .dbschemas import *
 from .dbsettings import new_Scoped_session
 import pandas as pd
 from .config import STORAGE_PATH
-from components.blueprints.authentication.signup import setup_account
 import requests
 INITIALDATA = "components/initial_data/"
 
@@ -170,6 +170,45 @@ def InsertImageType():
     return "Inserted {} image types".format(it)
 
 
+def SaveImageFromURL(Session, url, image_type):
+    r = requests.get(url)
+    if r.status_code==200:
+        filename = url.split('/')[-1]
+        if image_type == 1: folder = 'post/'
+        elif image_type == 2: folder = 'logo/'
+        elif image_type == 3: folder = 'user/'
+        elif image_type == 4: folder = 'identity/'
+        open(STORAGE_PATH + folder + filename, "wb").write(r.content)
+        image = Image(Filename=filename, ID_ImageType=image_type)
+        Session.add(image)
+        Session.flush()
+        ext = image.Filename.split('.')[-1]
+        image.Filename = str(image.ID) + '.' + ext
+        Session.flush()
+        return [True, image.ID]
+    return [False]
+
+
+def SetupAccount(Session, a_email, a_username, a_password, a_type, a_permission, i_name, i_phone=None, i_image=None):
+   try:
+      account = dbm.Account(Username=a_username, Password=a_password, Email=a_email, Account_type=a_type, ID_Permission=a_permission)
+      accountinfo = dbm.AccountInfo(Name=i_name, Phone_number=i_phone)
+      accountstat = dbm.AccountStat()
+      if i_image != None: 
+         output = SaveImageFromURL(Session, i_image, 3)
+         if output[0]: accountinfo.ID_Image_Profile = output[1]
+      Session.add(accountstat)
+      Session.add(accountinfo)
+      Session.flush()
+      account.ID_AccountStat = accountstat.ID
+      account.ID_AccountInfo = accountinfo.ID
+      Session.add(account)
+      Session.flush()
+      return [True, account]
+   except Exception as e:
+      return [False, str(e)]
+  
+
 def InsertVehicleSupportTable():
     TruncateTables({"VEHICLEBRAND", "VEHICLELINEUP", "VEHICLETYPE", "VEHICLECONDITION", "COLOR"})
     vehiclebrand_table = pd.read_csv(INITIALDATA + 'VehicleBrand.csv', index_col=False)
@@ -180,7 +219,6 @@ def InsertVehicleSupportTable():
     Session = new_Scoped_session()
     try:
         logolist = Session.query(Image).filter(Image.ID_ImageType==2).all()
-        print(logolist)
         for item in logolist:
             Session.delete(item)
         Session.flush()
@@ -188,16 +226,11 @@ def InsertVehicleSupportTable():
             for i, row in table.iterrows():
                 if table is vehiclebrand_table: 
                     image_url = row['logo']
-                    print(image_url)
-                    r = requests.get(image_url)
-                    if r.status_code==200:
-                        filename = image_url.split('/')[-1]
-                        open(STORAGE_PATH + 'logo/' + filename, "wb").write(r.content)
-                        image = Image(Filename=filename, ID_ImageType=2)
-                        Session.add(image)
-                        Session.flush()
-                        new_row = VehicleBrand(ID=row['id'], Name=row['name'], ID_Image=image.ID)
-                    else: new_row = VehicleBrand(ID=row['id'], Name=row['name'])
+                    output = SaveImageFromURL(Session=Session, url=image_url, image_type=2)
+                    if output[0]:
+                        new_row = VehicleBrand(ID=row['id'], Name=row['name'], ID_Image=output[1])
+                    else: 
+                        new_row = VehicleBrand(ID=row['id'], Name=row['name'])
                 elif table is vehicletype_table: 
                     new_row = VehicleType(ID=row['id'], Type=row['name'])
                 elif table is color_table:
@@ -215,19 +248,45 @@ def InsertVehicleSupportTable():
         return "Error: " + str(e)
     
     
-def InsertTestPost():
-    TruncateTables({"VEHICLEINFO", "POST"})
-    post_table = pd.read_csv('Post.csv', index_col=False)
-    vehicleinfo_table = pd.read_csv('VehicleInfo.csv', index_col=False)
+def InsertTestAccounts():
     Session = new_Scoped_session()
     try:
-        list_testuser = Session.query(Account).filter_by(Account.Username == 'TESTUSER_MOBIKE1' or 
-                                                         Account.Username == 'TESTUSER_MOBIKE2' or 
-                                                         Account.Username == 'TESTUSER_MOBIKE3').all()
-        print(list_testuser)
+        oldtestusers = Session.query(Account).filter(Account.Account_type==3).all()
+        for i in oldtestusers:
+            Session.remove(i)
+        Session.flush()
+        acc_list = []
+        accinfo_list = []
+        for i in range(5):
+            output = SetupAccount(Session, f"testuser{i}@email.com", f"testuser{i}", "testuserpassword", 3, 4, f"Mobike Testuser {i}", "0123456789", None)
+            if output[0] == False:
+                Session.rollback()
+                return jsonify({"msg": "Incompleted", "err": f"testuser{i} failed - {str(output[1])}"})
+            else:
+                acc_list.append(output[1].ID)
+                accinfo_list.append(output[1].ID_AccountInfo)
+                print(f"testuser{i}: Succeed")
         Session.commit()
-        return "Insert completed"
+        return jsonify({"msg": "Completed", "err": "", "acc_list": acc_list, "accinfo_list": accinfo_list})
     except Exception as e:
         Session.rollback()
-        return "Error: " + str(e)
+        return jsonify({"msg": "Incompleted", "err": str(e)})
     
+    
+# def InsertTestPosts():
+#     # TruncateTables({"VEHICLEINFO", "POST"})
+#     post_table = pd.read_csv('Post.csv', index_col=False)
+#     vehicleinfo_table = pd.read_csv('VehicleInfo.csv', index_col=False)
+#     Session = new_Scoped_session()
+#     try:
+#         output = InsertTestAccounts()
+#         if output["msg"] == "Completed":
+#             acc_list = output["acc_list"]
+#             for index, row in vehicleinfo_table.iterrows():
+#                 new_VehicleInfo = VehicleInfo(ID=row['infoid'])
+#             # UNFINISHED
+#         Session.commit()
+#         return "Insert completed"
+#     except Exception as e:
+#         Session.rollback()
+#         return "Error: " + str(e)

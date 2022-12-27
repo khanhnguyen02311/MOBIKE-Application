@@ -1,8 +1,10 @@
-from sqlalchemy import Column, ForeignKey
+from sqlalchemy import Column, ForeignKey, event
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects import mysql as ms
 from .dbsettings import Base, Engine
 from datetime import datetime, timezone
+import os
+from .config import STORAGE_PATH
 
 
 # RELATIONSHIP: https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html
@@ -30,10 +32,10 @@ class AccountInfo (Base):
     Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
     
     ID_Image_Profile = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
-    rel_Image_Profile = relationship('Image', foreign_keys=[ID_Image_Profile], back_populates='rel_AccountInfo_Profile')
+    rel_Image_Profile = relationship('Image', foreign_keys=[ID_Image_Profile], cascade='save-update, merge, delete', back_populates='rel_AccountInfo_Profile')
     
     ID_Image_Identity = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
-    rel_Image_Identity = relationship('Image', foreign_keys=[ID_Image_Identity], back_populates='rel_AccountInfo_Identity')
+    rel_Image_Identity = relationship('Image', foreign_keys=[ID_Image_Identity], cascade='save-update, merge, delete', back_populates='rel_AccountInfo_Identity')
     
     ## Account reference
     rel_Account = relationship("Account", back_populates="rel_AccountInfo", uselist=False)
@@ -61,16 +63,16 @@ class Account (Base):
     Username = Column(ms.NVARCHAR(128), nullable=False)
     Password = Column(ms.NVARCHAR(256), nullable=False)
     Email = Column(ms.NVARCHAR(128), nullable=False)
-    Account_type = Column(ms.TINYINT, nullable=False) # 0: default account, 1: google account, 2: facebook account
+    Account_type = Column(ms.TINYINT, nullable=False) # 0: default account, 1: google account, 2: facebook account, 3: placeholder account
     
     ID_AccountStat = Column(ms.INTEGER, ForeignKey('ACCOUNTSTAT.ID'), nullable=False)
-    rel_AccountStat = relationship('AccountStat', back_populates='rel_Account')
+    rel_AccountStat = relationship('AccountStat', cascade='save-update, merge, delete', back_populates='rel_Account')
     
     ID_Permission = Column(ms.INTEGER, ForeignKey("PERMISSION.ID"), nullable=False)
     rel_Permission = relationship("Permission", back_populates="rel_Account")
     
     ID_AccountInfo = Column(ms.INTEGER, ForeignKey("ACCOUNTINFO.ID"), nullable=False)
-    rel_AccountInfo = relationship("AccountInfo", back_populates="rel_Account")
+    rel_AccountInfo = relationship("AccountInfo", cascade='save-update, merge, delete', back_populates="rel_Account")
 
     ## Post reference
     rel_Post = relationship("Post", back_populates="rel_Account")
@@ -200,6 +202,15 @@ class Image (Base):
     
     ## AccountInfo reference
     rel_AccountInfo_Identity = relationship('AccountInfo', foreign_keys=[AccountInfo.ID_Image_Identity], back_populates='rel_Image_Identity')
+    
+
+@event.listens_for(Image, 'after_delete')
+def receive_after_delete(mapper, connection, target):
+    if target.ID_ImageType == 1: folder = 'post/'
+    elif target.ID_ImageType == 2: folder = 'logo/'
+    elif target.ID_ImageType == 3: folder = 'user/'
+    elif target.ID_ImageType == 4: folder = 'identity/'
+    os.remove(os.path.join(STORAGE_PATH, folder, target.Filename))
 
 
 # ==============================================================================

@@ -2,7 +2,7 @@ import secrets
 from flask import Flask, Blueprint, request, jsonify, url_for
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from components.dbsettings import new_Scoped_session
-from .signup import setup_account
+from components.inserter import SetupAccount
 from components import dbmodels as dbm, dbschemas as dbs
 from components.security import make_hash, check_hash, oauth
 
@@ -17,7 +17,7 @@ def me():
 
 def signin_output(message, error, access_token):
    return jsonify({
-      "message": message, 
+      "msg": message, 
       "error": error, 
       "token": access_token})
    
@@ -65,7 +65,7 @@ def googleauthorize():
       profile = oauth.google.get('userinfo').json()
       
       name = profile["name"]
-      picture_location = profile["picture"]
+      picture_url = profile["picture"]
       email = profile["email"]
       username = "accounts.google." + profile["id"]
       
@@ -77,7 +77,7 @@ def googleauthorize():
       
       password = make_hash(secrets.token_urlsafe(64))
       
-      output = setup_account(Session, email, username, password, 1, 4, name, None, picture_location)
+      output = SetupAccount(Session, email, username, password, 1, 4, name, None, picture_url)
       if output[0] == True:
          Session.commit()
          access_token = create_access_token(identity=schema.dump(output[1]))
