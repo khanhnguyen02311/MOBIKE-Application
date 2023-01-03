@@ -6,7 +6,14 @@ import TextInputOutline from '../../common/textInputOutline-Kohana';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const FilterPropFrame = ({onToggle, children, type, show}) => {
+const FilterPropFrameComponent = ({
+  onToggle,
+  children,
+  type,
+  show,
+  animate = true,
+  onNavigate,
+}) => {
   const rotateAnim = useRef(new Animated.Value(0)).current;
   const durationLayout = 300;
   const toggle = () => {
@@ -44,12 +51,25 @@ const FilterPropFrame = ({onToggle, children, type, show}) => {
           }}>
           {type}
         </Animated.Text>
-        <TouchableWithoutFeedback onPress={toggle}>
-          <Animated.View
-            layout={Layout.stiffness(100).damping(10).duration(durationLayout)}
-            style={{marginEnd: 25, transform: [{rotateZ: rotate}]}}>
-            <SimpleLineIcon name="arrow-down" size={15} color={'black'} />
-          </Animated.View>
+        <TouchableWithoutFeedback onPress={animate ? toggle : onNavigate}>
+          {animate ? (
+            <Animated.View
+              layout={Layout.stiffness(100)
+                .damping(10)
+                .duration(durationLayout)}
+              style={{marginEnd: 25, transform: [{rotateZ: rotate}]}}>
+              <SimpleLineIcon name="arrow-down" size={15} color={'black'} />
+            </Animated.View>
+          ) : (
+            <View
+              style={{
+                marginEnd: 25,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <SimpleLineIcon name="arrow-right" size={15} color={'black'} />
+            </View>
+          )}
         </TouchableWithoutFeedback>
       </View>
       {children}
@@ -66,4 +86,4 @@ const FilterPropFrame = ({onToggle, children, type, show}) => {
   );
 };
 
-export default FilterPropFrame;
+export default FilterPropFrameComponent;

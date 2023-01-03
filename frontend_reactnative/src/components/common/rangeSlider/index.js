@@ -9,7 +9,8 @@ import Animated, {
   useAnimatedProps,
   runOnJS,
 } from 'react-native-reanimated';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {setIsSendingOddValue} from '../../../redux/slice/filterSlice';
 
 Animated.addWhitelistedNativeProps({text: true});
 
@@ -19,14 +20,14 @@ const RangeSlider = ({
   max,
   step,
   onValueChange,
-  minValue,
-  maxValue,
   minPosition,
   maxPosition,
+  minValue,
+  maxValue,
 }) => {
   const position = useSharedValue(minPosition);
   const position2 = useSharedValue(maxPosition);
-  const priceRange = useSelector(state => state.filter.priceRange);
+  //const priceRange = useSelector(state => state.filter.priceRange);
 
   useEffect(() => {
     position.value = minPosition;
@@ -36,8 +37,6 @@ const RangeSlider = ({
     position2.value = maxPosition;
   }, [maxPosition]);
 
-  // position.value = minPosition;
-  // position2.value = maxPosition;
   const zIndex = useSharedValue(0);
   const zIndex2 = useSharedValue(0);
   const opacity = useSharedValue(0.75);
@@ -137,9 +136,11 @@ const RangeSlider = ({
     let val =
       min +
       Math.floor(position.value / (sliderWidth / ((max - min) / step))) * step;
+
     if (val > max) {
       val = max;
     }
+
     return {
       text: `$ ${val}`,
     };
@@ -151,6 +152,7 @@ const RangeSlider = ({
     if (val > max) {
       val = max;
     }
+
     return {
       text: `$ ${val}`,
     };
@@ -168,7 +170,7 @@ const RangeSlider = ({
               style={styles.labelText}
               defaultValue={0}
               animatedProps={minLabelText}
-              value={'$ ' + priceRange.min}
+              value={'$ ' + minValue}
               editable={false}
             />
           </Animated.View>
@@ -182,7 +184,7 @@ const RangeSlider = ({
               defaultValue={0}
               animatedProps={maxLabelText}
               editable={false}
-              value={'$ ' + priceRange.max}
+              value={'$ ' + maxValue}
             />
           </Animated.View>
         </Animated.View>

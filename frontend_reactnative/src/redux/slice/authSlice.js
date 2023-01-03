@@ -13,7 +13,8 @@ export const authSlice = createSlice({
     login: (state, action) => {
       state.ID = action.payload.ID;
       state.token = action.payload.token;
-      state.isLoggedIn = state.ID != null && state.token != null
+      // state.isLoggedIn = state.ID != null && state.token != null
+      state.isLoggedIn = state.token != null;
     },
     logout: (state) => {
       state.ID = null;

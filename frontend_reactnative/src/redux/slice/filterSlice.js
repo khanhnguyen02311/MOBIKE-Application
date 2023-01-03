@@ -40,6 +40,7 @@ const filterSlice = createSlice({
       state.minMaxText.min = action.payload.min;
       state.minMaxText.max = action.payload.max;
     },
+
     setInitial: () => {
       return initialState;
     },

@@ -11,7 +11,9 @@ const Container = ({
   return (
     <ScrollView
       style={styleScrollView}
-      keyboardShouldPersistTaps={keyboardShouldPersistTaps}>
+      keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}>
       <View style={[styles.wrapper, styleWrapper]}>{children}</View>
     </ScrollView>
   );

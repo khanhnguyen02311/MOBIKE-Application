@@ -30,26 +30,26 @@ import {
   setName,
   setPriceRange,
 } from '../../../redux/slice/filterSlice';
-import FilterPropFrame from '../FilterPropFrame';
+import FilterPropFrameComponent from '../FilterPropFrame';
 import TextMinMax from './TextMinMax';
 
 UIManager.setLayoutAnimationEnabledExperimental(true);
-const FilterPropPriceRange = ({min, max, step, sliderWidth}) => {
+const FilterPropPriceRangeComponent = ({min, max, step, sliderWidth}) => {
   //Toogle show/hide filter options
   const [show, setShow] = useState(false);
   const durationLayout = 300;
   const onToggle = () => {
     setShow(prevState => !prevState);
-    dispatch(setPriceRange(tmp));
+    //dispatch(setPriceRange(tmp));
   };
 
   //Prepare data for filter
   const priceRange = useSelector(state => state.filter.priceRange);
   const dispatch = useDispatch();
-  tmp = priceRange;
+  // tmp = priceRange;
 
   return (
-    <FilterPropFrame type={'Price Range'} onToggle={onToggle} show={show}>
+    <FilterPropFrameComponent type={'Price Range'} onToggle={onToggle} show={show}>
       {show && (
         <Animated.View
           entering={FadeInUp.duration(300).delay(100)}
@@ -65,10 +65,20 @@ const FilterPropPriceRange = ({min, max, step, sliderWidth}) => {
                 max={max}
                 minPosition={priceRange.minPosition}
                 maxPosition={priceRange.maxPosition}
+                minValue={priceRange.min}
+                maxValue={priceRange.max}
                 step={step}
                 onValueChange={range => {
-                  tmp = range;
-                  dispatch(setMinMaxText({min: range.min, max: range.max}));
+                  // tmp = range;
+                  if (range.min !== priceRange.min) {
+                    dispatch(setMinMaxText({min: range.min, max: range.max}));
+                    dispatch(setPriceRange(range));
+                  }
+                  if (range.max !== priceRange.max) {
+                    dispatch(setMinMaxText({min: range.min, max: range.max}));
+                    dispatch(setPriceRange(range));
+                  }
+                  // dispatch(setMinMaxText({min: range.min, max: range.max}));
                 }}
               />
               <TextMinMax
@@ -81,8 +91,8 @@ const FilterPropPriceRange = ({min, max, step, sliderWidth}) => {
           </GestureHandlerRootView>
         </Animated.View>
       )}
-    </FilterPropFrame>
+    </FilterPropFrameComponent>
   );
 };
 
-export default FilterPropPriceRange;
+export default FilterPropPriceRangeComponent;

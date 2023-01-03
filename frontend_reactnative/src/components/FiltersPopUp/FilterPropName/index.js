@@ -26,10 +26,10 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import RangeSlider from '../../common/rangeSlider';
 import {useDispatch, useSelector} from 'react-redux';
 import {setName, setPriceRange} from '../../../redux/slice/filterSlice';
-import FilterPropFrame from '../FilterPropFrame';
+import FilterPropFrameComponent from '../FilterPropFrame';
 
 UIManager.setLayoutAnimationEnabledExperimental(true);
-const FilterPropName = () => {
+const FilterPropNameComponent = () => {
   //Toogle show/hide filter options
   const [show, setShow] = useState(false);
   const durationLayout = 300;
@@ -45,7 +45,7 @@ const FilterPropName = () => {
   };
 
   return (
-    <FilterPropFrame type={'Name'} onToggle={onToggle} show={show}>
+    <FilterPropFrameComponent type={'Name'} onToggle={onToggle} show={show}>
       {show && (
         <Animated.View
           entering={SlideInLeft.duration(300).delay(100)}
@@ -75,8 +75,8 @@ const FilterPropName = () => {
           />
         </Animated.View>
       )}
-    </FilterPropFrame>
+    </FilterPropFrameComponent>
   );
 };
 
-export default FilterPropName;
+export default FilterPropNameComponent;
