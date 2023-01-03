@@ -3,35 +3,16 @@ from flask_jwt_extended import create_access_token
 from components.dbsettings import new_Scoped_session
 from components import dbmodels as dbm, dbschemas as dbs
 from components.security import make_hash
+from components.inserter import SaveImageFromURL, SetupAccount
 
 bpsignup = Blueprint('bpsignup', __name__)
 
 
 def signup_output(message, error, access_token):
    return jsonify({
-      "message": message, 
+      "msg": message, 
       "error": error, 
       "token": access_token})
-   
-      
-def setup_account(Session, a_email, a_username, a_password, a_type, a_permission, i_name, i_phone=None, i_image=None):
-   try:
-      accountstat = dbm.AccountStat()
-      account = dbm.Account(Username=a_username, Password=a_password, Email=a_email, Account_type=a_type, ID_Permission=a_permission)
-      accountinfo = dbm.AccountInfo(Name=i_name, Phone_number=i_phone)
-      if i_image != None: 
-         # SAVE IMAGE TO SYSTEM AND ADD TO IMAGE TABLE
-         pass
-      Session.add(accountstat)
-      Session.add(accountinfo)
-      Session.flush()
-      account.ID_AccountStat = accountstat.ID
-      account.ID_AccountInfo = accountinfo.ID
-      Session.add(account)
-      Session.flush()
-      return [True, account]
-   except Exception as e:
-      return [False, str(e)]
 
    
 @bpsignup.route('/signup', methods=['POST'])
@@ -53,13 +34,7 @@ def signup():
 
       password = make_hash(request.json['password'])
       
-      # new_account = dbm.Account(Username=username, Password=password, Email=email, Account_type=0, ID_Permission=4)
-      # Session.add(new_account)
-      # Session.commit()
-      # access_token = create_access_token(identity=schema.dump(new_account))
-      # return signup_output("Completed", "", access_token)
-      
-      output = setup_account(Session, email, username, password, 0, 4, username, phone)
+      output = SetupAccount(Session, email, username, password, 0, 4, username, phone)
       if output[0] == True:
          Session.commit()
          access_token = create_access_token(identity=schema.dump(output[1]))
