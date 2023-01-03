@@ -91,3 +91,24 @@ def signin():
       Session.rollback()
       Session.close()
       return jsonify({"Error": str(e), "Status": "Incompleted"})#, 409
+   
+   
+# Get user information
+@bpauth.route("/userinfo", methods = ['GET'])
+@jwte.jwt_required()
+def userinfo():
+   schema = dbs.AccountSchema()
+   Session = new_Scoped_session()
+   try:
+      current_user = jwte.get_jwt_identity()
+      acc = Session.query(dbm.Account).filter(dbm.Account.ID == current_user['id']).first()
+      if (acc is None):
+         Session.close()
+         return jsonify({"msg": "Account not exists"})#, 401
+      else:
+         Session.close()
+         return jsonify({"msg": "Successful", "account": schema.dump(acc)})#, 200
+   except Exception as e:
+      Session.rollback()
+      Session.close()
+      return jsonify({"Error": str(e), "Status": "Incompleted"})
