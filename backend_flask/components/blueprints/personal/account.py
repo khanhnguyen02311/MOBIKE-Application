@@ -40,27 +40,27 @@ def getinfo():
       return jsonify({"message": "Incompleted", "error": str(e), "info": ""})
    
 
-@bpaccount.route("/getinfo2", methods=['GET'])
-@jwt_required()
-def getinfo2():
-   current_user = get_jwt_identity()   
-   if current_user is None:
-      return jsonify({"message": "Incompleted", "error": "Invalid token", "info": ""})
+# @bpaccount.route("/getinfo2", methods=['GET'])
+# @jwt_required()
+# def getinfo2():
+#    current_user = get_jwt_identity()   
+#    if current_user is None:
+#       return jsonify({"message": "Incompleted", "error": "Invalid token", "info": ""})
    
-   schema = dbs.AccountInfoSchema()
-   Session = new_Scoped_session()
-   try:
-      acc = Session.query(dbm.Account.ID, dbm.AccountInfo.Name, dbm.AccountInfo.Phone_number, dbm.AccountInfo.Identification_number, dbm.AccountInfo.Birthdate).join(dbm.AccountInfo, dbm.Account.ID == dbm.AccountInfo.ID
-      if acc == None:
-         Session.close()
-         return jsonify({"message": "Incompleted", "error": "Account not found", "info": acc})
-      # acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
-      Session.close()
-      return jsonify({"message": "Completed", "error": "", "info": jsonify()})
+#    schema = dbs.AccountInfoSchema()
+#    Session = new_Scoped_session()
+#    try:
+#       acc = Session.query(dbm.Account.ID, dbm.AccountInfo.Name, dbm.AccountInfo.Phone_number, dbm.AccountInfo.Identification_number, dbm.AccountInfo.Birthdate).join(dbm.AccountInfo, dbm.Account.ID == dbm.AccountInfo.ID
+#       if acc == None:
+#          Session.close()
+#          return jsonify({"message": "Incompleted", "error": "Account not found", "info": acc})
+#       # acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
+#       Session.close()
+#       return jsonify({"message": "Completed", "error": "", "info": jsonify(acc)})
       
-   except Exception as e:
-      Session.close()
-      return jsonify({"message": "Incompleted", "error": str(e), "info": ""})
+#    except Exception as e:
+#       Session.close()
+#       return jsonify({"message": "Incompleted", "error": str(e), "info": ""})
 
 @bpaccount.route("/setinfo", methods=['POST', 'PUT'])
 @jwt_required()
