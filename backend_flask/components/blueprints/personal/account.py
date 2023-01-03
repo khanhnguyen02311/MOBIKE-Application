@@ -50,13 +50,13 @@ def getinfo2():
    schema = dbs.AccountInfoSchema()
    Session = new_Scoped_session()
    try:
-      acc = Session.query(dbm.Account.ID, dbm.AccountInfo.Name, dbm.AccountInfo.Phone_number, dbm.AccountInfo.Identification_number, dbm.AccountInfo.Birthdate).join(dbm.AccountInfo, dbm.Account.ID == dbm.AccountInfo.ID)
+      acc = Session.query(dbm.Account.ID, dbm.AccountInfo.Name, dbm.AccountInfo.Phone_number, dbm.AccountInfo.Identification_number, dbm.AccountInfo.Birthdate).join(dbm.AccountInfo, dbm.Account.ID == dbm.AccountInfo.ID
       if acc == None:
          Session.close()
-         return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
+         return jsonify({"message": "Incompleted", "error": "Account not found", "info": acc})
       # acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
       Session.close()
-      return jsonify({"message": "Completed", "error": "", "info": jsonify(acc)})
+      return jsonify({"message": "Completed", "error": "", "info": jsonify()})
       
    except Exception as e:
       Session.close()
