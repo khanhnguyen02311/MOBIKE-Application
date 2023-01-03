@@ -77,8 +77,8 @@ const Login = ({navigation}) => {
       const formData = new FormData();
       formData.append('file', {
         uri: image.uri,
-        type: image.type,
-        name: image.fileName,
+        // type: image.type,
+        // name: image.fileName,
       });
       console.log('formData: ', JSON.stringify(formData));
       const response = await fetch('http://172.30.163.113:3001/upload', {

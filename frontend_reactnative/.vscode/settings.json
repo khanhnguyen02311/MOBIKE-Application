@@ -4,5 +4,6 @@
         "titleBar.activeBackground": "#32424D",
         "titleBar.activeForeground": "#F8FAFB"
     },
-    "npm-scripts.showStartNotification": false
+    "npm-scripts.showStartNotification": false,
+    "java.compile.nullAnalysis.mode": "automatic"
 }

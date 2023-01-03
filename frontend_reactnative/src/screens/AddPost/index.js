@@ -13,6 +13,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Container from '../../components/common/container';
 import * as ImagePicker from 'react-native-image-picker';
+import { UploadImage } from '../../backendAPI/HttpRequest';
 
 const AddPost = ({navigation}) => {
   useEffect(() => {
@@ -48,7 +49,7 @@ const AddPost = ({navigation}) => {
   //   uri: '',
   // });
   // const [fileData, setFileData] = useState('');
-  const [fileUri, setFileUri] = useState([]);
+  const [Images, setImages] = useState([]);
   const [flag, setFlag] = useState(false);
 
   // const chooseImage = () => {
@@ -117,11 +118,11 @@ const AddPost = ({navigation}) => {
         console.log('response', JSON.stringify(response));
 
         // setFileData(response.data);
-        let tmp = fileUri;
+        let tmp = Images;
         for (let i = 0; i < response.assets.length; i++) {
-          tmp.push(response.assets[i].uri);
+          tmp.push(response.assets[i]);
         }
-        setFileUri(tmp);
+        setImages(tmp);
         setFlag(!flag);
       }
     });
@@ -151,14 +152,20 @@ const AddPost = ({navigation}) => {
         console.log('response', JSON.stringify(response));
 
         // setFileData(response.data);
-        var tmp = fileUri;
+        var tmp = Images;
         for (let i = 0; i < response.assets.length; i++) {
-          tmp.push(response.assets[i].uri);
+          tmp.push(response.assets[i]);
         }
-        setFileUri(tmp);
+        setImages(tmp);
         setFlag(!flag);
       }
     });
+  };
+
+  const uploadPost = () => {
+    console.log('upload post');
+    console.log('fileUri', Images);
+    UploadImage(Images[0]);
   };
 
   // const RenderFileData = () => {
@@ -180,14 +187,14 @@ const AddPost = ({navigation}) => {
   // };
 
   const RenderFileUri = () => {
-    console.log('fileUri', fileUri);
+    console.log('fileUri', Images);
     return (
       <View>
-        {fileUri.map((item, index) => {
+        {Images.map((item, index) => {
           if (item) {
             console.log('item', item);
             return (
-              <Image key={index} source={{uri: item}} style={styles.images} />
+              <Image key={index} source={{uri: item.uri}} style={styles.images} />
             );
           } else
             return (
@@ -278,6 +285,12 @@ const AddPost = ({navigation}) => {
               <Text style={styles.btnText}>Directly Launch Image Library</Text>
             </View>
           </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback onPress={uploadPost}>
+            <View style={styles.btnSection}>
+              <Text style={styles.btnText}>Upload Post</Text>
+              </View>
+          </TouchableWithoutFeedback>
         </View>
       </View>
     </Container>
@@ -310,7 +323,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#DCDCDC',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 3,
+    borderRadius: 10,
     marginBottom: 10,
   },
   btnText: {

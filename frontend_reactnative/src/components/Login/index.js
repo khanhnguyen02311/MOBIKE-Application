@@ -37,7 +37,7 @@ const LoginComponent = ({
         <View>
           <Image
             source={require('../../assets/images/MoBike.png')}
-            // source={{uri: "http://172.30.163.113:3001/download/restroom.png"}}
+            // source={{uri: "https://cdn.okxe.vn/products/10/1195010/1195010_269768_z3523739714953_dbe5b1b9cad6de61da26b3f89cc054a0_20221205103409_wTzmsSIT_m_400x400.jpg"}}
             style={styles.logo}
           />
 

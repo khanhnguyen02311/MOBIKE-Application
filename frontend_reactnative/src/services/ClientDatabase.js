@@ -47,11 +47,11 @@ export const init = async () => {
 const updateAndLoadClientDatabase = async () => {
     try {
         await Promise.all([updateLocations(), updatePermissions(), updateImageTypes()]).then((res) => { 
-            Store.dispatch(setCities(JSON.parse(res[0]).Cities));
-            Store.dispatch(setDistricts(JSON.parse(res[0]).Districts));
-            Store.dispatch(setWards(JSON.parse(res[0]).Wards));
-            Store.dispatch(setPermissions(JSON.parse(res[1])));
-            Store.dispatch(setImageTypes(JSON.parse(res[2])));
+            Store.dispatch(setCities(res[0].Cities));
+            Store.dispatch(setDistricts(res[0].Districts));
+            Store.dispatch(setWards(res[0].Wards));
+            Store.dispatch(setPermissions(res[1]));
+            Store.dispatch(setImageTypes(res[2]));
         });
     } catch (error) {
         console.log("Update and load client database error: " + error);

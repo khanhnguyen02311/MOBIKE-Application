@@ -5,7 +5,7 @@ const port = "30001";
 const retryInterval = 100;
 const maxRetry = 10;
 
-const GenerateRequestUrl = (path: String) => {
+export const GenerateRequestUrl = (path: String) => {
     let request = scheme + "://" + host + ":" + port + "/" + path;
     return request
 };
@@ -161,14 +161,57 @@ export const BigGetRequest = async (path: String) => {
         });
         i += concurrent;
     }
-
-    // await Promise.all(pros).then((values) => {
-    //     values.forEach((value) => {
-    //         result = result.concat(value);
-    //     });
-    // });
-
     return result;
+}
+
+export const UploadImage = async (image: Object) => {
+    try {
+        const formData = new FormData();
+        formData.append('file', {
+            uri: image.uri,
+            type: image.type,
+            name: image.fileName,
+        });
+        console.log('formData: ', JSON.stringify(formData));
+        const response = await fetch(GenerateRequestUrl("image/upload"), {
+            method: 'POST',
+            body: formData,
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        console.log(await ProcessResponse(response));
+    } catch (error) {
+        console.log('Save Image Error: ' + error);
+    }
+}
+
+
+
+export const UploadPost = async (title: string, content: string, pricetag: Number, images: Array<Object>, token: String) => {
+    try {
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('content', content);
+        formData.append('pricetag', pricetag);
+        images.forEach(image => {
+            formData.append('images', {
+                uri: image.uri,
+                type: image.type,
+                name: image.fileName,
+            });
+        });
+        console.log('Upload post FormData: ', JSON.stringify(formData));
+        const response = await fetch(GenerateRequestUrl("personal/post/create"),{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: formData,
+        })
+        return ProcessResponse(await ProcessResponse(response))
+    } catch (error) {
+        console.log("Upload Post Error: " + error)
+    }
 }
 
 export default { PostRequest, GetRequest, ProtectedPostRequest, ProtectedGetRequest };
