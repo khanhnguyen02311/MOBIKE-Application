@@ -3,10 +3,9 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Text, TouchableWithoutFeedback} from 'react-native';
 import Header from '../components/common/header';
 import HeaderSearch from '../components/HeaderSearch';
-import {FILTERS_POP_UP, LOADING, MARKETPLACE} from '../constants/routeNames';
-import FiltersPopUp from '../screens/FiltersPopUp';
-import Loading from '../screens/Loading';
+import {FILTERS_POP_UP_NAVIGATOR, MARKETPLACE} from '../constants/routeNames';
 import Marketplace from '../screens/Marketplace';
+import FiltersPopUpNavigator from './FiltersPopUpNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,19 +18,9 @@ const MarketplaceNavigator = () => {
         options={{header: () => <HeaderSearch />}}
       />
       <Stack.Screen
-        name={FILTERS_POP_UP}
-        component={FiltersPopUp}
-        options={{
-          header: ({navigation}) => (
-            <Header
-              title={'Filters'}
-              textRight={'Reset'}
-              onLeftClick={() => {
-                navigation.goBack();
-              }}
-            />
-          ),
-        }}
+        name={FILTERS_POP_UP_NAVIGATOR}
+        component={FiltersPopUpNavigator}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );

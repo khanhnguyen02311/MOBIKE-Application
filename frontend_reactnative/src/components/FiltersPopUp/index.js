@@ -1,22 +1,22 @@
 import {View, Text} from 'react-native';
 import React, {useEffect} from 'react';
 import Container from '../common/container';
-import FilterProp from './FilterPropName';
-import FilterPropName from './FilterPropName';
+import FilterPropNameComponent from './FilterPropName';
 import {useDispatch} from 'react-redux';
 import {
   setInitial,
   setMinMaxText,
   setPriceRange,
 } from '../../redux/slice/filterSlice';
-import FilterPropVehicleTypes from './FilterPropVehicleTypes';
-import FilterPropPriceRange from './FilterPropPriceRange';
+import FilterPropVehicleTypesComponent from './FilterPropVehicleTypes';
+import FilterPropPriceRangeComponent from './FilterPropPriceRange';
 import data from '../../data/dataCategoryList';
+import FilterPropManufacturerComponent from './FilterPropManufacturer';
 const FiltersPopUpComponent = () => {
-  const min = 0;
-  const max = 300;
+  const min = 10;
+  const max = 1000;
   const sliderWidth = 300;
-  const step = 10;
+  const step = 1;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setInitial());
@@ -27,19 +27,20 @@ const FiltersPopUpComponent = () => {
         minPosition: 0,
         maxPosition: sliderWidth,
       }),
-      dispatch(setMinMaxText({min: min, max: max})),
     );
+    dispatch(setMinMaxText({min: min, max: max}));
   }, []);
   return (
     <Container styleScrollView={{backgroundColor: 'white'}}>
-      <FilterPropName />
-      <FilterPropVehicleTypes data={data} />
-      <FilterPropPriceRange
+      <FilterPropNameComponent />
+      <FilterPropVehicleTypesComponent data={data} />
+      <FilterPropPriceRangeComponent
         min={min}
         max={max}
         sliderWidth={sliderWidth}
         step={step}
       />
+      <FilterPropManufacturerComponent />
       <View style={{marginTop: 100}}></View>
     </Container>
   );

@@ -6,6 +6,7 @@ import {
   MARKETPLACE_NAVIGATOR,
   NOTIFICATIONS,
   PROFILE,
+  PROFILE_NAVIGATOR,
   YOU,
   YOUR_POSTS_NAVIGATOR,
 } from '../constants/routeNames';
@@ -16,6 +17,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import HeaderSearch from '../components/HeaderSearch';
 import MarketplaceNavigator from './MarketplaceNavigator';
 import YourPostsNavigator from './YourPostsNavigator';
+import ProfileNavigator from './ProfileNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,10 +31,10 @@ const BottomNavigator = () => {
           if (route.name === MARKETPLACE_NAVIGATOR) {
             iconName = focused ? 'cart' : 'cart-outline';
           } else if (route.name === YOUR_POSTS_NAVIGATOR) {
-            iconName = focused ? 'browsers' : 'browsers-outline';
+            iconName = focused ? 'browsers-outline' : 'browsers-outline';
           } else if (route.name === NOTIFICATIONS) {
             iconName = focused ? 'notifications' : 'notifications-outline';
-          } else if (route.name === PROFILE) {
+          } else if (route.name === PROFILE_NAVIGATOR) {
             iconName = focused ? 'person' : 'person-outline';
           }
 
@@ -41,10 +43,10 @@ const BottomNavigator = () => {
         },
         tabBarActiveTintColor: '#384653',
         tabBarInactiveTintColor: '#8D8D8D',
-        tabBarItemStyle: {marginBottom: 7},
-        tabBarIconStyle: {marginBottom: -7},
+        tabBarItemStyle: {marginBottom: 10},
+        tabBarIconStyle: {marginBottom: -5},
         tabBarLabelStyle: {fontSize: 12},
-        tabBarStyle: {backgroundColor: '#EDF8FF', minHeight: 60, maxHeight: 80},
+        tabBarStyle: {backgroundColor: '#EDF8FF', height: 56},
         tabBarHideOnKeyboard: true,
         tabBarActiveBackgroundColor: '#EDF8FF',
         tabBarInactiveBackgroundColor: '#EDF8FF',
@@ -58,17 +60,17 @@ const BottomNavigator = () => {
       <Tab.Screen
         name={YOUR_POSTS_NAVIGATOR}
         component={YourPostsNavigator}
-        options={{title: 'Your posts'}}
+        options={{tabBarLabel: 'Your posts'}}
       />
       <Tab.Screen
         name={NOTIFICATIONS}
         component={Notifications}
-        options={{title: 'Notifications'}}
+        options={{tabBarLabel: 'Notifications'}}
       />
       <Tab.Screen
-        name={PROFILE}
-        component={Profile}
-        options={{title: 'Profile'}}
+        name={PROFILE_NAVIGATOR}
+        component={ProfileNavigator}
+        options={{tabBarLabel: 'Profile'}}
       />
     </Tab.Navigator>
   );

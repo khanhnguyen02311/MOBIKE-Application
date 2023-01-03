@@ -163,6 +163,7 @@ export default class TextInputOutline extends BaseInput {
             }
             spellCheck={false}
             autoCorrect={false}
+            overFlow="hidden"
             //maxLength={32}
             {...props}
           />

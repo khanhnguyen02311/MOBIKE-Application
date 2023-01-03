@@ -5,14 +5,18 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import TextInputOutline from '../common/textInputOutline-Kohana';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import colors from '../../assets/theme/colors';
-import {YOUR_POSTS, FILTERS_POP_UP} from '../../constants/routeNames';
+import {
+  YOUR_POSTS,
+  FILTERS_POP_UP,
+  FILTERS_POP_UP_NAVIGATOR,
+} from '../../constants/routeNames';
 import {useNavigation} from '@react-navigation/native';
 const HeaderSearch = () => {
   const {navigate} = useNavigation();
   return (
     <View
       style={{
-        height: 76,
+        height: 60,
         flexDirection: 'row',
         backgroundColor: colors.secondary,
         alignItems: 'center',
@@ -34,7 +38,7 @@ const HeaderSearch = () => {
       />
       <TouchableWithoutFeedback
         onPress={() => {
-          navigate(FILTERS_POP_UP);
+          navigate(FILTERS_POP_UP_NAVIGATOR);
         }}>
         <View style={{paddingHorizontal: 20}}>
           <SimpleLineIcon name="equalizer" size={24} color="#292D32" />

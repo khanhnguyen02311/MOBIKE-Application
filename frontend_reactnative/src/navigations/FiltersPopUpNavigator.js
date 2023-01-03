@@ -4,35 +4,45 @@ import {Text, TouchableWithoutFeedback} from 'react-native';
 import Header from '../components/common/header';
 import HeaderSearch from '../components/HeaderSearch';
 import {
-  ADD_POST,
   FILTERS_POP_UP,
+  FILTERS_POP_UP_MANUFACTURER,
+  FILTER_PROP_MANUFACTURER,
   LOADING,
-  YOUR_POSTS,
+  MARKETPLACE,
 } from '../constants/routeNames';
-import AddPost from '../screens/AddPost';
+import FilterPropManufacturer from '../screens/FilterPropManufacturer';
 import FiltersPopUp from '../screens/FiltersPopUp';
 import Loading from '../screens/Loading';
 import Marketplace from '../screens/Marketplace';
-import YourPosts from '../screens/YourPosts';
 
 const Stack = createNativeStackNavigator();
 
-const YourPostsNavigator = () => {
+const FiltersPopUpNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName={YOUR_POSTS}>
+    <Stack.Navigator initialRouteName={FILTERS_POP_UP}>
       <Stack.Screen
-        name={YOUR_POSTS}
-        component={YourPosts}
-        options={{headerShown: false}}
-        //options={{header: () => <HeaderSearch />}}
-      />
-      <Stack.Screen
-        name={ADD_POST}
-        component={AddPost}
+        name={FILTERS_POP_UP}
+        component={FiltersPopUp}
         options={{
           header: ({navigation}) => (
             <Header
-              title={'Add New Post'}
+              title={'Filters'}
+              textRight={'Reset'}
+              onLeftClick={() => {
+                navigation.goBack();
+              }}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name={FILTERS_POP_UP_MANUFACTURER}
+        component={FilterPropManufacturer}
+        options={{
+          header: ({navigation}) => (
+            <Header
+              title={'Manufacturer'}
+              textRight={'Reset'}
               onLeftClick={() => {
                 navigation.goBack();
               }}
@@ -44,4 +54,4 @@ const YourPostsNavigator = () => {
   );
 };
 
-export default YourPostsNavigator;
+export default FiltersPopUpNavigator;

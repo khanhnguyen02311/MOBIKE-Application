@@ -24,7 +24,7 @@ const AddPost = ({navigation}) => {
     });
     return () =>
       navigation.getParent()?.setOptions({
-        tabBarStyle: {backgroundColor: '#EDF8FF', minHeight: 60, maxHeight: 80},
+        tabBarStyle: {backgroundColor: '#EDF8FF', minHeight: 56, maxHeight: 80},
       });
   }, [navigation]);
 

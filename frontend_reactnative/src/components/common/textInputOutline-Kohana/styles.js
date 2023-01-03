@@ -16,7 +16,7 @@ export default StyleSheet.create({
     fontSize: 16,
     color: 'black',
     fontStyle: 'italic',
-    fontWeight: '100',
+    fontWeight: '500',
     opacity: 0.5,
   },
   textInput: {
