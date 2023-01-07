@@ -52,7 +52,7 @@ def getinfo2():
    Session = new_Scoped_session()
    try:
       # acc = Session.query(dbm.Account.ID, dbm.AccountInfo.Name, dbm.AccountInfo.Phone_number, dbm.AccountInfo.Identification_number, dbm.AccountInfo.Birthdate).join(dbm.AccountInfo, dbm.Account.ID == dbm.AccountInfo.ID)
-      acc = Session.query(dbm.Account).options(sqlorm.joinedload(dbm.Account.rel_AccountInfo)).all()
+      acc = Session.query(dbm.Account).options(sqlorm.joinedload(dbm.Account.rel_AccountInfo)).get(current_user['ID'])
       return acc.rel_AccountInfo.Phone_number
       if acc == None:
          Session.close()
