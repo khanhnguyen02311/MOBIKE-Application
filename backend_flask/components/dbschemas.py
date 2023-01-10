@@ -38,7 +38,7 @@ class AccountInfoSchema(Schema):
     Phone_number = auto_field()
     Identification_number = auto_field()
     
-class DetailAccountSchema(Schema):
+class DetaillAccountSchema(Schema):
     class Meta:
         model = dbm.Account
         include_relationships = True
@@ -46,7 +46,8 @@ class DetailAccountSchema(Schema):
         
     ID = auto_field()
     Username = auto_field()
-    Details = fields.Nested(AccountInfoSchema, include_fk=True)    
+    Email = auto_field()
+    Info = fields.Nested(AccountInfoSchema)    
     
 class AddressSchema(Schema):
     class Meta:
