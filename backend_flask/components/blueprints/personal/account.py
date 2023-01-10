@@ -54,12 +54,12 @@ def getinfo2():
       # acc = Session.query(dbm.Account.ID, dbm.AccountInfo.Name, dbm.AccountInfo.Phone_number, dbm.AccountInfo.Identification_number, dbm.AccountInfo.Birthdate).join(dbm.AccountInfo, dbm.Account.ID == dbm.AccountInfo.ID)
       acc = Session.query(dbm.Account).options(sqlorm.joinedload(dbm.Account.rel_AccountInfo)).get(current_user['ID'])
       return jsonify({"message": "Completed", "error": "", "info": schema.dump(acc)})
-      if acc == None:
-         Session.close()
-         return jsonify({"message": "Incompleted", "error": "Account not found", "info": acc})
-      # acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
-      Session.close()
-      return jsonify({"message": "Completed", "error": "", "info": jsonify(acc)})
+      # if acc == None:
+      #    Session.close()
+      #    return jsonify({"message": "Incompleted", "error": "Account not found", "info": acc})
+      # # acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
+      # Session.close()
+      # return jsonify({"message": "Completed", "error": "", "info": jsonify(acc)})
       
    except Exception as e:
       Session.close()
