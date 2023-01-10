@@ -27,6 +27,7 @@ class DetailAccountSchema(Schema):
     class Meta:
         model = dbm.Account
         include_relationships = True
+        include_fk = True
         
     ID = auto_field()
     Username = auto_field()
