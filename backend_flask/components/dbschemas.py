@@ -28,8 +28,7 @@ class AccountInfoSchema(Schema):
     class Meta:
         model = dbm.AccountInfo
         load_instance = True
-        include_relationships = True
-        include_fk = True
+
         
     ID = auto_field()
     Name = auto_field()
@@ -41,8 +40,7 @@ class AccountInfoSchema(Schema):
 class DetaillAccountSchema(Schema):
     class Meta:
         model = dbm.Account
-        include_relationships = True
-        include_fk = True
+        load_instance = True
         
     ID = auto_field()
     Username = auto_field()
