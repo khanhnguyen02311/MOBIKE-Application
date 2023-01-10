@@ -44,7 +44,7 @@ class DetailAccountSchema(Schema):
         
     ID = auto_field()
     Username = auto_field()
-    Details = fields.Nested(AccountInfoSchema)    
+    Details = fields.Nested(AccountInfoSchema, include_fk=True)    
     
 class AddressSchema(Schema):
     class Meta:
