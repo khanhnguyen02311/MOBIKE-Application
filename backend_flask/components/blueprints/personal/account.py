@@ -48,7 +48,7 @@ def getinfo2():
    if current_user is None:
       return jsonify({"message": "Incompleted", "error": "Invalid token", "info": ""})
 
-   schema = dbs.AccountSchema()
+   schema = dbs.DetailAccountSchema()
    Session = new_Scoped_session()
    try:
       # acc = Session.query(dbm.Account.ID, dbm.AccountInfo.Name, dbm.AccountInfo.Phone_number, dbm.AccountInfo.Identification_number, dbm.AccountInfo.Birthdate).join(dbm.AccountInfo, dbm.Account.ID == dbm.AccountInfo.ID)
