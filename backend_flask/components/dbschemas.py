@@ -28,6 +28,8 @@ class AccountInfoSchema(Schema):
     class Meta:
         model = dbm.AccountInfo
         load_instance = True
+        include_relationships = True
+        include_fk = True
         
     ID = auto_field()
     Name = auto_field()
