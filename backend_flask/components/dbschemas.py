@@ -41,11 +41,13 @@ class DetaillAccountSchema(Schema):
     class Meta:
         model = dbm.Account
         load_instance = True
+        include_relationships = True
+        include_fk = True
         
     ID = auto_field()
     Username = auto_field()
     Email = auto_field()
-    Info = fields.Nested(AccountInfoSchema)    
+    Info = fields.Nested(AccountInfoSchema, include_relationships = True)    
     
 class AddressSchema(Schema):
     class Meta:
