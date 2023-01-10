@@ -1,4 +1,4 @@
-from marshmallow_sqlalchemy import SQLAlchemySchema as Schema, auto_field
+from marshmallow_sqlalchemy import SQLAlchemySchema as Schema, auto_field, fields
 from components import dbmodels as dbm
 
 class AccountSchema(Schema):
@@ -14,7 +14,7 @@ class AccountSchema(Schema):
     ID_AccountInfo = auto_field()
     ID_AccountStat = auto_field()
         
-        
+
 class PermissionSchema(Schema):
     class Meta:
         model = dbm.Permission
@@ -23,6 +23,14 @@ class PermissionSchema(Schema):
     ID = auto_field()
     Name = auto_field()
     
+class DetailAccountSchema(Schema):
+    class Meta:
+        model = dbm.Account
+        include_relationships = True
+        
+    ID = auto_field()
+    Username = auto_field()
+    Permission = fields.Nested(PermissionSchema)    
 
 class AccountInfoSchema(Schema):
     class Meta:
