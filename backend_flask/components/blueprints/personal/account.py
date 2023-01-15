@@ -40,32 +40,6 @@ def getinfo():
       Session.close()
       return jsonify({"message": "Incompleted", "error": str(e), "info": ""})
    
-
-@bpaccount.route("/getinfo3", methods=['GET'])
-@jwt_required()
-def getinfo3():
-   current_user = get_jwt_identity()   
-   if current_user is None:
-      return jsonify({"message": "Incompleted", "error": "Invalid token", "info": ""})
-
-   schema = dbs.DetaillAccountSchema()
-   Session = new_Scoped_session()
-   try:
-      # acc = Session.query(dbm.Account.ID, dbm.AccountInfo.Name, dbm.AccountInfo.Phone_number, dbm.AccountInfo.Identification_number, dbm.AccountInfo.Birthdate).join(dbm.AccountInfo, dbm.Account.ID == dbm.AccountInfo.ID)
-      # acc = Session.query(dbm.Account).options(sqlorm.joinedload(dbm.Account.rel_AccountInfo)).get(current_user['ID'])
-      acc = Session.query(dbm.Account).get(current_user['ID'])
-      return jsonify({"message": "Completed", "error": "", "info": schema.dump(acc)})
-      # if acc == None:
-      #    Session.close()
-      #    return jsonify({"message": "Incompleted", "error": "Account not found", "info": acc})
-      # # acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
-      # Session.close()
-      # return jsonify({"message": "Completed", "error": "", "info": jsonify(acc)})
-      
-   except Exception as e:
-      Session.close()
-      return jsonify({"message": "Incompleted", "error": str(e), "info": ""})
-
 @bpaccount.route("/setinfo", methods=['POST', 'PUT'])
 @jwt_required()
 def changeinfo():

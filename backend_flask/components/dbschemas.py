@@ -13,7 +13,6 @@ class AccountSchema(Schema):
     ID_Permission = auto_field()
     ID_AccountInfo = auto_field()
     ID_AccountStat = auto_field()
-        
 
 class PermissionSchema(Schema):
     class Meta:
@@ -22,7 +21,6 @@ class PermissionSchema(Schema):
 
     ID = auto_field()
     Name = auto_field()
-    
 
 class AccountInfoSchema(Schema):
     class Meta:
@@ -36,18 +34,6 @@ class AccountInfoSchema(Schema):
     Gender = auto_field()
     Phone_number = auto_field()
     Identification_number = auto_field()
-    
-class DetaillAccountSchema(Schema):
-    class Meta:
-        model = dbm.Account
-        load_instance = True
-        include_relationships = True
-        include_fk = True
-        
-    ID = auto_field()
-    Username = auto_field()
-    Email = auto_field()
-    Info = fields.Nested(AccountInfoSchema, include_relationships = True)    
     
 class AddressSchema(Schema):
     class Meta:
