@@ -8,7 +8,7 @@ import { setLoading } from './src/redux/slice/loadingSlice';
 import { Provider, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TokenStorage from './src/services/TokenStorage';
-import BackendAPI from './src/backendAPI';
+import BackendAPI, { getPersonalInfo } from './src/backendAPI';
 import ClientDatabase from './src/services/ClientDatabase';
 import Requester, { BigGetRequest } from './src/backendAPI/HttpRequest';
 
@@ -31,31 +31,39 @@ const theme = {
     tertiary: '#a1b2c3',
   },
 };
+
 const App = () => {
   useEffect(() => {
     // AsyncStorage.clear();
-    console.log('Main')
+    console.log('------------------------------Main------------------------------')
+
+    
+    const sandbox = async () => {
+      try {
+          // const cities = await BigGetRequest("cities");
+          // console.log(cities);
+        console.log("......................Sandbox......................")
+        let test = Store.getState().personalInfo;
+        console.log(test)
+      } catch (error) {
+        console.log("Sandbox error: " + error);
+      }
+      console.log("....................Sandbox End....................")
+    }
+
     const Init = async () => {
       // await TokenStorage.removeCurrentToken();
       await TokenStorage.init();
       await ClientDatabase.init();
       // TokenStorage.print();
       // ClientDatabase.print();
+      // let test = Store.getState().locations.Tree;
+      // console.log("Test: " + JSON.stringify(test));
       Store.dispatch(setLoading(false));
-    }
-    
-    const sandbox = async () => {
-      try {
-
-        // const cities = await BigGetRequest("cities");
-        // console.log(cities);
-
-      } catch (error) {
-        console.log("Sandbox error: " + error);
-      }
+      console.log("......................App loading finished......................")
+      await sandbox();
     }
     Init();
-    sandbox();
 
   }, []);
 

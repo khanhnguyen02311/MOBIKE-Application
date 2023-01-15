@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import HttpRequest from '../backendAPI/HttpRequest';
+import { setAll } from '../redux/clientDatabase/personalInfo';
 import Store from '../redux/store';
-import {login} from '../redux/slice/authSlice';
-import BackendAPI from '../backendAPI';
+import { login } from '../redux/slice/authSlice';
+import BackendAPI, { getPersonalInfo } from '../backendAPI';
+
 
 export const init = async () => {
     try {
@@ -23,6 +25,7 @@ export const init = async () => {
                         ID: myinfo.ID,
                         token: currentToken
                     }))
+                    await updatePersonalInfo();
                 }
             }
         }
@@ -30,6 +33,11 @@ export const init = async () => {
         console.log("Init token storage error: " + e);
     }
 };
+
+export const updatePersonalInfo = async () => {
+    let personalInfo = await getPersonalInfo();
+    Store.dispatch(setAll(personalInfo));
+}
 
 export const signUp = async (username: string, email: string, phone: string, password: string) => {
     const response = await HttpRequest.PostRequest("auth/signup", { username: username, email: email, phone: phone, password: password, permission: 4 });
@@ -58,6 +66,7 @@ export const signIn = async (usernameOrEmail: String, password: String, savePass
             ID: response.uid,
             token: response.token
         }))
+        await updatePersonalInfo();
 
         return response.token;
     }

@@ -21,6 +21,7 @@ const AddressBottomSheetContent = ({
   onSetAddress,
   initialAddress,
 }) => {
+  const [addressTree, setAddressTree] = useState([]);
   const [form, setForm] = useState(
     (initialAddress.City !== '' && initialAddress) || {
       City: 'Choose city',
@@ -28,34 +29,43 @@ const AddressBottomSheetContent = ({
       Ward: '',
     },
   );
+  const [IDForm, setIDForm] = useState({
+    City: undefined,
+    District: undefined,
+    Ward: undefined,
+  });
   const [selected, setSelected] = useState('City');
   const [currentData, setCurrentData] = useState(data);
+
   const onSelect = name => {
     setSelected(name);
     if (name === 'City') {
       setCurrentData(data);
     } else if (name === 'District') {
-      setCurrentData(data.filter(item => item.name === form.City)[0].value);
+      setCurrentData(data.filter(item => item.Name === form.City)[0].Districts);
     } else if (name === 'Ward') {
       setCurrentData(
         data
-          .filter(item => item.name === form.City)[0]
-          .value.filter(item => item.name === form.District)[0].value,
+          .filter(item => item.Name === form.City)[0]
+          .Districts.filter(item => item.Name === form.District)[0].Wards,
       );
     }
   };
-  const onChooseLocation = (name, value) => {
+  const onChooseLocation = (name, ID, value) => {
     if (name === 'City') {
       setSelected('District');
+      setIDForm({...IDForm, City: ID, District: undefined, Ward: undefined});
       setForm({...form, City: value, District: 'Choose district', Ward: ''});
-      setCurrentData(currentData.filter(item => item.name === value)[0].value);
+      setCurrentData(currentData.filter(item => item.Name === value)[0].Districts);
       return;
     } else if (name === 'District') {
       setSelected('Ward');
+      setIDForm({...IDForm, District: ID, Ward: undefined});
       setForm({...form, District: value, Ward: 'Choose Ward'});
-      setCurrentData(currentData.filter(item => item.name === value)[0].value);
+      setCurrentData(currentData.filter(item => item.Name === value)[0].Wards);
       return;
     }
+    setIDForm({...IDForm, [name]: ID})
     setForm({...form, [name]: value});
   };
 
@@ -65,7 +75,7 @@ const AddressBottomSheetContent = ({
       form.Ward !== 'Choose Ward' &&
       form.Ward !== ''
     ) {
-      onSetAddress(form);
+      onSetAddress(IDForm);
       onCloseBottomSheet();
     }
   }, [form.Ward]);
@@ -75,18 +85,18 @@ const AddressBottomSheetContent = ({
       let flag = false;
       let firstLetter = '';
       if (
-        (selected === 'City' && item.name === form.City) ||
-        (selected === 'District' && item.name === form.District) ||
-        (selected === 'Ward' && item.name === form.Ward)
+        (selected === 'City' && item.Name === form.City) ||
+        (selected === 'District' && item.Name === form.District) ||
+        (selected === 'Ward' && item.Name === form.Ward)
       )
         flag = true;
-      if (index === 0) firstLetter = item.name[0].toUpperCase();
-      else if (item.name[0] !== data[index - 1].name[0])
-        firstLetter = item.name[0].toUpperCase();
+      if (index === 0) firstLetter = item.Name[0].toUpperCase();
+      else if (item.Name[0] !== data[index - 1].Name[0])
+        firstLetter = item.Name[0].toUpperCase();
       return (
         <TouchableWithoutFeedback
           key={index}
-          onPress={() => onChooseLocation(selected, item.name)}>
+          onPress={() => onChooseLocation(selected, item.ID, item.Name)}>
           <View
             style={{
               paddingBottom: index === data.length - 1 ? 315 : 0,
@@ -108,7 +118,7 @@ const AddressBottomSheetContent = ({
                   flex: 1,
                 }}>
                 <Text style={{color: flag ? colors.primary : 'black'}}>
-                  {item.name}
+                  {item.Name}
                 </Text>
 
                 {flag && (

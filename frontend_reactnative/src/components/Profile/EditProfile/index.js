@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import Container from '../../common/container';
 import TextInputOutline from '../../common/textInputOutline-Kohana';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -19,18 +19,48 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import AddressBottomSheetContent from './AddressBottomSheetContent';
-import dataAddress from '../../../data/dataAddress';
+import Store from '../../../redux/store';
+import { getPersonalInfo } from '../../../backendAPI';
+import AddPost from './../../../screens/AddPost/index';
+import { useSelector } from 'react-redux';
+
 
 const heightScreen = Dimensions.get('window').height;
 const EditProfileComponent = () => {
+  const addressTree = Store.getState().locations.Tree
+
+  //set up form
+  const [locationData, setLocationData] = useState({
+    AddressTree: undefined,
+    Locations: undefined,
+  })
+
+  const [personalInfoData, setPersonalInfoData] = useState({
+    Birthdate: undefined,
+    Gender: undefined,
+    Identification_number: undefined,
+    Name: undefined,
+    Phone_number: undefined,
+    Addresses: {}
+  })
+
   const [form, setForm] = useState({
+    name: '',
+    phone_number: '',
+    identification_number: '',
     birthday: '',
+    IDAddress: {
+      City: undefined,
+      District: undefined,
+      Ward: undefined,
+    },
     address: {
       City: '',
       District: '',
       Ward: '',
     },
   });
+
   const [errors, setErrors] = useState();
   onChange = ({name, value}) => {
     setForm({...form, [name]: value});
@@ -38,6 +68,27 @@ const EditProfileComponent = () => {
 
   //set up date picker
   const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const Locations = Store.getState().locations;
+    console.log("Hello")
+    setLocationData({
+      AddressTree: Locations.Tree,
+      Locations: {
+        City: Locations.City,
+        District: Locations.District,
+        Ward: Locations.Ward,
+      },
+    })
+    setPersonalInfoData(Store.getState().personalInfo)
+    setForm({
+      ...form,
+      birthday: personalInfoData.Birthdate || '',
+
+    }
+    )
+  }, [])
+
   const onDateChange = (event, selectedDate) => {
     let currentDate;
     if (selectedDate) {
@@ -74,16 +125,47 @@ const EditProfileComponent = () => {
       </View>
     </View>
   );
-  const _renderContent = () => (
-    <AddressBottomSheetContent
-      data={dataAddress}
-      onCloseBottomSheet={() => changeBottomSheetVisibility(false)}
-      onSetAddress={value => {
-        setForm({...form, address: value});
-      }}
-      initialAddress={form.address}
-    />
-  );
+
+  const cityNameFromID = (ID) => {
+    return locationData.Locations.Cities.find(city => city.ID === ID).Name
+  }
+
+  const districtNameFromID = (ID) => {
+    return locationData.Locations.Districts.find(district => district.ID === ID).Name
+  }
+
+  const wardNameFromID = (ID) => {
+    return locationData.Locations.Wards.find(ward => ward.ID === ID).Name
+  }
+
+  const setAddress = (cityID, districtID, wardID) => {
+    setForm({...form, IDAddress: {
+      City: cityID,
+      District: districtID,
+      Ward: wardID,
+    }, address: {
+      City: cityNameFromID(cityID),
+      District: districtNameFromID(districtID),
+      Ward: wardNameFromID(wardID),
+    }});
+  }
+
+  const _renderContent = () => {
+    return (
+      <AddressBottomSheetContent
+        data={Store.getState().locations.Tree}
+        onCloseBottomSheet={() => changeBottomSheetVisibility(false)}
+        onSetAddress={value => {
+          setAddress(value.City, value.District, value.Ward);
+        }}
+        initialAddress={form.address}
+      />
+    );
+  }
+
+  const setName = (value) => {
+
+  }
 
   return (
     <Container

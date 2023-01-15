@@ -5,6 +5,14 @@ const port = "30001";
 const retryInterval = 100;
 const maxRetry = 10;
 
+const ResquestLog = false;
+
+const log = (message) => {
+    if (ResquestLog) {
+        console.log(message);
+    }
+}
+
 export const GenerateRequestUrl = (path: String) => {
     let request = scheme + "://" + host + ":" + port + "/" + path;
     return request
@@ -13,9 +21,11 @@ export const GenerateRequestUrl = (path: String) => {
 const ProcessResponse = async (response: Object) => {
     const contentType = response.headers.get("content-type");
     if (contentType && contentType.indexOf("application/json") !== -1) {
+        // log("ProcessResponse: " + contentType + " in Json format")
         const json = await response.json();
         return json;
     } else {
+        // log("ProcessResponse: " + contentType + " in Text format")
         const text = await response.text();
         return text;
     }
@@ -24,7 +34,7 @@ const ProcessResponse = async (response: Object) => {
 const PostRequest = async (path: String, body: Object, retry: Number = 0) => {
     try {
         const url = GenerateRequestUrl(path);
-        console.log("Post request url: " + url);
+        log("Post request url: " + url);
         const response = await fetch(
             url, {
             method: 'POST',
@@ -37,7 +47,7 @@ const PostRequest = async (path: String, body: Object, retry: Number = 0) => {
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
             retry += 1;
-            console.log("PostRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
+            log("PostRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
             if (retry <= maxRetry) {
                 return await new Promise((resolve, reject) => {
                     setTimeout(() => {
@@ -46,7 +56,7 @@ const PostRequest = async (path: String, body: Object, retry: Number = 0) => {
                 });
             }
         } else {
-            console.log("Fetch Error:" + error)
+            log("Fetch Error:" + error)
         }
     }
 };
@@ -54,17 +64,18 @@ const PostRequest = async (path: String, body: Object, retry: Number = 0) => {
 const GetRequest = async (path: String, retry: Number = 0) => {
     try {
         const url = GenerateRequestUrl(path);
-        console.log("Get request url: " + url);
+        log("Get request url: " + url);
         const response = await fetch(
             url, {
             method: 'GET',
             keepalive: true,
         });
+        // log("Get request debug: " + response.headers.get("content-type"))
         return await ProcessResponse(response);
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
             retry += 1;
-            console.log("GetRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
+            log("GetRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
             if (retry <= maxRetry) {
                 return await new Promise((resolve, reject) => {
                     setTimeout(() => {
@@ -73,7 +84,7 @@ const GetRequest = async (path: String, retry: Number = 0) => {
                 });
             }
         } else {
-            console.log("Fetch Error:" + error)
+            log("Fetch Error:" + error)
         }
 
     }
@@ -82,7 +93,7 @@ const GetRequest = async (path: String, retry: Number = 0) => {
 const ProtectedPostRequest = async (path: String, body: Object, token: String, retry: Number = 0) => {
     try {
         const url = GenerateRequestUrl(path);
-        console.log("Protected Post request url: " + url);
+        log("Protected Post request url: " + url);
         const response = await fetch(
             url, {
             method: 'POST',
@@ -96,7 +107,7 @@ const ProtectedPostRequest = async (path: String, body: Object, token: String, r
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
             retry += 1;
-            console.log("ProtectedPostRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
+            log("ProtectedPostRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
             if (retry <= maxRetry) {
                 return await new Promise((resolve, reject) => {
                     setTimeout(() => {
@@ -105,7 +116,7 @@ const ProtectedPostRequest = async (path: String, body: Object, token: String, r
                 });
             }
         } else {
-            console.log("Fetch Error:" + error)
+            log("Fetch Error:" + error)
         }
     }
 };
@@ -113,7 +124,7 @@ const ProtectedPostRequest = async (path: String, body: Object, token: String, r
 const ProtectedGetRequest = async (path: String, token: String, retry: Number = 0) => {
     try {
         const url = GenerateRequestUrl(path);
-        console.log("Protected Get request url: " + url);
+        log("Protected Get request url: " + url);
         const response = await fetch(
             url, {
             method: 'GET',
@@ -125,7 +136,7 @@ const ProtectedGetRequest = async (path: String, token: String, retry: Number = 
     } catch (error) {
         if (error instanceof TypeError && error.message === "Network request failed") {
             retry += 1;
-            console.log("ProtectedGetRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
+            log("ProtectedGetRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
             if (retry <= maxRetry) {
                 return await new Promise((resolve, reject) => {
                     setTimeout(() => {
@@ -134,7 +145,7 @@ const ProtectedGetRequest = async (path: String, token: String, retry: Number = 
                 });
             }
         } else {
-            console.log("Fetch Error:" + error)
+            log("Fetch Error:" + error)
         }
     }
 };
@@ -172,15 +183,15 @@ export const UploadImage = async (image: Object) => {
             type: image.type,
             name: image.fileName,
         });
-        console.log('formData: ', JSON.stringify(formData));
+        log('formData: ', JSON.stringify(formData));
         const response = await fetch(GenerateRequestUrl("image/upload"), {
             method: 'POST',
             body: formData,
             headers: { 'Content-Type': 'multipart/form-data' },
         });
-        console.log(await ProcessResponse(response));
+        log(await ProcessResponse(response));
     } catch (error) {
-        console.log('Save Image Error: ' + error);
+        log('Save Image Error: ' + error);
     }
 }
 
@@ -199,7 +210,7 @@ export const UploadPost = async (title: string, content: string, pricetag: Numbe
                 name: image.fileName,
             });
         });
-        console.log('Upload post FormData: ', JSON.stringify(formData));
+        log('Upload post FormData: ', JSON.stringify(formData));
         const response = await fetch(GenerateRequestUrl("personal/post/create"),{
             method: 'POST',
             headers: {
@@ -210,7 +221,7 @@ export const UploadPost = async (title: string, content: string, pricetag: Numbe
         })
         return ProcessResponse(await ProcessResponse(response))
     } catch (error) {
-        console.log("Upload Post Error: " + error)
+        log("Upload Post Error: " + error)
     }
 }
 
