@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getVersion, getPermissions, getCities, getDistricts, getWards, getImageTypes } from '../backendAPI';
 import Store from '../redux/store';
-import { setCities, setDistricts, setWards } from '../redux/clientDatabase/location';
+import { setCities, setDistricts, setWards, setTree } from '../redux/clientDatabase/location';
 import { setImageTypes } from '../redux/clientDatabase/imageType';
 import { setPermissions } from '../redux/clientDatabase/permission';
 
@@ -22,20 +22,6 @@ export const init = async () => {
             }));
         }
 
-        // let Locations = undefined;
-        // let Permissions = undefined;
-        // let ImageTypes = undefined;
-        
-        // await Promise.all([updateLocations(), updatePermissions(), updateImageTypes()]).then((res) => {
-        //     [Locations, Permissions, ImageTypes] = res;
-        // });
-
-        // Store.dispatch(setCities(JSON.parse(Locations).Cities));
-        // Store.dispatch(setDistricts(JSON.parse(Locations).Districts));
-        // Store.dispatch(setWards(JSON.parse(Locations).Wards));
-        // Store.dispatch(setPermissions(JSON.parse(Permissions)));
-        // Store.dispatch(setImageTypes(JSON.parse(ImageTypes)));
-
         await updateAndLoadClientDatabase();
         
         console.log('Client database initialized');
@@ -46,13 +32,21 @@ export const init = async () => {
 
 const updateAndLoadClientDatabase = async () => {
     try {
-        await Promise.all([updateLocations(), updatePermissions(), updateImageTypes()]).then((res) => { 
+        await Promise.all([updateLocations(), updatePermissions(), updateImageTypes()]).then((res) => {
+            // console.log("Location from server: " + JSON.stringify(res[0]))
             Store.dispatch(setCities(res[0].Cities));
+            console.log("Client database: " + Store.getState().locations.Cities.length + " cities loaded" )
             Store.dispatch(setDistricts(res[0].Districts));
+            console.log("Client database: " + Store.getState().locations.Districts.length + " districts loaded")
             Store.dispatch(setWards(res[0].Wards));
+            console.log("Client database: " + Store.getState().locations.Wards.length + " wards loaded")
+            Store.dispatch(setTree(res[0].Tree));
             Store.dispatch(setPermissions(res[1]));
+            console.log("Client database: " + Store.getState().permissions.length + " permissions loaded")
             Store.dispatch(setImageTypes(res[2]));
+            console.log("Client database: " + Store.getState().imageTypes.length + " image types loaded")
         });
+        // console.log("Location loaded: " + JSON.stringify(Store.getState().locations));
     } catch (error) {
         console.log("Update and load client database error: " + error);
     }
@@ -64,9 +58,10 @@ const updateLocations = async () => {
         // console.log('Online locations version: ' + onlineLocationsVersion);
         const localLocationsVersion = JSON.parse(await AsyncStorage.getItem('ClientDatabaseVersion')).Locations;
         // console.log('Local locations version: ' + localLocationsVersion);
+        console.log("Client database: " + localLocationsVersion + " locations version")
         if (localLocationsVersion >= onlineLocationsVersion) {
             console.log('Locations are up to date');
-            return await AsyncStorage.getItem(LOCATIONS);
+            return JSON.parse(await AsyncStorage.getItem(LOCATIONS));
         }
 
         console.log("Updating locations");
@@ -76,14 +71,36 @@ const updateLocations = async () => {
         let cities = undefined;
 
         await Promise.all([getWards(), getDistricts(), getCities()]).then((res) => {
-            console.log("Get locations from server successfully");
             [wards, districts, cities] = res;
         })
+
+        //Create address tree
+        console.log("Creating Address Tree");
+        tree = [];
+        for (let i = 0; i < cities.length; i++) {
+            let city = cities[i];
+            let cityDistricts = districts.filter(district => district.ID_City == city.ID);
+            let cityDistrictsTree = [];
+            for (let j = 0; j < cityDistricts.length; j++) {
+                let district = cityDistricts[j];
+                let districtWards = wards.filter(ward => ward.ID_District == district.ID);
+                cityDistrictsTree.push({
+                    ...district,
+                    Wards: districtWards
+                });
+            }
+            tree.push({
+                ...city,
+                Districts: cityDistrictsTree
+            });
+        }
+        console.log("Address Tree created");
 
         const Locations = {
             Cities: cities,
             Districts: districts,
-            Wards: wards
+            Wards: wards,
+            Tree: tree
         }
 
         await AsyncStorage.setItem(LOCATIONS, JSON.stringify(Locations));
@@ -107,9 +124,10 @@ const updatePermissions = async () => {
         // console.log('Online permissions version: ' + onlinePermissionsVersion);
         const localPermissionsVersion = JSON.parse(await AsyncStorage.getItem('ClientDatabaseVersion')).Permissions;
         // console.log('Local permissions version: ' + localPermissionsVersion);
+        console.log("Client database: " + localPermissionsVersion + " permissions version")
         if (localPermissionsVersion >= onlinePermissionsVersion) {
             console.log('Permissions are up to date');
-            return await AsyncStorage.getItem(PERMISSIONS);
+            return JSON.parse(await AsyncStorage.getItem(PERMISSIONS));
         }
 
         console.log("Updating permissions");
@@ -137,9 +155,10 @@ const updateImageTypes = async () => {
         // console.log('Online image types version: ' + onlineImageTypesVersion);
         const localImageTypesVersion = JSON.parse(await AsyncStorage.getItem('ClientDatabaseVersion')).ImageTypes;
         // console.log('Local image types version: ' + localImageTypesVersion);
+        console.log("Client database: " + localImageTypesVersion + " image types version")
         if (localImageTypesVersion >= onlineImageTypesVersion) {
             console.log('Image types are up to date');
-            return await AsyncStorage.getItem(IMAGETYPES);
+            return JSON.parse(await AsyncStorage.getItem(IMAGETYPES));
         }
 
         console.log("Updating image types");
