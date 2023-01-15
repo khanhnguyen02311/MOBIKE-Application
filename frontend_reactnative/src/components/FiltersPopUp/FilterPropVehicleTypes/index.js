@@ -40,13 +40,11 @@ const FilterPropVehicleTypes = ({data}) => {
 
   return (
     <FilterPropFrameComponent type={'Vehicle Types'} onToggle={onToggle} show={show}>
-      {show && (
         <Animated.View
           entering={FadeInUp.duration(300).delay(100)}
           layout={Layout.stiffness(100).damping(10).duration(durationLayout)}>
           <CategoryList data={data} type={'choose'} />
         </Animated.View>
-      )}
     </FilterPropFrameComponent>
   );
 };

@@ -46,7 +46,6 @@ const FilterPropNameComponent = () => {
 
   return (
     <FilterPropFrameComponent type={'Name'} onToggle={onToggle} show={show}>
-      {show && (
         <Animated.View
           entering={SlideInLeft.duration(300).delay(100)}
           layout={Layout.stiffness(100).damping(10).duration(durationLayout)}>
@@ -74,7 +73,6 @@ const FilterPropNameComponent = () => {
             value={name}
           />
         </Animated.View>
-      )}
     </FilterPropFrameComponent>
   );
 };
