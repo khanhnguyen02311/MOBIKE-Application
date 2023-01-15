@@ -85,7 +85,7 @@ def getaddress():
          return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
       addresses = Session.query(dbm.Address).filter(dbm.Address.ID_AccountInfo==acc.ID_AccountInfo).order_by(dbm.Address.ID.desc()).all()
       Session.commit()
-      json_addresses = {}
+      json_addresses = []
       for index, item in enumerate(addresses):
          json_addresses[index] = schema.dump(item)
       print(json_addresses)
