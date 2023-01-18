@@ -58,7 +58,7 @@ def changeinfo():
       else:
          acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
          acc_info.Name = info['name']
-         acc_info.Birthdate = datetime.strptime(info['birth'], '%m/%d/%Y'), 
+         acc_info.Birthdate = datetime.strptime(info['birth'], '%d/%m/%Y'), 
          acc_info.Gender = info['gender']
          acc_info.Phone_number = info['phone']
          acc_info.Identification_number = info['idt']
