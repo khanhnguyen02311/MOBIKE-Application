@@ -34,6 +34,7 @@ class AccountInfoSchema(Schema):
     Gender = auto_field()
     Phone_number = auto_field()
     Identification_number = auto_field()
+    Time_created = auto_field()
     
 class AddressSchema(Schema):
     class Meta:
