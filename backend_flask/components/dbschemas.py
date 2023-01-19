@@ -1,4 +1,5 @@
-from marshmallow_sqlalchemy import SQLAlchemySchema as Schema, auto_field, fields
+from marshmallow_sqlalchemy import SQLAlchemySchema as Schema, auto_field
+from marshmallow import fields
 from components import dbmodels as dbm
 
 class AccountSchema(Schema):
