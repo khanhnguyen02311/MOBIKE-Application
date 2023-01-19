@@ -30,7 +30,7 @@ class AccountInfoSchema(Schema):
         
     ID = auto_field()
     Name = auto_field()
-    Birthdate = auto_field()
+    Birthdate = fields.DateTime(format='%d/%m/%Y')
     Gender = auto_field()
     Phone_number = auto_field()
     Identification_number = auto_field()

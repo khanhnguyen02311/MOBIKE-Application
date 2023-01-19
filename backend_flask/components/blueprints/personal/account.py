@@ -57,11 +57,11 @@ def changeinfo():
          return jsonify({"message": "Incompleted", "error": "Account not found", "info": ""})
       else:
          acc_info = Session.query(dbm.AccountInfo).get(acc.ID_AccountInfo)
-         acc_info.Name = info['name']
-         acc_info.Birthdate = datetime.strptime(info['birth'], '%d/%m/%Y'), 
-         acc_info.Gender = info['gender']
-         acc_info.Phone_number = info['phone']
-         acc_info.Identification_number = info['idt']
+         acc_info.Name = info['Name']
+         acc_info.Birthdate = datetime.strptime(info['Birthday'], '%d/%m/%Y'), 
+         acc_info.Gender = info['Gender']
+         acc_info.Phone_number = info['Phone_number']
+         acc_info.Identification_number = info['Identification_number']
          Session.commit()
          return jsonify({"message": "Completed", "error": ""})
    
