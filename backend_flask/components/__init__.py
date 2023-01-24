@@ -6,8 +6,6 @@ from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account, post
 from .config import FlaskConfig as fcfg
 from .security import oauth, blocklistJWT
-from flask_socketio import SocketIO
-
 
 def create_app():
     App = Flask(__name__)
@@ -44,11 +42,3 @@ def create_app():
     App.register_blueprint(post.bppost, url_prefix='/personal/post')
     
     return App
-
-def create_socketio():
-    App = create_app()
-    Socketio = SocketIO(App)
-    Socketio.init_app(App)
-    return Socketio, App
-
-[Socketio, App] = create_socketio()

@@ -45,6 +45,8 @@ def saveImage(file, imageTypeID:int = 1):
     if file.filename == "":
         return "No file selected", -1
     ext = file.filename.split('.')[-1]
+    if ext not in ['jpg', 'jpeg', 'png']:
+        return "File extension not supported", -1
     Session = new_Scoped_session()
     try:
         new_image = dbm.Image(Filename = "", ID_ImageType=imageTypeID)
