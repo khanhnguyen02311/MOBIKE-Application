@@ -1,9 +1,10 @@
 from datetime import datetime, timezone, timedelta
 from flask import Flask, jsonify
-from flask_jwt_extended import JWTManager, get_jwt, get_jwt_identity, create_access_token
+from flask_jwt_extended import JWTManager
 from .blueprints.testing import image, gets, admin, test
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account, post
+from .blueprints.utils import vehicle
 from .config import FlaskConfig as fcfg
 from .security import oauth, blocklistJWT
 
@@ -42,5 +43,7 @@ def create_app():
     
     App.register_blueprint(account.bpaccount, url_prefix='/personal')
     App.register_blueprint(post.bppost, url_prefix='/personal')
+    
+    App.register_blueprint(vehicle.bpvehicle, url_prefix='/utils')
     
     return App

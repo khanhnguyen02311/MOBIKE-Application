@@ -5,15 +5,16 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from components.dbsettings import new_Scoped_session
 from components import dbmodels as dbm, dbschemas as dbs
 
-bputils = Blueprint('bputils', __name__)
+bpvehicle = Blueprint('bpvehicle', __name__)
 
 
 # CONTINUE
-bputils.route("/vehicle/brands", methods=['GET'])
+bpvehicle.route("/vehicle/brands", methods=['GET'])
 def getvehiclebrand():
    info = request.get_json()
    Session = new_Scoped_session()
    try:
+      Session.query(dbm.VehicleBrand).all()
       Session.commit()
       return jsonify({"msg": "Completed", "error": "", "info": ""})
    
