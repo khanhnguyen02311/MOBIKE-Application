@@ -100,7 +100,7 @@ def initdatabase(index):
         insertimagetype()
     elif index==2:
         insertvehiclesupport()
-        inserttestaccounts()
+        #inserttestaccounts()
     else: 
         return "Index not valid"
     return f"Done {index}"
