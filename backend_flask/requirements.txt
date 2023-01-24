@@ -12,3 +12,5 @@ openpyxl
 gunicorn
 Authlib
 pandas
+eventlet
+redis

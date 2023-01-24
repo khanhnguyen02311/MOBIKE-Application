@@ -216,12 +216,14 @@ def InsertVehicleSupportTable():
     vehicletype_table = pd.read_csv(INITIALDATA + 'VehicleType.csv', index_col=False)
     color_table = pd.read_csv(INITIALDATA + 'Color.csv', index_col=False)
     vehiclecondition_table = pd.read_csv(INITIALDATA + 'VehicleCondition.csv', index_col=False)
+    
     Session = new_Scoped_session()
     try:
         logolist = Session.query(Image).filter(Image.ID_ImageType==2).all()
         for item in logolist:
             Session.delete(item)
         Session.flush()
+        
         for table in [vehiclebrand_table, vehicletype_table, color_table, vehiclecondition_table, vehiclelineup_table]:
             for i, row in table.iterrows():
                 if table is vehiclebrand_table: 

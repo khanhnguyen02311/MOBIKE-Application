@@ -1,4 +1,5 @@
 from marshmallow_sqlalchemy import SQLAlchemySchema as Schema, auto_field
+from marshmallow import fields
 from components import dbmodels as dbm
 
 class AccountSchema(Schema):
@@ -13,8 +14,7 @@ class AccountSchema(Schema):
     ID_Permission = auto_field()
     ID_AccountInfo = auto_field()
     ID_AccountStat = auto_field()
-        
-        
+
 class PermissionSchema(Schema):
     class Meta:
         model = dbm.Permission
@@ -22,20 +22,20 @@ class PermissionSchema(Schema):
 
     ID = auto_field()
     Name = auto_field()
-    
 
 class AccountInfoSchema(Schema):
     class Meta:
         model = dbm.AccountInfo
         load_instance = True
+
         
     ID = auto_field()
     Name = auto_field()
-    Birthdate = auto_field()
+    Birthdate = fields.DateTime(format='%d/%m/%Y')
     Gender = auto_field()
     Phone_number = auto_field()
     Identification_number = auto_field()
-    
+    Time_created = auto_field()
     
 class AddressSchema(Schema):
     class Meta:
