@@ -151,7 +151,7 @@ class Post (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Title = Column(ms.NVARCHAR(128), nullable=False)
     Content = Column(ms.NVARCHAR(2000))
-    Pricetag = Column(ms.BIGINT)
+    Pricetag = Column(ms.BIGINT, nullable=False)
     Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
     
     ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
@@ -224,7 +224,8 @@ class ImageType (Base):
 class PostStatus (Base):
     __tablename__ = 'POSTSTATUS'
     ID = Column(ms.INTEGER, primary_key=True)
-    Status = Column(ms.NVARCHAR(50), nullable=False)
+    Status = Column(ms.TINYINT, nullable=False) # 0: inactive, 1: active
+    Infomation = Column(ms.NVARCHAR(50))
     Time_updated = Column(ms.DATETIME, default=datetime.now(timezone.utc))
 
     ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
@@ -235,9 +236,9 @@ class PostStatus (Base):
 class PostStat (Base):
     __tablename__ = 'POSTSTAT'
     ID = Column(ms.INTEGER, primary_key=True)
-    View_amount = Column(ms.INTEGER, nullable=False)
-    Like_amount = Column(ms.INTEGER, nullable=False)
-    Contact_amount = Column(ms.INTEGER, nullable=False)
+    View_amount = Column(ms.INTEGER, nullable=False, default=0)
+    Like_amount = Column(ms.INTEGER, nullable=False, default=0)
+    Contact_amount = Column(ms.INTEGER, nullable=False, default=0)
     
     ## Post reference
     rel_Post = relationship("Post", back_populates="rel_PostStat", uselist=False)
@@ -289,7 +290,7 @@ class View (Base):
 class VehicleInfo (Base):
     __tablename__ = 'VEHICLEINFO'
     ID = Column(ms.INTEGER, primary_key=True)
-    Vehicle_name = Column(ms.NVARCHAR(128))
+    Vehicle_name = Column(ms.NVARCHAR(128), nullable=False)
     Odometer = Column(ms.INTEGER)
     License_plate = Column(ms.NVARCHAR(10))
     Manufacture_year = Column(ms.MEDIUMINT)

@@ -17,7 +17,7 @@ def protected():
    return jsonify(current_user)#, 200 # ok
 
 
-@bpaccount.route("/getinfo", methods=['GET'])
+@bpaccount.route("/accountinfo/get", methods=['GET'])
 @jwt_required()
 def getinfo():
    current_user = get_jwt_identity()   
@@ -40,7 +40,7 @@ def getinfo():
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
    
 
-@bpaccount.route("/setinfo", methods=['POST', 'PUT'])
+@bpaccount.route("/accountinfo/set", methods=['POST', 'PUT'])
 @jwt_required()
 def changeinfo():
    current_user = get_jwt_identity()
@@ -70,7 +70,7 @@ def changeinfo():
       return jsonify({"msg": "Incompleted", "error": str(e)})
    
 
-@bpaccount.route("/getaddress", methods = ['GET'])
+@bpaccount.route("/address/get", methods = ['GET'])
 @jwt_required()
 def getaddress():
    current_user = get_jwt_identity()   
@@ -95,7 +95,7 @@ def getaddress():
       return jsonify({"msg": "Incompleted", "error": str(e)})
    
 
-@bpaccount.route("/addaddress", methods = ['POST'])
+@bpaccount.route("/address/new", methods = ['POST'])
 @jwt_required()
 def addaddress():
    current_user = get_jwt_identity()   
@@ -110,11 +110,11 @@ def addaddress():
          Session.close()
          return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
       new_address = dbm.Address(
-         Detail_address=info['detail'], 
-         ID_AccountInfo=acc.ID_AccountInfo, 
-         ID_City=info['city'], 
-         ID_District=info['district'], 
-         ID_Ward=info['ward'])
+         Detail_address = info['detail'], 
+         ID_AccountInfo = acc.ID_AccountInfo, 
+         ID_City = info['city'], 
+         ID_District = info['district'], 
+         ID_Ward = info['ward'])
       Session.add(new_address)
       Session.commit()
       return jsonify({"msg": "Completed", "error": "", "info": schema.dump(new_address)})
@@ -123,7 +123,7 @@ def addaddress():
       return jsonify({"msg": "Incompleted", "error": str(e)})
    
 
-@bpaccount.route("/deladdress/<int:id>", methods = ['DELETE'])
+@bpaccount.route("/address/del/<int:id>", methods = ['DELETE'])
 @jwt_required()
 def deladdress(id):
    current_user = get_jwt_identity()   

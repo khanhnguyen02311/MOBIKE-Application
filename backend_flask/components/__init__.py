@@ -3,7 +3,7 @@ from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager, get_jwt, get_jwt_identity, create_access_token
 from .blueprints.testing import image, gets, admin
 from .blueprints.authentication import signup, signin, signout
-from .blueprints.personal import account
+from .blueprints.personal import account, post
 from .config import FlaskConfig as fcfg
 from .security import oauth, blocklistJWT
 
@@ -34,10 +34,11 @@ def create_app():
     App.register_blueprint(gets.bpget, url_prefix='/gets')
     App.register_blueprint(admin.bpadmin, url_prefix='/admin')
     
-    App.register_blueprint(signup.bpsignup, url_prefix='/auth')
-    App.register_blueprint(signin.bpsignin, url_prefix='/auth')
-    App.register_blueprint(signout.bpsignout, url_prefix='/auth')
+    App.register_blueprint(signup.bpsignup, url_prefix='/authentication')
+    App.register_blueprint(signin.bpsignin, url_prefix='/authentication')
+    App.register_blueprint(signout.bpsignout, url_prefix='/authentication')
     
     App.register_blueprint(account.bpaccount, url_prefix='/personal')
+    App.register_blueprint(post.bppost, url_prefix='/personal')
     
     return App
