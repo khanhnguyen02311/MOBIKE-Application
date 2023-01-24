@@ -46,6 +46,4 @@ def create_app():
     App.register_blueprint(account.bpaccount, url_prefix='/personal')
     App.register_blueprint(post.bppost, url_prefix='/personal')
     
-    App.register_blueprint(vehicle.bpvehicle, url_prefix='/utils')
-    
     return App
