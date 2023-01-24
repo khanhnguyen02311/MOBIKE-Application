@@ -39,6 +39,6 @@ def create_app():
     App.register_blueprint(signout.bpsignout, url_prefix='/auth')
     
     App.register_blueprint(account.bpaccount, url_prefix='/personal')
-    App.register_blueprint(post.bppost, url_prefix='/personal/post')
+    App.register_blueprint(post.bppost, url_prefix='/personal')
     
     return App
