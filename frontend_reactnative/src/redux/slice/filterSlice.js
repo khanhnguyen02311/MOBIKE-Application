@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   name: '',
@@ -13,6 +13,7 @@ const initialState = {
     min: 0,
     max: 0,
   },
+  manufacturer: []
 };
 
 const filterSlice = createSlice({
@@ -40,6 +41,22 @@ const filterSlice = createSlice({
       state.minMaxText.min = action.payload.min;
       state.minMaxText.max = action.payload.max;
     },
+    setManufacturer: (state, action) => {
+      let flag = false;
+      let temp = action.payload.manufacturer;
+      for (let i = 0; i <= state.manufacturer.length - 1; i++) {
+        if (state.manufacturer[i].id === temp.id) {
+          if (temp.value.length === 0) state.manufacturer.splice(i, 1);
+          else {
+            state.manufacturer[i].value = temp.value;
+            flag = true;
+          }
+          break;
+        }
+      }
+      if (!flag)
+        state.manufacturer.push(temp);
+    },
 
     setInitial: () => {
       return initialState;
@@ -53,6 +70,7 @@ export const {
   setVehicleTypesRemove,
   setPriceRange,
   setMinMaxText,
+  setManufacturer,
   setInitial,
 } = filterSlice.actions;
 export default filterSlice.reducer;

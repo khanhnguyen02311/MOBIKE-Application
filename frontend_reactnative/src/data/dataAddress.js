@@ -268,6 +268,1041 @@ const dataAddress = [
       },
     ],
   },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Bắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'Cắc Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: 'D Giang',
+    value: [
+      {
+        id: 1,
+        name: 'Huyện Hiệp Hòa',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Thắng',
+          },
+
+          {
+            id: 2,
+
+            name: 'Xã Bắc Lý',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Châu Minh',
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Huyện Lạng Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Thị Trấn Kép',
+          },
+
+          {
+            id: 2,
+
+            name: 'Thị Trấn Vôi',
+          },
+
+          {
+            id: 3,
+            name: 'Xã An Hà',
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Thành phố Bắc Giang',
+        value: [
+          {
+            id: 1,
+            name: 'Phường Đa Mai',
+          },
+
+          {
+            id: 2,
+
+            name: 'Phường Dĩnh Kế',
+          },
+
+          {
+            id: 3,
+            name: 'Xã Dĩnh Trì',
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export default dataAddress;

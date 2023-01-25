@@ -27,6 +27,7 @@ import RangeSlider from '../../common/rangeSlider';
 import {useDispatch, useSelector} from 'react-redux';
 import {setName, setPriceRange} from '../../../redux/slice/filterSlice';
 import FilterPropFrameComponent from '../FilterPropFrame';
+import colors from '../../../assets/theme/colors';
 
 UIManager.setLayoutAnimationEnabledExperimental(true);
 const FilterPropNameComponent = () => {
@@ -59,7 +60,7 @@ const FilterPropNameComponent = () => {
             bigContainerStyle={{flex: 1, marginStart: 15, marginBottom: 0}}
             containerStyle={{
               height: 44,
-              borderColor: '#305080',
+              borderColor: '#555',
               marginStart: 5,
               marginEnd: 20,
             }}
