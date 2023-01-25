@@ -80,7 +80,7 @@ def upload(imageTypeID: int):
 
         file.save(os.path.join(getSaveLocation(imageTypeID), str(new_image.ID) + '.' + ext))
         
-        return jsonify({"File uploaded successfully", new_image.ID}), 200
+        return jsonify({"msg": "File uploaded successfully","id": new_image.ID}), 200
     except Exception as e:
         Session.rollback()
 
