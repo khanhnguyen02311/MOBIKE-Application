@@ -84,7 +84,7 @@ def upload(imageTypeID: int):
     except Exception as e:
         Session.rollback()
 
-        return f"Image save error: '{e}'", -1
+        return f"Image save error: '{e}'"
     
     
     
