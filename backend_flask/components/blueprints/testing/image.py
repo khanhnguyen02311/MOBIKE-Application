@@ -84,12 +84,18 @@ def upload(imageTypeID: int):
 @bpimage.route('/get/<id>', methods = ['GET'])
 def get(id):
     id = int(id)
-    Session = new_Scoped_session()
-    image = Session.query(dbm.Image).filter(dbm.Image.ID == id).first()
-    Session.close()
-    
-    if image is None:
-        return jsonify({'msg': 'Image not found'}), 404
-    ext = image.Filename.split('.')[-1]
+    try:
+        Session = new_Scoped_session()
+        image = Session.query(dbm.Image).filter(dbm.Image.ID == id).first()
+        Session.close()
+        
+        if image is None:
+            return jsonify({'msg': 'Image not found'}), 404
+        
+        ext = image.Filename.split('.')[-1]
+        
+        path = getSaveLocation(image.ID_ImageType) + "/" + image.Filename
+        return send_file(path, mimetype = 'image/' + ext)
+    except Exception as e:
+        return jsonify({'msg': 'Incompleted', 'error': str(e)}), 401
 
-    return send_file(getSaveLocation(image.ID_ImageType) + image.Filename, mimetype = 'image/' + ext)
