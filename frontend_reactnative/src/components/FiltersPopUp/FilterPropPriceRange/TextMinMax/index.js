@@ -78,7 +78,7 @@ const TextMinMaxComponent = ({Min, Max, step, sliderWidth}) => {
         bigContainerStyle={{flex: 1, marginStart: 15, marginBottom: 0}}
         containerStyle={{
           height: 44,
-          borderColor: '#305080',
+          borderColor: '#555',
           marginStart: 5,
           marginEnd: 20,
           marginBottom: 10,
@@ -103,7 +103,7 @@ const TextMinMaxComponent = ({Min, Max, step, sliderWidth}) => {
         bigContainerStyle={{flex: 1, marginStart: 15, marginBottom: 0}}
         containerStyle={{
           height: 44,
-          borderColor: '#305080',
+          borderColor: '#555',
           marginStart: 5,
           marginEnd: 20,
         }}

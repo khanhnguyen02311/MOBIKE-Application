@@ -27,6 +27,7 @@ import RangeSlider from '../../common/rangeSlider';
 import {useDispatch, useSelector} from 'react-redux';
 import {setName, setPriceRange} from '../../../redux/slice/filterSlice';
 import FilterPropFrameComponent from '../FilterPropFrame';
+import colors from '../../../assets/theme/colors';
 
 UIManager.setLayoutAnimationEnabledExperimental(true);
 const FilterPropNameComponent = () => {
@@ -46,7 +47,6 @@ const FilterPropNameComponent = () => {
 
   return (
     <FilterPropFrameComponent type={'Name'} onToggle={onToggle} show={show}>
-      {show && (
         <Animated.View
           entering={SlideInLeft.duration(300).delay(100)}
           layout={Layout.stiffness(100).damping(10).duration(durationLayout)}>
@@ -60,7 +60,7 @@ const FilterPropNameComponent = () => {
             bigContainerStyle={{flex: 1, marginStart: 15, marginBottom: 0}}
             containerStyle={{
               height: 44,
-              borderColor: '#305080',
+              borderColor: '#555',
               marginStart: 5,
               marginEnd: 20,
             }}
@@ -74,7 +74,6 @@ const FilterPropNameComponent = () => {
             value={name}
           />
         </Animated.View>
-      )}
     </FilterPropFrameComponent>
   );
 };

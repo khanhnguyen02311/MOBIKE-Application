@@ -1,6 +1,6 @@
-import {View, Text, TouchableWithoutFeedback} from 'react-native';
-import Animated, {Easing, EasingNode, Layout} from 'react-native-reanimated';
-import React, {useEffect, useRef, useState} from 'react';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
+import Animated, { Easing, EasingNode, Layout } from 'react-native-reanimated';
+import React, { useEffect, useRef, useState } from 'react';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import TextInputOutline from '../../common/textInputOutline-Kohana';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -12,7 +12,6 @@ const FilterPropFrameComponent = ({
   type,
   show,
   animate = true,
-  onNavigate,
 }) => {
   const rotateAnim = useRef(new Animated.Value(0)).current;
   const durationLayout = 300;
@@ -51,28 +50,17 @@ const FilterPropFrameComponent = ({
           }}>
           {type}
         </Animated.Text>
-        <TouchableWithoutFeedback onPress={animate ? toggle : onNavigate}>
-          {animate ? (
-            <Animated.View
-              layout={Layout.stiffness(100)
-                .damping(10)
-                .duration(durationLayout)}
-              style={{marginEnd: 25, transform: [{rotateZ: rotate}]}}>
-              <SimpleLineIcon name="arrow-down" size={15} color={'black'} />
-            </Animated.View>
-          ) : (
-            <View
-              style={{
-                marginEnd: 25,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <SimpleLineIcon name="arrow-right" size={15} color={'black'} />
-            </View>
-          )}
+        <TouchableWithoutFeedback onPress={toggle}>
+          <Animated.View
+            layout={Layout.stiffness(100)
+              .damping(10)
+              .duration(durationLayout)}
+            style={{ marginEnd: 25, transform: [{ rotateZ: rotate }] }}>
+            <SimpleLineIcon name="arrow-down" size={15} color={'black'} />
+          </Animated.View>
         </TouchableWithoutFeedback>
       </View>
-      {children}
+      {show && children}
       <Animated.View
         layout={Layout.stiffness(100).damping(10).duration(durationLayout)}
         style={{

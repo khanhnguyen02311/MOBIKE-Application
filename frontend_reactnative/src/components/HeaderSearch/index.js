@@ -30,7 +30,7 @@ const HeaderSearch = () => {
         inputPadding={6}
         borderWidthtoTop={0}
         bigContainerStyle={{flex: 1, marginStart: 15, marginBottom: 0}}
-        containerStyle={{height: 44, borderColor: '#305080'}}
+        containerStyle={{height: 44, borderColor: '#555'}}
         labelStyle={{fontSize: 12}}
         inputStyle={{fontSize: 14}}
         labelContainerStyle={{padding: 13}}
