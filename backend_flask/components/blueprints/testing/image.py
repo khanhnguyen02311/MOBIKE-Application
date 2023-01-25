@@ -64,7 +64,7 @@ def upload(imageTypeID: int):
     if ext not in ['jpg', 'jpeg', 'png']:
         return "File extension not supported", -1
     
-    Session = new_Session()
+    Session = new_Scoped_session()
     try:
         new_image = dbm.Image(Filename = "blabla", ID_ImageType=imageTypeID)
         Session.add(new_image)
