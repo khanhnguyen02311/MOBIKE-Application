@@ -66,7 +66,7 @@ def upload(imageTypeID: int):
     if ext not in ['jpg', 'jpeg', 'png']:
         return "File extension not supported", -1
     
-    Session = new_Scoped_session()
+    Session = new_Session()
     try:
         new_image = dbm.Image(Filename = "blabla", ID_ImageType=imageTypeID)
         Session.add(new_image)
@@ -77,7 +77,7 @@ def upload(imageTypeID: int):
         file.save(os.path.join(getSaveLocation(imageTypeID), str(new_image.ID) + '.' + ext))
         
         Session.close()
-        return "File uploaded successfully", new_image.ID
+        return jsonify("File uploaded successfully", new_image.ID), 200
     except Exception as e:
         Session.rollback()
         return f"Image save error: '{e}'", -1
