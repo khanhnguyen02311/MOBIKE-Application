@@ -75,6 +75,7 @@ def upload(imageTypeID: int):
             new_image = dbm.Image(Filename = "blabla", ID_ImageType=imageTypeID)
             Session.add(new_image)
             Session.flush()
+            Session.refresh(new_image)
             new_image.FileName = str(new_image.ID) + '.' + ext
             Session.commit()
 
