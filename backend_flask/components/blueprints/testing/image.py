@@ -52,22 +52,26 @@ def saveImage(file, imageTypeID:int = 1):
         
 @bpimage.route('/upload/<imageTypeID>', methods = ['POST'])
 def upload(imageTypeID: int):
-    if 'file' not in request.files:
-        return jsonify({'msg': 'No file part'}), 400
-    file = request.files['file']
 
-    imageTypeID = int(imageTypeID)
-
-    if not (imageTypeID >= 1 and imageTypeID <= 4):
-        return "Image type not exists", -1
-    if file.filename == "":
-        return "No file selected", -1
-    ext = file.filename.split('.')[-1]
-    if ext not in ['jpg', 'jpeg', 'png']:
-        return "File extension not supported", -1
-    
-    Session = new_Session()
+    Session = new_Scoped_session()
     try:
+        if 'file' not in request.files:
+            return jsonify({'msg': 'No file part'}), 400
+        file = request.files['file']
+
+        imageTypeID = int(imageTypeID)
+
+        if not (imageTypeID >= 1 and imageTypeID <= 4):
+            return "Image type not exists", -1
+
+        if file.filename == "":
+            return "No file selected", -1
+        
+        ext = file.filename.split('.')[-1]
+        
+        if ext not in ['jpg', 'jpeg', 'png']:
+            return "File extension not supported", -1
+
         new_image = dbm.Image(Filename = "blabla", ID_ImageType=imageTypeID)
         Session.add(new_image)
         Session.flush()
@@ -76,10 +80,10 @@ def upload(imageTypeID: int):
 
         file.save(os.path.join(getSaveLocation(imageTypeID), str(new_image.ID) + '.' + ext))
         
-        Session.close()
-        return jsonify("File uploaded successfully", new_image.ID), 200
+        return jsonify({"File uploaded successfully", new_image.ID}), 200
     except Exception as e:
         Session.rollback()
+
         return f"Image save error: '{e}'", -1
     
     
