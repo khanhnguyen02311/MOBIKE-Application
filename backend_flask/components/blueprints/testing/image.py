@@ -53,38 +53,37 @@ def saveImage(file, imageTypeID:int = 1):
 @bpimage.route('/upload/<imageTypeID>', methods = ['POST'])
 def upload(imageTypeID: int):
 
-    Session = new_Session()
-    try:
-        if 'file' not in request.files:
-            return jsonify({'msg': 'No file part'}), 400
-        file = request.files['file']
+    with new_Session() as Session:
+        try:
+            if 'file' not in request.files:
+                return jsonify({'msg': 'No file part'}), 400
+            file = request.files['file']
 
-        imageTypeID = int(imageTypeID)
+            imageTypeID = int(imageTypeID)
 
-        if not (imageTypeID >= 1 and imageTypeID <= 4):
-            return "Image type not exists", -1
+            if not (imageTypeID >= 1 and imageTypeID <= 4):
+                return "Image type not exists", -1
 
-        if file.filename == "":
-            return "No file selected", -1
-        
-        ext = file.filename.split('.')[-1]
-        
-        if ext not in ['jpg', 'jpeg', 'png']:
-            return "File extension not supported", -1
+            if file.filename == "":
+                return "No file selected", -1
+            
+            ext = file.filename.split('.')[-1]
+            
+            if ext not in ['jpg', 'jpeg', 'png']:
+                return "File extension not supported", -1
 
-        new_image = dbm.Image(Filename = "blabla", ID_ImageType=imageTypeID)
-        Session.add(new_image)
-        Session.flush()
-        new_image.FileName = str(new_image.ID) + '.' + ext
-        Session.commit()
+            new_image = dbm.Image(Filename = "blabla", ID_ImageType=imageTypeID)
+            Session.add(new_image)
+            Session.flush()
+            new_image.FileName = str(new_image.ID) + '.' + ext
+            Session.commit()
 
-        file.save(os.path.join(getSaveLocation(imageTypeID), str(new_image.ID) + '.' + ext))
-        
-        return jsonify({"msg": "File uploaded successfully","id": new_image.ID}), 200
-    except Exception as e:
-        Session.rollback()
-
-        return f"Image save error: '{e}'"
+            file.save(os.path.join(getSaveLocation(imageTypeID), str(new_image.ID) + '.' + ext))
+            
+            return jsonify({"msg": "File uploaded successfully","id": new_image.ID}), 200
+        except Exception as e:
+            Session.rollback()
+            return f"Image save error: '{e}'"
     
     
     
