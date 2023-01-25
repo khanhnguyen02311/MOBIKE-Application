@@ -35,7 +35,7 @@ def saveImage(file, imageTypeID:int = 1):
         return "File extension not supported", -1
     Session = new_Scoped_session()
     try:
-        new_image = dbm.Image(Filename = "", ID_ImageType=imageTypeID)
+        new_image = dbm.Image(Filename = "blabla", ID_ImageType=imageTypeID)
         Session.add(new_image)
         Session.flush()
         new_image.FileName = str(new_image.ID) + '.' + ext
