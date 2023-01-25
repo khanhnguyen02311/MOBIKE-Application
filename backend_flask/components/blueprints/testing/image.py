@@ -1,7 +1,7 @@
 import os
 from flask import Flask, Blueprint, jsonify, request, send_file
 import flask_jwt_extended as jwte
-from components.dbsettings import new_Scoped_session
+from components.dbsettings import new_Scoped_session, new_Session
 from components import dbmodels as dbm, dbschemas as dbs
 from ...config import STORAGE_PATH
 
@@ -54,9 +54,34 @@ def saveImage(file, imageTypeID:int = 1):
 def upload(imageTypeID: int):
     if 'file' not in request.files:
         return jsonify({'msg': 'No file part'}), 400
-    f = request.files['file']
+    file = request.files['file']
 
-    return jsonify(saveImage(f, int(imageTypeID)))
+    if not (imageTypeID >= 1 and imageTypeID <= 4):
+        return "Image type not exists", -1
+    if file.filename == "":
+        return "No file selected", -1
+    ext = file.filename.split('.')[-1]
+    if ext not in ['jpg', 'jpeg', 'png']:
+        return "File extension not supported", -1
+    
+    Session = new_Session()
+    try:
+        new_image = dbm.Image(Filename = "blabla", ID_ImageType=imageTypeID)
+        Session.add(new_image)
+        Session.flush()
+        new_image.FileName = str(new_image.ID) + '.' + ext
+        Session.commit()
+
+        file.save(os.path.join(getSaveLocation(imageTypeID), str(new_image.ID) + '.' + ext))
+        
+        Session.close()
+        return "File uploaded successfully", new_image.ID
+    except Exception as e:
+        Session.rollback()
+        return f"Image save error: '{e}'", -1
+    
+    
+    
     if f.filename == '':
         return jsonify({'msg': 'No selected file'}), 400
     ext = f.filename.split('.')[-1]
