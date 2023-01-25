@@ -50,13 +50,13 @@ def saveImage(file, imageTypeID:int = 1):
         return f"Image save error: '{e}'", -1
         
         
-@bpimage.route('/upload/<ImageTypeID>', methods = ['POST'])
+@bpimage.route('/upload/<imageTypeID>', methods = ['POST'])
 def upload(imageTypeID: int):
     if 'file' not in request.files:
         return jsonify({'msg': 'No file part'}), 400
     f = request.files['file']
 
-    return jsonify(saveImage(f, imageTypeID))
+    return jsonify(saveImage(f, int(imageTypeID)))
     if f.filename == '':
         return jsonify({'msg': 'No selected file'}), 400
     ext = f.filename.split('.')[-1]
