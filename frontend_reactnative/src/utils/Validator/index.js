@@ -1,4 +1,4 @@
-export const validateDate = (value: str) : boolean {
+export const validateDate = (value: str) : boolean => {
     const pattern = /^\d{2}\/\d{2}\/\d{4}$/;
     if (!pattern.test(value)) {
         return false;
