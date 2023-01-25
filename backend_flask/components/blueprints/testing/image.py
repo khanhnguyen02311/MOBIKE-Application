@@ -74,7 +74,7 @@ def upload(imageTypeID: int):
         new_image = dbm.Image(Filename = "blabla", ID_ImageType=imageTypeID)
         Session.add(new_image)
         Session.flush()
-        Session.query(dbm.Image).filter(new_image.ID).update({dbm.Image.FileName: str(new_image.ID) + '.' + ext})
+        Session.query(dbm.Image).filter(dbm.Image.ID == new_image.ID).update({dbm.Image.FileName: str(new_image.ID) + '.' + ext})
         Session.commit()
 
         file.save(os.path.join(getSaveLocation(imageTypeID), str(new_image.ID) + '.' + ext))
