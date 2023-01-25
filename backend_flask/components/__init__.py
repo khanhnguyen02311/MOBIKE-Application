@@ -13,6 +13,7 @@ def create_app():
     jwt = JWTManager(App)
     oauth.init_app(App)
 
+    App.static_folder = 'web/test/build'
     # @App.after_request
     # def after_request_callback(response):
     #     Session.remove()
@@ -20,6 +21,7 @@ def create_app():
     @App.route("/")
     def hello():
         return "<h1>Test running state.</h1>"
+    
     
     # Callback function to check if a JWT exists in the redis blocklist
     @jwt.token_in_blocklist_loader
