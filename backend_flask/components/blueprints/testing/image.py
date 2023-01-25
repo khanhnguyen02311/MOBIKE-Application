@@ -71,10 +71,10 @@ def upload(imageTypeID: int):
         if ext not in ['jpg', 'jpeg', 'png']:
             return "File extension not supported", -1
 
-        new_image = dbm.Image(Filename = "blabla", ID_ImageType=imageTypeID)
+        new_image = dbm.Image(Filename = "", ID_ImageType=imageTypeID)
         Session.add(new_image)
         Session.flush()
-        Session.query(dbm.Image).filter(dbm.Image.ID == new_image.ID).update({dbm.Image.FileName: str(new_image.ID) + '.' + ext})
+        new_image.Filename = str(new_image.ID) + '.' + ext
         Session.commit()
 
         file.save(os.path.join(getSaveLocation(imageTypeID), str(new_image.ID) + '.' + ext))
