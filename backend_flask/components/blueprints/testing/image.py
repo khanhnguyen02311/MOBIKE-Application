@@ -53,7 +53,7 @@ def saveImage(file, imageTypeID:int = 1):
 @bpimage.route('/upload/<imageTypeID>', methods = ['POST'])
 def upload(imageTypeID: int):
 
-    Session = new_Scoped_session()
+    Session = new_Session()
     try:
         if 'file' not in request.files:
             return jsonify({'msg': 'No file part'}), 400
