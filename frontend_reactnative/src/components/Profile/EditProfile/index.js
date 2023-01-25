@@ -1,4 +1,4 @@
-import {Gesture} from 'react-native-gesture-handler';
+import { Gesture } from 'react-native-gesture-handler';
 import {
   View,
   Text,
@@ -9,7 +9,8 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import React, {useRef, useState, useEffect} from 'react';
+import { Button } from 'react-native-paper';
+import React, { useRef, useState, useEffect } from 'react';
 import Container from '../../common/container';
 import TextInputOutline from '../../common/textInputOutline-Kohana';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -23,17 +24,18 @@ import Store from '../../../redux/store';
 import { getPersonalInfo } from '../../../backendAPI';
 import AddPost from './../../../screens/AddPost/index';
 import { useSelector } from 'react-redux';
-
+import { setBirthdate, setName, setIdentification_number, setPhone_number } from '../../../redux/clientDatabase/personalInfo';
 
 const heightScreen = Dimensions.get('window').height;
-const EditProfileComponent = () => {
-  const addressTree = Store.getState().locations.Tree
 
-  //set up form
-  const [locationData, setLocationData] = useState({
-    AddressTree: undefined,
-    Locations: undefined,
-  })
+const EditProfileComponent = () => {
+
+  const addressTree = Store.getState().locations.Tree
+  const locations = {
+    Cities: Store.getState().locations.Cities,
+    Districts: Store.getState().locations.Districts,
+    Wards: Store.getState().locations.Wards,
+  }
 
   const [personalInfoData, setPersonalInfoData] = useState({
     Birthdate: undefined,
@@ -62,32 +64,48 @@ const EditProfileComponent = () => {
   });
 
   const [errors, setErrors] = useState();
-  onChange = ({name, value}) => {
-    setForm({...form, [name]: value});
+  onChange = ({ name, value }) => {
+    setForm({ ...form, [name]: value });
   };
 
   //set up date picker
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const Locations = Store.getState().locations;
-    console.log("Hello")
-    setLocationData({
-      AddressTree: Locations.Tree,
-      Locations: {
-        City: Locations.City,
-        District: Locations.District,
-        Ward: Locations.Ward,
-      },
-    })
     setPersonalInfoData(Store.getState().personalInfo)
-    setForm({
-      ...form,
-      birthday: personalInfoData.Birthdate || '',
-
-    }
-    )
   }, [])
+
+  useEffect(() => {
+    console.log("Setting personal Info Data: " + JSON.stringify(personalInfoData))
+    if (!personalInfoData) return;
+    try {
+      let address = personalInfoData.Addresses["0"]
+      setForm({
+        ...form,
+        name: personalInfoData.Name || "",
+        phone_number: personalInfoData.Phone_number || "",
+        identification_number: personalInfoData.Identification_number || "",
+        birthday: personalInfoData.Birthdate || "",
+        IDAddress: {
+          City: address.ID_City,
+          District: address.ID_District,
+          Ward: address.ID_Ward,
+        },
+        address: {
+          City: cityNameFromID(address.ID_City),
+          District: districtNameFromID(address.ID_District),
+          Ward: wardNameFromID(address.ID_Ward),
+        }
+      })
+    } catch (error) {
+      console.log("Edit Profile error: " + error)
+    }
+    console.log("Update personal data successfully!")
+  }, [personalInfoData])
+
+  useEffect(() => {
+    console.log("Form: " + JSON.stringify(form))
+  }, [form])
 
   const onDateChange = (event, selectedDate) => {
     let currentDate;
@@ -102,7 +120,7 @@ const EditProfileComponent = () => {
       currentDate = form.birthday;
     }
     setShow(false);
-    setForm({...form, birthday: currentDate});
+    setForm({ ...form, birthday: currentDate });
   };
   const showDatePicker = () => {
     setShow(true);
@@ -127,33 +145,42 @@ const EditProfileComponent = () => {
   );
 
   const cityNameFromID = (ID) => {
-    return locationData.Locations.Cities.find(city => city.ID === ID).Name
+    let city = locations.Cities.find(city => city.ID === ID)
+    if (city) return city.Name
+    else return "cne"
   }
 
   const districtNameFromID = (ID) => {
-    return locationData.Locations.Districts.find(district => district.ID === ID).Name
+    let district = locations.Districts.find(district => district.ID === ID)
+    if (district) return district.Name
+    else return "dne"
   }
 
   const wardNameFromID = (ID) => {
-    return locationData.Locations.Wards.find(ward => ward.ID === ID).Name
+    let ward = locations.Wards.find(ward => ward.ID === ID)
+    if (ward) return ward.Name
+    else return "wne"
   }
 
   const setAddress = (cityID, districtID, wardID) => {
-    setForm({...form, IDAddress: {
-      City: cityID,
-      District: districtID,
-      Ward: wardID,
-    }, address: {
-      City: cityNameFromID(cityID),
-      District: districtNameFromID(districtID),
-      Ward: wardNameFromID(wardID),
-    }});
+    setForm({
+        ...form,
+        IDAddress: {
+        City: cityID,
+        District: districtID,
+        Ward: wardID,
+      }, address: {
+        City: cityNameFromID(cityID),
+        District: districtNameFromID(districtID),
+        Ward: wardNameFromID(wardID),
+      }
+    });
   }
 
   const _renderContent = () => {
     return (
       <AddressBottomSheetContent
-        data={Store.getState().locations.Tree}
+        data={addressTree}
         onCloseBottomSheet={() => changeBottomSheetVisibility(false)}
         onSetAddress={value => {
           setAddress(value.City, value.District, value.Ward);
@@ -164,14 +191,26 @@ const EditProfileComponent = () => {
   }
 
   const setName = (value) => {
+    setForm({ ...form, name: value })
+  }
+
+  const setPhoneNumber = (value) => {
+    setForm({ ...form, phone_number: value })
+  }
+
+  const setIdentificationNumber = (value) => {
+    setForm({ ...form, identification_number: value })
+  }
+
+  const Save = () => {
 
   }
 
   return (
     <Container
       keyboardShouldPersistTaps={'never'}
-      styleScrollView={{backgroundColor: '#fff'}}
-      styleWrapper={{height: heightScreen}}>
+      styleScrollView={{ backgroundColor: '#fff' }}
+      styleWrapper={{ height: heightScreen }}>
       <Animated.View
         style={{
           paddingHorizontal: 20,
@@ -186,8 +225,9 @@ const EditProfileComponent = () => {
           iconColor={'#90B4D3'}
           inputPadding={5}
           borderWidthtoTop={0}
+          value={form.name}
           onChangeText={value => {
-            onChange({name: 'name', value});
+            onChange({ name: 'name', value });
           }}
         />
         <TextInputOutline
@@ -197,8 +237,9 @@ const EditProfileComponent = () => {
           iconColor={'#90B4D3'}
           inputPadding={5}
           borderWidthtoTop={0}
+          value={form.phone_number}
           onChangeText={value => {
-            onChange({name: 'phone number', value});
+            onChange({ name: 'phone number', value });
           }}
         />
         <TextInputOutline
@@ -208,8 +249,9 @@ const EditProfileComponent = () => {
           iconColor={'#90B4D3'}
           inputPadding={5}
           borderWidthtoTop={0}
+          value={form.identification_number}
           onChangeText={value => {
-            onChange({name: 'identification number', value});
+            onChange({ name: 'identification number', value });
           }}
         />
         <TextInputOutline
@@ -238,22 +280,32 @@ const EditProfileComponent = () => {
             form.address.City === ''
               ? ''
               : form.address.Ward +
-                ', ' +
-                form.address.District +
-                ', ' +
-                form.address.City
+              ', ' +
+              form.address.District +
+              ', ' +
+              form.address.City
           }
         />
+
+      <Button
+        mode="contained"
+        onPress={() => {
+          console.log(form);
+        }}
+      >
+        <Text>Save</Text>
+      </Button>
+
         {show && (
           <DateTimePicker
             testID="datetimePicker"
             value={
               form.birthday !== ''
                 ? new Date(
-                    form.birthday.split('/')[2],
-                    parseInt(form.birthday.split('/')[1]) - 1,
-                    form.birthday.split('/')[0],
-                  )
+                  form.birthday.split('/')[2],
+                  parseInt(form.birthday.split('/')[1]) - 1,
+                  form.birthday.split('/')[0],
+                )
                 : new Date(Date.now())
             }
             mode={'date'}
@@ -275,6 +327,9 @@ const EditProfileComponent = () => {
         renderHeader={_renderHeader}
         renderContent={_renderContent}
       />
+
+
+
     </Container>
   );
 };
@@ -285,7 +340,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#fff',
     shadowColor: '#333333',
-    shadowOffset: {width: -1, height: -3},
+    shadowOffset: { width: -1, height: -3 },
     shadowRadius: 2,
     shadowOpacity: 0.4,
     paddingTop: 20,

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { State } from 'react-native-gesture-handler';
+import { validateDate, validateVnId, validateVnPhone } from '../../utils/Validator';
 
 const initialState = {
     Birthdate: undefined,
@@ -15,19 +16,25 @@ export const personalInfoSlice = createSlice({
     initialState,
     reducers: {
         setBirthdate: (state, action) => {
-            state.Birthdate = action.payload;
+            if (validateDate(action.payload)) {
+                state.Birthdate = action.payload;
+            }
         },
         setGender: (state, action) => {
             state.Gender = action.payload;
         },
-        setIndentification_number: (state, action) => {
-            state.Indentification_number = action.payload;
+        setIdentification_number: (state, action) => {
+            if (validateVnId(action.payload)) {
+                state.Identification_number = action.payload;
+            }
         },
         setName: (state, action) => {
             state.Name = action.payload;
         },
         setPhone_number: (state, action) => {
-            state.Phone_number = action.payload;
+            if (validateVnPhone(action.payload)) {
+                state.Phone_number = action.payload;
+            }
         },
         setAddress: (state, action) => {
             state.Address = action.payload;
@@ -36,10 +43,11 @@ export const personalInfoSlice = createSlice({
             try {
                 state.Birthdate = action.payload.Birthdate || undefined;
                 state.Gender = action.payload.Gender || undefined;
-                state.Indentification_number = action.payload.Indentification_number || undefined;
+                state.Identification_number = action.payload.Identification_number || undefined;
                 state.Name = action.payload.Name || undefined;
                 state.Phone_number = action.payload.Phone_number || undefined;
                 state.Addresses = action.payload.Addresses || undefined;
+                console.log("Set all personal info successfully: " + JSON.stringify(state))
             } catch (error) {
                 console.log("Error: " + error);
             }
@@ -49,4 +57,4 @@ export const personalInfoSlice = createSlice({
 
 export default personalInfoSlice.reducer;
 
-export const { setBirthdate, setGender, setIndentification_number, setName, setPhone_number, setAddress, setAll } = personalInfoSlice.actions;
+export const { setBirthdate, setGender, setIdentification_number0, setName, setPhone_number, setAddress, setAll } = personalInfoSlice.actions;
