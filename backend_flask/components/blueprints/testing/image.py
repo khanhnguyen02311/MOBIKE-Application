@@ -56,6 +56,8 @@ def upload(imageTypeID: int):
         return jsonify({'msg': 'No file part'}), 400
     file = request.files['file']
 
+    imageTypeID = int(imageTypeID)
+
     if not (imageTypeID >= 1 and imageTypeID <= 4):
         return "Image type not exists", -1
     if file.filename == "":
