@@ -383,7 +383,7 @@ const EditProfileComponent = () => {
               <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true); setSelectedImage('avatar') }}>
                 <Text style={{ alignSelf: 'center', color: colors.primary, fontWeight: '500', marginTop: 5 }}>Change avatar</Text>
               </TouchableWithoutFeedback>
-              <View style={{ marginTop: 20 }}>
+              <View style={{ marginTop: 10 }}>
 
                 {/*Name*/}
                 <View>
