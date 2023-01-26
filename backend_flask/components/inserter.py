@@ -178,13 +178,13 @@ def SaveImageFromURL(Session, url, image_type):
         elif image_type == 2: folder = 'logo/'
         elif image_type == 3: folder = 'user/'
         elif image_type == 4: folder = 'identity/'
-        open(STORAGE_PATH + folder + filename, "wb").write(r.content)
         image = Image(Filename=filename, ID_ImageType=image_type)
         Session.add(image)
         Session.flush()
         ext = image.Filename.split('.')[-1]
         image.Filename = str(image.ID) + '.' + ext
         Session.flush()
+        open(STORAGE_PATH + folder + image.Filename, "wb").write(r.content)
         return [True, image.ID]
     return [False]
 
