@@ -93,7 +93,7 @@ class VehicleBrandSchema(Schema):
     
 class VehicleLineupSchema(Schema):
     class Meta:
-        model = dbm.VehicleType
+        model = dbm.VehicleLineup
         load_instance = True
         
     ID = auto_field()
