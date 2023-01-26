@@ -17,9 +17,9 @@ def getSaveLocation(imageTypeID:int = 1):
     if imageTypeID == 1:
         imageTypeFolder = 'post'
     elif imageTypeID == 2:
-        imageTypeFolder = 'user'
-    elif imageTypeID == 3:
         imageTypeFolder = 'logo'
+    elif imageTypeID == 3:
+        imageTypeFolder = 'user'
     elif imageTypeID == 4:
         imageTypeFolder = 'identity'
     
