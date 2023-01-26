@@ -12,6 +12,8 @@ const FilterPropFrameComponent = ({
   type,
   show,
   animate = true,
+  divider = true,
+  styleLabel,
 }) => {
   const rotateAnim = useRef(new Animated.Value(0)).current;
   const durationLayout = 300;
@@ -41,7 +43,7 @@ const FilterPropFrameComponent = ({
         }}>
         <Animated.Text
           layout={Layout.stiffness(100).damping(10).duration(durationLayout)}
-          style={{
+          style={styleLabel ? styleLabel : {
             marginStart: 25,
             color: 'black',
             fontSize: 16,
@@ -61,7 +63,7 @@ const FilterPropFrameComponent = ({
         </TouchableWithoutFeedback>
       </View>
       {show && children}
-      <Animated.View
+      {divider && <Animated.View
         layout={Layout.stiffness(100).damping(10).duration(durationLayout)}
         style={{
           backgroundColor: '#A9A9A9',
@@ -69,7 +71,7 @@ const FilterPropFrameComponent = ({
           marginStart: 25,
           marginTop: show ? 10 : 6,
         }}
-      />
+      />}
     </Animated.View>
   );
 };
