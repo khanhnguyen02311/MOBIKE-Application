@@ -152,6 +152,93 @@ def getwards(fid):
             Session.rollback()
             return jsonify({"error": str(e)})
 
+@bpget.route('/count/vehiclebrands', methods = ['GET'])
+def countvehiclebrands():
+    with new_Session() as Session:
+        try:
+            count = Session.query(VehicleBrand).count()
+            return jsonify(count)
+        except Exception as e:
+            Session.rollback()
+            return jsonify({"error": str(e)})
+        
+@bpget.route('/vehiclebrands/<fid>', methods = ['GET'])
+def getvehiclebrands(fid):
+    with new_Session() as Session:
+        try:
+            firstID = int(fid)
+            schema = VehicleBrandSchema(many=True)
+            vehiclebrands = Session.query(VehicleBrand).where(VehicleBrand.ID >= firstID).limit(STEP)
+            return jsonify(schema.dump(vehiclebrands))
+        except Exception as e:
+            Session.rollback()
+            return jsonify({"error": str(e)})
+        
+@bpget.route('/count/vehiclelineups', methods = ['GET'])
+def countvehiclelineups():
+    with new_Session() as Session:
+        try:
+            count = Session.query(VehicleLineup).count()
+            return jsonify(count)
+        except Exception as e:
+            Session.rollback()
+            return jsonify({"error": str(e)})
+        
+@bpget.route('/vehiclelineups/<fid>', methods = ['GET'])
+def getvehiclelineups(fid):
+    with new_Session() as Session:
+        try:
+            firstID = int(fid)
+            schema = VehicleLineupSchema(many=True)
+            vehiclelineups = Session.query(VehicleLineup).where(VehicleLineup.ID >= firstID).limit(STEP)
+            return jsonify(schema.dump(vehiclelineups))
+        except Exception as e:
+            Session.rollback()
+            return jsonify({"error": str(e)})
+        
+@bpget.route('/vehicletypes', methods = ['GET'])
+def getvehicletypes():
+    with new_Session() as Session:
+        try:
+            schema = VehicleTypeSchema(many=True)
+            vehicletypes = Session.query(VehicleType).all()
+            return jsonify(schema.dump(vehicletypes))
+        except Exception as e:
+            Session.rollback()
+            return jsonify({"error": str(e)})
+        
+@bpget.route('/vehicleconditions', methods = ['GET'])
+def getvehicleconditions():
+    with new_Session() as Session:
+        try:
+            schema = VehicleConditionSchema(many=True)
+            vehicleconditions = Session.query(VehicleCondition).all()
+            return jsonify(schema.dump(vehicleconditions))
+        except Exception as e:
+            Session.rollback()
+            return jsonify({"error": str(e)})
+        
+@bpget.route('/count/colors', methods = ['GET'])
+def countcolors():
+    with new_Session() as Session:
+        try:
+            count = Session.query(Color).count()
+            return jsonify(count)
+        except Exception as e:
+            Session.rollback()
+            return jsonify({"error": str(e)})
+        
+@bpget.route('/colors/<fid>', methods = ['GET'])
+def getcolors(fid):
+    with new_Session() as Session:
+        try:
+            firstID = int(fid)
+            schema = ColorSchema(many=True)
+            colors = Session.query(Color).where(Color.ID >= firstID).limit(STEP)
+            return jsonify(schema.dump(colors))
+        except Exception as e:
+            Session.rollback()
+            return jsonify({"error": str(e)})
 
 @bpget.route('/imagetypes', methods = ['GET'])
 def getimagetypes():

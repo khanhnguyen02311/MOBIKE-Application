@@ -45,10 +45,10 @@ def initversions():
     Session = new_Scoped_session()
     print("Initializing version...")
     TruncateTables({"Version"})
-    Session.add(Version(Name="Locations", Version=1))
-    Session.add(Version(Name="Permissions", Version=1))
-    Session.add(Version(Name="ImageTypes", Version=1))
-    Session.add(Version(Name="VehicleSupport", Version=1))
+    
+    for name in ["Locations", "Permissions", "ImageTypes", "VehicleBrand", "VehicleLineup", "VehicleType", "VehicleCondition", "Color"]:
+        Session.add(Version(Name=name, Version=1))
+
     Session.commit()
     Session.close()
     return jsonify({"msg": "Success"})

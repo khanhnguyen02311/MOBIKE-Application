@@ -66,7 +66,6 @@ class DistrictSchema(Schema):
     Name = auto_field()
     ID_City = auto_field()
 
-
 class CitySchema(Schema):
     class Meta:
         model = dbm.City
@@ -82,6 +81,49 @@ class ImageTypeSchema(Schema):
         
     ID = auto_field()
     Name = auto_field()
+
+class VehicleBrandSchema(Schema):
+    class Meta:
+        model = dbm.VehicleBrand
+        load_instance = True
+        
+    ID = auto_field()
+    Name = auto_field()
+    ID_Image = auto_field()
+    
+class VehicleLineupSchema(Schema):
+    class Meta:
+        model = dbm.VehicleType
+        load_instance = True
+        
+    ID = auto_field()
+    Lineup = auto_field()
+    ID_VehicleBrand = auto_field()
+    
+class VehicleTypeSchema(Schema):
+    class Meta:
+        model = dbm.VehicleType
+        load_instance = True
+        
+    ID = auto_field()
+    Type = auto_field()
+
+class VehicleConditionSchema(Schema):
+    class Meta:
+        model = dbm.VehicleCondition
+        load_instance = True
+        
+    ID = auto_field()
+    Condition = auto_field()
+    
+class ColorSchema(Schema):
+    class Meta:
+        model = dbm.Color
+        load_instance = True
+        
+    ID = auto_field()
+    Name = auto_field()
+    Color_hex = auto_field()
 
 class VersionSchema(Schema):
     class Meta:
