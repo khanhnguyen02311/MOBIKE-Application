@@ -94,13 +94,13 @@ def countcities():
             Session.rollback()
             return jsonify({"error": str(e)})
 
-@bpget.route('/cities/<fid>', methods = ['GET'])
-def getcities(fid):
+@bpget.route('/cities/<start>', methods = ['GET'])
+def getcities(start):
     with new_Session() as Session:
         try:
-            FirstID = int(fid)
+            start = int(start)
             schema = CitySchema(many=True)
-            cities = Session.query(City).offset(fid - 1).limit(STEP)
+            cities = Session.query(City).offset(start - 1).limit(STEP)
             return jsonify(schema.dump(cities))
         except Exception as e:
             Session.rollback()
@@ -116,13 +116,13 @@ def countdistricts():
             Session.rollback()
             return jsonify({"error": str(e)})
 
-@bpget.route('/districts/<fid>', methods = ['GET'])
-def getdistricts(fid):
+@bpget.route('/districts/<start>', methods = ['GET'])
+def getdistricts(start):
     with new_Session() as Session:
         try:
-            FirstID = int(fid)
+            start = int(start)
             schema = DistrictSchema(many=True)
-            districts = Session.query(District).offset(fid - 1).limit(STEP)
+            districts = Session.query(District).offset(start - 1).limit(STEP)
             return jsonify(schema.dump(districts))
         except Exception as e:
             Session.rollback()
@@ -138,13 +138,13 @@ def countwards():
             Session.rollback()
             return jsonify({"error": str(e)})
 
-@bpget.route('/wards/<fid>', methods = ['GET'])
-def getwards(fid):
+@bpget.route('/wards/<start>', methods = ['GET'])
+def getwards(start):
     with new_Session() as Session:
         try:
-            firstID = int(fid)
+            start = int(start)
             schema = WardSchema(many=True)
-            wards = Session.query(Ward).offset(fid - 1).limit(STEP)
+            wards = Session.query(Ward).offset(start - 1).limit(STEP)
             return jsonify(schema.dump(wards))
         except Exception as e:
             Session.rollback()
@@ -160,13 +160,13 @@ def countvehiclebrands():
             Session.rollback()
             return jsonify({"error": str(e)})
         
-@bpget.route('/vehiclebrands/<fid>', methods = ['GET'])
-def getvehiclebrands(fid):
+@bpget.route('/vehiclebrands/<start>', methods = ['GET'])
+def getvehiclebrands(start):
     with new_Session() as Session:
         try:
-            firstID = int(fid)
+            start = int(start)
             schema = VehicleBrandSchema(many=True)
-            vehiclebrands = Session.query(VehicleBrand).offset(fid - 1).limit(STEP)
+            vehiclebrands = Session.query(VehicleBrand).offset(start - 1).limit(STEP)
             return jsonify(schema.dump(vehiclebrands))
         except Exception as e:
             Session.rollback()
@@ -182,13 +182,13 @@ def countvehiclelineups():
             Session.rollback()
             return jsonify({"error": str(e)})
         
-@bpget.route('/vehiclelineups/<fid>', methods = ['GET'])
-def getvehiclelineups(fid):
+@bpget.route('/vehiclelineups/<start>', methods = ['GET'])
+def getvehiclelineups(start):
     with new_Session() as Session:
         try:
-            firstID = int(fid)
+            start = int(start)
             schema = VehicleLineupSchema(many=True)
-            vehiclelineups = Session.query(VehicleLineup).offset(fid - 1).limit(STEP)
+            vehiclelineups = Session.query(VehicleLineup).offset(start - 1).limit(STEP)
             return jsonify(schema.dump(vehiclelineups))
         except Exception as e:
             Session.rollback()
@@ -226,13 +226,13 @@ def countcolors():
             Session.rollback()
             return jsonify({"error": str(e)})
         
-@bpget.route('/colors/<fid>', methods = ['GET'])
-def getcolors(fid):
+@bpget.route('/colors/<start>', methods = ['GET'])
+def getcolors(start):
     with new_Session() as Session:
         try:
-            firstID = int(fid)
+            start = int(start)
             schema = ColorSchema(many=True)
-            colors = Session.query(Color).offset(fid - 1).limit(STEP)
+            colors = Session.query(Color).offset(start - 1).limit(STEP)
             return jsonify(schema.dump(colors))
         except Exception as e:
             Session.rollback()
