@@ -63,9 +63,7 @@ def getversions(name):
     Session = new_Scoped_session()
     try:
         schema = VersionSchema()
-        print("Here: " + name)
         result = Session.query(Version).filter(Version.Name == name).first()
-        print("Found: " + result.Name)
         Session.close()
         return jsonify(schema.dump(result))
     except Exception as e:
@@ -102,7 +100,7 @@ def getcities(fid):
         try:
             FirstID = int(fid)
             schema = CitySchema(many=True)
-            cities = Session.query(City).where(City.ID >= FirstID).limit(STEP)
+            cities = Session.query(City).offset(fid - 1).limit(STEP)
             return jsonify(schema.dump(cities))
         except Exception as e:
             Session.rollback()
@@ -124,7 +122,7 @@ def getdistricts(fid):
         try:
             FirstID = int(fid)
             schema = DistrictSchema(many=True)
-            districts = Session.query(District).where(District.ID >= FirstID).limit(STEP)
+            districts = Session.query(District).offset(fid - 1).limit(STEP)
             return jsonify(schema.dump(districts))
         except Exception as e:
             Session.rollback()
@@ -146,7 +144,7 @@ def getwards(fid):
         try:
             firstID = int(fid)
             schema = WardSchema(many=True)
-            wards = Session.query(Ward).where(Ward.ID >= firstID).limit(STEP)
+            wards = Session.query(Ward).offset(fid - 1).limit(STEP)
             return jsonify(schema.dump(wards))
         except Exception as e:
             Session.rollback()
@@ -168,7 +166,7 @@ def getvehiclebrands(fid):
         try:
             firstID = int(fid)
             schema = VehicleBrandSchema(many=True)
-            vehiclebrands = Session.query(VehicleBrand).where(VehicleBrand.ID >= firstID).limit(STEP)
+            vehiclebrands = Session.query(VehicleBrand).offset(fid - 1).limit(STEP)
             return jsonify(schema.dump(vehiclebrands))
         except Exception as e:
             Session.rollback()
@@ -190,7 +188,7 @@ def getvehiclelineups(fid):
         try:
             firstID = int(fid)
             schema = VehicleLineupSchema(many=True)
-            vehiclelineups = Session.query(VehicleLineup).where(VehicleLineup.ID >= firstID).limit(STEP)
+            vehiclelineups = Session.query(VehicleLineup).offset(fid - 1).limit(STEP)
             return jsonify(schema.dump(vehiclelineups))
         except Exception as e:
             Session.rollback()
@@ -234,7 +232,7 @@ def getcolors(fid):
         try:
             firstID = int(fid)
             schema = ColorSchema(many=True)
-            colors = Session.query(Color).where(Color.ID >= firstID).limit(STEP)
+            colors = Session.query(Color).offset(fid - 1).limit(STEP)
             return jsonify(schema.dump(colors))
         except Exception as e:
             Session.rollback()
