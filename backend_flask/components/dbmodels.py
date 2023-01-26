@@ -405,7 +405,7 @@ class ChatMessage (Base):
 class Version (Base):
     __tablename__ = 'VERSION'
     ID = Column(ms.INTEGER, primary_key=True)
-    Name = Column(ms.NVARCHAR(16), nullable=False)
+    Name = Column(ms.NVARCHAR(32), nullable=False)
     Version = Column(ms.NVARCHAR(16), nullable=False)
     
     
