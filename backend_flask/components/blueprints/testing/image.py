@@ -38,13 +38,13 @@ def saveImage(file, imageTypeID:int = 1):
         new_image = dbm.Image(Filename = "blabla", ID_ImageType=imageTypeID)
         Session.add(new_image)
         Session.flush()
-        new_image.FileName = str(new_image.ID) + '.' + ext
+        new_image.Filename = str(new_image.ID) + '.' + ext
         Session.commit()
 
         file.save(os.path.join(getSaveLocation(imageTypeID), str(new_image.ID) + '.' + ext))
         
         Session.close()
-        return "File uploaded successfully", new_image.ID
+        return True, new_image.ID
     except Exception as e:
         Session.rollback()
         return f"Image save error: '{e}'", -1

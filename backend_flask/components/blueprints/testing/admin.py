@@ -92,18 +92,21 @@ def dropalltables():
 
 @bpadmin.route('/initdatabase/<int:index>', methods = ['POST'])
 def initdatabase(index):
-    if index==1:
-        print("Initializing database...")
-        initversions()
-        insertlocations()
-        insertpermission()
-        insertimagetype()
-    elif index==2:
-        insertvehiclesupport()
-        inserttestaccounts()
-    else: 
-        return "Index not valid"
-    return f"Done {index}"
+    try:
+        if index==1:
+            print("Initializing database...")
+            initversions()
+            insertlocations()
+            insertpermission()
+            insertimagetype()
+        elif index==2:
+            insertvehiclesupport()
+            inserttestaccounts()
+        else: 
+            return "Index not valid"
+        return f"Done {index}"
+    except Exception as e:
+        return str(e)
 
 
 @bpadmin.route('/test', methods = ['GET', 'POST'])
