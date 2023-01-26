@@ -4,6 +4,10 @@ import loadingReducer from '../slice/loadingSlice';
 import personalInfo from '../clientDatabase/personalInfo';
 import imageType from '../clientDatabase/imageType';
 import location from '../clientDatabase/location';
+import vehicleModel from '../clientDatabase/vehicleModel';
+import vehicleType from '../clientDatabase/vehicleType';
+import vehicleCondition from '../clientDatabase/vehicleCondition';
+import color from '../clientDatabase/color';
 import permission from '../clientDatabase/permission';
 import filterReducer from '../slice/filterSlice';
 
@@ -13,6 +17,10 @@ const store = configureStore({
     auth: authReducer,
     personalInfo: personalInfo,
     locations: location,
+    vehicleModels: vehicleModel,
+    vehicleTypes: vehicleType,
+    vehicleConditions: vehicleCondition,
+    colors: color,
     imageTypes: imageType,
     permissions: permission,
     loading: loadingReducer,

@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import HttpRequest from '../backendAPI/HttpRequest';
-import { setAll } from '../redux/clientDatabase/personalInfo';
-import Store from '../redux/store';
-import { login } from '../redux/slice/authSlice';
-import BackendAPI, { getPersonalInfo } from '../backendAPI';
+import HttpRequest from '../../backendAPI/HttpRequest';
+import { setAll } from '../../redux/clientDatabase/personalInfo';
+import Store from '../../redux/store';
+import { login, logout } from '../../redux/slice/authSlice';
+import BackendAPI, { getPersonalInfo } from '../../backendAPI';
 
 
 export const init = async () => {
@@ -71,6 +71,15 @@ export const signIn = async (usernameOrEmail: String, password: String, savePass
         return response.token;
     }
     return "";
+}
+
+export const signOut = async () => {
+    try {
+        removeCurrentToken();
+        Store.dispatch(logout());
+    } catch (e) {
+        console.log("Log out error: " + e);
+    }
 }
 
 export const print = async () => {

@@ -34,22 +34,22 @@ const theme = {
 
 const App = () => {
   useEffect(() => {
-    //AsyncStorage.clear();
+    AsyncStorage.clear();
     console.log('------------------------------Main------------------------------')
 
     
-    const sandbox = async () => {
-      try {
-          // const cities = await BigGetRequest("cities");
-          // console.log(cities);
-        console.log("......................Sandbox......................")
-        let test = Store.getState().personalInfo;
-        console.log(test)
-      } catch (error) {
-        console.log("Sandbox error: " + error);
-      }
-      console.log("....................Sandbox End....................")
-    }
+    // const sandbox = async () => {
+    //   try {
+    //       // const cities = await BigGetRequest("cities");
+    //       // console.log(cities);
+    //     console.log("......................Sandbox......................")
+    //     let test = Store.getState().personalInfo;
+    //     console.log(test)
+    //   } catch (error) {
+    //     console.log("Sandbox error: " + error);
+    //   }
+    //   console.log("....................Sandbox End....................")
+    // }
 
     const Init = async () => {
       // await TokenStorage.removeCurrentToken();
@@ -61,7 +61,7 @@ const App = () => {
       // console.log("Test: " + JSON.stringify(test));
       Store.dispatch(setLoading(false));
       console.log("......................App loading finished......................")
-      await sandbox();
+      // await sandbox();
     }
     Init();
 

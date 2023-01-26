@@ -65,6 +65,35 @@ export const getImageTypes = async () => {
     return response;
 }
 
+export const getVehicleBrands = async () => {
+    const response = await BigGetRequest("vehiclebrands");
+    response.sort((a, b) => a.ID - b.ID)
+    return response;
+}
+
+export const getVehicleLineups = async () => {
+    const response = await BigGetRequest("vehiclelineups");
+    response.sort((a, b) => a.ID - b.ID)
+    // console.log("Vehicle lineups: " + JSON.stringify(response));
+    return response;
+}
+
+export const getVehicleTypes = async () => {
+    const response = await HttpRequest.GetRequest("gets/vehicletypes");
+    return response;
+}
+
+export const getVehicleConditions = async () => {
+    const response = await HttpRequest.GetRequest("gets/vehicleconditions");
+    return response;
+}
+
+export const getColors = async () => {
+    const response = await BigGetRequest("colors");
+    response.sort((a, b) => a.ID - b.ID)
+    return response;
+}
+
 const getToken = () => {
     return Store.getState().auth.token;
 }
