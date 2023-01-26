@@ -34,8 +34,11 @@ class AccountInfo (Base):
     ID_Image_Profile = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
     rel_Image_Profile = relationship('Image', foreign_keys=[ID_Image_Profile], cascade='save-update, merge, delete', back_populates='rel_AccountInfo_Profile')
     
-    ID_Image_Identity = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
-    rel_Image_Identity = relationship('Image', foreign_keys=[ID_Image_Identity], cascade='save-update, merge, delete', back_populates='rel_AccountInfo_Identity')
+    ID_Image_Identity_Front = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
+    rel_Image_Identity_Front = relationship('Image', foreign_keys=[ID_Image_Identity_Front], cascade='save-update, merge, delete', back_populates='rel_AccountInfo_Identity_Front')
+    
+    ID_Image_Identity_Back = Column(ms.INTEGER, ForeignKey('IMAGE.ID'))
+    rel_Image_Identity_Back = relationship('Image', foreign_keys=[ID_Image_Identity_Back], cascade='save-update, merge, delete', back_populates='rel_AccountInfo_Identity_Back')
     
     ## Account reference
     rel_Account = relationship("Account", back_populates="rel_AccountInfo", uselist=False)
@@ -201,7 +204,10 @@ class Image (Base):
     rel_AccountInfo_Profile = relationship('AccountInfo', foreign_keys=[AccountInfo.ID_Image_Profile], back_populates='rel_Image_Profile')
     
     ## AccountInfo reference
-    rel_AccountInfo_Identity = relationship('AccountInfo', foreign_keys=[AccountInfo.ID_Image_Identity], back_populates='rel_Image_Identity')
+    rel_AccountInfo_Identity_Front = relationship('AccountInfo', foreign_keys=[AccountInfo.ID_Image_Identity_Front], back_populates='rel_Image_Identity_Front')
+    
+    ## AccountInfo reference
+    rel_AccountInfo_Identity_Back = relationship('AccountInfo', foreign_keys=[AccountInfo.ID_Image_Identity_Back], back_populates='rel_Image_Identity_Back')
     
 
 @event.listens_for(Image, 'after_delete')
