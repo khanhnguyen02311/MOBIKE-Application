@@ -48,6 +48,7 @@ def initversions():
     Session.add(Version(Name="Locations", Version=1))
     Session.add(Version(Name="Permissions", Version=1))
     Session.add(Version(Name="ImageTypes", Version=1))
+    Session.add(Version(Name="VehicleSupport", Version=1))
     Session.commit()
     Session.close()
     return jsonify({"msg": "Success"})
@@ -93,6 +94,13 @@ def dropalltables():
 @bpadmin.route('/initdatabase/<int:index>', methods = ['POST'])
 def initdatabase(index):
     try:
+        if index == 0:
+            initversions()
+            insertlocations()
+            insertpermission()
+            insertimagetype()
+            insertvehiclesupport()
+            inserttestaccounts()
         if index==1:
             print("Initializing database...")
             initversions()
