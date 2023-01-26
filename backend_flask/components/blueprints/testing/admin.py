@@ -101,7 +101,7 @@ def initdatabase(index):
             insertimagetype()
             insertvehiclesupport()
             inserttestaccounts()
-        if index==1:
+        elif index==1:
             print("Initializing database...")
             initversions()
             insertlocations()
