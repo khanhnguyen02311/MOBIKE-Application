@@ -46,7 +46,7 @@ def initversions():
     print("Initializing version...")
     TruncateTables({"Version"})
     
-    for name in ["Locations", "Permissions", "ImageTypes", "VehicleBrand", "VehicleLineup", "VehicleType", "VehicleCondition", "Color"]:
+    for name in ["Locations", "Permissions", "ImageTypes", "VehicleBrands", "VehicleLineups", "VehicleTypes", "VehicleConditions", "Colors"]:
         Session.add(Version(Name=name, Version=1))
 
     Session.commit()
