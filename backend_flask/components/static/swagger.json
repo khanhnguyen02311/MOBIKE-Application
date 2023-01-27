@@ -1,0 +1,68 @@
+
+{
+   "openapi": "3.0.0",
+   "info": {
+     "description": "API structure for MOBIKE application",
+     "version": "1.0.0",
+     "title": "MOBIKE_API",
+     "contact": {
+       "email": "20521449@gm.uit.edu.vn"
+     },
+     "license": {
+       "name": "MIT",
+       "url": "https://opensource.org/licenses/MIT"
+     }
+   },
+   "components": {
+    "schemas": {
+      "id": {
+        "properties": {
+          "uuid": {
+            "type": "string"
+          }
+        }
+      },
+      "bookRequestPostBody": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "format": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      },
+      "bookRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "format": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "number"
+          }
+        }
+      },
+      "bookRequests": {
+        "type": "object",
+        "properties": {
+          "bookRequest": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/bookRequest"
+            }
+          }
+        }
+      }
+    }
+  }
+}
