@@ -1,4 +1,3 @@
-from flask_swagger_ui import get_swaggerui_blueprint
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from .blueprints.testing import image, gets, admin, test
@@ -51,10 +50,10 @@ def create_app():
     
     # App.register_blueprint(swaggerui_blueprint)
 
-    # App.register_blueprint(test.bptest, url_prefix='/test')
+    App.register_blueprint(test.bptest, url_prefix='/test')
 
-    # App.register_blueprint(image.bpimage, url_prefix='/image')
-    # App.register_blueprint(gets.bpget, url_prefix='/gets')
+    App.register_blueprint(image.bpimage, url_prefix='/image')
+    App.register_blueprint(gets.bpget, url_prefix='/gets')
     
     App.register_blueprint(admin.bpadmin, url_prefix='/admin')
     
@@ -66,7 +65,5 @@ def create_app():
     App.register_blueprint(post.bppost, url_prefix='/personal')
     
     App.register_blueprint(vehicle.bpvehicle, url_prefix='/utilities')
-    
-    print(App.url_map)
     
     return App
