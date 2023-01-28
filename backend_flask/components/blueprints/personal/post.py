@@ -8,7 +8,7 @@ from components import dbmodels as dbm, dbschemas as dbs
 bppost = Blueprint('bppost', __name__)
 
 
-bppost.route("/vehicle/new", methods=['POST'])
+@bppost.route("/vehicle/new", methods=['POST'])
 @jwt_required()
 def newvehicle():
    current_user = get_jwt_identity()   
@@ -44,7 +44,7 @@ def newvehicle():
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
 
 
-bppost.route("/post/new", methods=["POST"])
+@bppost.route("/post/new", methods=["POST"])
 @jwt_required()
 def newpost():
    current_user = get_jwt_identity()   
