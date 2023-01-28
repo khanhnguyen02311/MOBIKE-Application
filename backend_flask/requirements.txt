@@ -16,3 +16,4 @@ pandas
 eventlet
 redis
 flask-swagger-ui
+flask_debugtoolbar
