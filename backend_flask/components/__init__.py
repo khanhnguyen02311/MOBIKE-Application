@@ -1,7 +1,7 @@
 from datetime import datetime, timezone, timedelta
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
-from .blueprints.testing import image, gets, admin, test
+from .blueprints.testing import image, gets, admin, test, misc
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account, post
 from .blueprints.utils import vehicle
@@ -14,7 +14,6 @@ def create_app():
     jwt = JWTManager(App)
     oauth.init_app(App)
 
-    App.static_folder = 'web/test/build'
     # @App.after_request
     # def after_request_callback(response):
     #     Session.remove()
@@ -31,6 +30,9 @@ def create_app():
         token_in_redis = blocklistJWT.get(jti)
         return token_in_redis is not None
 
+
+
+    App.register_blueprint(misc.bpmisc, url_prefix='/misc')
     App.register_blueprint(test.bptest, url_prefix='/test')
 
     App.register_blueprint(image.bpimage, url_prefix='/image')
