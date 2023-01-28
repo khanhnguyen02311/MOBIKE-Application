@@ -1,7 +1,8 @@
-from datetime import datetime, timezone, timedelta
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
-from .blueprints.testing import image, gets, admin, test, misc
+from flask_debugtoolbar import DebugToolbarExtension
+from .blueprints.utilities import logo, vehicle
+from .blueprints.testing import gets, admin, test
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account, post
 from .blueprints.utils import vehicle, logo
@@ -17,7 +18,13 @@ def create_app():
     # @App.after_request
     # def after_request_callback(response):
     #     Session.remove()
-
+    
+    try:
+        DebugToolbarExtension(App)
+    except Exception as e:
+        print(e)
+        pass
+    
     @App.route("/")
     def hello():
         return "<h1>Test running state.</h1>"
@@ -29,13 +36,31 @@ def create_app():
         jti = jwt_payload["jti"]
         token_in_redis = blocklistJWT.get(jti)
         return token_in_redis is not None
+    
+    # SWAGGER_URL = '/api/docs'
+    # API_URL = '/static/swagger.json'
 
+    # # Call factory function to create our blueprint
+    # swaggerui_blueprint = get_swaggerui_blueprint(
+    #     SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
+    #     API_URL,
+    #     config={  # Swagger UI config overrides
+    #         'app_name': "MOBIKE_Application"
+    #     },
+    #     # oauth_config={  # OAuth config. See https://github.com/swagger-api/swagger-ui#oauth2-configuration .
+    #     #    'clientId': "your-client-id",
+    #     #    'clientSecret': "your-client-secret-if-required",
+    #     #    'realm': "your-realms",
+    #     #    'appName': "your-app-name",
+    #     #    'scopeSeparator': " ",
+    #     #    'additionalQueryStringParams': {'test': "hello"}
+    #     # }
+    # )
+    
+    # App.register_blueprint(swaggerui_blueprint)
 
-
-    App.register_blueprint(misc.bpmisc, url_prefix='/misc')
     App.register_blueprint(test.bptest, url_prefix='/test')
-
-    App.register_blueprint(image.bpimage, url_prefix='/image')
+    # App.register_blueprint(image.bpimage, url_prefix='/image')
     App.register_blueprint(gets.bpget, url_prefix='/gets')
     App.register_blueprint(admin.bpadmin, url_prefix='/admin')
     
