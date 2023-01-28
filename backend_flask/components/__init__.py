@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_debugtoolbar import DebugToolbarExtension
 from .blueprints.utilities import logo, vehicle
 from .blueprints.testing import gets, admin, test
 from .blueprints.authentication import signup, signin, signout
@@ -18,11 +18,11 @@ def create_app():
     # def after_request_callback(response):
     #     Session.remove()
     
-    try:
-        DebugToolbarExtension(App)
-    except Exception as e:
-        print(e)
-        pass
+    # try:
+    #     DebugToolbarExtension(App)
+    # except Exception as e:
+    #     print(e)
+    #     pass
     
     @App.route("/")
     def hello():
