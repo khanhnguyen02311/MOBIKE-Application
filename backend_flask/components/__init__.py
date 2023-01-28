@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 # from flask_debugtoolbar import DebugToolbarExtension
 from .blueprints.utilities import logo, vehicle
-from .blueprints.testing import gets, admin, test
+from .blueprints.testing import gets, admin, test, image
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account, post
 from .config import FlaskConfig as fcfg
@@ -59,7 +59,7 @@ def create_app():
     # App.register_blueprint(swaggerui_blueprint)
 
     App.register_blueprint(test.bptest, url_prefix='/test')
-    # App.register_blueprint(image.bpimage, url_prefix='/image')
+    App.register_blueprint(image.bpimage, url_prefix='/image')
     App.register_blueprint(gets.bpget, url_prefix='/gets')
     App.register_blueprint(admin.bpadmin, url_prefix='/admin')
     
