@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager
 from .blueprints.testing import image, gets, admin, test, misc
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account, post
-from .blueprints.utils import vehicle
+from .blueprints.utils import vehicle, logo
 from .config import FlaskConfig as fcfg
 from .security import oauth, blocklistJWT
 
