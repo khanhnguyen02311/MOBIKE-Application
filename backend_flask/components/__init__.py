@@ -1,9 +1,10 @@
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
-from .blueprints.testing import image, gets, admin, test
+from flask_debugtoolbar import DebugToolbarExtension
+from .blueprints.utilities import logo, vehicle
+from .blueprints.testing import gets, admin, test
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account, post
-from .blueprints.utilities import vehicle
 from .config import FlaskConfig as fcfg
 from .security import oauth, blocklistJWT
 
@@ -16,7 +17,13 @@ def create_app():
     # @App.after_request
     # def after_request_callback(response):
     #     Session.remove()
-
+    
+    try:
+        DebugToolbarExtension(App)
+    except Exception as e:
+        print(e)
+        pass
+    
     @App.route("/")
     def hello():
         return "<h1>Test running state.</h1>"
@@ -51,10 +58,8 @@ def create_app():
     # App.register_blueprint(swaggerui_blueprint)
 
     App.register_blueprint(test.bptest, url_prefix='/test')
-
-    App.register_blueprint(image.bpimage, url_prefix='/image')
+    # App.register_blueprint(image.bpimage, url_prefix='/image')
     App.register_blueprint(gets.bpget, url_prefix='/gets')
-    
     App.register_blueprint(admin.bpadmin, url_prefix='/admin')
     
     App.register_blueprint(signup.bpsignup, url_prefix='/auth')
@@ -65,5 +70,6 @@ def create_app():
     App.register_blueprint(post.bppost, url_prefix='/personal')
     
     App.register_blueprint(vehicle.bpvehicle, url_prefix='/utilities')
+    App.register_blueprint(logo.bplogo, url_prefix='/utilities')
     
     return App

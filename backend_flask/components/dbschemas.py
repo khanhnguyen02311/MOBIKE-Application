@@ -28,13 +28,13 @@ class AccountInfoSchema(Schema):
         model = dbm.AccountInfo
         load_instance = True
 
-        
     ID = auto_field()
     Name = auto_field()
     Birthdate = fields.DateTime(format='%d/%m/%Y')
     Gender = auto_field()
     Phone_number = auto_field()
     Identification_number = auto_field()
+    ID_Image_Profile = auto_field()
     Time_created = auto_field()
     
 class AddressSchema(Schema):
@@ -93,3 +93,49 @@ class VersionSchema(Schema):
     Version = auto_field()
 
 
+class VehicleBrandSchema(Schema):
+    class Meta:
+        model = dbm.VehicleBrand
+        load_instance = True
+        
+    ID = auto_field()
+    Name = auto_field()
+    ID_Image = auto_field()
+    
+    
+class VehicleLineupSchema(Schema):
+    class Meta:
+        model = dbm.VehicleLineup
+        load_instance = True
+        
+    ID = auto_field()
+    Lineup = auto_field()
+    ID_VehicleBrand = auto_field()
+    
+    
+class VehicleConditionSchema(Schema):
+    class Meta:
+        model = dbm.VehicleCondition
+        load_instance = True
+    
+    ID = auto_field()
+    Condition = auto_field()
+    
+    
+class ColorSchema(Schema):
+    class Meta:
+        model = dbm.Color
+        load_instance = True
+    
+    ID = auto_field()
+    Color_hex = auto_field()
+    Name = auto_field()
+    
+    
+class VehicleTypeSchema(Schema):
+    class Meta:
+        model = dbm.VehicleType
+        load_instance = True
+    
+    ID = auto_field()
+    Type = auto_field()

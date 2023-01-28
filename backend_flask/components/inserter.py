@@ -170,24 +170,47 @@ def InsertImageType():
     return "Inserted {} image types".format(it)
 
 
+def GetImageFolder(image_type):
+    if image_type == 1: folder = 'post/'
+    elif image_type == 2: folder = 'logo/'
+    elif image_type == 3: folder = 'user/'
+    elif image_type == 4: folder = 'identity/'
+    return folder
+
+
 def SaveImageFromURL(Session, url, image_type):
     r = requests.get(url)
     if r.status_code==200:
         filename = url.split('/')[-1]
-        if image_type == 1: folder = 'post/'
-        elif image_type == 2: folder = 'logo/'
-        elif image_type == 3: folder = 'user/'
-        elif image_type == 4: folder = 'identity/'
-        open(STORAGE_PATH + folder + filename, "wb").write(r.content)
         image = Image(Filename=filename, ID_ImageType=image_type)
         Session.add(image)
         Session.flush()
         ext = image.Filename.split('.')[-1]
         image.Filename = str(image.ID) + '.' + ext
+        open(STORAGE_PATH + GetImageFolder(image_type) + image.Filename, "wb").write(r.content)
         Session.flush()
         return [True, image.ID]
-    return [False]
+    return [False, "Invalid response"]
 
+
+def SaveImage(Session, file, image_type):
+    if file.filename == "":
+        return [False, "No file selected"]
+    ext = file.filename.split('.')[-1]
+    if ext not in ['jpg', 'jpeg', 'png']:
+        return [False, "File extension not supported"]
+    try:
+        new_image = dbm.Image(Filename = file.filename, ID_ImageType=image_type)
+        Session.add(new_image)
+        Session.flush()
+        new_image.Filename = str(new_image.ID) + '.' + ext
+        Session.commit()
+        file.save(os.path.join(STORAGE_PATH, GetImageFolder(image_type), str(new_image.ID) + '.' + ext))
+        return [True, new_image]
+    except Exception as e:
+        Session.rollback()
+        return [False, str(e)]
+        
 
 def SetupAccount(Session, a_email, a_username, a_password, a_type, a_permission, i_name, i_phone=None, i_image=None):
    try:
