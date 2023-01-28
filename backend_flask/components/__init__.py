@@ -5,7 +5,6 @@ from .blueprints.utilities import logo, vehicle
 from .blueprints.testing import gets, admin, test
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account, post
-from .blueprints.utils import vehicle, logo
 from .config import FlaskConfig as fcfg
 from .security import oauth, blocklistJWT
 

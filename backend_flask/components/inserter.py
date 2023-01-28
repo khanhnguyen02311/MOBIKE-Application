@@ -189,7 +189,6 @@ def SaveImageFromURL(Session, url, image_type):
         image.Filename = str(image.ID) + '.' + ext
         open(STORAGE_PATH + GetImageFolder(image_type) + image.Filename, "wb").write(r.content)
         Session.flush()
-        open(STORAGE_PATH + folder + image.Filename, "wb").write(r.content)
         return [True, image.ID]
     return [False, "Invalid response"]
 
