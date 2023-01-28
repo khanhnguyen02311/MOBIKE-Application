@@ -7,6 +7,10 @@ bptest = Blueprint('bptest', __name__)
 def hello():
     return "<h1>Hello from test.</h1>"
 
+@bptest.route('/hi')
+def hi():
+    return "<h1>Hi from test.</h1>"
+
 @bptest.route("/chat", methods=['GET', 'POST'])
 def chat():
     return render_template_string('''
