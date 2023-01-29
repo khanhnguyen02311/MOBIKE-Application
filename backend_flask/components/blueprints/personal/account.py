@@ -174,7 +174,37 @@ def setavatar():
    except Exception as e:
       Session.rollback()
       return jsonify({'msg': 'Incompleted', 'error': str(e)})
+
+@bpaccount.route('/identity/set', methods = ['POST'])
+@jwt_required()
+def setidentity():
+   if 'front' not in request.files or 'back' not in request.files:
+      return jsonify({"msg": "Completed", "error": "No file path", "info": ""})
+   current_user = get_jwt_identity()
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
    
+   front = request.files['front']
+   back = request.files['back']
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).options(sqlorm.joinedload(dbm.Account.rel_AccountInfo)).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      frontoutput = SaveImage(Session, front, 4)
+      backoutput = SaveImage(Session, back, 4)
+      if frontoutput[0] and backoutput[0]: 
+         acc.rel_AccountInfo.ID_Image_Identity_Front = frontoutput[1].ID
+         acc.rel_AccountInfo.ID_Image_Identity_Back = backoutput[1].ID
+         Session.commit()
+         return jsonify({'msg': 'Completed', "error": "", "info": ""})
+      else:
+         Session.rollback()
+         return jsonify({'msg': 'Incompleted', "error": frontoutput[1] + "\n" + backoutput[1], "info": ""})
+   except Exception as e:
+      Session.rollback()
+      return jsonify({'msg': 'Incompleted', 'error': str(e)})
    
 @bpaccount.route('/avatar/get', methods = ['GET'])
 @jwt_required()
@@ -201,7 +231,6 @@ def getavatar():
    except Exception as e:
       Session.rollback()
       return jsonify({'msg': 'Incompleted', 'error': str(e)})
-   
    
 @bpaccount.route('/avatar/del', methods = ['DELETE'])
 @jwt_required()
