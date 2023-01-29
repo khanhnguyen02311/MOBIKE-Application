@@ -8,7 +8,7 @@ from components import dbmodels as dbm, dbschemas as dbs
 bppost = Blueprint('bppost', __name__)
 
 
-@bppost.route("/vehicle/new", methods=['POST'])
+@bppost.route("/post/vehicle/new", methods=['POST'])
 @jwt_required()
 def newvehicle():
    current_user = get_jwt_identity()   
@@ -38,6 +38,30 @@ def newvehicle():
       Session.add(new_vehicleinfo)
       Session.commit()
       return jsonify({"msg": "Completed", "error": "", "info": new_vehicleinfo.ID})
+   
+   except Exception as e:
+      Session.rollback()
+      return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
+
+
+#CONTINUE
+@bppost.route("/post/image/new", methods=['POST'])
+@jwt_required()
+def newpostimage():
+   current_user = get_jwt_identity()   
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+   
+   info = request.get_json()
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      
+      Session.commit()
+      return jsonify({"msg": "Completed", "error": "", "info": ""})
    
    except Exception as e:
       Session.rollback()
