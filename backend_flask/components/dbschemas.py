@@ -35,6 +35,8 @@ class AccountInfoSchema(Schema):
     Phone_number = auto_field()
     Identification_number = auto_field()
     ID_Image_Profile = auto_field()
+    ID_Image_Identity_Front = auto_field()
+    ID_Image_Identity_Back = auto_field()
     Time_created = auto_field()
     
 class AddressSchema(Schema):
