@@ -200,7 +200,7 @@ def SaveImage(Session, file, image_type):
     if ext not in ['jpg', 'jpeg', 'png']:
         return [False, "File extension not supported"]
     try:
-        new_image = dbm.Image(Filename = file.filename, ID_ImageType=image_type)
+        new_image = dbm.Image(Filename = "", ID_ImageType=image_type)
         Session.add(new_image)
         Session.flush()
         new_image.Filename = str(new_image.ID) + '.' + ext
