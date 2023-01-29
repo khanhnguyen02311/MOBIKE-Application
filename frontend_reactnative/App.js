@@ -34,7 +34,7 @@ const theme = {
 
 const App = () => {
   useEffect(() => {
-    AsyncStorage.clear();
+    // AsyncStorage.clear();
     console.log('------------------------------Main------------------------------')
 
     

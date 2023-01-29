@@ -3,7 +3,7 @@ import HttpRequest from '../../backendAPI/HttpRequest';
 import { setAll } from '../../redux/clientDatabase/personalInfo';
 import Store from '../../redux/store';
 import { login, logout } from '../../redux/slice/authSlice';
-import BackendAPI, { getPersonalInfo } from '../../backendAPI';
+import BackendAPI, { GetPersonalInfo } from '../../backendAPI';
 
 
 export const init = async () => {
@@ -25,7 +25,7 @@ export const init = async () => {
                         ID: myinfo.ID,
                         token: currentToken
                     }))
-                    await updatePersonalInfo();
+                    await UpdatePersonalInfo();
                 }
             }
         }
@@ -34,8 +34,8 @@ export const init = async () => {
     }
 };
 
-export const updatePersonalInfo = async () => {
-    let personalInfo = await getPersonalInfo();
+export const UpdatePersonalInfo = async () => {
+    let personalInfo = await GetPersonalInfo();
     Store.dispatch(setAll(personalInfo));
 }
 
@@ -66,7 +66,7 @@ export const signIn = async (usernameOrEmail: String, password: String, savePass
             ID: response.uid,
             token: response.token
         }))
-        await updatePersonalInfo();
+        await UpdatePersonalInfo();
 
         return response.token;
     }

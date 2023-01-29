@@ -8,6 +8,9 @@ const initialState = {
     Identification_number: undefined,
     Name: undefined,
     Phone_number: undefined,
+    ID_Image_Profile: undefined,
+    ID_Image_Identity_Front : undefined,
+    ID_Image_Identity_Back : undefined,
     Addresses: {}
 }
 
@@ -41,15 +44,22 @@ export const personalInfoSlice = createSlice({
         },
         setAll: (state, action) => {
             try {
-                state.Birthdate = action.payload.Birthdate || undefined;
-                state.Gender = action.payload.Gender || undefined;
-                state.Identification_number = action.payload.Identification_number || undefined;
-                state.Name = action.payload.Name || undefined;
-                state.Phone_number = action.payload.Phone_number || undefined;
-                state.Addresses = action.payload.Addresses || undefined;
-                console.log("Set all personal info successfully: " + JSON.stringify(state))
+                if (action.payload) {
+                    state.Birthdate = action.payload.Birthdate || undefined;
+                    state.Gender = action.payload.Gender || undefined;
+                    state.Identification_number = action.payload.Identification_number || undefined;
+                    state.Name = action.payload.Name || undefined;
+                    state.Phone_number = action.payload.Phone_number || undefined;
+                    state.ID_Image_Profile = action.payload.ID_Image_Profile || undefined;
+                    state.ID_Image_Identity_Front = action.payload.ID_Image_Identity_Front || undefined;
+                    state.ID_Image_Identity_Back = action.payload.ID_Image_Identity_Back || undefined;
+                    state.Addresses = action.payload.Addresses || undefined;
+                    console.log("Set all personal info successfully: " + JSON.stringify(state))
+                } else {
+                    console.log("Set all personal info failed: " + JSON.stringify(state))
+                }
             } catch (error) {
-                console.log("Error: " + error);
+                console.log("Set personal info error: " + error);
             }
         }
     }
