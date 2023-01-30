@@ -230,8 +230,8 @@ class ImageType (Base):
 class PostStatus (Base):
     __tablename__ = 'POSTSTATUS'
     ID = Column(ms.INTEGER, primary_key=True)
-    Status = Column(ms.TINYINT, nullable=False) # 0: inactive, 1: active
-    Infomation = Column(ms.NVARCHAR(50))
+    Status = Column(ms.TINYINT, nullable=False) # 0: inactive, 1: active, 2: sold, 3: reported
+    Information = Column(ms.NVARCHAR(50))
     Time_updated = Column(ms.DATETIME, default=datetime.now(timezone.utc))
 
     ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)

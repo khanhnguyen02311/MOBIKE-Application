@@ -1,9 +1,11 @@
 import json
 from datetime import datetime
 from flask import Flask, Blueprint, request, jsonify
+import sqlalchemy.orm as sqlorm
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from components.dbsettings import new_Scoped_session
 from components import dbmodels as dbm, dbschemas as dbs
+from components.inserter import SaveImage
 
 bppost = Blueprint('bppost', __name__)
 
@@ -29,9 +31,9 @@ def newvehicle():
          License_plate = info['license'],
          Manufacture_year = info['mnf'],
          Cubic_power = info['cubic'],
-         ID_VehicleBrand = info['vehiclebrand'],
-         ID_VehicleLineup = info['vehiclelineup'],
-         ID_VehicleType = info['vehicletype'],
+         ID_VehicleBrand = info['brand'],
+         ID_VehicleLineup = info['lineup'],
+         ID_VehicleType = info['type'],
          ID_Condition = info['condition'],
          ID_Color = info['color']
       )
@@ -51,21 +53,30 @@ def newpostimage():
    current_user = get_jwt_identity()   
    if current_user is None:
       return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+   if 'file' not in request.files:
+      return jsonify({"msg": "Completed", "error": "No file path", "info": ""})
+   current_user = get_jwt_identity()
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
    
-   info = request.get_json()
+   f = request.files['file']
    Session = new_Scoped_session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
       if acc == None:
          Session.close()
          return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      output = SaveImage(Session, f, 1)
+      if output[0]: 
+         Session.commit()
+         return jsonify({'msg': 'Completed', "error": "", "info": output[1].ID})
+      else: 
+         Session.rollback()
+         return jsonify({'msg': 'Incompleted', "error": output[1], "info": ""})
       
-      Session.commit()
-      return jsonify({"msg": "Completed", "error": "", "info": ""})
-   
    except Exception as e:
       Session.rollback()
-      return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
+      return jsonify({'msg': 'Incompleted', 'error': str(e), "info": ""})
 
 
 @bppost.route("/post/new", methods=["POST"])
@@ -82,9 +93,6 @@ def newpost():
       if acc == None:
          Session.close()
          return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
-      
-      list_image = info['images']
-      ## CHANGE IMAGE'S POST ATTRIBUTE ##
       
       address = Session.query(dbm.Address).get(info['address'])
       if address.ID_AccountInfo != acc.ID_AccountInfo:
@@ -105,14 +113,55 @@ def newpost():
       )
       Session.add(new_post)
       Session.flush()
+      
       new_poststatus = dbm.PostStatus(
-         Status=0,
-         ID_Post = new_post.ID
+         Status = 0,
+         ID_Post = new_post.ID,
+         Information = "Post created by user."
       )
       Session.add(new_poststatus)
+      Session.flush()
+      
+      list_image = info['images']
+      postimages = Session.query(dbm.Image).filter(dbm.Image.ID.in_(list_image)).all()
+      for img in postimages:
+         img.ID_Post = new_post.ID
       Session.commit()
       return jsonify({"msg": "Completed", "error": "", "info": new_post.ID})
       
    except Exception as e:
       Session.rollback()
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
+   
+   
+# @bppost.route("/post/get/all", methods=["POST"])
+# @jwt_required()
+# def newpost():
+#    current_user = get_jwt_identity()   
+#    if current_user is None:
+#       return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+   
+#    Session = new_Scoped_session()
+#    try:
+#       acc = Session.query(dbm.Account).get(current_user['ID'])
+#       if acc == None:
+#          Session.close()
+#          return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      
+#       posts = Session.query(dbm.Post).filter(dbm.Post.ID_Account == acc.ID).all()
+#       posts_inactive = {}
+#       posts_active = {}
+#       posts_sold = {}
+#       posts_reported = {}
+#       for index, item in enumerate(posts):
+#          image = Session.query(dbm.Image).filter(dbm.Image.ID_Post == item.ID).first()
+#          status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == item.ID).order_by(dbm.PostStatus.ID.desc()).first()
+#       #    json_colors[index] = schema.dump(item)
+#       # return jsonify({"msg": "Completed", "error": "", "info": json_colors})
+#       # CONTINUE
+      
+#    except Exception as e:
+#       Session.rollback()
+#       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
+   
+   
