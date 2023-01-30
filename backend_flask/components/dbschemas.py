@@ -146,3 +146,80 @@ class PostSchemaShort(Schema):
     Pricetag = auto_field()
     rel_Image = auto_field()
     Time_created = auto_field()
+
+class PostSchema(Schema):
+    class Meta:
+        model = dbm.Post
+        load_instance = True
+        
+    ID = auto_field()
+    Title = auto_field()
+    Content = auto_field()
+    Pricetag = auto_field()
+    ID_Account = auto_field()
+    ID_Address = auto_field()
+    ID_VehicleInfo = auto_field()
+    Time_created = auto_field()
+    rel_Image = auto_field()
+    rel_Like = auto_field()
+    rel_Rating = auto_field()
+    
+class VehicleInfoSchema(Schema):
+    class Meta:
+        model = dbm.VehicleInfo
+        load_instance = True
+        
+    ID = auto_field()
+    Vehicle_name = auto_field()
+    Odometer = auto_field()
+    License_plate = auto_field()
+    Manufacture_year = auto_field()
+    Cubic_power = auto_field()
+    ID_VehicleBrand = auto_field()
+    ID_VehicleLineup = auto_field()
+    ID_VehicleType = auto_field()
+    ID_Condition = auto_field()
+    ID_Color = auto_field()
+    
+    
+class ViewSchema(Schema):
+    class Meta:
+        model = dbm.View
+        load_instance = True
+        
+    ID = auto_field()
+    ID_Account = auto_field()
+    Time_created = auto_field()
+    
+
+class CommentSchema(Schema):
+    class Meta:
+        model = dbm.Comment
+        load_instance = True
+        
+    ID = auto_field()
+    ID_Account = auto_field()
+    Content = auto_field()
+    Time_created = auto_field()
+    
+    
+class LikeSchema(Schema):
+    class Meta:
+        model = dbm.Like
+        load_instance = True
+        
+    ID = auto_field()
+    ID_Account = auto_field()
+    Time_created = auto_field()
+    
+
+class RatingSchema(Schema):
+    class Meta:
+        model = dbm.Rating
+        load_instance = True
+        
+    ID = auto_field()
+    ID_Account = auto_field()
+    Rating_point = auto_field()
+    Content = auto_field()
+    Time_created = auto_field()

@@ -5,6 +5,7 @@ from .blueprints.utilities import logo, vehicle
 from .blueprints.testing import gets, admin, test, image
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account, post
+from .blueprints.search import postsearch
 from .config import FlaskConfig as fcfg
 from .security import oauth, blocklistJWT
 
@@ -72,5 +73,7 @@ def create_app():
     
     App.register_blueprint(vehicle.bpvehicle, url_prefix='/utilities')
     App.register_blueprint(logo.bplogo, url_prefix='/utilities')
+    
+    App.register_blueprint(postsearch.bppostsearch, url_prefix='/search')
     
     return App
