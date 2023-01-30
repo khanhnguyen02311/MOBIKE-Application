@@ -1,27 +1,16 @@
 from datetime import timedelta
-import platform
 from dotenv import load_dotenv
 from os import environ
 from argon2 import Type as ArgonType
 
-HOME_DIRECTORY = '/var/lib/jenkins/workspace/mobike-development/backend_flask/'
-STORAGE_PATH = '/var/lib/jenkins/workspace/mobike-development/MobikeStorage/'
+HOME_DIRECTORY = '/media/knguyen02311/Data Disk/Learn Programming/ReactDEV/React Native/Mobike-application-stack/backend_flask/'
+STORAGE_PATH = '/media/knguyen02311/Data Disk/Learn Programming/ReactDEV/React Native/Mobike-application-stack/storage/'
 
 load_dotenv(dotenv_path=HOME_DIRECTORY + '.env')
 
 DB_USERNAME = environ.get('DBUSERNAME')
 DB_PASSWORD = environ.get('DBPASSWORD')
 DB_NAME = environ.get('DBNAME')
-
-IsTrueServer = True
-
-if (platform.system() == "Windows"):
-   IsTrueServer = False
-   DB_NAME = "flask"
-   DB_USERNAME = "root"
-   DB_PASSWORD = "123456789"
-   STORAGE_PATH = ".\Storage\\"
-
 
 class FlaskConfig:
    SECRET_KEY = environ.get('SECRET_KEY')
@@ -30,7 +19,7 @@ class FlaskConfig:
    DEBUG_TOOLBAR_ENABLED = True
 
 class SQLAlchemyConfig:
-   SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + (IsTrueServer and "?unix_socket=/var/run/mysqld/mysqld.sock&charset=utf8mb4" or "")
+   SQLALCHEMY_DATABASE_URL = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost/" + DB_NAME + "?unix_socket=/var/run/mysqld/mysqld.sock&charset=utf8mb4"
    ECHO = False
    AUTO_FLUSH = True
    AUTO_COMMIT = False
