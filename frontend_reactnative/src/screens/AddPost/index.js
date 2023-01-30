@@ -13,7 +13,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Container from '../../components/common/container';
 import * as ImagePicker from 'react-native-image-picker';
-import { UploadImage } from '../../backendAPI/HttpRequest';
 import AddPostComponent from '../../components/AddPost';
 
 const AddPost = ({ navigation }) => {

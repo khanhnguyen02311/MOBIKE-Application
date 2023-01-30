@@ -9,7 +9,6 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import { UploadImage } from '../../../backendAPI/HttpRequest';
 import { Avatar, Button, FAB, RadioButton } from 'react-native-paper';
 import React, { useRef, useState, useEffect } from 'react';
 import Container from '../../common/container';

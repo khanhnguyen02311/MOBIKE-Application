@@ -240,7 +240,7 @@ export const BigGetRequest = async (path: String) => {
     return result;
 }
 
-export const UploadImage = async (image: Object) => {
+export const UploadImage = async (path: String, image: Object) => {
     try {
         const formData = new FormData();
         formData.append('file', {
@@ -249,7 +249,7 @@ export const UploadImage = async (image: Object) => {
             name: image.fileName,
         });
         log('formData: ', JSON.stringify(formData));
-        const response = await fetch(GenerateRequestUrl("image/upload/1"), {
+        const response = await fetch(GenerateRequestUrl(path), {
             method: 'POST',
             body: formData,
             headers: { 'Content-Type': 'multipart/form-data' },
@@ -279,10 +279,9 @@ export const ProtectedUploadImage = async (path: string, image: Object, token: S
         });
         const res = await ProcessResponse(response);
         log(res);
-        return res.msg == "Completed"
+        return res
     } catch (error) {
         log('Save Image Error: ' + error);
-        return false;
     }
 }
 
@@ -314,34 +313,6 @@ export const UploadIdentityImage = async (frontImage: Object, backImage: Object,
     } catch (error) {
         log('Set Identity Image Error: ' + error);
         return false;
-    }
-}
-
-export const UploadPost = async (title: string, content: string, pricetag: Number, images: Array<Object>, token: String) => {
-    try {
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('content', content);
-        formData.append('pricetag', pricetag);
-        images.forEach(image => {
-            formData.append('images', {
-                uri: image.uri,
-                type: image.type,
-                name: image.fileName,
-            });
-        });
-        log('Upload post FormData: ', JSON.stringify(formData));
-        const response = await fetch(GenerateRequestUrl("personal/post/create"),{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': 'Bearer ' + token,
-            },
-            body: formData,
-        })
-        return ProcessResponse(await ProcessResponse(response))
-    } catch (error) {
-        log("Upload Post Error: " + error)
     }
 }
 
