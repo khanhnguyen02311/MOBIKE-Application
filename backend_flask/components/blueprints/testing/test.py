@@ -1,4 +1,7 @@
 from flask import Blueprint, request, jsonify, render_template_string
+from flask import Flask, Blueprint, request, jsonify
+from components.dbsettings import new_Scoped_session
+from components import dbmodels as dbm, dbschemas as dbs
 
 
 bptest = Blueprint('bptest', __name__)
@@ -60,3 +63,21 @@ def chat():
 </body>
     ''')
     
+
+@bptest.route('/addstatus', methods=['GET', 'POST'])
+def addpoststatus():
+    Session = new_Scoped_session()
+    try:
+      info = request.get_json()
+      new_status = dbm.PostStatus(
+        Status = info['status'],
+        Information = info['info'],
+        ID_Post = info['post']
+      )
+      Session.add(new_status)
+      Session.commit()
+      return jsonify({"msg": "Completed", "error": "", "info": new_status.ID})
+   
+    except Exception as e:
+      Session.rollback()
+      return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
