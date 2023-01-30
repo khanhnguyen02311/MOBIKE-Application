@@ -95,7 +95,7 @@ def getaddress():
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
    
 
-@bpaccount.route("/address/set", methods = ['POST'])
+@bpaccount.route("/address/add", methods = ['POST'])
 @jwt_required()
 def addaddress():
    current_user = get_jwt_identity()   
@@ -118,6 +118,40 @@ def addaddress():
       Session.add(new_address)
       Session.commit()
       return jsonify({"msg": "Completed", "error": "", "info": schema.dump(new_address)})
+   except Exception as e:
+      Session.rollback()
+      return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
+   
+   
+@bpaccount.route("/address/set/<int:id>", methods = ['PUT'])
+@jwt_required()
+def changeaddress(id):
+   current_user = get_jwt_identity()   
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+   info = request.get_json()
+   schema = dbs.AddressSchema()
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      
+      address = Session.query(dbm.Address).get(id)
+      if address == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Address not found", "info": ""})
+      if address.ID_AccountInfo != acc.ID_AccountInfo:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Can't change other user's address", "info": ""})
+      
+      address.Detail_address = info['detail']
+      address.ID_City = info['city']
+      address.ID_District = info['district']
+      address.ID_Ward = info['ward']
+      Session.commit()
+      return jsonify({"msg": "Completed", "error": "", "info": schema.dump(address)})
    except Exception as e:
       Session.rollback()
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
@@ -175,6 +209,7 @@ def setavatar():
       Session.rollback()
       return jsonify({'msg': 'Incompleted', 'error': str(e)})
 
+
 @bpaccount.route('/identity/set', methods = ['POST'])
 @jwt_required()
 def setidentity():
@@ -205,7 +240,8 @@ def setidentity():
    except Exception as e:
       Session.rollback()
       return jsonify({'msg': 'Incompleted', 'error': str(e)})
-   
+
+
 @bpaccount.route('/avatar/get', methods = ['GET'])
 @jwt_required()
 def getavatar():
@@ -231,7 +267,8 @@ def getavatar():
    except Exception as e:
       Session.rollback()
       return jsonify({'msg': 'Incompleted', 'error': str(e)})
-   
+
+
 @bpaccount.route('/avatar/del', methods = ['DELETE'])
 @jwt_required()
 def delavatar():
