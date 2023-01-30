@@ -1,4 +1,4 @@
-const data = [
+const dataManufacturer = [
     {
         name: "A Honda",
         id: "2",
@@ -445,4 +445,4 @@ const data = [
     },
 ];
 
-export default data;
+export default dataManufacturer;

@@ -25,12 +25,24 @@ const AddressBottomSheetContent = ({
   initialAddress,
 }) => {
   const [addressTree, setAddressTree] = useState([]);
+  const [flag, setFlag] = useState(false);
   const [form, setForm] = useState(
-    (initialAddress.City !== '' && initialAddress) || {
-      City: 'Choose city',
-      District: '',
-      Ward: '',
-    },
+    // (initialAddress.City !== '' && initialAddress) || {
+    //   City: 'Choose city',
+    //   District: '',
+    //   Ward: '',
+    // },
+    // {
+    //   City: 'Choose city',
+    //   District: '',
+    //   Ward: '',
+    // }
+    {
+      City: initialAddress.City || 'Choose city',
+      District: initialAddress.District || '',
+      Ward: initialAddress.Ward || '',
+      DetailAddress: initialAddress.DetailAddress || '',
+    }
   );
   const [IDForm, setIDForm] = useState({
     City: undefined,
@@ -237,7 +249,7 @@ const AddressBottomSheetContent = ({
           <Text style={styles.selectedLabel}>{selected}</Text>
           <ScrollView>{_renderContent(currentData, selected)}</ScrollView>
         </Animated.View>}
-        
+
         {showDetailAddress && <Animated.View
           layout={Layout.stiffness(100).damping(10).duration(300)}
           style={styles.selectedSectionContent}>
@@ -274,6 +286,7 @@ const AddressBottomSheetContent = ({
               console.log(form);
               onSetAddress(form);
               onCloseBottomSheet();
+              setFlag(!flag);
             }}
             label='Done'
             variant='extended'

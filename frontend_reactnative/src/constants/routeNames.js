@@ -8,6 +8,7 @@ export const PROFILE_NAVIGATOR = 'ProfileNavigator';
 export const YOUR_POSTS = 'YourPosts';
 export const YOUR_POSTS_NAVIGATOR = 'YourPostsNavigator';
 export const ADD_POST = 'AddPost';
+export const POST_PREVIEW = 'PostPreview';
 export const LOGIN = 'Login';
 export const REGISTRATION = 'Registration';
 export const FORGOTPASSWORD = 'ForgotPassword';

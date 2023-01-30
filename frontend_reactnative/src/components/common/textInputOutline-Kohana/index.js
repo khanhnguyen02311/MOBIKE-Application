@@ -22,19 +22,19 @@ export default class TextInputOutline extends BaseInput {
      * import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
      * iconClass={FontAwesomeIcon}
      */
-    iconClass: PropTypes.func.isRequired,
+    //iconClass: PropTypes.func.isRequired,
     /*
      * Passed to react-native-vector-icons library as name prop
      */
-    iconName: PropTypes.string.isRequired,
+    //iconName: PropTypes.string.isRequired,
     /*
      * Passed to react-native-vector-icons library as color prop
      */
-    iconColor: PropTypes.string,
+    //iconColor: PropTypes.string,
     /*
      * Passed to react-native-vector-icons library as size prop.
      */
-    iconSize: PropTypes.number,
+    //iconSize: PropTypes.number,
 
     inputPadding: PropTypes.number,
   };
@@ -68,7 +68,7 @@ export default class TextInputOutline extends BaseInput {
       //add when change border of container
       ...props
     } = this.props;
-    const {focusedAnim, value, visibility = true} = this.state;
+    const { focusedAnim, value, visibility = true } = this.state;
 
     handleChangeVisibility = () =>
       this.setState({
@@ -96,26 +96,27 @@ export default class TextInputOutline extends BaseInput {
             // {borderColor: error ? '#f72585' : 'black'},
           ]}
           onLayout={this._onLayout}>
-          <TouchableWithoutFeedback onPress={this.focus}>
-            <Animated.View
-              style={{
-                justifyContent: 'center',
-                padding: inputPadding,
-                transform: [
-                  {
-                    translateX: focusedAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [-15 - iconSize, 0],
-                    }),
-                  },
-                ],
-                paddingVertical: 10,
-                paddingStart: 15,
-                ...iconContainerStyle,
-              }}>
-              <Icon name={iconName} color={iconColor} size={iconSize} />
-            </Animated.View>
-          </TouchableWithoutFeedback>
+          {this.props.iconName && (
+            <TouchableWithoutFeedback onPress={this.focus}>
+              <Animated.View
+                style={{
+                  justifyContent: 'center',
+                  padding: inputPadding,
+                  transform: [
+                    {
+                      translateX: focusedAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [-15 - iconSize, 0],
+                      }),
+                    },
+                  ],
+                  paddingVertical: 10,
+                  paddingStart: 15,
+                  ...iconContainerStyle,
+                }}>
+                <Icon name={iconName} color={iconColor} size={iconSize} />
+              </Animated.View>
+            </TouchableWithoutFeedback>)}
           <TouchableWithoutFeedback onPress={this.focus}>
             <Animated.View
               style={{
@@ -146,10 +147,10 @@ export default class TextInputOutline extends BaseInput {
             {...this.props}
             style={[
               styles.textInput,
-              inputStyle,
               {
                 paddingHorizontal: inputPadding,
               },
+              inputStyle,
             ]}
             value={value}
             onBlur={this._onBlur}

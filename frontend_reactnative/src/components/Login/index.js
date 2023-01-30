@@ -20,6 +20,7 @@ import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Checkbox } from 'react-native-paper';
+import MobikeImage from '../common/image';
 
 const LoginComponent = ({
   onChange,
@@ -37,7 +38,7 @@ const LoginComponent = ({
         <View>
           <Image
             source={require('../../assets/images/MoBike.png')}
-            // source={{uri: "https://cdn.okxe.vn/products/10/1195010/1195010_269768_z3523739714953_dbe5b1b9cad6de61da26b3f89cc054a0_20221205103409_wTzmsSIT_m_400x400.jpg"}}
+            // source={{ uri: "https://abcdavid-knguyen.ddns.net:30001/image/get/1" }}
             style={styles.logo}
           />
 

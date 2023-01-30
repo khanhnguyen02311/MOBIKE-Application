@@ -144,6 +144,9 @@ const EditProfileComponent = () => {
   const [FrontIDImage, setFrontIDImage] = useState();
   const [BacksideIDImage, setBacksideIDImage] = useState();
   const [flag, setFlag] = useState(false);
+  const changeFlag = () => {
+    setFlag(!flag);
+  };
   const launchCamera = (selectedImage) => {
     let options = {
       storageOptions: {
@@ -175,7 +178,7 @@ const EditProfileComponent = () => {
         else {
           setAvatarImage(response.assets[0]);
         }
-        setFlag(!flag);
+        changeFlag();
       }
     });
   };
@@ -213,7 +216,7 @@ const EditProfileComponent = () => {
         else {
           setAvatarImage(response.assets[0]);
         }
-        setFlag(!flag);
+        changeFlag();
       }
     });
   };
@@ -264,6 +267,11 @@ const EditProfileComponent = () => {
 
   const bottomSheet = useRef(null);
   const fall = new Animated.Value(1);
+  const [initialAddress, setInitialAddress] = useState({
+    City: '',
+    District: '',
+    Ward: '',
+  });
   const _renderHeader = () => (
     <View style={styles.header}>
       <View style={styles.panelHeader}>
@@ -271,6 +279,25 @@ const EditProfileComponent = () => {
       </View>
     </View>
   );
+
+  const _renderContent = () => {
+    return (
+      <AddressBottomSheetContent
+        data={addressTree}
+        onCloseBottomSheet={() => changeBottomSheetVisibility(false)}
+        onSetAddress={value => {
+          //setAddress(value.City, value.District, value.Ward);
+          setAddressList([...addressList, {
+            City: value.City,
+            District: value.District,
+            Ward: value.Ward,
+            DetailAddress: value.DetailAddress,
+          }])
+        }}
+        initialAddress={initialAddress}
+      />
+    );
+  }
 
   //Set up address section
   const [showAddress, setShowAddress] = useState(false);
@@ -315,25 +342,6 @@ const EditProfileComponent = () => {
     });
   }
 
-  const _renderContent = () => {
-    return (
-      <AddressBottomSheetContent
-        data={addressTree}
-        onCloseBottomSheet={() => changeBottomSheetVisibility(false)}
-        onSetAddress={value => {
-          //setAddress(value.City, value.District, value.Ward);
-          setAddressList([...addressList, {
-            City: value.City,
-            District: value.District,
-            Ward: value.Ward,
-            DetailAddress: value.DetailAddress,
-          }])
-        }}
-        initialAddress={{ City: '', District: '', Ward: '' }}
-      />
-    );
-  }
-
   const setName = (value) => {
     setForm({ ...form, name: value })
   }
@@ -354,7 +362,6 @@ const EditProfileComponent = () => {
 
   }
 
-  const [flag2, setFlag2] = useState(false);
 
   return (
     <KeyboardAvoidingView style={{ height: '100%' }}
@@ -560,17 +567,8 @@ const EditProfileComponent = () => {
                     {addressList.length > 0 ? (
                       addressList.map((item, index) => {
                         return (
-                          // <TouchableWithoutFeedback
-                          //   key={index}
-                          // >
-                          //   <View>
-                          //     <Text style={{ fontSize: 16, color: '#555' }}>
-                          //       {item.DetailAddress}, {item.Ward}, {item.District}, {item.City}
-                          //     </Text>
-                          //   </View>
-                          // </TouchableWithoutFeedback>
 
-                          <View>
+                          <View key={index}>
                             <View
                               style={{
                                 flexDirection: 'row',
@@ -610,7 +608,7 @@ const EditProfileComponent = () => {
 
                       )) : null}
                     <TouchableWithoutFeedback onPress={() => {
-                      setFlag2(!flag2);
+                      setInitialAddress({});
                       changeBottomSheetVisibility(true);
                     }}>
                       <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginTop: 10 }}>
@@ -620,35 +618,6 @@ const EditProfileComponent = () => {
                         </Text>
                       </View>
                     </TouchableWithoutFeedback>
-                    {/* <TextInputOutline
-                      label={'Address'}
-                      iconClass={MaterialCommunityIcons}
-                      iconName={'map-marker-outline'}
-                      iconColor={'#90B4D3'}
-                      inputPadding={6}
-                      borderWidthtoTop={0}
-                      onTouchStart={() => {
-                        changeBottomSheetVisibility(true);
-                      }}
-                      editable={!isBottomSheetVisible}
-                      value={
-                        form.address.City === ''
-                          ? ''
-                          : form.address.Ward +
-                          ', ' +
-                          form.address.District +
-                          ', ' +
-                          form.address.City
-                      }
-                      containerStyle={{
-                        height: 44,
-                        borderColor: '#555',
-                      }}
-                      labelStyle={{ fontSize: 12 }}
-                      inputStyle={{ fontSize: 16 }}
-                      labelContainerStyle={{ padding: 13 }}
-                      iconSize={20}
-                    /> */}
                   </Animated.View>
                 </FilterPropFrameComponent>
 
