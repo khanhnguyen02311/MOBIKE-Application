@@ -33,8 +33,8 @@ const widthScreen = Dimensions.get('window').width;
 const MAX_IMAGE = 8;
 const AddPostComponent = ({ }) => {
     const { navigate } = useNavigation();
-    const onNavigate = () => {
-        navigate(POST_PREVIEW);
+    const onNavigate = (form) => {
+        navigate(POST_PREVIEW, { form: form });
     }
     const [form, setForm] = useState({
         brand: '',
@@ -507,7 +507,7 @@ const AddPostComponent = ({ }) => {
     const OnPreview = () => {
         console.log("Preview: " + JSON.stringify(form));
         console.log("Address: " + JSON.stringify(Addresses));
-        // onNavigate();
+        onNavigate();
     }
 
     return (
