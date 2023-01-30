@@ -34,7 +34,7 @@ import { KeyboardAvoidingView } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FilterPropFrameComponent from '../../FiltersPopUp/FilterPropFrame';
-import { SetProfileImage, SetPersonalInfo, SetIdentityImage } from '../../../backendAPI';
+import { SetProfileImage, SetPersonalInfo, SetIdentityImage, SetPersonalAddress } from '../../../backendAPI';
 import { UpdatePersonalInfo } from '../../../services/TokenStorage';
 
 const heightScreen = Dimensions.get('window').height;
@@ -82,12 +82,12 @@ const EditProfileComponent = () => {
         idfrontImage: personalInfo.ID_Image_Identity_Front || 0,
         idbackImage: personalInfo.ID_Image_Identity_Back || 0,
       })
+      const temp = [];
       for (index in personalInfo.Addresses) {
         console.log("Adding address: " + index + " to address list")
         const address = personalInfo.Addresses[index];
-        const temp = [];
         temp[index] = {
-          ID: index,
+          ID: address.ID,
           IsTemporary: false,
           IsDeleted: false,
           City: address.ID_City,
@@ -95,9 +95,9 @@ const EditProfileComponent = () => {
           Ward: address.ID_Ward,
           DetailAddress: address.Detail_address,
         }
-        console.log("Temp: " + JSON.stringify(temp[index]))
-        setAddressList(temp)
       }
+      console.log("Temp: " + JSON.stringify(temp))
+      setAddressList(Object.values(temp))
     }
   }, [])
 
@@ -120,7 +120,7 @@ const EditProfileComponent = () => {
     console.log("Address List changed: " + JSON.stringify(addressList))
   }, [addressList])
 
-  const onBỉthdateChange = (event, selectedDate) => {
+  const onBirthdateChange = (event, selectedDate) => {
     let currentDate;
     if (selectedDate) {
       currentDate =
@@ -400,6 +400,10 @@ const EditProfileComponent = () => {
       const IDImageResponse = await SetIdentityImage(FrontIDImage, BackIDImage)
       console.log("ID image upload " + (IDImageResponse ? "success" : "failed"))
     }
+
+    console.log("Address list: " + JSON.stringify(addressList))
+    const AddressResponse = await SetPersonalAddress(addressList)
+    console.log("Set address " + (AddressResponse ? "success" : "failed"))
 
     await UpdatePersonalInfo()
   }
@@ -687,7 +691,7 @@ const EditProfileComponent = () => {
               }
               mode={'date'}
               display="default"
-              onChange={onBỉthdateChange}
+              onChange={onBirthdateChange}
             />
           )
         }

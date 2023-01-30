@@ -136,4 +136,36 @@ export const SetIdentityImage = async (frontImage: Object, backImage: Object) =>
     return await UploadIdentityImage(frontImage, backImage, token);
 }
 
+export const SetPersonalAddress = async (addresses: Array) => {
+    const token = getToken();
+    const pros = [];
+    addresses.forEach(address => {
+        if (!address.IsTemporary && address.IsDeleted) {
+            console.log("Deleting address: " + JSON.stringify(address));
+            pros.push(HttpRequest.ProtectedDeleteRequest("personal/address/del/" + address.ID, token));
+        } else if (!address.IsTemporary && !address.IsDeleted) {
+            console.log("Updating address: " + JSON.stringify(address));
+            const body = {
+                detail: address.DetailAddress,
+                city: address.City,
+                district: address.District,
+                ward: address.Ward,
+            }
+            pros.push(HttpRequest.ProtectedPutRequest("personal/address/set/" + address.ID, body, token));
+        }
+        else if (address.IsTemporary && !address.IsDeleted) {
+            console.log("Adding address: " + JSON.stringify(address));
+            const body = {
+                detail: address.DetailAddress,
+                city: address.City,
+                district: address.District,
+                ward: address.Ward,
+            }
+            pros.push(HttpRequest.ProtectedPostRequest("personal/address/add", body, token));
+        }
+    });
+    const res = await Promise.all(pros);
+    return res.every(r => r.msg == "Completed");
+}
+
 export default { me, isEmailExist, isUsernameExist, isPhoneExist };

@@ -57,6 +57,7 @@ const PostRequest = async (path: String, body: Object, retry: Number = 0) => {
             }
         } else {
             log("Fetch Error:" + error)
+            return false;
         }
     }
 };
@@ -85,8 +86,8 @@ const GetRequest = async (path: String, retry: Number = 0) => {
             }
         } else {
             log("Fetch Error:" + error)
+            return false;
         }
-
     }
 };
 
@@ -117,6 +118,7 @@ const ProtectedPostRequest = async (path: String, body: Object, token: String, r
             }
         } else {
             log("Fetch Error:" + error)
+            return false;
         }
     }
 };
@@ -146,9 +148,72 @@ const ProtectedGetRequest = async (path: String, token: String, retry: Number = 
             }
         } else {
             log("Fetch Error:" + error)
+            return false;
         }
     }
 };
+
+const ProtectedPutRequest = async (path: String, body: Object, token: String, retry: Number = 0) => {
+    try {
+        const url = GenerateRequestUrl(path);
+        log("Protected Put request url: " + url);
+        const response = await fetch(
+            url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify(body),
+        });
+        return await ProcessResponse(response);
+    } catch (error) {
+        if (error instanceof TypeError && error.message === "Network request failed") {
+            retry += 1;
+            log("ProtectedPutRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
+            if (retry <= maxRetry) {
+                return await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(ProtectedPutRequest(path, body, token, retry));
+                    }, retryInterval);
+                });
+            }
+        } else {
+            log("Fetch Error:" + error)
+            return false;
+        }
+    }
+}
+
+const ProtectedDeleteRequest = async (path: String, token: String, retry: Number = 0) => {
+    try {
+        const url = GenerateRequestUrl(path);
+        log("Protected Delete request url: " + url);
+        const response = await fetch(
+            url, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+            },
+        });
+        return await ProcessResponse(response);
+    } catch (error) {
+        if (error instanceof TypeError && error.message === "Network request failed") {
+            retry += 1;
+            log("ProtectedDeleteRequest: Network request failed ( " + path + " ), retrying (" + retry + ")...");
+            if (retry <= maxRetry) {
+                return await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(ProtectedDeleteRequest(path, token, retry));
+                    }, retryInterval);
+                });
+            }
+        } else {
+            log("Fetch Error:" + error)
+            return false;
+        }
+    }
+}
 
 export const BigGetRequest = async (path: String) => {
     const count = await GetRequest("gets/count/" + path);
@@ -280,4 +345,10 @@ export const UploadPost = async (title: string, content: string, pricetag: Numbe
     }
 }
 
-export default { PostRequest, GetRequest, ProtectedPostRequest, ProtectedGetRequest };
+export default {
+    GetRequest,
+    PostRequest,
+    ProtectedGetRequest,
+    ProtectedPostRequest,
+    ProtectedPutRequest,
+    ProtectedDeleteRequest };
