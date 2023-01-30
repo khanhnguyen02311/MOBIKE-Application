@@ -1,11 +1,18 @@
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
 
-export const {width, height} = Dimensions.get('window');
+export const { width, height } = Dimensions.get('window');
 
-const CarouselItem = ({item}) => {
-  const {url} = item;
-  return <Image source={url} style={styles.image} />;
+const CarouselItem = ({ item, isUri }) => {
+  if (isUri) {
+    const { uri } = item;
+    return (<Image source={{ uri: uri }} style={[styles.image, { height: width / 1.5 }]} />);
+  }
+  else {
+    const { url } = item;
+    return (<Image source={url} style={styles.image} />);
+  }
+
 };
 
 const styles = StyleSheet.create({
@@ -18,7 +25,7 @@ const styles = StyleSheet.create({
     // marginVertical: 10,
     //marginHorizontal: 25,
     shadowColor: 'black',
-    shadowOffset: {width: 0, height: 0.5},
+    shadowOffset: { width: 0, height: 0.5 },
     shadowOpacity: 0.5,
     shadowRadius: 3,
     //elevation: 8,
@@ -42,7 +49,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 22,
     shadowColor: 'black',
-    shadowOffset: {width: 0.8, height: 0.8},
+    shadowOffset: { width: 0.8, height: 0.8 },
     shadowOpacity: 1,
     shadowRadius: 3,
     marginBottom: 5,
@@ -54,7 +61,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 12,
     shadowColor: 'black',
-    shadowOffset: {width: 0.8, height: 0.8},
+    shadowOffset: { width: 0.8, height: 0.8 },
     shadowOpacity: 1,
     shadowRadius: 3,
     elevation: 5,

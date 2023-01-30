@@ -4,10 +4,12 @@ import PostPreviewComponent from '../../components/PostPreviewComponent';
 
 const PostPreview = ({
     navigation,
-    route: { params: { form } },
+    route,
 }) => {
+    const { form } = route.params;
+    console.log('Hello');
     return (
-        <PostPreviewComponent form={form} />
+         <PostPreviewComponent form={form} />
     )
 };
 

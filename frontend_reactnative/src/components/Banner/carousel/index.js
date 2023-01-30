@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import CarouselItem from '../carouselItem';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-const Carousel = ({data}) => {
+const Carousel = ({ data, isUri }) => {
   const scrollX = new Animated.Value(0);
   let position = Animated.divide(scrollX, width);
   if (data && data.length) {
@@ -28,11 +28,11 @@ const Carousel = ({data}) => {
           decelerationRate={'normal'}
           showsHorizontalScrollIndicator={false}
           renderItem={({item}) => {
-            return <CarouselItem item={item} />;
+            return <CarouselItem item={item} isUri={isUri} />;
           }}
           onScroll={Animated.event(
-            [{nativeEvent: {contentOffset: {x: scrollX}}}],
-            {useNativeDriver: false},
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            { useNativeDriver: false },
           )}
         />
 

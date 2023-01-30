@@ -33,9 +33,7 @@ const widthScreen = Dimensions.get('window').width;
 const MAX_IMAGE = 8;
 const AddPostComponent = ({ }) => {
     const { navigate } = useNavigation();
-    const onNavigate = (form) => {
-        navigate(POST_PREVIEW, { form: form });
-    }
+
     const [form, setForm] = useState({
         brand: '',
         lineup: '',
@@ -50,6 +48,7 @@ const AddPostComponent = ({ }) => {
             DetailAddress: '',
         },
         images: [],
+        price: undefined,
     });
 
     const Addresses = Object.values(Store.getState().personalInfo.Addresses)
@@ -70,6 +69,12 @@ const AddPostComponent = ({ }) => {
         changeImageBottomSheetVisibility(false);
         changeAddressBottomSheetVisibility(false);
     }
+
+    // //Price
+    // const formatPrice = (price) => {
+    //     if (price == undefined) return '';
+    //     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    // }
 
     //Brand - Lineup
     const bottomSheet = useRef(null);
@@ -504,7 +509,11 @@ const AddPostComponent = ({ }) => {
         UploadImage(form.images[0]);
     };
 
-    const OnPreview = () => {
+    const onNavigate = () => {
+        navigate(POST_PREVIEW, { form: form });
+    };
+
+    const onPreview = () => {
         console.log("Preview: " + JSON.stringify(form));
         console.log("Address: " + JSON.stringify(Addresses));
         onNavigate();
@@ -981,7 +990,7 @@ const AddPostComponent = ({ }) => {
 
             <FAB
                 onPress={() => {
-                    OnPreview();
+                    onPreview();
                 }}
                 label='Preview'
                 variant='extended'
