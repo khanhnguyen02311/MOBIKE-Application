@@ -51,12 +51,16 @@ const AddPostComponent = ({ }) => {
         price: undefined,
     });
 
+    const [errors, setErrors] = useState({
+        price: '',
+
+    });
+
     const Addresses = Object.values(Store.getState().personalInfo.Addresses)
     const cityNameFromID = Store.getState().locations.CityNameFromID;
     const districtNameFromID = Store.getState().locations.DistrictNameFromID;
     const wardNameFromID = Store.getState().locations.WardNameFromID;
 
-    const [errors, setErrors] = useState({});
     const onChange = ({ name, value }) => {
         setForm({ ...form, [name]: value });
     };
@@ -503,35 +507,35 @@ const AddPostComponent = ({ }) => {
     };
 
     const onPreview = async () => {
-        console.log("Preview: " + JSON.stringify(form));
-        console.log("Address: " + JSON.stringify(Addresses));
-        if (form.address && form.brand && form.lineup && form.type && form.condition && form.color && form.price && form.images.length > 0) {
-            if (!isNaN(form.address.ID) && !isNaN(form.price) && !isNaN(form.brand) && !isNaN(form.lineup) && !isNaN(form.type) && !isNaN(form.condition) && !isNaN(form.color)) {
-                console.log("Posting")
-                const postres = await UploadPost(
-                    form.images,
-                    form.title || 'No title',
-                    form.content || 'No content',
-                    form.price || '-1',
-                    form.address.ID,
-                    form.name || 'No name',
-                    form.odometer || '-1',
-                    form.licensePlate || 'No license plate',
-                    form.manufacturerYear || '-1',
-                    form.cubicPower || '-1',
-                    form.brand,
-                    form.lineup,
-                    form.type,
-                    form.condition,
-                    form.color,
-                )
-                console.log("Post res: " + JSON.stringify(postres));
-            } else {
-                console.log("ID is not a number")
-            }
-        } else {
-            console.log("Missing data")
-        }
+        // console.log("Preview: " + JSON.stringify(form));
+        // console.log("Address: " + JSON.stringify(Addresses));
+        // if (form.address && form.brand && form.lineup && form.type && form.condition && form.color && form.price && form.images.length > 0) {
+        //     if (!isNaN(form.address.ID) && !isNaN(form.price) && !isNaN(form.brand) && !isNaN(form.lineup) && !isNaN(form.type) && !isNaN(form.condition) && !isNaN(form.color)) {
+        //         console.log("Posting")
+        //         const postres = await UploadPost(
+        //             form.images,
+        //             form.title || 'No title',
+        //             form.content || 'No content',
+        //             form.price || '-1',
+        //             form.address.ID,
+        //             form.name || 'No name',
+        //             form.odometer || '-1',
+        //             form.licensePlate || 'No license plate',
+        //             form.manufacturerYear || '-1',
+        //             form.cubicPower || '-1',
+        //             form.brand,
+        //             form.lineup,
+        //             form.type,
+        //             form.condition,
+        //             form.color,
+        //         )
+        //         console.log("Post res: " + JSON.stringify(postres));
+        //     } else {
+        //         console.log("ID is not a number")
+        //     }
+        // } else {
+        //     console.log("Missing data")
+        // }
 
 
         onNavigate();
