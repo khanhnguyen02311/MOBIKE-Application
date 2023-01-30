@@ -17,6 +17,7 @@
     "@react-navigation/native-stack": "^6.9.0",
     "@reduxjs/toolkit": "^1.8.5",
     "axios": "^0.26.0",
+    "popup-ui": "^1.2.2",
     "react": "18.1.0",
     "react-devtools": "^4.27.1",
     "react-native": "0.70.2",

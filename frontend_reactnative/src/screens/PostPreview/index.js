@@ -3,9 +3,12 @@ import { Text, View } from 'react-native';
 import PostPreviewComponent from '../../components/PostPreviewComponent';
 
 const PostPreview = ({
-    params,
-}) => (
-    <PostPreviewComponent />
-);
+    navigation,
+    route: { params: { form } },
+}) => {
+    return (
+        <PostPreviewComponent form={form} />
+    )
+};
 
 export default PostPreview;
