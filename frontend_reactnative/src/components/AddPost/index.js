@@ -49,24 +49,14 @@ const AddPostComponent = ({ }) => {
             Ward: '',
             DetailAddress: '',
         },
+        images: [],
     });
-    const userAddress = [{
-        City: '1',
-        District: '1',
-        Ward: '1',
-        DetailAddress: '10/34, khu pho 5',
-    }, {
-        City: '2',
-        District: '2',
-        Ward: '2',
-        DetailAddress: '10/34, khu pho 6',
-    },
-    {
-        City: '3',
-        District: '3',
-        Ward: '3',
-        DetailAddress: '10/34, khu pho 7',
-    }]
+
+    const Addresses = Object.values(Store.getState().personalInfo.Addresses)
+    const cityNameFromID = Store.getState().locations.CityNameFromID;
+    const districtNameFromID = Store.getState().locations.DistrictNameFromID;
+    const wardNameFromID = Store.getState().locations.WardNameFromID;
+
     const [errors, setErrors] = useState({});
     const onChange = ({ name, value }) => {
         setForm({ ...form, [name]: value });
@@ -287,8 +277,11 @@ const AddPostComponent = ({ }) => {
     };
 
     //Image
-    const [Images, setImages] = useState([]);
     const [flag, setFlag] = useState(false);
+
+    const onSetImages = (images) => {
+        setForm({ ...form, images: images });
+    };
 
     const launchCamera = () => {
         let options = {
@@ -311,11 +304,11 @@ const AddPostComponent = ({ }) => {
                 const source = { uri: response.uri };
                 console.log('response', JSON.stringify(response));
 
-                let tmp = Images;
+                let tmp = form.images;
                 for (let i = 0; i < response.assets.length; i++) {
                     tmp.push(response.assets[i]);
                 }
-                setImages(tmp);
+                onSetImages(tmp);
                 setFlag(!flag);
             }
         });
@@ -323,7 +316,7 @@ const AddPostComponent = ({ }) => {
 
     const launchImageLibrary = () => {
         let options = {
-            selectionLimit: MAX_IMAGE - Images.length,
+            selectionLimit: MAX_IMAGE - form.images.length,
             storageOptions: {
                 skipBackup: true,
                 path: 'images',
@@ -344,30 +337,29 @@ const AddPostComponent = ({ }) => {
                 const source = { uri: response.uri };
                 console.log('response', JSON.stringify(response));
 
-                var tmp = Images;
+                var tmp = form.images;
                 for (let i = 0; i < response.assets.length; i++) {
                     tmp.push(response.assets[i]);
                 }
-                setImages(tmp);
+                onSetImages(tmp);
                 setFlag(!flag);
             }
         });
     };
 
     const deleteImage = (index) => {
-        let tmp = Images;
+        let tmp = form.images;
         tmp.splice(index, 1);
-        setImages(tmp);
+        onSetImages(tmp);
         setFlag(!flag);
     };
 
-
     const RenderFileUri = (images) => (
         //console.log('fileUri', Images);
-        images.map((item, index) => {
+        form.images.map((item, index) => {
             if (item) {
                 return (
-                    <Animated.View layout={Layout.stiffness(100).damping(10).duration(300)} style={{ position: 'relative' }}>
+                    <Animated.View key={index} layout={Layout.stiffness(100).damping(10).duration(300)} style={{ position: 'relative' }}>
                         <MaterialIcons name='cancel' size={18} color='#555'
                             style={{ position: 'absolute', top: 0, right: 0, zIndex: 1, backgroundColor: '#fff', borderRadius: 50 }}
                             onPress={() => { deleteImage(index) }} />
@@ -385,7 +377,6 @@ const AddPostComponent = ({ }) => {
                 );
         })
     );
-
 
     const imageBottomSheet = useRef(null);
     const changeImageBottomSheetVisibility = visibility => {
@@ -419,7 +410,8 @@ const AddPostComponent = ({ }) => {
             }}>Choose address</Text>
             <ScrollView>
                 {
-                    userAddress.map((item, index) => {
+                    Addresses.map((item, index) => {
+                        console.log("Rendering address: " + JSON.stringify(item))
                         let flag = false;
                         if (item.City == form.address.City && item.District == form.address.District && item.Ward == form.address.Ward && item.DetailAddress == form.address.DetailAddress)
                             flag = true;
@@ -444,7 +436,7 @@ const AddPostComponent = ({ }) => {
                                                 {item.DetailAddress}
                                             </Text>
                                             <Text style={{ color: flag ? colors.primary : 'black' }}>
-                                                {wardNameFromID(item.Ward)}, {districtNameFromID(item.District)}, {cityNameFromID(item.City)}
+                                                {wardNameFromID(item.ID_Ward)}, {districtNameFromID(item.ID_District)}, {cityNameFromID(item.ID_City)}
                                             </Text>
 
 
@@ -485,33 +477,38 @@ const AddPostComponent = ({ }) => {
         });
     };
 
-    const cityNameFromID = (ID) => {
-        const city = Store.getState().locations.Cities.find((item) => item.ID == ID);
-        if (city)
-            return city.Name;
-        else return '';
-    };
+    // const cityNameFromID = (ID) => {
+    //     const city = Store.getState().locations.Cities.find((item) => item.ID == ID);
+    //     if (city)
+    //         return city.Name;
+    //     else return '';
+    // };
 
-    const districtNameFromID = (ID) => {
-        const district = Store.getState().locations.Districts.find((item) => item.ID == ID);
-        if (district)
-            return district.Name;
-        else return '';
-    };
+    // const districtNameFromID = (ID) => {
+    //     const district = Store.getState().locations.Districts.find((item) => item.ID == ID);
+    //     if (district)
+    //         return district.Name;
+    //     else return '';
+    // };
 
-    const wardNameFromID = (ID) => {
-        const ward = Store.getState().locations.Wards.find((item) => item.ID == ID);
-        if (ward)
-            return ward.Name;
-        else return '';
-    };
+    // const wardNameFromID = (ID) => {
+    //     const ward = Store.getState().locations.Wards.find((item) => item.ID == ID);
+    //     if (ward)
+    //         return ward.Name;
+    //     else return '';
+    // };
 
     const uploadPost = () => {
         console.log('upload post');
-        console.log('fileUri', Images);
-        UploadImage(Images[0]);
+        console.log('fileUri', form.images);
+        UploadImage(form.images[0]);
     };
 
+    const OnPreview = () => {
+        console.log("Preview: " + JSON.stringify(form));
+        console.log("Address: " + JSON.stringify(Addresses));
+        // onNavigate();
+    }
 
     return (
         <View style={{ height: '100%' }}>
@@ -829,11 +826,11 @@ const AddPostComponent = ({ }) => {
                         {/* Image */}
                         <View>
                             <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Image</Text>
-                            {Images.length > 0 ?
+                            {form.images.length > 0 ?
                                 (
                                     <Animated.View layout={Layout.stiffness(100).damping(10).duration(300)} style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                                        {RenderFileUri(Images)}
-                                        {Images.length < 8 && Images.length > 0 && (
+                                        {RenderFileUri(form.images)}
+                                        {form.images.length < 8 && form.images.length > 0 && (
                                             <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true) }}>
                                                 <Animated.View layout={Layout.stiffness(100).damping(10).duration(300)} style={{
                                                     width: (widthScreen - 40) / 4 - 10,
@@ -984,8 +981,7 @@ const AddPostComponent = ({ }) => {
 
             <FAB
                 onPress={() => {
-                    console.log(form);
-                    onNavigate();
+                    OnPreview();
                 }}
                 label='Preview'
                 variant='extended'
