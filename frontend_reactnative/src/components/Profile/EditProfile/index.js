@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
+import { UploadImage } from '../../../backendAPI/HttpRequest';
 import { Avatar, Button, FAB, RadioButton } from 'react-native-paper';
 import React, { useRef, useState, useEffect } from 'react';
 import Container from '../../common/container';
@@ -22,7 +23,7 @@ import Animated, { FadeInUp, Layout, SlideInLeft } from 'react-native-reanimated
 import BottomSheet from 'reanimated-bottom-sheet';
 import AddressBottomSheetContent from './AddressBottomSheetContent';
 import Store from '../../../redux/store';
-import { getPersonalInfo } from '../../../backendAPI';
+import { GetPersonalInfo } from '../../../backendAPI';
 import AddPost from './../../../screens/AddPost/index';
 import { useSelector } from 'react-redux';
 import { setBirthdate, setName, setIdentification_number, setPhone_number } from '../../../redux/clientDatabase/personalInfo';
@@ -30,7 +31,11 @@ import colors from '../../../assets/theme/colors';
 import { Image } from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 import { KeyboardAvoidingView } from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FilterPropFrameComponent from '../../FiltersPopUp/FilterPropFrame';
+import { SetProfileImage, SetPersonalInfo, SetIdentityImage } from '../../../backendAPI';
+import { UpdatePersonalInfo } from '../../../services/TokenStorage';
 
 const heightScreen = Dimensions.get('window').height;
 
@@ -43,30 +48,15 @@ const EditProfileComponent = () => {
     Wards: Store.getState().locations.Wards,
   }
 
-  const [personalInfoData, setPersonalInfoData] = useState({
-    Birthdate: undefined,
-    Gender: undefined,
-    Identification_number: undefined,
-    Name: undefined,
-    Phone_number: undefined,
-    Addresses: {}
-  })
-
   const [form, setForm] = useState({
     name: '',
     phone_number: '',
+    gender: 0,
     identification_number: '',
     birthday: '',
-    IDAddress: {
-      City: undefined,
-      District: undefined,
-      Ward: undefined,
-    },
-    address: {
-      City: '',
-      District: '',
-      Ward: '',
-    },
+    profileImage: 0,
+    idfrontImage: 0,
+    idbackImage: 0,
   });
 
   const [errors, setErrors] = useState();
@@ -78,42 +68,59 @@ const EditProfileComponent = () => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    setPersonalInfoData(Store.getState().personalInfo)
-  }, [])
-
-  useEffect(() => {
-    console.log("Setting personal Info Data: " + JSON.stringify(personalInfoData))
-    if (!personalInfoData) return;
-    try {
-      let address = personalInfoData.Addresses["0"]
+    const personalInfo = Store.getState().personalInfo;
+    console.log("Personal Info: " + JSON.stringify(personalInfo))
+    if (personalInfo) {
       setForm({
         ...form,
-        name: personalInfoData.Name || "",
-        phone_number: personalInfoData.Phone_number || "",
-        identification_number: personalInfoData.Identification_number || "",
-        birthday: personalInfoData.Birthdate || "",
-        IDAddress: {
+        name: personalInfo.Name || "",
+        phone_number: personalInfo.Phone_number || "",
+        gender: personalInfo.Gender || 0,
+        identification_number: personalInfo.Identification_number || "",
+        birthday: personalInfo.Birthdate || "",
+        profileImage: personalInfo.ID_Image_Profile || 0,
+        idfrontImage: personalInfo.ID_Image_Identity_Front || 0,
+        idbackImage: personalInfo.ID_Image_Identity_Back || 0,
+      })
+      for (index in personalInfo.Addresses) {
+        console.log("Adding address: " + index + " to address list")
+        const address = personalInfo.Addresses[index];
+        const temp = [];
+        temp[index] = {
+          ID: index,
+          IsTemporary: false,
+          IsDeleted: false,
           City: address.ID_City,
           District: address.ID_District,
           Ward: address.ID_Ward,
-        },
-        address: {
-          City: cityNameFromID(address.ID_City),
-          District: districtNameFromID(address.ID_District),
-          Ward: wardNameFromID(address.ID_Ward),
+          DetailAddress: address.Detail_address,
         }
-      })
-    } catch (error) {
-      console.log("Edit Profile error: " + error)
+        console.log("Temp: " + JSON.stringify(temp[index]))
+        setAddressList(temp)
+      }
     }
-    console.log("Update personal data successfully!")
-  }, [personalInfoData])
+  }, [])
+
+  const getNewAddressID = () => {
+    if (addressList.length == 0) {
+      return 1;
+    }
+    // Find max ID
+    let maxID = 0;
+    for (index in addressList) {
+      const address = addressList[index];
+      if (address.ID > maxID) {
+        maxID = address.ID;
+      }
+    }
+    return maxID + 1;
+  }
 
   useEffect(() => {
-    console.log("Form: " + JSON.stringify(form))
-  }, [form])
+    console.log("Address List changed: " + JSON.stringify(addressList))
+  }, [addressList])
 
-  const onDateChange = (event, selectedDate) => {
+  const onBỉthdateChange = (event, selectedDate) => {
     let currentDate;
     if (selectedDate) {
       currentDate =
@@ -142,7 +149,7 @@ const EditProfileComponent = () => {
   //Set up upload identification number image
   const [Images, setImages] = useState([]);
   const [FrontIDImage, setFrontIDImage] = useState();
-  const [BacksideIDImage, setBacksideIDImage] = useState();
+  const [BackIDImage, setBackIDImage] = useState();
   const [flag, setFlag] = useState(false);
   const changeFlag = () => {
     setFlag(!flag);
@@ -173,7 +180,7 @@ const EditProfileComponent = () => {
           setFrontIDImage(response.assets[0]);
         }
         else if (selectedImage == 'back') {
-          setBacksideIDImage(response.assets[0]);
+          setBackIDImage(response.assets[0]);
         }
         else {
           setAvatarImage(response.assets[0]);
@@ -211,7 +218,7 @@ const EditProfileComponent = () => {
           setFrontIDImage(response.assets[0]);
         }
         else if (selectedImage == 'back') {
-          setBacksideIDImage(response.assets[0]);
+          setBackIDImage(response.assets[0]);
         }
         else {
           setAvatarImage(response.assets[0]);
@@ -247,6 +254,7 @@ const EditProfileComponent = () => {
     imageBottomSheet.current.snapTo(visibility ? 0 : 1);
     setImageBottomSheetVisible(visibility);
   };
+
   const _renderContentImage = () => {
     return (
       <View style={{ backgroundColor: '#fff', height: '100%', alignItems: 'center' }}>
@@ -255,8 +263,7 @@ const EditProfileComponent = () => {
         <Button mode='contained' onPress={() => changeImageBottomSheetVisibility(false)} style={{ width: '80%', marginVertical: 10, backgroundColor: '#BBB' }}>Cancel</Button>
       </View>
     );
-  }
-
+  };
 
   //set up address picker
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
@@ -307,10 +314,11 @@ const EditProfileComponent = () => {
   };
 
   const [addressList, setAddressList] = useState([]);
+  const [currentAddress, setCurrentAddress] = useState();
 
 
   const cityNameFromID = (ID) => {
-    let city = locations.Cities.find(city => city.ID === ID)
+    const city = locations.Cities.find(city => city.ID === ID)
     if (city) return city.Name
     else return "cne"
   }
@@ -327,20 +335,37 @@ const EditProfileComponent = () => {
     else return "wne"
   }
 
-  const setAddress = (cityID, districtID, wardID) => {
-    setForm({
-      ...form,
-      IDAddress: {
-        City: cityID,
-        District: districtID,
-        Ward: wardID,
-      }, address: {
-        City: cityNameFromID(cityID),
-        District: districtNameFromID(districtID),
-        Ward: wardNameFromID(wardID),
-      }
-    });
+  const OnAddressEditFinish = (address) => {
+    console.log("Edit address finish " + JSON.stringify(address));
+    const newAddressList = Array.from(addressList);
+    newAddressList[address.ID] = address;
+    setAddressList(newAddressList);
   }
+
+  const OnAddNewAddess = () => {
+    console.log("Add new address");
+    let newAddress = {
+      ID: getNewAddressID(),
+      IsTemporary: true,
+      IsDeleted: false,
+      City: 0,
+      District: undefined,
+      Ward: undefined,
+      DetailAddress: "",
+    }
+    setCurrentAddress(newAddress);
+    changeBottomSheetVisibility(true);
+  }
+
+  const OnAddressEdit = (ID) => {
+    console.log("Edit address " + ID);
+    setCurrentAddress(addressList.find(address => address.ID === ID));
+    changeBottomSheetVisibility(true);
+  }
+
+  useEffect(() => {
+    console.log("Address list changed: " + JSON.stringify(addressList))
+  }, [addressList])
 
   const setName = (value) => {
     setForm({ ...form, name: value })
@@ -358,10 +383,26 @@ const EditProfileComponent = () => {
     setForm({ ...form, identification_number: value })
   }
 
-  const Save = () => {
+  const Save = async () => {
+    console.log("Address List: " + JSON.stringify(addressList))
+    if (avatarImage) {
+      console.log("Uploading profile image: " + JSON.stringify(avatarImage))
+      const ProfileImageResponse = await SetProfileImage(avatarImage)
+      console.log("Image upload " + (ProfileImageResponse ? "success" : "failed"))
+    }
 
+    console.log("Personal info: " + JSON.stringify(form))
+    const PersonalInfoResponse = await SetPersonalInfo(form.name, form.birthday, form.gender, form.phone_number, form.identification_number)
+    console.log("Set personal info " + (PersonalInfoResponse ? "success" : "failed"))
+
+    if (FrontIDImage && BackIDImage) {
+      console.log("Uploading ID image: " + JSON.stringify(FrontIDImage) + " " + JSON.stringify(BackIDImage))
+      const IDImageResponse = await SetIdentityImage(FrontIDImage, BackIDImage)
+      console.log("ID image upload " + (IDImageResponse ? "success" : "failed"))
+    }
+
+    await UpdatePersonalInfo()
   }
-
 
   return (
     <KeyboardAvoidingView style={{ height: '100%' }}
@@ -385,7 +426,7 @@ const EditProfileComponent = () => {
             >
               {
                 avatarImage ? (<Avatar.Image size={80} source={{ uri: avatarImage.uri }} style={{ alignSelf: 'center' }} />)
-                  : (<Avatar.Image size={80} source={require('../../../assets/images/motor.png')} style={{ alignSelf: 'center' }} />)
+                  : (<Avatar.Image size={80} source={(form.profileImage != 0) ? { uri: "https://abcdavid-knguyen.ddns.net:30001/image/get/" + form.profileImage } : require('../../../assets/images/motor.png')} style={{ alignSelf: 'center' }} />)
               }
               <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true); setSelectedImage('avatar') }}>
                 <Text style={{ alignSelf: 'center', color: colors.primary, fontWeight: '500', marginTop: 5 }}>Change avatar</Text>
@@ -518,7 +559,7 @@ const EditProfileComponent = () => {
                     iconSize={20}
                     keyboardType={'number-pad'}
                     onChangeText={value => {
-                      setIdentificationNumber({ name: 'identification number', value });
+                      setIdentificationNumber(value);
                     }}
                     editable={!isBottomSheetVisible && !isImageBottomSheetVisible}
                   />
@@ -527,11 +568,12 @@ const EditProfileComponent = () => {
                     <View style={{ alignItems: 'center', width: '48%' }}>
                       <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true); setSelectedImage('front') }}>
                         {FrontIDImage ? (<Image source={{ uri: FrontIDImage.uri }}
-                          style={styles.images} />) : (
-                          <View style={[styles.images, { justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: '#f5f5f5', paddingHorizontal: 10 }]}>
-                            <Entypo name="camera" size={36} color={colors.primary} />
-                            <Text style={{ fontSize: 10, color: '#555', textAlign: 'center', marginTop: 5 }}>Upload the front side of your ID card</Text>
-                          </View>)}
+                          style={styles.images} />) : (form.idfrontImage ? <Image source={{ uri: "https://abcdavid-knguyen.ddns.net:30001/image/get/" + form.idfrontImage }}
+                            style={styles.images} /> : (
+                            <View style={[styles.images, { justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: '#f5f5f5', paddingHorizontal: 10 }]}>
+                              <Entypo name="camera" size={36} color={colors.primary} />
+                              <Text style={{ fontSize: 10, color: '#555', textAlign: 'center', marginTop: 5 }}>Upload the front side of your ID card</Text>
+                            </View>))}
                       </TouchableWithoutFeedback>
 
                       <Text style={{ fontSize: 14, color: '#555', marginTop: 3 }}>
@@ -541,12 +583,13 @@ const EditProfileComponent = () => {
 
                     <View style={{ alignItems: 'center', width: '48%' }}>
                       <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true); setSelectedImage('back') }}>
-                        {BacksideIDImage ? (<Image source={{ uri: BacksideIDImage.uri }}
-                          style={styles.images} />) : (
+                        {BackIDImage ? (<Image source={{ uri: BackIDImage.uri }}
+                          style={styles.images} />) : (form.idbackImage ? <Image source={{ uri: "https://abcdavid-knguyen.ddns.net:30001/image/get/" + form.idbackImage }}
+                            style={styles.images} /> : (
                           <View style={[styles.images, { justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: '#f5f5f5', paddingHorizontal: 10 }]}>
                             <Entypo name="camera" size={36} color={colors.primary} />
                             <Text style={{ fontSize: 10, color: '#555', textAlign: 'center', marginTop: 5 }}>Upload the back side of your ID card</Text>
-                          </View>)}
+                          </View>))}
                       </TouchableWithoutFeedback>
 
                       <Text style={{ fontSize: 14, color: '#555', marginTop: 3 }}>
@@ -565,52 +608,53 @@ const EditProfileComponent = () => {
                     entering={FadeInUp.duration(300).delay(100)}
                     layout={Layout.stiffness(100).damping(10).duration(durationLayout)}>
                     {addressList.length > 0 ? (
-                      addressList.map((item, index) => {
-                        return (
-
-                          <View key={index}>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                padding: 12,
-                              }}>
-                              <View style={{ width: 25, justifyContent: 'center' }}>
-                                <Text style={{ color: colors.grey }}>{index + 1}</Text>
-                              </View>
-                              <View
-                                style={{
-                                  flexDirection: 'column',
-                                  justifyContent: 'center',
-                                  flex: 1,
-                                }}>
-                                <Text style={{ color: 'black' }}>
-                                  {item.DetailAddress}
-                                </Text>
-                                <Text style={{ color: 'black' }}>
-                                  {item.Ward}, {item.District}, {item.City}
-                                </Text>
-
-
-                              </View>
+                      addressList.filter(item => !item.IsDeleted).map((item, index) =>
+                      (
+                        <View key={item.ID}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              padding: 12,
+                              paddingEnd: 20,
+                            }}>
+                            <View style={{ width: 25, justifyContent: 'center' }}>
+                              <Text style={{ color: !item.IsTemporary ? colors.grey : colors.primary, fontWeight: item.IsTemporary ? 'bold' : '400' }}>{index + 1}</Text>
                             </View>
                             <View
                               style={{
-                                height: 1,
-                                borderBottomWidth: 1,
-                                borderBottomColor: '#e9e9e9',
-                                marginStart: 35,
-                                marginEnd: 20,
-                              }}
-                            />
-                          </View>
-                        );
-                      }
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                flex: 1,
+                                marginEnd: 15,
+                              }}>
+                              {item.DetailAddress && <Text style={{ color: 'black' }}>
+                                {item.DetailAddress}
+                              </Text>}
+                              <Text style={{ color: 'black' }}>
+                                {wardNameFromID(item.Ward)}, {districtNameFromID(item.District)}, {cityNameFromID(item.City)}
+                              </Text>
 
+                            </View>
+                            <View style={{ justifyContent: 'center' }}>
+                              <TouchableWithoutFeedback onPress={() => { OnAddressEdit(item.ID) }}>
+                                <FontAwesome5 name='edit' size={18} color={colors.primary} />
+                              </TouchableWithoutFeedback>
+                            </View>
+                          </View>
+
+                          <View
+                            style={{
+                              height: 1,
+                              borderBottomWidth: 1,
+                              borderBottomColor: '#e9e9e9',
+                              marginStart: 35,
+                              marginEnd: 20,
+                            }}
+                          />
+                        </View>
+                      )
                       )) : null}
-                    <TouchableWithoutFeedback onPress={() => {
-                      setInitialAddress({});
-                      changeBottomSheetVisibility(true);
-                    }}>
+                    <TouchableWithoutFeedback onPress={OnAddNewAddess}>
                       <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginTop: 10 }}>
                         <Ionicons name="add-circle-outline" size={24} color={colors.primary} />
                         <Text style={{ fontSize: 16, color: '#555', marginStart: 5, color: colors.primary }}>
@@ -643,7 +687,7 @@ const EditProfileComponent = () => {
               }
               mode={'date'}
               display="default"
-              onChange={onDateChange}
+              onChange={onBỉthdateChange}
             />
           )
         }
@@ -658,8 +702,23 @@ const EditProfileComponent = () => {
             changeBottomSheetVisibility(false);
           }}
           enabledGestureInteraction={true}
+
           renderHeader={_renderHeader}
-          renderContent={_renderContent}
+          renderContent={() => {
+            return (
+              <AddressBottomSheetContent
+                data={addressTree}
+                locationNameConverter={{
+                  Ward: wardNameFromID,
+                  District: districtNameFromID,
+                  City: cityNameFromID,
+                }}
+                onCloseBottomSheet={() => changeBottomSheetVisibility(false)}
+                onSetAddress={OnAddressEditFinish}
+                initialAddress={currentAddress}
+              />
+            );
+          }}
         />
 
         {/*Image bottomsheet*/}
@@ -677,7 +736,7 @@ const EditProfileComponent = () => {
         />
         <FAB
           onPress={() => {
-            console.log(form);
+            Save();
           }}
           label='Apply changes'
           variant='extended'
@@ -693,7 +752,7 @@ const EditProfileComponent = () => {
           }} />
 
       </View >
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingView >
   );
 };
 

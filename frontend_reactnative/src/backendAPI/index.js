@@ -1,4 +1,4 @@
-import HttpRequest, {BigGetRequest} from "./HttpRequest.js";
+import HttpRequest, {BigGetRequest, ProtectedUploadImage, UploadIdentityImage} from "./HttpRequest.js";
 import Store from "../redux/store";
 import { resolvePlugin } from "@babel/core";
 
@@ -98,19 +98,42 @@ const getToken = () => {
     return Store.getState().auth.token;
 }
 
-export const getPersonalInfo = async () => {
+export const GetPersonalInfo = async () => {
     let token = getToken();
-    const infoResponse = await HttpRequest.ProtectedGetRequest("personal/getinfo", token);
-    const addressesResponse = await HttpRequest.ProtectedGetRequest("personal/getaddress", token);
+    const infoResponse = await HttpRequest.ProtectedGetRequest("personal/info/get", token);
+    const addressesResponse = await HttpRequest.ProtectedGetRequest("personal/address/get", token);
     // console.log("Personal info: " + JSON.stringify(infoResponse));
     // console.log("Personal addresses: " + JSON.stringify(addressesResponse));
     if (infoResponse && addressesResponse) {
-        if (infoResponse.message == "Completed" && addressesResponse.message == "Completed") {
+        if (infoResponse.msg == "Completed" && addressesResponse.msg == "Completed") {
             let info = infoResponse.info;
             info.Addresses = addressesResponse.info;
             return info;
         }
     }
+}
+
+export const SetProfileImage = async (image: Object) => {
+    const token = getToken();
+    return await ProtectedUploadImage("personal/avatar/set", image, token);
+}
+
+export const SetPersonalInfo = async (name: String, birthday: String, gender: Number, phoneNumber: String, identificationNumber: String) => {
+    const body = {
+        Name: name || "",
+        Birthday: birthday || "",
+        Gender: gender || 0,
+        Phone_number: phoneNumber || "",
+        Identification_number: identificationNumber || ""
+    }
+    const token = getToken();
+    const res = await HttpRequest.ProtectedPostRequest("personal/info/set", body, token);
+    return res.msg == "Completed";
+}
+
+export const SetIdentityImage = async (frontImage: Object, backImage: Object) => {
+    const token = getToken();
+    return await UploadIdentityImage(frontImage, backImage, token);
 }
 
 export default { me, isEmailExist, isUsernameExist, isPhoneExist };

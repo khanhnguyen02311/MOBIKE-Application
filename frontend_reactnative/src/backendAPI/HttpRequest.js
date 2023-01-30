@@ -184,7 +184,7 @@ export const UploadImage = async (image: Object) => {
             name: image.fileName,
         });
         log('formData: ', JSON.stringify(formData));
-        const response = await fetch(GenerateRequestUrl("image/upload"), {
+        const response = await fetch(GenerateRequestUrl("image/upload/1"), {
             method: 'POST',
             body: formData,
             headers: { 'Content-Type': 'multipart/form-data' },
@@ -195,7 +195,62 @@ export const UploadImage = async (image: Object) => {
     }
 }
 
+export const ProtectedUploadImage = async (path: string, image: Object, token: String) => {
+    try {
+        const formData = new FormData();
+        formData.append('file', {
+            uri: image.uri,
+            type: image.type,
+            name: image.fileName,
+        });
+        log('formData: ', JSON.stringify(formData));
+        const response = await fetch(GenerateRequestUrl(path), {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + token,
+            },
+        });
+        const res = await ProcessResponse(response);
+        log(res);
+        return res.msg == "Completed"
+    } catch (error) {
+        log('Save Image Error: ' + error);
+        return false;
+    }
+}
 
+export const UploadIdentityImage = async (frontImage: Object, backImage: Object, token: String) => {
+    try {
+        const formData = new FormData();
+        formData.append('front', {
+            uri: frontImage.uri,
+            type: frontImage.type,
+            name: frontImage.fileName,
+        });
+        formData.append('back', {
+            uri: backImage.uri,
+            type: backImage.type,
+            name: backImage.fileName,
+        });
+        log('formData: ', JSON.stringify(formData));
+        const response = await fetch(GenerateRequestUrl("personal/identity/set"), {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + token,
+            },
+        });
+        const res = await ProcessResponse(response);
+        log(res);
+        return res.msg == "Completed"
+    } catch (error) {
+        log('Set Identity Image Error: ' + error);
+        return false;
+    }
+}
 
 export const UploadPost = async (title: string, content: string, pricetag: Number, images: Array<Object>, token: String) => {
     try {

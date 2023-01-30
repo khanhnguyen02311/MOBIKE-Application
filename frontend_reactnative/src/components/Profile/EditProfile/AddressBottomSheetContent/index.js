@@ -20,78 +20,87 @@ const heightScreen = Dimensions.get('window').height;
 
 const AddressBottomSheetContent = ({
   data,
+  locationNameConverter,
   onCloseBottomSheet,
   onSetAddress,
   initialAddress,
 }) => {
   const [addressTree, setAddressTree] = useState([]);
-  const [flag, setFlag] = useState(false);
-  const [form, setForm] = useState(
-    // (initialAddress.City !== '' && initialAddress) || {
-    //   City: 'Choose city',
-    //   District: '',
-    //   Ward: '',
-    // },
-    // {
-    //   City: 'Choose city',
-    //   District: '',
-    //   Ward: '',
-    // }
-    {
-      City: initialAddress.City || 'Choose city',
-      District: initialAddress.District || '',
-      Ward: initialAddress.Ward || '',
-      DetailAddress: initialAddress.DetailAddress || '',
-    }
-  );
-  const [IDForm, setIDForm] = useState({
-    City: undefined,
+  const [form, setForm] = useState({
+    ID: undefined,
+    IsTemporary: undefined,
+    IsDeleted: undefined,
+    City: 0,
     District: undefined,
     Ward: undefined,
+    DetailAddress: '',
   });
   const [selected, setSelected] = useState('City');
   const [currentData, setCurrentData] = useState(data);
+
+  useEffect(() => {
+    if (initialAddress) {
+      console.log('Initial address: ' + JSON.stringify(initialAddress))
+      setForm(initialAddress);
+      if (initialAddress.City == 0) {
+        setSelected('City');
+        setShowDetailAddress(false);
+        setCurrentData(data);
+      }
+      // const city = data.filter(item => item.ID === initialAddress.City)[0];
+      // setCurrentData(data.filter(item => item.ID === initialAddress.City)[0].Districts);
+      // setSelected('District');
+    }
+  }, [initialAddress]);
 
   const onSelect = name => {
     setSelected(name);
     if (name === 'City') {
       setCurrentData(data);
     } else if (name === 'District') {
-      setCurrentData(data.filter(item => item.Name === form.City)[0].Districts);
+      setCurrentData(data.filter(item => item.ID === form.City)[0].Districts);
     } else if (name === 'Ward') {
       setCurrentData(
         data
-          .filter(item => item.Name === form.City)[0]
-          .Districts.filter(item => item.Name === form.District)[0].Wards,
+          .filter(item => item.ID === form.City)[0]
+          .Districts.filter(item => item.ID === form.District)[0].Wards,
       );
     }
     setShowDetailAddress(false);
   };
+
   const onChooseLocation = (name, ID, value) => {
     if (name === 'City') {
       setSelected('District');
-      setIDForm({ ...IDForm, City: ID, District: undefined, Ward: undefined });
-      setForm({ ...form, City: value, District: 'Choose district', Ward: '' });
-      setCurrentData(currentData.filter(item => item.Name === value)[0].Districts);
+      setForm({ ...form, City: ID, District: 0, Ward: undefined });
+      // setForm({ ...form, City: value, District: 'Choose district', Ward: '' });
+      setCurrentData(currentData.filter(item => item.ID === ID)[0].Districts);
       return;
     } else if (name === 'District') {
       setSelected('Ward');
-      setIDForm({ ...IDForm, District: ID, Ward: undefined });
-      setForm({ ...form, District: value, Ward: 'Choose Ward' });
-      setCurrentData(currentData.filter(item => item.Name === value)[0].Wards);
+      setForm({ ...form, District: ID, Ward: 0 });
+      // setForm({ ...form, District: value, Ward: 'Choose Ward' });
+      setCurrentData(currentData.filter(item => item.ID === ID)[0].Wards);
       return;
     }
-    setIDForm({ ...IDForm, [name]: ID })
-    setForm({ ...form, [name]: value });
+    setForm({ ...form, [name]: ID })
+    // setForm({ ...form, [name]: value });
     setShowDetailAddress(true);
     setSelected('');
   };
 
+  const onDelete = () => {
+    if (!form.IsDeleted) {
+      const temp = { ...form, IsDeleted: true };
+      onSetAddress(temp);
+    }
+    onCloseBottomSheet();
+  }
+
   useEffect(() => {
     if (
       selected === 'Ward' &&
-      form.Ward !== 'Choose Ward' &&
-      form.Ward !== ''
+      form.Ward
     ) {
       //onSetAddress(IDForm);
       // onCloseBottomSheet();
@@ -105,9 +114,9 @@ const AddressBottomSheetContent = ({
       let flag = false;
       let firstLetter = '';
       if (
-        (selected === 'City' && item.Name === form.City) ||
-        (selected === 'District' && item.Name === form.District) ||
-        (selected === 'Ward' && item.Name === form.Ward)
+        (selected === 'City' && item.ID === form.City) ||
+        (selected === 'District' && item.ID === form.District) ||
+        (selected === 'Ward' && item.ID === form.Ward)
       )
         flag = true;
       if (index === 0) firstLetter = item.Name[0].toUpperCase();
@@ -175,9 +184,9 @@ const AddressBottomSheetContent = ({
             <TouchableWithoutFeedback
               onPress={() => {
                 setForm({
-                  City: 'Choose city',
-                  District: '',
-                  Ward: '',
+                  City: 0,
+                  District: undefined,
+                  Ward: undefined,
                 });
                 setCurrentData(data);
                 setSelected('City');
@@ -188,7 +197,18 @@ const AddressBottomSheetContent = ({
           </View>
           <Animated.View layout={Layout.stiffness(100).damping(10).duration(300)}>
             {Object.keys(form).map((key, index) => {
-              if (form[key] !== '' && key !== 'DetailAddress')
+              if ((key === 'City' || key === 'District' || key === 'Ward') && form[key] != undefined) {
+                let text = "";
+                if (key === 'City' && !isNaN(form.City)) {
+                  if (form.City == 0) text = "Choose city";
+                  else text = locationNameConverter.City(form.City)
+                } else if (key === 'District' && !isNaN(form.District)) {
+                  if (form.District == 0) text = "Choose district";
+                  else text = locationNameConverter.District(form.District)
+                } else if (!isNaN(form.Ward)) {
+                  if (form.Ward == 0) text = "Choose ward";
+                  else text = locationNameConverter.Ward(form.Ward)
+                }
                 return (
                   <Animated.View
                     key={index}
@@ -233,12 +253,12 @@ const AddressBottomSheetContent = ({
                               fontWeight: 'bold',
                             },
                           ]}>
-                          {form[key]}
+                          {text}
                         </Text>
                       </View>
                     </TouchableWithoutFeedback>
                   </Animated.View>
-                );
+                )}
             })}
           </Animated.View>
         </Animated.View>
@@ -247,7 +267,7 @@ const AddressBottomSheetContent = ({
           layout={Layout.stiffness(100).damping(10).duration(300)}
           style={styles.selectedSectionContent}>
           <Text style={styles.selectedLabel}>{selected}</Text>
-          <ScrollView>{_renderContent(currentData, selected)}</ScrollView>
+          <ScrollView>{_renderContent(Array.from(currentData).sort((a,b)=>a.Name.localeCompare(b.Name)), selected)}</ScrollView>
         </Animated.View>}
 
         {showDetailAddress && <Animated.View
@@ -278,19 +298,14 @@ const AddressBottomSheetContent = ({
               });
             }}
           />
+
+
         </Animated.View>}
 
+
+
         {showDetailAddress &&
-          <FAB
-            onPress={() => {
-              console.log(form);
-              onSetAddress(form);
-              onCloseBottomSheet();
-              setFlag(!flag);
-            }}
-            label='Done'
-            variant='extended'
-            size='small'
+          <View
             style={{
               position: 'absolute',
               margin: 16,
@@ -298,10 +313,35 @@ const AddressBottomSheetContent = ({
               bottom: 0,
               right: 0,
               left: 0,
-              backgroundColor: colors.secondary,
-            }} />}
+            }}>
+
+            <FAB
+              onPress={() => {
+                onDelete();
+              }}
+              label='Delete'
+              variant='extended'
+              size='small'
+              style={{ backgroundColor: '#DDD', marginBottom: 30 }}
+            />
+
+            <FAB
+              onPress={() => {
+                onSetAddress(form);
+                onCloseBottomSheet();
+              }}
+              label='Save'
+              variant='extended'
+              size='small'
+              style={{
+                backgroundColor: colors.secondary,
+              }} />
+
+          </View>
+
+        }
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableWithoutFeedback >
   );
 };
 
