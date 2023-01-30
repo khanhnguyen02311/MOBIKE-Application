@@ -136,4 +136,97 @@ export const SetIdentityImage = async (frontImage: Object, backImage: Object) =>
     return await UploadIdentityImage(frontImage, backImage, token);
 }
 
+export const SetPersonalAddress = async (addresses: Array) => {
+    const token = getToken();
+    const pros = [];
+    addresses.forEach(address => {
+        if (!address.IsTemporary && address.IsDeleted) {
+            console.log("Deleting address: " + JSON.stringify(address));
+            pros.push(HttpRequest.ProtectedDeleteRequest("personal/address/del/" + address.ID, token));
+        } else if (!address.IsTemporary && !address.IsDeleted) {
+            console.log("Updating address: " + JSON.stringify(address));
+            const body = {
+                detail: address.DetailAddress,
+                city: address.City,
+                district: address.District,
+                ward: address.Ward,
+            }
+            pros.push(HttpRequest.ProtectedPutRequest("personal/address/set/" + address.ID, body, token));
+        }
+        else if (address.IsTemporary && !address.IsDeleted) {
+            console.log("Adding address: " + JSON.stringify(address));
+            const body = {
+                detail: address.DetailAddress,
+                city: address.City,
+                district: address.District,
+                ward: address.Ward,
+            }
+            pros.push(HttpRequest.ProtectedPostRequest("personal/address/add", body, token));
+        }
+    });
+    const res = await Promise.all(pros);
+    return res.every(r => r.msg == "Completed");
+}
+
+export const UploadPost = async (
+    images: Array<Object>,
+    title: String,
+    content: String,
+    price: Number,
+    addressID: Number,
+    vehicleName: String,
+    vehicleOdometer: Number,
+    vehicleLicensePlate: String,
+    vehicleManufactureYear: Number,
+    vehicleCubicPower: Number,
+    vehicleBrandID: Number,
+    vehicleLineupID: Number,
+    vehicleTypeID: Number,
+    vehicleConditionID: Number,
+    vehicleColorID: Number,
+    ) => {
+    const token = getToken();
+    const pros = [];
+    images.forEach(image => {
+        pros.push(ProtectedUploadImage("personal/post/image/new", image, token));
+    });
+    console.log("Uploading post images");
+    const imageResponses = await Promise.all(pros);
+    console.log("Image responses: " + JSON.stringify(imageResponses));
+    if (imageResponses.every(imageResponse => imageResponse.msg == "Completed")) {
+        const imageIDs = imageResponses.map(imageResponse => imageResponse.info);
+        const body = {
+            name: vehicleName,
+            odometer: vehicleOdometer,
+            license: vehicleLicensePlate,
+            mnf: vehicleManufactureYear,
+            cubic: vehicleCubicPower,
+            brand: vehicleBrandID,
+            lineup: vehicleLineupID,
+            type: vehicleTypeID,
+            condition: vehicleConditionID,
+            color: vehicleColorID,
+        }
+        console.log("Uploading vehicle info");
+        const vehicleInfoResponse = await HttpRequest.ProtectedPostRequest("personal/post/vehicle/new", body, token);
+        console.log("Vehicle info response: " + JSON.stringify(vehicleInfoResponse));
+        if (vehicleInfoResponse.msg == "Completed") {
+            const vehicleID = vehicleInfoResponse.info;
+            const body = {
+                title: title,
+                content: content,
+                price: price,
+                address: addressID,
+                vehicleinfo: vehicleID,
+                images: imageIDs,
+            }
+            console.log("Uploading post info");
+            const postInfoResponse = await HttpRequest.ProtectedPostRequest("personal/post/new", body, token);
+            console.log("Post info response: " + JSON.stringify(postInfoResponse));
+            return postInfoResponse.msg == "Completed";
+        }
+    }
+
+}
+
 export default { me, isEmailExist, isUsernameExist, isPhoneExist };

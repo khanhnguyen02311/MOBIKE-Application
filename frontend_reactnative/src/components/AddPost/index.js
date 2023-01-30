@@ -10,7 +10,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Container from '../../components/common/container';
 import * as ImagePicker from 'react-native-image-picker';
-import { UploadImage } from '../../backendAPI/HttpRequest';
 import { StyleSheet } from 'react-native';
 import { Image } from 'react-native';
 import colors from '../../assets/theme/colors';
@@ -28,6 +27,7 @@ import ColorBottomSheetContent from './ColorBottomSheetContent';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { POST_PREVIEW } from '../../constants/routeNames';
+import { UploadPost } from '../../backendAPI';
 const heightScreen = Dimensions.get('window').height;
 const widthScreen = Dimensions.get('window').width;
 const MAX_IMAGE = 8;
@@ -418,7 +418,7 @@ const AddPostComponent = ({ }) => {
                     Addresses.map((item, index) => {
                         console.log("Rendering address: " + JSON.stringify(item))
                         let flag = false;
-                        if (item.City == form.address.City && item.District == form.address.District && item.Ward == form.address.Ward && item.DetailAddress == form.address.DetailAddress)
+                        if (item.ID == form.address.ID)
                             flag = true;
                         return (
                             <TouchableWithoutFeedback key={index} onPress={() => { onSetAddress(item); changeAddressBottomSheetVisibility(false) }}>
@@ -438,7 +438,7 @@ const AddPostComponent = ({ }) => {
                                                 flex: 1,
                                             }}>
                                             <Text style={{ color: flag ? colors.primary : 'black' }}>
-                                                {item.DetailAddress}
+                                                {item.Detail_address}
                                             </Text>
                                             <Text style={{ color: flag ? colors.primary : 'black' }}>
                                                 {wardNameFromID(item.ID_Ward)}, {districtNameFromID(item.ID_District)}, {cityNameFromID(item.ID_City)}
@@ -473,12 +473,7 @@ const AddPostComponent = ({ }) => {
 
     const onSetAddress = (a) => {
         setForm({
-            ...form, address: {
-                City: a.City,
-                District: a.District,
-                Ward: a.Ward,
-                DetailAddress: a.DetailAddress,
-            }
+            ...form, address: a
         });
     };
 
@@ -503,19 +498,42 @@ const AddPostComponent = ({ }) => {
     //     else return '';
     // };
 
-    const uploadPost = () => {
-        console.log('upload post');
-        console.log('fileUri', form.images);
-        UploadImage(form.images[0]);
-    };
-
     const onNavigate = () => {
         navigate(POST_PREVIEW, { form: form });
     };
 
-    const onPreview = () => {
+    const onPreview = async () => {
         console.log("Preview: " + JSON.stringify(form));
         console.log("Address: " + JSON.stringify(Addresses));
+        if (form.address && form.brand && form.lineup && form.type && form.condition && form.color && form.price && form.images.length > 0) {
+            if (!isNaN(form.address.ID) && !isNaN(form.price) && !isNaN(form.brand) && !isNaN(form.lineup) && !isNaN(form.type) && !isNaN(form.condition) && !isNaN(form.color)) {
+                console.log("Posting")
+                const postres = await UploadPost(
+                    form.images,
+                    form.title || 'No title',
+                    form.content || 'No content',
+                    form.price || '-1',
+                    form.address.ID,
+                    form.name || 'No name',
+                    form.odometer || '-1',
+                    form.licensePlate || 'No license plate',
+                    form.manufacturerYear || '-1',
+                    form.cubicPower || '-1',
+                    form.brand,
+                    form.lineup,
+                    form.type,
+                    form.condition,
+                    form.color,
+                )
+                console.log("Post res: " + JSON.stringify(postres));
+            } else {
+                console.log("ID is not a number")
+            }
+        } else {
+            console.log("Missing data")
+        }
+
+
         onNavigate();
     }
 
@@ -893,7 +911,7 @@ const AddPostComponent = ({ }) => {
                                 }}
                                 maxLength={128}
                                 labelContainerStyle={{ padding: 13 }}
-                                value={form.address.City != '' ? form.address.DetailAddress + '\n' + wardNameFromID(form.address.Ward) + ', ' + districtNameFromID(form.address.District) + ', ' + cityNameFromID(form.address.City) : ''}
+                                value={form.address.ID_City != '' ? form.address.Detail_address + '\n' + wardNameFromID(form.address.ID_Ward) + ', ' + districtNameFromID(form.address.ID_District) + ', ' + cityNameFromID(form.address.ID_City) : ''}
                                 editable={!isBottomSheetVisible}
                                 onTouchEnd={() => changeAddressBottomSheetVisibility(true)} />
 
