@@ -49,24 +49,14 @@ const AddPostComponent = ({ }) => {
             Ward: '',
             DetailAddress: '',
         },
+        images: [],
     });
-    const userAddress = [{
-        City: '1',
-        District: '1',
-        Ward: '1',
-        DetailAddress: '10/34, khu pho 5',
-    }, {
-        City: '2',
-        District: '2',
-        Ward: '2',
-        DetailAddress: '10/34, khu pho 6',
-    },
-    {
-        City: '3',
-        District: '3',
-        Ward: '3',
-        DetailAddress: '10/34, khu pho 7',
-    }]
+
+    const Addresses = Object.values(Store.getState().personalInfo.Addresses)
+    const cityNameFromID = Store.getState().locations.CityNameFromID;
+    const districtNameFromID = Store.getState().locations.DistrictNameFromID;
+    const wardNameFromID = Store.getState().locations.WardNameFromID;
+
     const [errors, setErrors] = useState({});
     const onChange = ({ name, value }) => {
         setForm({ ...form, [name]: value });
@@ -287,11 +277,11 @@ const AddPostComponent = ({ }) => {
     };
 
     //Image
-    const [Images, setImages] = useState([]);
     const [flag, setFlag] = useState(false);
 
     const onSetImages = (images) => {
         setForm({ ...form, images: images });
+<<<<<<< HEAD
     };
 
         const launchCamera = () => {
@@ -323,6 +313,48 @@ const AddPostComponent = ({ }) => {
                     setFlag(!flag);
                 }
             });
+=======
+    };
+
+    const launchCamera = () => {
+        let options = {
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+        ImagePicker.launchCamera(options, response => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+                alert(response.customButton);
+            } else {
+                const source = { uri: response.uri };
+                console.log('response', JSON.stringify(response));
+
+                let tmp = form.images;
+                for (let i = 0; i < response.assets.length; i++) {
+                    tmp.push(response.assets[i]);
+                }
+                onSetImages(tmp);
+                setFlag(!flag);
+            }
+        });
+    };
+
+    const launchImageLibrary = () => {
+        let options = {
+            selectionLimit: MAX_IMAGE - form.images.length,
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+>>>>>>> 4001b466232a5206d0166c975e0059537a95eab0
         };
 
         const launchImageLibrary = () => {
@@ -337,6 +369,7 @@ const AddPostComponent = ({ }) => {
             ImagePicker.launchImageLibrary(options, response => {
                 console.log('Response = ', response);
 
+<<<<<<< HEAD
                 if (response.didCancel) {
                     console.log('User cancelled image picker');
                 } else if (response.error) {
@@ -388,9 +421,65 @@ const AddPostComponent = ({ }) => {
                         />
                     );
             })
+=======
+                var tmp = form.images;
+                for (let i = 0; i < response.assets.length; i++) {
+                    tmp.push(response.assets[i]);
+                }
+                onSetImages(tmp);
+                setFlag(!flag);
+            }
+        });
+    };
+
+    const deleteImage = (index) => {
+        let tmp = form.images;
+        tmp.splice(index, 1);
+        onSetImages(tmp);
+        setFlag(!flag);
+    };
+
+    const RenderFileUri = (images) => (
+        //console.log('fileUri', Images);
+        form.images.map((item, index) => {
+            if (item) {
+                return (
+                    <Animated.View key={index} layout={Layout.stiffness(100).damping(10).duration(300)} style={{ position: 'relative' }}>
+                        <MaterialIcons name='cancel' size={18} color='#555'
+                            style={{ position: 'absolute', top: 0, right: 0, zIndex: 1, backgroundColor: '#fff', borderRadius: 50 }}
+                            onPress={() => { deleteImage(index) }} />
+                        <Image key={index} source={{ uri: item.uri }} style={styles.images} />
+                    </Animated.View>
+
+                );
+            } else
+                return (
+                    <Image
+                        key={index}
+                        source={require('../../assets/images/image-not-available.png')}
+                        style={styles.images}
+                    />
+                );
+        })
+    );
+
+    const imageBottomSheet = useRef(null);
+    const changeImageBottomSheetVisibility = visibility => {
+        imageBottomSheet.current.snapTo(visibility ? 0 : 1);
+        setBottomSheetVisible(visibility);
+    };
+    const _renderContentImage = () => {
+        return (
+            <View style={{ backgroundColor: '#fff', height: '100%', alignItems: 'center' }}>
+                <Button mode='contained' onPress={() => { launchCamera(); changeImageBottomSheetVisibility(false) }} style={{ width: '80%', marginVertical: 10 }}>Take photo</Button>
+                <Button mode='contained' onPress={() => { launchImageLibrary(); changeImageBottomSheetVisibility(false) }} style={{ width: '80%', marginVertical: 10 }}>Choose from library</Button>
+                <Button mode='contained' onPress={() => changeImageBottomSheetVisibility(false)} style={{ width: '80%', marginVertical: 10, backgroundColor: '#BBB' }}>Cancel</Button>
+            </View>
+>>>>>>> 4001b466232a5206d0166c975e0059537a95eab0
         );
 
 
+<<<<<<< HEAD
         const imageBottomSheet = useRef(null);
         const changeImageBottomSheetVisibility = visibility => {
             imageBottomSheet.current.snapTo(visibility ? 0 : 1);
@@ -463,6 +552,49 @@ const AddPostComponent = ({ }) => {
                                                 marginEnd: 20,
                                             }}
                                         />
+=======
+    const _renderAddressContent = () => (
+        <View style={{ backgroundColor: '#fff', height: '100%' }}>
+            <Text style={{
+                marginStart: 15,
+                color: colors.black,
+                fontWeight: 'bold',
+                alignSelf: 'flex-start',
+            }}>Choose address</Text>
+            <ScrollView>
+                {
+                    Addresses.map((item, index) => {
+                        console.log("Rendering address: " + JSON.stringify(item))
+                        let flag = false;
+                        if (item.City == form.address.City && item.District == form.address.District && item.Ward == form.address.Ward && item.DetailAddress == form.address.DetailAddress)
+                            flag = true;
+                        return (
+                            <TouchableWithoutFeedback key={index} onPress={() => { onSetAddress(item); changeAddressBottomSheetVisibility(false) }}>
+                                <View>
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            padding: 12,
+                                        }}>
+                                        <View style={{ width: 25, justifyContent: 'center' }}>
+                                            <Text style={{ color: flag ? colors.primary : colors.grey }}>{index + 1}</Text>
+                                        </View>
+                                        <View
+                                            style={{
+                                                flexDirection: 'column',
+                                                justifyContent: 'center',
+                                                flex: 1,
+                                            }}>
+                                            <Text style={{ color: flag ? colors.primary : 'black' }}>
+                                                {item.DetailAddress}
+                                            </Text>
+                                            <Text style={{ color: flag ? colors.primary : 'black' }}>
+                                                {wardNameFromID(item.ID_Ward)}, {districtNameFromID(item.ID_District)}, {cityNameFromID(item.ID_City)}
+                                            </Text>
+
+
+                                        </View>
+>>>>>>> 4001b466232a5206d0166c975e0059537a95eab0
                                     </View>
                                 </TouchableWithoutFeedback>
                             );
@@ -503,6 +635,7 @@ const AddPostComponent = ({ }) => {
             else return '';
         };
 
+<<<<<<< HEAD
         const wardNameFromID = (ID) => {
             const ward = Store.getState().locations.Wards.find((item) => item.ID == ID);
             if (ward)
@@ -519,7 +652,40 @@ const AddPostComponent = ({ }) => {
         const onPreview = () => {
             onNavigate(form);
         };
+=======
+    // const cityNameFromID = (ID) => {
+    //     const city = Store.getState().locations.Cities.find((item) => item.ID == ID);
+    //     if (city)
+    //         return city.Name;
+    //     else return '';
+    // };
 
+    // const districtNameFromID = (ID) => {
+    //     const district = Store.getState().locations.Districts.find((item) => item.ID == ID);
+    //     if (district)
+    //         return district.Name;
+    //     else return '';
+    // };
+
+    // const wardNameFromID = (ID) => {
+    //     const ward = Store.getState().locations.Wards.find((item) => item.ID == ID);
+    //     if (ward)
+    //         return ward.Name;
+    //     else return '';
+    // };
+
+    const uploadPost = () => {
+        console.log('upload post');
+        console.log('fileUri', form.images);
+        UploadImage(form.images[0]);
+    };
+>>>>>>> 4001b466232a5206d0166c975e0059537a95eab0
+
+    const OnPreview = () => {
+        console.log("Preview: " + JSON.stringify(form));
+        console.log("Address: " + JSON.stringify(Addresses));
+        // onNavigate();
+    }
 
         return (
             <View style={{ height: '100%' }}>
@@ -548,6 +714,146 @@ const AddPostComponent = ({ }) => {
                                     borderColor: '#555',
                                 }}
                                 labelStyle={{ fontSize: 12 }}
+<<<<<<< HEAD
+=======
+                                inputStyle={{ fontSize: 14 }}
+                                labelContainerStyle={{ padding: 13 }}
+                                iconSize={20}
+                                value={form.odometer}
+                                editable={!isBottomSheetVisible}
+                                keyboardType={'numeric'}
+                                onChangeText={value => {
+                                    onChange({ name: 'odometer', value });
+                                }} />
+                        </View>
+
+                        {/* License plate */}
+                        <View>
+                            <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>License Plate</Text>
+                            <TextInputOutline
+                                label={'License Plate'}
+                                iconClass={Octicons}
+                                iconName={'number'}
+                                iconColor={'#90B4D3'}
+                                inputPadding={6}
+                                borderWidthtoTop={0}
+                                containerStyle={{
+                                    height: 44,
+                                    borderColor: '#555',
+                                }}
+                                labelStyle={{ fontSize: 12 }}
+                                inputStyle={{ fontSize: 14 }}
+                                labelContainerStyle={{ padding: 13 }}
+                                iconSize={20}
+                                value={form.licensePlate}
+                                editable={!isBottomSheetVisible}
+                                onChangeText={value => {
+                                    onChange({ name: 'licensePlate', value });
+                                }} />
+                        </View>
+
+                        {/* Manufacturer Year */}
+                        <View>
+                            <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Manufacturer Year</Text>
+                            <TextInputOutline
+                                label={'Manufacturer Year'}
+                                iconClass={Fontisto}
+                                iconName={'date'}
+                                iconColor={'#90B4D3'}
+                                inputPadding={6}
+                                borderWidthtoTop={0}
+                                containerStyle={{
+                                    height: 44,
+                                    borderColor: '#555',
+                                }}
+                                labelStyle={{ fontSize: 12 }}
+                                inputStyle={{ fontSize: 14 }}
+                                labelContainerStyle={{ padding: 13 }}
+                                iconSize={20}
+                                value={form.manufacturerYear.toString()}
+                                editable={!isBottomSheetVisible}
+                                onTouchEnd={() => changeManufacturerYearBottomSheetVisibility(true)}
+                            />
+                        </View>
+
+                        {/* Cubic Power */}
+                        <View>
+                            <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Cubic Power</Text>
+                            <TextInputOutline
+                                label={'Cubic Power'}
+                                iconClass={MaterialIcons}
+                                iconName={'speed'}
+                                iconColor={'#90B4D3'}
+                                inputPadding={6}
+                                borderWidthtoTop={0}
+                                containerStyle={{
+                                    height: 44,
+                                    borderColor: '#555',
+                                }}
+                                labelStyle={{ fontSize: 12 }}
+                                inputStyle={{ fontSize: 14 }}
+                                labelContainerStyle={{ padding: 13 }}
+                                iconSize={20}
+                                value={form.cubicPower}
+                                editable={!isBottomSheetVisible}
+                                keyboardType={'numeric'}
+                                onChangeText={value => {
+                                    onChange({ name: 'cubicPower', value });
+                                }} />
+                        </View>
+
+                        {/* Image */}
+                        <View>
+                            <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Image</Text>
+                            {form.images.length > 0 ?
+                                (
+                                    <Animated.View layout={Layout.stiffness(100).damping(10).duration(300)} style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                                        {RenderFileUri(form.images)}
+                                        {form.images.length < 8 && form.images.length > 0 && (
+                                            <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true) }}>
+                                                <Animated.View layout={Layout.stiffness(100).damping(10).duration(300)} style={{
+                                                    width: (widthScreen - 40) / 4 - 10,
+                                                    height: (widthScreen - 40) / 4 - 10,
+                                                    backgroundColor: '#f5f5f5',
+                                                    justifyContent: 'center', alignItems: 'center',
+                                                    borderRadius: 5,
+                                                    margin: 5,
+                                                }}>
+                                                    <MaterialCommunityIcons name="camera-plus" size={24} color={colors.primary} />
+                                                    <Text style={{ fontSize: 10, color: '#555', textAlign: 'center', marginTop: 5 }}>Add more</Text>
+                                                </Animated.View>
+                                            </TouchableWithoutFeedback>
+                                        )}
+                                    </Animated.View>
+
+                                ) :
+                                (
+                                    <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true) }}>
+                                        <View style={{ height: ((widthScreen - 40) / 4 - 10) * 2, backgroundColor: '#f5f5f5', justifyContent: 'center', alignItems: 'center', borderRadius: 10, }}>
+                                            <MaterialCommunityIcons name="camera-plus" size={48} color={colors.primary} />
+                                            <Text style={{ fontSize: 14, color: '#555', textAlign: 'center', marginTop: 5 }}>Upload 1 to 8 images for your vehicle</Text>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                )}
+                        </View>
+
+
+                        <View style={{ alignSelf: 'center', marginTop: 20 }}>
+                            <Text style={{ color: colors.primary, fontWeight: 'bold', fontSize: 16, marginBottom: 5 }}>Seller Information</Text>
+                        </View>
+                        {/* Address */}
+                        <View>
+                            <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Address</Text>
+                            <TextInputOutline
+                                label={'Address'}
+                                inputPadding={6}
+                                borderWidthtoTop={0}
+                                containerStyle={{
+                                    height: 70,
+                                    borderColor: '#555',
+                                }}
+                                labelStyle={{ fontSize: 12, marginTop: 12, }}
+>>>>>>> 4001b466232a5206d0166c975e0059537a95eab0
                                 numberOfLines={2}
                                 multiline={true}
                                 inputStyle={{
@@ -712,6 +1018,7 @@ const AddPostComponent = ({ }) => {
                                 />
                             </View>
 
+<<<<<<< HEAD
                             {/*Condition*/}
                             <View>
                                 <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Condition</Text>
@@ -730,6 +1037,27 @@ const AddPostComponent = ({ }) => {
                                         )
                                     })}
                                 </View>
+=======
+            <FAB
+                onPress={() => {
+                    OnPreview();
+                }}
+                label='Preview'
+                variant='extended'
+                size='small'
+                style={{
+                    position: 'absolute',
+                    margin: 16,
+                    marginHorizontal: 16,
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                    backgroundColor: colors.secondary,
+                }} />
+        </View >
+    );
+}
+>>>>>>> 4001b466232a5206d0166c975e0059537a95eab0
 
                             </View>
 
