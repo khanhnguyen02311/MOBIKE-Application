@@ -1,5 +1,3 @@
-import json
-from datetime import datetime
 from flask import Flask, Blueprint, request, jsonify
 import sqlalchemy.orm as sqlorm
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -133,7 +131,7 @@ def newpost():
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
    
    
-@bppost.route("/post/get/all", methods=["GET"])
+@bppost.route("/post/all", methods=["GET"])
 @jwt_required()
 def getallpost():
    current_user = get_jwt_identity()   
@@ -168,34 +166,11 @@ def getallpost():
       json_posts['active'] = posts_active
       json_posts['sold'] = posts_sold
       json_posts['reported'] = posts_reported
-            
+      Session.close()
       return jsonify({"msg": "Completed", "error": "", "info": json_posts})
       
    except Exception as e:
       Session.rollback()
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
-   
-   
-# @bppost.route("/post/get/<int:id>", methods=["GET"])
-# @jwt_required()
-# def getpostdetail(id):
-#    current_user = get_jwt_identity()   
-#    if current_user is None:
-#       return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
-#    schema = dbs.PostSchemaShort()
-#    Session = new_Scoped_session()
-#    try:
-#       acc = Session.query(dbm.Account).get(current_user['ID'])
-#       if acc == None:
-#          Session.close()
-#          return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
-      
-#       post = Session.query(dbm.Post).options(sqlorm.joinedload(dbm.Post.rel_VehicleInfo)).get(id)
-      
-#       return jsonify({"msg": "Completed", "error": "", "info": json_posts})
-      
-#    except Exception as e:
-#       Session.rollback()
-#       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
    
    
