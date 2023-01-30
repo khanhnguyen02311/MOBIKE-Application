@@ -89,6 +89,9 @@ class Account (Base):
     ## View reference
     rel_View = relationship("View", back_populates="rel_Account")
     
+    ## Comment reference
+    rel_Comment = relationship("Comment", back_populates="rel_Account")
+    
     ## ChatParticipant reference
     rel_ChatParticipant = relationship("ChatParticipant", back_populates="rel_Account")
 
@@ -184,6 +187,9 @@ class Post (Base):
     ## View reference
     rel_View = relationship("View", back_populates="rel_Post")
     
+    ## Comment reference
+    rel_Comment = relationship("Comment", back_populates="rel_Post")
+    
     ## ChatRoom reference
     rel_ChatRoom = relationship("ChatRoom", back_populates="rel_Post", uselist=False)
     
@@ -230,8 +236,8 @@ class ImageType (Base):
 class PostStatus (Base):
     __tablename__ = 'POSTSTATUS'
     ID = Column(ms.INTEGER, primary_key=True)
-    Status = Column(ms.TINYINT, nullable=False) # 0: inactive, 1: active
-    Infomation = Column(ms.NVARCHAR(50))
+    Status = Column(ms.TINYINT, nullable=False) # 0: inactive, 1: active, 2: sold, 3: reported
+    Information = Column(ms.NVARCHAR(50))
     Time_updated = Column(ms.DATETIME, default=datetime.now(timezone.utc))
 
     ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
@@ -291,6 +297,19 @@ class View (Base):
     ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
     rel_Account = relationship("Account", back_populates="rel_View")
         
+        
+# ==============================================================================
+class Comment (Base):
+    __tablename__ = 'COMMENT'
+    ID = Column(ms.INTEGER, primary_key=True)
+    Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
+    
+    ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
+    rel_Post = relationship("Post", back_populates="rel_Comment")
+    
+    ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
+    rel_Account = relationship("Account", back_populates="rel_Comment")
+    
     
 # ==============================================================================
 class VehicleInfo (Base):
