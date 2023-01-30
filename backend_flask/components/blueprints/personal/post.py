@@ -46,7 +46,6 @@ def newvehicle():
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
 
 
-#CONTINUE
 @bppost.route("/post/image/new", methods=['POST'])
 @jwt_required()
 def newpostimage():
@@ -134,34 +133,46 @@ def newpost():
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
    
    
-# @bppost.route("/post/get/all", methods=["POST"])
-# @jwt_required()
-# def newpost():
-#    current_user = get_jwt_identity()   
-#    if current_user is None:
-#       return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
-   
-#    Session = new_Scoped_session()
-#    try:
-#       acc = Session.query(dbm.Account).get(current_user['ID'])
-#       if acc == None:
-#          Session.close()
-#          return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+@bppost.route("/post/get/all", methods=["POST"])
+@jwt_required()
+def getallpost():
+   current_user = get_jwt_identity()   
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+   schema = dbs.PostSchemaShort()
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
       
-#       posts = Session.query(dbm.Post).filter(dbm.Post.ID_Account == acc.ID).all()
-#       posts_inactive = {}
-#       posts_active = {}
-#       posts_sold = {}
-#       posts_reported = {}
-#       for index, item in enumerate(posts):
-#          image = Session.query(dbm.Image).filter(dbm.Image.ID_Post == item.ID).first()
-#          status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == item.ID).order_by(dbm.PostStatus.ID.desc()).first()
-#       #    json_colors[index] = schema.dump(item)
-#       # return jsonify({"msg": "Completed", "error": "", "info": json_colors})
-#       # CONTINUE
+      posts = Session.query(dbm.Post).options(sqlorm.joinedload(dbm.Post.rel_Image)).filter(dbm.Post.ID_Account == acc.ID).all()
+      posts_inactive = {}
+      posts_active = {}
+      posts_sold = {}
+      posts_reported = {}
+      for index, item in enumerate(posts):
+         status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == item.ID).order_by(dbm.PostStatus.ID.desc()).first()
+         if status.Status == 0:
+            posts_inactive[len(posts_inactive)] = schema.dump(item)
+         elif status.Status == 1:
+            posts_active[len(posts_active)] = schema.dump(item)
+         elif status.Status == 2:
+            posts_sold[len(posts_sold)] = schema.dump(item)
+         elif status.Status == 3:
+            posts_reported[len(posts_reported)] = schema.dump(item)
       
-#    except Exception as e:
-#       Session.rollback()
-#       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
+      json_posts = {}
+      json_posts['inactive'] = posts_inactive
+      json_posts['active'] = posts_active
+      json_posts['sold'] = posts_sold
+      json_posts['reported'] = posts_reported
+            
+      return jsonify({"msg": "Completed", "error": "", "info": json_posts})
+      
+   except Exception as e:
+      Session.rollback()
+      return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
    
    
