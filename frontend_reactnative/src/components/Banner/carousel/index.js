@@ -7,6 +7,7 @@ import {
   FlatList,
   Animated,
 } from 'react-native';
+import colors from '../../../assets/theme/colors';
 import CarouselItem from '../carouselItem';
 
 const { width, height } = Dimensions.get('window');
@@ -27,7 +28,7 @@ const Carousel = ({ data, isUri }) => {
           scrollEventThrottle={16}
           decelerationRate={'normal'}
           showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return <CarouselItem item={item} isUri={isUri} />;
           }}
           onScroll={Animated.event(
@@ -50,7 +51,7 @@ const Carousel = ({ data, isUri }) => {
                   opacity,
                   height: 5,
                   width: 5,
-                  backgroundColor: '#595959',
+                  backgroundColor: '#fff',
                   margin: 2,
                   borderRadius: 5,
                   bottom: 15,

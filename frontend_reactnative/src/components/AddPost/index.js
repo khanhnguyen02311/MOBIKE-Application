@@ -41,12 +41,7 @@ const AddPostComponent = ({ }) => {
         color: '',
         condition: '',
         manufacturerYear: '',
-        address: {
-            City: '',
-            District: '',
-            Ward: '',
-            DetailAddress: '',
-        },
+        address: undefined,
         images: [],
         price: undefined,
     });
@@ -542,7 +537,7 @@ const AddPostComponent = ({ }) => {
     }
 
     return (
-        <View style={{ height: '100%' }}>
+        <View style={{ height: '100%', position: 'relative', }}>
             <Container keyboardShouldPersistTaps={'never'}
                 styleScrollView={{ backgroundColor: '#fff', height: heightScreen }}>
                 <TouchableWithoutFeedback onPress={closeAllBottomSheet}>
@@ -915,7 +910,7 @@ const AddPostComponent = ({ }) => {
                                 }}
                                 maxLength={128}
                                 labelContainerStyle={{ padding: 13 }}
-                                value={form.address.ID_City != '' ? form.address.Detail_address + '\n' + wardNameFromID(form.address.ID_Ward) + ', ' + districtNameFromID(form.address.ID_District) + ', ' + cityNameFromID(form.address.ID_City) : ''}
+                                value={form.address ? form.address.Detail_address + '\n' + wardNameFromID(form.address.ID_Ward) + ', ' + districtNameFromID(form.address.ID_District) + ', ' + cityNameFromID(form.address.ID_City) : ''}
                                 editable={!isBottomSheetVisible}
                                 onTouchEnd={() => changeAddressBottomSheetVisibility(true)} />
 
