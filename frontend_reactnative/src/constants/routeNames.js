@@ -1,5 +1,6 @@
 export const MARKETPLACE = 'Marketplace';
 export const MARKETPLACE_NAVIGATOR = 'MarketplaceNavigator';
+export const POST_DETAIL = 'PostDetail';
 export const NOTIFICATIONS = 'Notifications';
 export const PROFILE = 'Profile';
 export const EDIT_PTOFILE = 'EditProfile';
