@@ -16,12 +16,25 @@
 // import {login} from '../../redux/slice/authSlice';
 // import CustomButton from '../../components/common/customButton';
 import BackendAPI from '../../backendAPI';
+import HttpRequest from '../../backendAPI/HttpRequest';
 import TokenStorage from '../../services/TokenStorage';
 import React from 'react';
+import { Linking } from 'react-native';
 
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 import LoginComponent from '../../components/Login';
+
+import {authorize} from 'react-native-app-auth';
+import auth from './../../context/reducers/auth';
+
+const config = {
+  issuer: 'https://accounts.google.com',
+  clientId: '681579473082-k52dgdcgg1vte6tlp9krmj75dbefecel.apps.googleusercontent.com',
+  redirectUrl: 'https://abcdavid-knguyen.ddns.net:30001/auth/signin/google/authorize',
+  scopes: ['openid', 'profile', 'email'],
+};
+
 
 const Login = ({navigation}) => {
   // const [username, setUsername] = useState({});
@@ -93,8 +106,31 @@ const Login = ({navigation}) => {
     }
   };
 
+  const openURL = async (url: string) => {
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        console.log("Unable to open URL: " + url);
+      }
+    } catch (error) {
+      console.error("An error occurred while opening the URL: " + error);
+    }
+  };
+
+  const OnSigninWithGoogle = async () => {
+    console.log('Signin with Google');
+    try {
+      const result = await authorize(config);
+      console.log("Res: " + JSON.stringify(result));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
-    <LoginComponent onChange={onChange} onSubmit={onSubmit} onTest={onTest} />
+    <LoginComponent onChange={onChange} onSubmit={onSubmit} onTest={onTest} OnSigninWithGoogle={OnSigninWithGoogle} />
   );
 };
 

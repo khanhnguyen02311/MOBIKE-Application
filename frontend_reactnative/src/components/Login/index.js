@@ -26,6 +26,7 @@ const LoginComponent = ({
   onChange,
   onSubmit,
   onTest,
+  OnSigninWithGoogle,
 }) => {
   const { navigate } = useNavigation();
   const [checked, setChecked] = useState();
@@ -42,7 +43,6 @@ const LoginComponent = ({
             style={styles.logo}
           />
 
-
           <Text style={styles.boldText}>Sign in to your account</Text>
 
           <View style={styles.form}>
@@ -57,6 +57,7 @@ const LoginComponent = ({
                 onChange({ name: 'username', value });
               }}
             />
+            
             <TextInputOutline
               label={'Password'}
               iconClass={MaterialCommunityIcons}
@@ -120,7 +121,7 @@ const LoginComponent = ({
                   />
                 </TouchableWithoutFeedback>
 
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={OnSigninWithGoogle}>
                   <Image
                     source={require('../../assets/images/logo_google.png')}
                     style={{ width: 40, height: 40, marginStart: 10 }}
