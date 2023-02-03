@@ -1,4 +1,4 @@
-import {Gesture} from 'react-native-gesture-handler';
+import { Gesture } from 'react-native-gesture-handler';
 import {
   View,
   Text,
@@ -8,15 +8,24 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableWithoutFeedback } from 'react-native';
+import { POST_DETAIL, POST_DETAIL_NAVIGATOR } from '../../../constants/routeNames';
+import { useDispatch } from 'react-redux';
+import { selectPost } from '../../../redux/slice/selectedPostSlice';
 
-const ListItem = ({item, index}) => {
-  const navigation = useNavigation();
+const ListItem = ({ item, index }) => {
+  const { navigate } = useNavigation();
+  const dispatch = useDispatch();
+  const onNavigate = () => {
+    navigate(POST_DETAIL_NAVIGATOR, { screen: POST_DETAIL });
+    dispatch(selectPost({ ID: '1' }));
+  };
   let path = item.url;
   return (
-    <TouchableOpacity>
+    <TouchableWithoutFeedback onPress={onNavigate}>
       <View
-        style={[styles.styleWrapper, index === 0 ? {marginStart: 20} : null]}>
+        style={[styles.styleWrapper, index === 0 ? { marginStart: 20 } : null]}>
         <Image source={path} style={styles.styleImage} />
 
         <View style={styles.textWrapper}>
@@ -37,7 +46,7 @@ const ListItem = ({item, index}) => {
           </Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 };
 

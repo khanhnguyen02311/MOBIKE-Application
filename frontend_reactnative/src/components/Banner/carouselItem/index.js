@@ -1,12 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
+import MobikeImage from '../../common/image';
 
 export const { width, height } = Dimensions.get('window');
 
-const CarouselItem = ({ item, isUri }) => {
+const CarouselItem = ({ item, isUri, isImageID }) => {
   if (isUri) {
     const { uri } = item;
     return (<Image source={{ uri: uri }} style={[styles.image, { height: width / 1.5 }]} />);
+  }
+  else if (isImageID) {
+    return (<MobikeImage imageID={item.ID} style={[styles.image, { height: width / 1.5 }]} />);
   }
   else {
     const { url } = item;

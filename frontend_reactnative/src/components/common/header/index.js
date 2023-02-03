@@ -41,7 +41,7 @@ const Header = ({ title, iconRight, textRight, onClickRight, onLeftClick }) => {
           {iconRight ? (
             <Ionicons
               name={iconRight}
-              size={30}
+              size={26}
               color="#292D32"
               style={{ marginRight: 15 }}
             />

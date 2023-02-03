@@ -8,11 +8,12 @@ import {
   Animated,
 } from 'react-native';
 import colors from '../../../assets/theme/colors';
+import data from '../../../data/imageBanner';
 import CarouselItem from '../carouselItem';
 
 const { width, height } = Dimensions.get('window');
 
-const Carousel = ({ data, isUri }) => {
+const Carousel = ({ data, isUri, isImageID }) => {
   const scrollX = new Animated.Value(0);
   let position = Animated.divide(scrollX, width);
   if (data && data.length) {
@@ -29,7 +30,7 @@ const Carousel = ({ data, isUri }) => {
           decelerationRate={'normal'}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => {
-            return <CarouselItem item={item} isUri={isUri} />;
+            return <CarouselItem item={item} isUri={isUri} isImageID={isImageID} />;
           }}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
@@ -51,10 +52,10 @@ const Carousel = ({ data, isUri }) => {
                   opacity,
                   height: 5,
                   width: 5,
-                  backgroundColor: '#fff',
+                  backgroundColor: '#000',
                   margin: 2,
                   borderRadius: 5,
-                  bottom: 15,
+                  
                 }}
               />
             );
@@ -71,6 +72,12 @@ const styles = StyleSheet.create({
   dotView: {
     flexDirection: 'row',
     justifyContent: 'center',
+    bottom: 15,
+    backgroundColor: '#ffffff55',
+    alignSelf: 'center',
+    paddingVertical: 2,
+    paddingHorizontal: 5,   
+    borderRadius: 5,
   },
 });
 
