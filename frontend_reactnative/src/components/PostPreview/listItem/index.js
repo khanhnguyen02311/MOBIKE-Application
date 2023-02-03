@@ -10,7 +10,7 @@ import {
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableWithoutFeedback } from 'react-native';
-import { POST_DETAIL } from '../../../constants/routeNames';
+import { POST_DETAIL, POST_DETAIL_NAVIGATOR } from '../../../constants/routeNames';
 import { useDispatch } from 'react-redux';
 import { selectPost } from '../../../redux/slice/selectedPostSlice';
 
@@ -18,7 +18,7 @@ const ListItem = ({ item, index }) => {
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const onNavigate = () => {
-    navigate(POST_DETAIL);
+    navigate(POST_DETAIL_NAVIGATOR, { screen: POST_DETAIL });
     dispatch(selectPost({ ID: '1' }));
   };
   let path = item.url;

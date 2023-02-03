@@ -7,7 +7,6 @@ const PostPreview = ({
     route,
 }) => {
     const { form } = route.params;
-    console.log('Hello');
     return (
          <PostPreviewComponent form={form} />
     )

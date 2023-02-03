@@ -8,15 +8,17 @@ const PostDetail = ({
     navigation,
 }) => {
     useEffect(() => {
-        navigation.getParent()?.setOptions({
-            tabBarStyle: {
-                display: 'none',
-            },
-        });
-        return () =>
-            navigation.getParent()?.setOptions({
-                tabBarStyle: { backgroundColor: '#EDF8FF', minHeight: 56, maxHeight: 80 },
+        navigation.getParent()
+            .getParent()?.setOptions({
+                tabBarStyle: {
+                    display: 'none',
+                },
             });
+        return () =>
+            navigation.getParent()
+                .getParent()?.setOptions({
+                    tabBarStyle: { backgroundColor: '#EDF8FF', minHeight: 56, maxHeight: 80 },
+                });
     }, [navigation]);
 
     const selectedPost = useSelector(state => state.selectedPost.ID);
