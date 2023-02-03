@@ -35,10 +35,15 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FilterPropFrameComponent from '../../FiltersPopUp/FilterPropFrame';
 import { SetProfileImage, SetPersonalInfo, SetIdentityImage, SetPersonalAddress } from '../../../backendAPI';
 import { UpdatePersonalInfo } from '../../../services/TokenStorage';
+import { useNavigation } from '@react-navigation/native';
+import { Popup, Root } from 'popup-ui';
+import { PROFILE, PROFILE_NAVIGATOR } from './../../../constants/routeNames';
 
 const heightScreen = Dimensions.get('window').height;
 
 const EditProfileComponent = () => {
+
+  const { navigate } = useNavigation();
 
   const addressTree = Store.getState().locations.Tree
   const locations = {
@@ -337,7 +342,7 @@ const EditProfileComponent = () => {
   const OnAddressEditFinish = (address) => {
     console.log("Edit address finish " + JSON.stringify(address));
     const newAddressList = Array.from(addressList);
-    newAddressList[address.ID] = address;
+    newAddressList[newAddressList.findIndex((a) => {a.ID == address.ID})] = address;
     setAddressList(newAddressList);
   }
 
@@ -382,380 +387,416 @@ const EditProfileComponent = () => {
     setForm({ ...form, identification_number: value })
   }
 
+  const NavigateBack = () => {
+
+    navigate(PROFILE)
+  }
+
   const Save = async () => {
     console.log("Address List: " + JSON.stringify(addressList))
+    Popup.show({
+      title: "Saving profile...",
+      button: false,
+      callback: () => { },
+      icon: (
+        <Image source={require('../../../assets/images/loading-wheel.gif')} />
+      ),
+    })
+    const pros = []
     if (avatarImage) {
       console.log("Uploading profile image: " + JSON.stringify(avatarImage))
-      const ProfileImageResponse = await SetProfileImage(avatarImage)
-      console.log("Image upload " + (ProfileImageResponse ? "success" : "failed"))
+      pros.push(SetProfileImage(avatarImage))
     }
 
     console.log("Personal info: " + JSON.stringify(form))
-    const PersonalInfoResponse = await SetPersonalInfo(form.name, form.birthday, form.gender, form.phone_number, form.identification_number)
-    console.log("Set personal info " + (PersonalInfoResponse ? "success" : "failed"))
+    pros.push(SetPersonalInfo(form.name, form.birthday, form.gender, form.phone_number, form.identification_number))
 
     if (FrontIDImage && BackIDImage) {
       console.log("Uploading ID image: " + JSON.stringify(FrontIDImage) + " " + JSON.stringify(BackIDImage))
-      const IDImageResponse = await SetIdentityImage(FrontIDImage, BackIDImage)
-      console.log("ID image upload " + (IDImageResponse ? "success" : "failed"))
+      pros.push(SetIdentityImage(FrontIDImage, BackIDImage))
     }
 
     console.log("Address list: " + JSON.stringify(addressList))
-    const AddressResponse = await SetPersonalAddress(addressList)
-    console.log("Set address " + (AddressResponse ? "success" : "failed"))
+    pros.push(SetPersonalAddress(addressList))
 
-    await UpdatePersonalInfo()
+    const res = await Promise.all(pros)
+    if (res.every(result => result)) {
+      await UpdatePersonalInfo()
+
+      Popup.show({
+        title: "Profile saved",
+        type: "Success",
+        button: true,
+        buttonText: "Go to profile",
+        callback: () => {
+          Popup.hide()
+          NavigateBack()
+        }
+      })
+    } else {
+      Popup.show({
+        title: "Profile save failed",
+        type: "Error",
+        button: true,
+        buttonText: "Try again",
+        callback: () => {
+          Popup.hide()
+        }
+      })
+    }
   }
 
   return (
-    <KeyboardAvoidingView style={{ height: '100%' }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <View style={{ height: '100%' }}>
+    <Root>
+      <KeyboardAvoidingView style={{ height: '100%' }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <View style={{ height: '100%' }}>
 
-        <Container
-          keyboardShouldPersistTaps={'never'}
-          styleScrollView={{ backgroundColor: '#fff', height: heightScreen }}
-        >
-          <TouchableWithoutFeedback onPress={() => { changeBottomSheetVisibility(false); changeImageBottomSheetVisibility(false) }}>
-            <Animated.View
-              style={{
-                paddingHorizontal: 20,
-                marginTop: 15,
-                flex: 1,
-                opacity: Animated.add(0.3, Animated.multiply(fall, 1.0)),
-                height: '100%',
-              }}
-            >
-              {
-                avatarImage ? (<Avatar.Image size={80} source={{ uri: avatarImage.uri }} style={{ alignSelf: 'center' }} />)
-                  : (<Avatar.Image size={80} source={(form.profileImage != 0) ? { uri: "https://abcdavid-knguyen.ddns.net:30001/image/get/" + form.profileImage } : require('../../../assets/images/motor.png')} style={{ alignSelf: 'center' }} />)
-              }
-              <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true); setSelectedImage('avatar') }}>
-                <Text style={{ alignSelf: 'center', color: colors.primary, fontWeight: '500', marginTop: 5 }}>Change avatar</Text>
-              </TouchableWithoutFeedback>
-              <View style={{ marginTop: 10 }}>
+          <Container
+            keyboardShouldPersistTaps={'never'}
+            styleScrollView={{ backgroundColor: '#fff', height: heightScreen }}
+          >
+            <TouchableWithoutFeedback onPress={() => { changeBottomSheetVisibility(false); changeImageBottomSheetVisibility(false) }}>
+              <Animated.View
+                style={{
+                  paddingHorizontal: 20,
+                  marginTop: 15,
+                  flex: 1,
+                  opacity: Animated.add(0.3, Animated.multiply(fall, 1.0)),
+                  height: '100%',
+                }}
+              >
+                {
+                  avatarImage ? (<Avatar.Image size={80} source={{ uri: avatarImage.uri }} style={{ alignSelf: 'center' }} />)
+                    : (<Avatar.Image size={80} source={(form.profileImage != 0) ? { uri: "https://abcdavid-knguyen.ddns.net:30001/image/get/" + form.profileImage } : require('../../../assets/images/motor.png')} style={{ alignSelf: 'center' }} />)
+                }
+                <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true); setSelectedImage('avatar') }}>
+                  <Text style={{ alignSelf: 'center', color: colors.primary, fontWeight: '500', marginTop: 5 }}>Change avatar</Text>
+                </TouchableWithoutFeedback>
+                <View style={{ marginTop: 10 }}>
 
-                {/*Name*/}
-                <View>
-                  <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Name</Text>
-                  <TextInputOutline
-                    label={'Name'}
-                    iconClass={MaterialIcons}
-                    iconName={'drive-file-rename-outline'}
-                    iconColor={'#90B4D3'}
-                    inputPadding={6}
-                    borderWidthtoTop={0}
-                    containerStyle={{
-                      height: 44,
-                      borderColor: '#555',
-                    }}
-                    labelStyle={{ fontSize: 12 }}
-                    inputStyle={{ fontSize: 16 }}
-                    labelContainerStyle={{ padding: 13 }}
-                    iconSize={20}
-                    value={form.name}
-                    onChangeText={value => {
-                      setName({ name: 'name', value });
-                    }}
-                    editable={!isBottomSheetVisible && !isImageBottomSheetVisible}
-                  />
-                </View>
+                  {/*Name*/}
+                  <View>
+                    <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Name</Text>
+                    <TextInputOutline
+                      label={'Name'}
+                      iconClass={MaterialIcons}
+                      iconName={'drive-file-rename-outline'}
+                      iconColor={'#90B4D3'}
+                      inputPadding={6}
+                      borderWidthtoTop={0}
+                      containerStyle={{
+                        height: 44,
+                        borderColor: '#555',
+                      }}
+                      labelStyle={{ fontSize: 12 }}
+                      inputStyle={{ fontSize: 16 }}
+                      labelContainerStyle={{ padding: 13 }}
+                      iconSize={20}
+                      value={form.name}
+                      onChangeText={value => {
+                        setName({ name: 'name', value });
+                      }}
+                      editable={!isBottomSheetVisible && !isImageBottomSheetVisible}
+                    />
+                  </View>
 
-                {/*Birthday*/}
-                <View>
-                  <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Birthday</Text>
-                  <TextInputOutline
-                    label={'Birthday'}
-                    iconClass={MaterialIcons}
-                    iconName={'date-range'}
-                    iconColor={'#90B4D3'}
-                    inputPadding={6}
-                    borderWidthtoTop={0}
-                    onTouchEnd={showDatePicker}
-                    editable={!show && !isBottomSheetVisible && !isImageBottomSheetVisible}
-                    value={form.birthday}
-                    containerStyle={{
-                      height: 44,
-                      borderColor: '#555',
-                    }}
-                    labelStyle={{ fontSize: 12 }}
-                    inputStyle={{ fontSize: 16 }}
-                    labelContainerStyle={{ padding: 13 }}
-                    iconSize={20}
-                  />
-                </View>
+                  {/*Birthday*/}
+                  <View>
+                    <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Birthday</Text>
+                    <TextInputOutline
+                      label={'Birthday'}
+                      iconClass={MaterialIcons}
+                      iconName={'date-range'}
+                      iconColor={'#90B4D3'}
+                      inputPadding={6}
+                      borderWidthtoTop={0}
+                      onTouchEnd={showDatePicker}
+                      editable={!show && !isBottomSheetVisible && !isImageBottomSheetVisible}
+                      value={form.birthday}
+                      containerStyle={{
+                        height: 44,
+                        borderColor: '#555',
+                      }}
+                      labelStyle={{ fontSize: 12 }}
+                      inputStyle={{ fontSize: 16 }}
+                      labelContainerStyle={{ padding: 13 }}
+                      iconSize={20}
+                    />
+                  </View>
 
-                {/*Gender*/}
-                <View style={{ marginBottom: 12 }}>
-                  <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Gender</Text>
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', width: '48%', borderWidth: 1, borderColor: '#555', borderRadius: 7, height: 44, backgroundColor: '#F5F5F5', paddingStart: 10 }}>
-                      <RadioButton
-                        value="Male"
-                        status={form.gender === 1 ? 'checked' : 'unchecked'}
-                        onPress={() => setGender(1)}
-                        disabled={isBottomSheetVisible || isImageBottomSheetVisible}
-                      />
-                      <Text style={{ color: form.gender === 1 ? colors.primary : '#555', fontSize: 14, marginStart: 5 }}>Male</Text>
-                    </View>
+                  {/*Gender*/}
+                  <View style={{ marginBottom: 12 }}>
+                    <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Gender</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', width: '48%', borderWidth: 1, borderColor: '#555', borderRadius: 7, height: 44, backgroundColor: '#F5F5F5', paddingStart: 10 }}>
+                        <RadioButton
+                          value="Male"
+                          status={form.gender === 1 ? 'checked' : 'unchecked'}
+                          onPress={() => setGender(1)}
+                          disabled={isBottomSheetVisible || isImageBottomSheetVisible}
+                        />
+                        <Text style={{ color: form.gender === 1 ? colors.primary : '#555', fontSize: 14, marginStart: 5 }}>Male</Text>
+                      </View>
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center', width: '48%', borderWidth: 1, borderColor: '#555', borderRadius: 7, height: 44, backgroundColor: '#F5F5F5', paddingStart: 10 }}>
-                      <RadioButton
-                        value="Female"
-                        status={form.gender === 2 ? 'checked' : 'unchecked'}
-                        onPress={() => setGender(2)}
-                        disabled={isBottomSheetVisible || isImageBottomSheetVisible}
-                      />
-                      <Text style={{ color: form.gender === 2 ? colors.primary : '#555', fontSize: 14, marginStart: 5 }}>Female</Text>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', width: '48%', borderWidth: 1, borderColor: '#555', borderRadius: 7, height: 44, backgroundColor: '#F5F5F5', paddingStart: 10 }}>
+                        <RadioButton
+                          value="Female"
+                          status={form.gender === 2 ? 'checked' : 'unchecked'}
+                          onPress={() => setGender(2)}
+                          disabled={isBottomSheetVisible || isImageBottomSheetVisible}
+                        />
+                        <Text style={{ color: form.gender === 2 ? colors.primary : '#555', fontSize: 14, marginStart: 5 }}>Female</Text>
+                      </View>
+
                     </View>
 
                   </View>
 
-                </View>
-
-                {/*Phone number*/}
-                <View>
-                  <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Phone Number</Text>
-                  <TextInputOutline
-                    label={'Phone Number'}
-                    iconClass={Ionicons}
-                    iconName={'call'}
-                    iconColor={'#90B4D3'}
-                    inputPadding={6}
-                    borderWidthtoTop={0}
-                    value={form.phone_number}
-                    containerStyle={{
-                      height: 44,
-                      borderColor: '#555',
-                    }}
-                    labelStyle={{ fontSize: 12 }}
-                    inputStyle={{ fontSize: 16 }}
-                    labelContainerStyle={{ padding: 13 }}
-                    iconSize={20}
-                    keyboardType={'number-pad'}
-                    onChangeText={value => {
-                      setPhoneNumber({ name: 'phone number', value });
-                    }}
-                    editable={!isBottomSheetVisible && !isImageBottomSheetVisible}
-                  />
-                </View>
-
-                {/*Identification number*/}
-                <View>
-                  <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Identification Number</Text>
-                  <TextInputOutline
-                    label={'Identification Number'}
-                    iconClass={MaterialCommunityIcons}
-                    iconName={'identifier'}
-                    iconColor={'#90B4D3'}
-                    inputPadding={6}
-                    borderWidthtoTop={0}
-                    value={form.identification_number}
-                    containerStyle={{
-                      height: 44,
-                      borderColor: '#555',
-                    }}
-                    labelStyle={{ fontSize: 12 }}
-                    inputStyle={{ fontSize: 16 }}
-                    labelContainerStyle={{ padding: 13 }}
-                    iconSize={20}
-                    keyboardType={'number-pad'}
-                    onChangeText={value => {
-                      setIdentificationNumber(value);
-                    }}
-                    editable={!isBottomSheetVisible && !isImageBottomSheetVisible}
-                  />
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 5 }}>
-
-                    <View style={{ alignItems: 'center', width: '48%' }}>
-                      <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true); setSelectedImage('front') }}>
-                        {FrontIDImage ? (<Image source={{ uri: FrontIDImage.uri }}
-                          style={styles.images} />) : (form.idfrontImage ? <Image source={{ uri: "https://abcdavid-knguyen.ddns.net:30001/image/get/" + form.idfrontImage }}
-                            style={styles.images} /> : (
-                            <View style={[styles.images, { justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: '#f5f5f5', paddingHorizontal: 10 }]}>
-                              <Entypo name="camera" size={36} color={colors.primary} />
-                              <Text style={{ fontSize: 10, color: '#555', textAlign: 'center', marginTop: 5 }}>Upload the front side of your ID card</Text>
-                            </View>))}
-                      </TouchableWithoutFeedback>
-
-                      <Text style={{ fontSize: 14, color: '#555', marginTop: 3 }}>
-                        Front
-                      </Text>
-                    </View>
-
-                    <View style={{ alignItems: 'center', width: '48%' }}>
-                      <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true); setSelectedImage('back') }}>
-                        {BackIDImage ? (<Image source={{ uri: BackIDImage.uri }}
-                          style={styles.images} />) : (form.idbackImage ? <Image source={{ uri: "https://abcdavid-knguyen.ddns.net:30001/image/get/" + form.idbackImage }}
-                            style={styles.images} /> : (
-                          <View style={[styles.images, { justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: '#f5f5f5', paddingHorizontal: 10 }]}>
-                            <Entypo name="camera" size={36} color={colors.primary} />
-                            <Text style={{ fontSize: 10, color: '#555', textAlign: 'center', marginTop: 5 }}>Upload the back side of your ID card</Text>
-                          </View>))}
-                      </TouchableWithoutFeedback>
-
-                      <Text style={{ fontSize: 14, color: '#555', marginTop: 3 }}>
-                        Backside
-                      </Text>
-                    </View>
-
-
+                  {/*Phone number*/}
+                  <View>
+                    <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Phone Number</Text>
+                    <TextInputOutline
+                      label={'Phone Number'}
+                      iconClass={Ionicons}
+                      iconName={'call'}
+                      iconColor={'#90B4D3'}
+                      inputPadding={6}
+                      borderWidthtoTop={0}
+                      value={form.phone_number}
+                      containerStyle={{
+                        height: 44,
+                        borderColor: '#555',
+                      }}
+                      labelStyle={{ fontSize: 12 }}
+                      inputStyle={{ fontSize: 16 }}
+                      labelContainerStyle={{ padding: 13 }}
+                      iconSize={20}
+                      keyboardType={'number-pad'}
+                      onChangeText={value => {
+                        setPhoneNumber({ name: 'phone number', value });
+                      }}
+                      editable={!isBottomSheetVisible && !isImageBottomSheetVisible}
+                    />
                   </View>
-                </View>
 
+                  {/*Identification number*/}
+                  <View>
+                    <Text style={{ marginBottom: 5, fontWeight: '500', color: '#555' }}>Identification Number</Text>
+                    <TextInputOutline
+                      label={'Identification Number'}
+                      iconClass={MaterialCommunityIcons}
+                      iconName={'identifier'}
+                      iconColor={'#90B4D3'}
+                      inputPadding={6}
+                      borderWidthtoTop={0}
+                      value={form.identification_number}
+                      containerStyle={{
+                        height: 44,
+                        borderColor: '#555',
+                      }}
+                      labelStyle={{ fontSize: 12 }}
+                      inputStyle={{ fontSize: 16 }}
+                      labelContainerStyle={{ padding: 13 }}
+                      iconSize={20}
+                      keyboardType={'number-pad'}
+                      onChangeText={value => {
+                        setIdentificationNumber(value);
+                      }}
+                      editable={!isBottomSheetVisible && !isImageBottomSheetVisible}
+                    />
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 5 }}>
 
-                {/*Address*/}
-                <FilterPropFrameComponent divider={false} styleLabel={{ fontWeight: '500', color: '#555' }} type={'Address'} onToggle={onToggle} show={showAddress}>
-                  <Animated.View
-                    entering={FadeInUp.duration(300).delay(100)}
-                    layout={Layout.stiffness(100).damping(10).duration(durationLayout)}>
-                    {addressList.length > 0 ? (
-                      addressList.filter(item => !item.IsDeleted).map((item, index) =>
-                      (
-                        <View key={item.ID}>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              padding: 12,
-                              paddingEnd: 20,
-                            }}>
-                            <View style={{ width: 25, justifyContent: 'center' }}>
-                              <Text style={{ color: !item.IsTemporary ? colors.grey : colors.primary, fontWeight: item.IsTemporary ? 'bold' : '400' }}>{index + 1}</Text>
-                            </View>
-                            <View
-                              style={{
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                flex: 1,
-                                marginEnd: 15,
-                              }}>
-                              {item.DetailAddress && <Text style={{ color: 'black' }}>
-                                {item.DetailAddress}
-                              </Text>}
-                              <Text style={{ color: 'black' }}>
-                                {wardNameFromID(item.Ward)}, {districtNameFromID(item.District)}, {cityNameFromID(item.City)}
-                              </Text>
+                      <View style={{ alignItems: 'center', width: '48%' }}>
+                        <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true); setSelectedImage('front') }}>
+                          {FrontIDImage ? (<Image source={{ uri: FrontIDImage.uri }}
+                            style={styles.images} />) : (form.idfrontImage ? <Image source={{ uri: "https://abcdavid-knguyen.ddns.net:30001/image/get/" + form.idfrontImage }}
+                              style={styles.images} /> : (
+                              <View style={[styles.images, { justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: '#f5f5f5', paddingHorizontal: 10 }]}>
+                                <Entypo name="camera" size={36} color={colors.primary} />
+                                <Text style={{ fontSize: 10, color: '#555', textAlign: 'center', marginTop: 5 }}>Upload the front side of your ID card</Text>
+                              </View>))}
+                        </TouchableWithoutFeedback>
 
-                            </View>
-                            <View style={{ justifyContent: 'center' }}>
-                              <TouchableWithoutFeedback onPress={() => { OnAddressEdit(item.ID) }}>
-                                <FontAwesome5 name='edit' size={18} color={colors.primary} />
-                              </TouchableWithoutFeedback>
-                            </View>
-                          </View>
-
-                          <View
-                            style={{
-                              height: 1,
-                              borderBottomWidth: 1,
-                              borderBottomColor: '#e9e9e9',
-                              marginStart: 35,
-                              marginEnd: 20,
-                            }}
-                          />
-                        </View>
-                      )
-                      )) : null}
-                    <TouchableWithoutFeedback onPress={OnAddNewAddess}>
-                      <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginTop: 10 }}>
-                        <Ionicons name="add-circle-outline" size={24} color={colors.primary} />
-                        <Text style={{ fontSize: 16, color: '#555', marginStart: 5, color: colors.primary }}>
-                          Add new address
+                        <Text style={{ fontSize: 14, color: '#555', marginTop: 3 }}>
+                          Front
                         </Text>
                       </View>
-                    </TouchableWithoutFeedback>
-                  </Animated.View>
-                </FilterPropFrameComponent>
 
-                <View style={{ height: 150 }}></View>
-              </View>
+                      <View style={{ alignItems: 'center', width: '48%' }}>
+                        <TouchableWithoutFeedback onPress={() => { changeImageBottomSheetVisibility(true); setSelectedImage('back') }}>
+                          {BackIDImage ? (<Image source={{ uri: BackIDImage.uri }}
+                            style={styles.images} />) : (form.idbackImage ? <Image source={{ uri: "https://abcdavid-knguyen.ddns.net:30001/image/get/" + form.idbackImage }}
+                              style={styles.images} /> : (
+                              <View style={[styles.images, { justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: '#f5f5f5', paddingHorizontal: 10 }]}>
+                                <Entypo name="camera" size={36} color={colors.primary} />
+                                <Text style={{ fontSize: 10, color: '#555', textAlign: 'center', marginTop: 5 }}>Upload the back side of your ID card</Text>
+                              </View>))}
+                        </TouchableWithoutFeedback>
 
-            </Animated.View>
-          </TouchableWithoutFeedback>
+                        <Text style={{ fontSize: 14, color: '#555', marginTop: 3 }}>
+                          Backside
+                        </Text>
+                      </View>
 
-        </Container>
-        {
-          show && (
-            <DateTimePicker
-              testID="datetimePicker"
-              value={
-                form.birthday !== ''
-                  ? new Date(
-                    form.birthday.split('/')[2],
-                    parseInt(form.birthday.split('/')[1]) - 1,
-                    form.birthday.split('/')[0],
-                  )
-                  : new Date(Date.now())
-              }
-              mode={'date'}
-              display="default"
-              onChange={onBirthdateChange}
-            />
-          )
-        }
 
-        {/*Address bottomsheet*/}
-        <BottomSheet
-          ref={bottomSheet}
-          snapPoints={[heightScreen - 150, 0]}
-          initialSnap={1}
-          callbackNode={fall}
-          onCloseEnd={() => {
-            changeBottomSheetVisibility(false);
-          }}
-          enabledGestureInteraction={true}
+                    </View>
+                  </View>
 
-          renderHeader={_renderHeader}
-          renderContent={() => {
-            return (
-              <AddressBottomSheetContent
-                data={addressTree}
-                locationNameConverter={{
-                  Ward: wardNameFromID,
-                  District: districtNameFromID,
-                  City: cityNameFromID,
-                }}
-                onCloseBottomSheet={() => changeBottomSheetVisibility(false)}
-                onSetAddress={OnAddressEditFinish}
-                initialAddress={currentAddress}
+
+                  {/*Address*/}
+                  <FilterPropFrameComponent divider={false} styleLabel={{ fontWeight: '500', color: '#555' }} type={'Address'} onToggle={onToggle} show={showAddress}>
+                    <Animated.View
+                      entering={FadeInUp.duration(300).delay(100)}
+                      layout={Layout.stiffness(100).damping(10).duration(durationLayout)}>
+                      {addressList.length > 0 ? (
+                        addressList.filter(item => !item.IsDeleted).map((item, index) =>
+                        (
+                          <View key={item.ID}>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                padding: 12,
+                                paddingEnd: 20,
+                              }}>
+                              <View style={{ width: 25, justifyContent: 'center' }}>
+                                <Text style={{ color: !item.IsTemporary ? colors.grey : colors.primary, fontWeight: item.IsTemporary ? 'bold' : '400' }}>{index + 1}</Text>
+                              </View>
+                              <View
+                                style={{
+                                  flexDirection: 'column',
+                                  justifyContent: 'center',
+                                  flex: 1,
+                                  marginEnd: 15,
+                                }}>
+                                {item.DetailAddress && <Text style={{ color: 'black' }}>
+                                  {item.DetailAddress}
+                                </Text>}
+                                <Text style={{ color: 'black' }}>
+                                  {wardNameFromID(item.Ward)}, {districtNameFromID(item.District)}, {cityNameFromID(item.City)}
+                                </Text>
+
+                              </View>
+                              <View style={{ justifyContent: 'center' }}>
+                                <TouchableWithoutFeedback onPress={() => { OnAddressEdit(item.ID) }}>
+                                  <FontAwesome5 name='edit' size={18} color={colors.primary} />
+                                </TouchableWithoutFeedback>
+                              </View>
+                            </View>
+
+                            <View
+                              style={{
+                                height: 1,
+                                borderBottomWidth: 1,
+                                borderBottomColor: '#e9e9e9',
+                                marginStart: 35,
+                                marginEnd: 20,
+                              }}
+                            />
+                          </View>
+                        )
+                        )) : null}
+                      <TouchableWithoutFeedback onPress={OnAddNewAddess}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginTop: 10 }}>
+                          <Ionicons name="add-circle-outline" size={24} color={colors.primary} />
+                          <Text style={{ fontSize: 16, color: '#555', marginStart: 5, color: colors.primary }}>
+                            Add new address
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    </Animated.View>
+                  </FilterPropFrameComponent>
+
+                  <View style={{ height: 150 }}></View>
+                </View>
+
+              </Animated.View>
+            </TouchableWithoutFeedback>
+
+          </Container>
+          {
+            show && (
+              <DateTimePicker
+                testID="datetimePicker"
+                value={
+                  form.birthday !== ''
+                    ? new Date(
+                      form.birthday.split('/')[2],
+                      parseInt(form.birthday.split('/')[1]) - 1,
+                      form.birthday.split('/')[0],
+                    )
+                    : new Date(Date.now())
+                }
+                mode={'date'}
+                display="default"
+                onChange={onBirthdateChange}
               />
-            );
-          }}
-        />
+            )
+          }
 
-        {/*Image bottomsheet*/}
-        <BottomSheet
-          ref={imageBottomSheet}
-          snapPoints={[230, 0]}
-          initialSnap={1}
-          callbackNode={fall}
-          onCloseEnd={() => {
-            changeImageBottomSheetVisibility(false);
-          }}
-          enabledGestureInteraction={true}
-          renderHeader={_renderHeader}
-          renderContent={_renderContentImage}
-        />
-        <FAB
-          onPress={() => {
-            Save();
-          }}
-          label='Apply changes'
-          variant='extended'
-          size='small'
-          style={{
-            position: 'absolute',
-            margin: 16,
-            marginHorizontal: 20,
-            bottom: 0,
-            right: 0,
-            left: 0,
-            backgroundColor: colors.secondary,
-          }} />
+          {/*Address bottomsheet*/}
+          <BottomSheet
+            ref={bottomSheet}
+            snapPoints={[heightScreen - 150, 0]}
+            initialSnap={1}
+            callbackNode={fall}
+            onCloseEnd={() => {
+              changeBottomSheetVisibility(false);
+            }}
+            enabledGestureInteraction={true}
 
-      </View >
-    </KeyboardAvoidingView >
+            renderHeader={_renderHeader}
+            renderContent={() => {
+              return (
+                <AddressBottomSheetContent
+                  data={addressTree}
+                  locationNameConverter={{
+                    Ward: wardNameFromID,
+                    District: districtNameFromID,
+                    City: cityNameFromID,
+                  }}
+                  onCloseBottomSheet={() => changeBottomSheetVisibility(false)}
+                  onSetAddress={OnAddressEditFinish}
+                  initialAddress={currentAddress}
+                />
+              );
+            }}
+          />
+
+          {/*Image bottomsheet*/}
+          <BottomSheet
+            ref={imageBottomSheet}
+            snapPoints={[230, 0]}
+            initialSnap={1}
+            callbackNode={fall}
+            onCloseEnd={() => {
+              changeImageBottomSheetVisibility(false);
+            }}
+            enabledGestureInteraction={true}
+            renderHeader={_renderHeader}
+            renderContent={_renderContentImage}
+          />
+          <FAB
+            onPress={() => {
+              Save();
+            }}
+            label='Apply changes'
+            variant='extended'
+            size='small'
+            style={{
+              position: 'absolute',
+              margin: 16,
+              marginHorizontal: 20,
+              bottom: 0,
+              right: 0,
+              left: 0,
+              backgroundColor: colors.secondary,
+            }} />
+
+        </View >
+      </KeyboardAvoidingView >
+    </Root>
   );
 };
 

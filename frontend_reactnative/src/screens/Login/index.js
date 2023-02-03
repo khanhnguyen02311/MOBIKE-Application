@@ -1,12 +1,9 @@
-// import {
-//   View,
-//   Text,
-//   Image,
-//   Button,
-//   StyleSheet,
-//   TouchableWithoutFeedback,
-//   Keyboard,
-// } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Keyboard,
+} from 'react-native';
 // import React, {useEffect, useState} from 'react';
 // import Container from '../../components/common/container';
 // import {REGISTRATION} from '../../constants/routeNames';
@@ -19,14 +16,16 @@ import BackendAPI from '../../backendAPI';
 import HttpRequest from '../../backendAPI/HttpRequest';
 import TokenStorage from '../../services/TokenStorage';
 import React from 'react';
+
 import { Linking } from 'react-native';
 
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 import LoginComponent from '../../components/Login';
 
-import {authorize} from 'react-native-app-auth';
+import { authorize } from 'react-native-app-auth';
 import auth from './../../context/reducers/auth';
+import { Popup, Root } from 'popup-ui';
 
 const config = {
   issuer: 'https://accounts.google.com',
@@ -36,7 +35,7 @@ const config = {
 };
 
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   // const [username, setUsername] = useState({});
   // const [password, setPassword] = useState({});
 
@@ -60,13 +59,24 @@ const Login = ({navigation}) => {
   const [form, setForm] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const onChange = ({name, value}) => {
-    setForm({...form, [name]: value});
+  const onChange = ({ name, value }) => {
+    setForm({ ...form, [name]: value });
   };
 
   const login = async () => {
     console.log('Login Submitted');
-    await TokenStorage.signIn(form.username, form.password);
+    const res = await TokenStorage.signIn(form.username, form.password);
+    if (res.msg == "Incompleted") {
+      Popup.show({
+        type: "Warning",
+        title: "Login Failed",
+        button: true,
+        buttonText: "Try again",
+        background: "#a0a0a080",
+        callback: () => Popup.hide()
+      })
+    }
+
   };
 
   const onSubmit = () => {
@@ -76,61 +86,36 @@ const Login = ({navigation}) => {
 
   const onTest = () => {
     console.log('Test');
-    openGallery();
+
   };
 
-  const openGallery = async () => {
-    const result = await launchImageLibrary();
-    console.log(result);
-    saveImageToServer(result.assets[0]);
-  };
 
-  const saveImageToServer = async image => {
-    try {
-      const formData = new FormData();
-      formData.append('file', {
-        uri: image.uri,
-        // type: image.type,
-        // name: image.fileName,
-      });
-      console.log('formData: ', JSON.stringify(formData));
-      const response = await fetch('http://172.30.163.113:3001/upload', {
-        method: 'POST',
-        body: formData,
-        headers: {'Content-Type': 'multipart/form-data'},
-      });
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.log('Save Image Error: ' + error);
-    }
-  };
 
-  const openURL = async (url: string) => {
-    try {
-      const supported = await Linking.canOpenURL(url);
-      if (supported) {
-        await Linking.openURL(url);
-      } else {
-        console.log("Unable to open URL: " + url);
-      }
-    } catch (error) {
-      console.error("An error occurred while opening the URL: " + error);
-    }
-  };
+  // const openURL = async (url: string) => {
+  //   try {
+  //     const supported = await Linking.canOpenURL(url);
+  //     if (supported) {
+  //       await Linking.openURL(url);
+  //     } else {
+  //       console.log("Unable to open URL: " + url);
+  //     }
+  //   } catch (error) {
+  //     console.error("An error occurred while opening the URL: " + error);
+  //   }
+  // };
 
   const OnSigninWithGoogle = async () => {
     console.log('Signin with Google');
-    try {
-      const result = await authorize(config);
-      console.log("Res: " + JSON.stringify(result));
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   const result = await authorize(config);
+    //   console.log("Res: " + JSON.stringify(result));
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   return (
-    <LoginComponent onChange={onChange} onSubmit={onSubmit} onTest={onTest} OnSigninWithGoogle={OnSigninWithGoogle} />
+    <Root><LoginComponent onChange={onChange} onSubmit={onSubmit} onTest={onTest} OnSigninWithGoogle={OnSigninWithGoogle} /></Root>
   );
 };
 

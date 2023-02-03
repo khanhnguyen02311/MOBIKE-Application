@@ -69,8 +69,9 @@ export const signIn = async (usernameOrEmail: String, password: String, savePass
         await UpdatePersonalInfo();
 
         return response.token;
+    } else if (response.msg == "Incompleted") {
+        return response;
     }
-    return "";
 }
 
 export const signOut = async () => {
