@@ -52,8 +52,10 @@ const App = () => {
 
     const Init = async () => {
       // await TokenStorage.removeCurrentToken();
-      await TokenStorage.init();
-      await ClientDatabase.init();
+      const pros = [];
+      pros.push(TokenStorage.init());
+      pros.push(ClientDatabase.init());
+      await Promise.all(pros);
       // TokenStorage.print();
       // ClientDatabase.print();
       // let test = Store.getState().locations.Tree;
