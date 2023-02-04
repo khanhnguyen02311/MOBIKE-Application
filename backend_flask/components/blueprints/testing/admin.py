@@ -20,10 +20,12 @@ def insertvehiclesupport():
     print("Inserting Vehicle support tables...")
     return InsertVehicleSupportTable()
 
-@bpadmin.route('/inserttestaccounts', methods = ['POST'])
-def inserttestaccounts():
-    print("Inserting test accounts...")
-    return InsertTestAccounts()
+@bpadmin.route('/inserttestdata', methods = ['POST'])
+def inserttestdata():
+    print("Inserting testdata...")
+    output = InsertTestdata()
+    if output[0]: return "Done"
+    else: return output[1]
 
 @bpadmin.route('/insertlocations', methods = ['POST'])
 def insertlocations():
@@ -100,7 +102,6 @@ def initdatabase(index):
             insertpermission()
             insertimagetype()
             insertvehiclesupport()
-            inserttestaccounts()
         elif index==1:
             print("Initializing database...")
             initversions()
@@ -109,7 +110,6 @@ def initdatabase(index):
             insertimagetype()
         elif index==2:
             insertvehiclesupport()
-            inserttestaccounts()
         else: 
             return "Index not valid"
         return f"Done {index}"

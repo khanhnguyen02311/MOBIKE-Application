@@ -5,3 +5,7 @@ App = create_app()
 if __name__ == "__main__":
     print(App.url_map)
     App.run(debug=True, threaded=True)
+
+    # todo:
+    # import flask cors
+    # reset table POSTSTATUS

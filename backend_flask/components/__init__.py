@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from flask_debugtoolbar import DebugToolbarExtension
+from flask_cors import CORS
 from .blueprints.utilities import logo, vehicle
 from .blueprints.testing import gets, admin, test, image
 from .blueprints.authentication import signup, signin, signout
@@ -11,6 +12,7 @@ from .security import oauth, blocklistJWT
 
 def create_app():
     App = Flask(__name__)
+    CORS(App)
     App.config.from_object(fcfg)
     jwt = JWTManager(App)
     oauth.init_app(App)

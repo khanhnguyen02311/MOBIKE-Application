@@ -25,6 +25,7 @@ class SQLAlchemyConfig:
    AUTO_COMMIT = False
    POOL_SIZE = 15
    MAX_OVERFLOW = 10
+   POOL_PRE_PING = True
    
 class RedisConfig:
    HOST = "localhost"

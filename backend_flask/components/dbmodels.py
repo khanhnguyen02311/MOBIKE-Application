@@ -44,7 +44,7 @@ class AccountInfo (Base):
     rel_Account = relationship("Account", back_populates="rel_AccountInfo", uselist=False)
     
     ## Address reference
-    rel_Address = relationship('Address', back_populates='rel_AccountInfo')
+    rel_Address = relationship('Address', cascade='save-update, merge, delete', back_populates='rel_AccountInfo')
     
     
 # ==============================================================================
@@ -78,19 +78,19 @@ class Account (Base):
     rel_AccountInfo = relationship("AccountInfo", cascade='save-update, merge, delete', back_populates="rel_Account")
 
     ## Post reference
-    rel_Post = relationship("Post", back_populates="rel_Account")
+    rel_Post = relationship("Post", cascade='save-update, merge, delete', back_populates="rel_Account")
     
     ## Rating reference
-    rel_Rating = relationship("Rating", back_populates="rel_Account")
+    rel_Rating = relationship("Rating", cascade='save-update, merge, delete', back_populates="rel_Account")
     
     ## Like reference
-    rel_Like = relationship("Like", back_populates="rel_Account")
+    rel_Like = relationship("Like", cascade='save-update, merge, delete', back_populates="rel_Account")
     
     ## View reference
-    rel_View = relationship("View", back_populates="rel_Account")
+    rel_View = relationship("View", cascade='save-update, merge, delete', back_populates="rel_Account")
     
     ## Comment reference
-    rel_Comment = relationship("Comment", back_populates="rel_Account")
+    rel_Comment = relationship("Comment", cascade='save-update, merge, delete', back_populates="rel_Account")
     
     ## ChatParticipant reference
     rel_ChatParticipant = relationship("ChatParticipant", back_populates="rel_Account")
@@ -167,31 +167,31 @@ class Post (Base):
     rel_Address = relationship("Address", back_populates="rel_Post")
     
     ID_VehicleInfo = Column(ms.INTEGER, ForeignKey("VEHICLEINFO.ID"), nullable=False)
-    rel_VehicleInfo = relationship("VehicleInfo", back_populates="rel_Post")
+    rel_VehicleInfo = relationship("VehicleInfo", cascade='save-update, merge, delete', back_populates="rel_Post")
     
     ID_PostStat = Column(ms.INTEGER, ForeignKey('POSTSTAT.ID'), nullable=False)
-    rel_PostStat = relationship('PostStat', back_populates='rel_Post')
+    rel_PostStat = relationship('PostStat', cascade='save-update, merge, delete', back_populates='rel_Post')
 
     ## ImagePost reference
-    rel_Image = relationship("Image", back_populates="rel_Post")
+    rel_Image = relationship("Image", cascade='save-update, merge, delete', back_populates="rel_Post")
     
     ## PostStatus reference
-    rel_PostStatus = relationship("PostStatus", back_populates="rel_Post")
+    rel_PostStatus = relationship("PostStatus", cascade='save-update, merge, delete', back_populates="rel_Post")
     
     ## Rating reference
-    rel_Rating = relationship("Rating", back_populates="rel_Post")
+    rel_Rating = relationship("Rating", cascade='save-update, merge, delete', back_populates="rel_Post")
     
     ## Like reference
-    rel_Like = relationship("Like", back_populates="rel_Post")
+    rel_Like = relationship("Like", cascade='save-update, merge, delete', back_populates="rel_Post")
     
     ## View reference
-    rel_View = relationship("View", back_populates="rel_Post")
+    rel_View = relationship("View", cascade='save-update, merge, delete', back_populates="rel_Post")
     
     ## Comment reference
-    rel_Comment = relationship("Comment", back_populates="rel_Post")
+    rel_Comment = relationship("Comment", cascade='save-update, merge, delete', back_populates="rel_Post")
     
     ## ChatRoom reference
-    rel_ChatRoom = relationship("ChatRoom", back_populates="rel_Post")
+    rel_ChatRoom = relationship("ChatRoom", cascade='save-update, merge, delete', back_populates="rel_Post")
     
 
 # ==============================================================================
@@ -347,7 +347,7 @@ class VehicleBrand (Base):
     ID = Column(ms.INTEGER, primary_key=True)
     Name = Column(ms.NVARCHAR(50), nullable=False)
     
-    ID_Image = Column(ms.INTEGER, ForeignKey("IMAGE.ID"), nullable=True)
+    ID_Image = Column(ms.INTEGER, ForeignKey("IMAGE.ID"))
     rel_Image = relationship("Image")
     
     

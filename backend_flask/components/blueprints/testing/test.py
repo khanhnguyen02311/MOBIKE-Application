@@ -81,3 +81,23 @@ def addpoststatus():
     except Exception as e:
       Session.rollback()
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
+  
+  
+@bptest.route('/addrating', methods=['GET', 'POST'])
+def addrating():
+    Session = new_Scoped_session()
+    try:
+      info = request.get_json()
+      new_rating = dbm.Rating(
+        Rating_point = info['rating'],
+        Content = info['content'],
+        ID_Account = info['acc'],
+        ID_Post = info['post']
+      )
+      Session.add(new_rating)
+      Session.commit()
+      return jsonify({"msg": "Completed", "error": "", "info": new_rating.ID})
+   
+    except Exception as e:
+      Session.rollback()
+      return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})

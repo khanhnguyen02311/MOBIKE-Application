@@ -4,7 +4,11 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from .config import SQLAlchemyConfig as scfg
 
-Engine = create_engine(url=scfg.SQLALCHEMY_DATABASE_URL, echo=scfg.ECHO, pool_size=scfg.POOL_SIZE, max_overflow=scfg.MAX_OVERFLOW)
+Engine = create_engine(url=scfg.SQLALCHEMY_DATABASE_URL, 
+                       echo=scfg.ECHO, 
+                       pool_size=scfg.POOL_SIZE, 
+                       max_overflow=scfg.MAX_OVERFLOW, 
+                       pool_pre_ping=scfg.POOL_PRE_PING)
 Base = declarative_base()
 
 def new_Scoped_session():

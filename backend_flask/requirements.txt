@@ -17,3 +17,4 @@ eventlet
 redis
 flask-swagger-ui
 flask_debugtoolbar
+Flask-Cors
