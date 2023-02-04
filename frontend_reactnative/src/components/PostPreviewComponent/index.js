@@ -21,6 +21,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { MARKETPLACE, YOUR_POSTS } from '../../constants/routeNames';
+import MobikeImage from '../common/image';
 
 const widthScreen = Dimensions.get('window').width;
 const PostPreviewComponent = ({
@@ -89,13 +90,6 @@ const PostPreviewComponent = ({
     }
 
     const [showDetail, setShowDetail] = React.useState(false);
-    const onShowDetail = () => {
-        setShowDetail(true);
-    }
-
-    const onHideDetail = () => {
-        setShowDetail(false);
-    }
 
     //Post
     const onPost = () => {
@@ -146,85 +140,109 @@ const PostPreviewComponent = ({
 
                 {/* Description */}
                 <View style={{ paddingHorizontal: 20, marginTop: 15 }}>
-                    <ReadMore onExpand={onShowDetail} onCollapse={onHideDetail} seeMoreStyle={{ color: colors.text, fontStyle: 'italic', }} seeLessStyle={{ color: colors.text, fontStyle: 'italic' }} style={{ color: '#384653', fontSize: 14, fontWeight: '400' }} numberOfLines={10}>{form.content}</ReadMore>
-                    {showDetail &&
-                        (
-                            <View style={{ marginTop: 20 }}>
-                                <Text style={{ marginBottom: 15, fontWeight: '500', color: '#000' }}>Detail Information</Text>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', paddingHorizontal: 5 }}>
-                                    <View style={{ width: widthScreen / 2 - 30 }}>
+                    <ReadMore seeMoreStyle={{ color: colors.text, fontStyle: 'italic', }} seeLessStyle={{ color: colors.text, fontStyle: 'italic' }} style={{ color: '#384653', fontSize: 14, fontWeight: '400' }} numberOfLines={10}>{form.content}</ReadMore>
+                    <View style={{ marginTop: 20 }}>
+                        <Text style={{ marginBottom: 15, fontWeight: '500', color: '#000' }}>Detail Information</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', paddingHorizontal: 5 }}>
+                            <View style={{ width: widthScreen / 2 - 30 }}>
 
-                                        {/* Name */}
-                                        <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                            <MaterialIcons name='drive-file-rename-outline' size={18} color={colors.primary} />
-                                            <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Name : </Text>
-                                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.name}</Text>
-                                        </View>
-
-                                        {/* Lineup */}
-                                        <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                            <MaterialIcons name='label' size={18} color={colors.primary} />
-                                            <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Lineup : </Text>
-                                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{lineupNameFromID(form.lineup)}</Text>
-                                        </View>
-
-                                        {/* Condition */}
-                                        <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                            <MaterialCommunityIcons name='list-status' size={18} color={colors.primary} />
-                                            <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Condition : </Text>
-                                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{conditionNameFromID(form.condition)}</Text>
-                                        </View>
-
-                                        {/* Manufacturer Year */}
-                                        <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                            <Fontisto name='date' size={18} color={colors.primary} />
-                                            <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Year : </Text>
-                                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.manufacturerYear}</Text>
-                                        </View>
-
-                                    </View>
-                                    <View style={{ width: widthScreen / 2 - 30 }}>
-                                        <View>
-
-                                            {/* Branch */}
-                                            <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                                <MaterialIcons name='motorcycle' size={18} color={colors.primary} />
-                                                <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Branch : </Text>
-                                                <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{brandNameFromID(form.brand)}</Text>
-                                            </View>
-
-                                            {/* Color */}
-                                            <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                                <FontAwesome name='circle' size={18} color={colorHexFromID(form.color)} />
-                                                <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>Color : </Text>
-                                                <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{colorNameFromID(form.color)}</Text>
-                                            </View>
-
-                                            {/* Odometer */}
-                                            <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                                <Ionicons name='speedometer' size={18} color={colors.primary} />
-                                                <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>Odometer : </Text>
-                                                <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.odometer}</Text>
-                                            </View>
-
-                                            {/* Cubic Power */}
-                                            <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                                <MaterialIcons name='speed' size={18} color={colors.primary} />
-                                                <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>Cubic Power : </Text>
-                                                <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.cubicPower}</Text>
-                                            </View>
-
-                                        </View>
-                                    </View>
+                                {/* Name */}
+                                <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+                                    <MaterialIcons name='drive-file-rename-outline' size={18} color={colors.primary} />
+                                    <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Name : </Text>
+                                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.name}</Text>
                                 </View>
-                                {/* License Plate */}
-                                <View style={{ flexDirection: 'row', marginBottom: 15, paddingLeft: 7 }}>
-                                    <Octicons name='number' size={18} color={colors.primary} />
-                                    <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>License Plate : </Text>
-                                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.licensePlate}</Text>
+
+                                {/* Lineup */}
+                                <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+                                    <MaterialIcons name='label' size={18} color={colors.primary} />
+                                    <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Lineup : </Text>
+                                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{lineupNameFromID(form.lineup)}</Text>
+                                </View>
+
+                                {/* Condition */}
+                                <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+                                    <MaterialCommunityIcons name='list-status' size={18} color={colors.primary} />
+                                    <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Condition : </Text>
+                                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{conditionNameFromID(form.condition)}</Text>
+                                </View>
+
+                                {/* Manufacturer Year */}
+                                <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+                                    <Fontisto name='date' size={18} color={colors.primary} />
+                                    <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Year : </Text>
+                                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.manufacturerYear}</Text>
+                                </View>
+
+                            </View>
+                            <View style={{ width: widthScreen / 2 - 30 }}>
+                                <View>
+
+                                    {/* Branch */}
+                                    <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+                                        <MaterialIcons name='motorcycle' size={18} color={colors.primary} />
+                                        <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Branch : </Text>
+                                        <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{brandNameFromID(form.brand)}</Text>
+                                    </View>
+
+                                    {/* Color */}
+                                    <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+                                        <FontAwesome name='circle' size={18} color={colorHexFromID(form.color)} />
+                                        <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>Color : </Text>
+                                        <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{colorNameFromID(form.color)}</Text>
+                                    </View>
+
+                                    {/* Odometer */}
+                                    <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+                                        <Ionicons name='speedometer' size={18} color={colors.primary} />
+                                        <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>Odometer : </Text>
+                                        <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.odometer}</Text>
+                                    </View>
+
+                                    {/* Cubic Power */}
+                                    <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+                                        <MaterialIcons name='speed' size={18} color={colors.primary} />
+                                        <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>Cubic Power : </Text>
+                                        <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.cubicPower}</Text>
+                                    </View>
+
                                 </View>
                             </View>
-                        )}
+                        </View>
+                        {/* License Plate */}
+                        <View style={{ flexDirection: 'row', marginBottom: 15, paddingLeft: 7 }}>
+                            <Octicons name='number' size={18} color={colors.primary} />
+                            <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>License Plate : </Text>
+                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.licensePlate}</Text>
+                        </View>
+                    </View>
+                </View>
+
+
+                {/* Seperate */}
+                <View style={{ backgroundColor: '#F6F6F6', height: 8 }} />
+
+                {/* Address */}
+                <View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 12, marginLeft: 10, }}>
+
+                    <MobikeImage imageID={1} style={{ width: 48, height: 48, borderRadius: 500, borderWidth: 1, borderColor: '#e8e8e8' }} />
+
+                    <View style={{ marginHorizontal: 15, flex: 1 }}>
+
+                        {/* Name & View Page */}
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text style={{ color: '#000', fontWeight: '500', fontSize: 14, flex: 1 }}>Huynh Duy Khang</Text>
+                            <Text style={{ color: colors.text, fontWeight: '400', fontSize: 12, fontStyle: 'italic', marginLeft: 10, }}>View page ></Text>
+                        </View>
+
+                        {/* Address */}
+                        <View style={{ flexDirection: 'row', marginTop: 5, marginEnd: 15, alignItems: 'flex-start', flex: 1 }}>
+                            <SimpleLineIcons name="location-pin" size={12} color={'#374957'} style={{ marginTop: 2 }} />
+                            <Text style={{ color: '#555', fontWeight: '300', fontSize: 12, fontStyle: 'italic', marginLeft: 5 }}>10/34, Thong Nhat Ward, Bien Hoa City, Dong Nai Province</Text>
+                        </View>
+
+                    </View>
+
                 </View>
 
                 <View style={{ height: 100 }} />
