@@ -19,8 +19,8 @@ def detailpost(id):
    Session = new_Scoped_session()
    try:
       status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == id).order_by(dbm.PostStatus.ID.desc()).first()
-      if status.Status != 1:
-         return jsonify({"msg": "Completed", "error": "Post not found", "info": ""})
+      # if status.Status != 1:
+      #    return jsonify({"msg": "Completed", "error": "Post not found", "info": ""})
       
       post = Session.query(dbm.Post).options(sqlorm.joinedload(dbm.Post.rel_VehicleInfo),
                                              sqlorm.joinedload(dbm.Post.rel_Image),
