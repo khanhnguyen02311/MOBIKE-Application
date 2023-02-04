@@ -10,7 +10,6 @@ import MobikeImage from '../common/image';
 const SeeAllReviewsComponent = ({
     ratingPost,
 }) => {
-    console.log(ratingPost);
 
     const [selectedCategory, setSelectedCategory] = useState(0);
     const onSetSelectedCategory = (index) => {

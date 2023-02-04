@@ -468,6 +468,7 @@ const AddPostComponent = ({ }) => {
 
     useEffect(() => {
         console.log('form', form.address);
+        console.log('Address change');
     }, [form.address]);
 
     const onSetAddress = (a) => {
