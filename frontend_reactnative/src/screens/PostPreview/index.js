@@ -6,9 +6,9 @@ const PostPreview = ({
     navigation,
     route,
 }) => {
-    const { form } = route.params;
+    const { form, onPost } = route.params;
     return (
-         <PostPreviewComponent form={form} />
+        <PostPreviewComponent form={form} onPost={onPost} />
     )
 };
 
