@@ -359,7 +359,6 @@ const AddPostComponent = ({ }) => {
     };
 
     const RenderFileUri = (images) => (
-        //console.log('fileUri', Images);
         form.images.map((item, index) => {
             if (item) {
                 return (
@@ -415,10 +414,11 @@ const AddPostComponent = ({ }) => {
             <ScrollView>
                 {
                     Addresses.map((item, index) => {
-                        console.log("Rendering address: " + JSON.stringify(item))
                         let flag = false;
-                        if (item.ID == form.address.ID)
-                            flag = true;
+                        if (form.address) {
+                            if (item.ID == form.address.ID)
+                                flag = true;
+                        }
                         return (
                             <TouchableWithoutFeedback key={index} onPress={() => { onSetAddress(item); changeAddressBottomSheetVisibility(false) }}>
                                 <View>
@@ -465,11 +465,6 @@ const AddPostComponent = ({ }) => {
             </ScrollView>
         </View>
     );
-
-    useEffect(() => {
-        console.log('form', form.address);
-        console.log('Address change');
-    }, [form.address]);
 
     const onSetAddress = (a) => {
         setForm({
