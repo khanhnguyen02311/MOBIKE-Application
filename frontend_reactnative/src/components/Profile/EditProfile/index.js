@@ -343,7 +343,11 @@ const EditProfileComponent = () => {
     console.log("Edit address finish " + JSON.stringify(address));
     const newAddressList = Array.from(addressList);
     const oldAddressIndex = newAddressList.findIndex(a => a.ID === address.ID);
-    newAddressList[oldAddressIndex] = address;
+    if (oldAddressIndex === -1) {
+      newAddressList.push(address);
+    } else {
+      newAddressList[oldAddressIndex] = address;
+    }
     setAddressList(newAddressList);
   }
 
