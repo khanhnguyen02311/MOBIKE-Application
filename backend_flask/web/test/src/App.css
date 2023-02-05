@@ -8,6 +8,7 @@
   object-fit: cover;
   pointer-events: none;
   border-radius: 50%;
+  border: 5px solid #0ff;
 }
 
 @media (prefers-reduced-motion: no-preference) {
