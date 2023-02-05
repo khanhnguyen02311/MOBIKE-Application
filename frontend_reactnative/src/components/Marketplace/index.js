@@ -1,4 +1,4 @@
-import {View, Text, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import React from 'react';
 import Container from '../common/container';
 import colors from '../../assets/theme/colors';
@@ -13,7 +13,7 @@ const MarketplaceComponent = () => {
   return (
     <Container
       keyboardShouldPersistTaps="always"
-      styleScrollView={{backgroundColor: '#FFFFFF'}}>
+      styleScrollView={{ backgroundColor: '#FFFFFF' }}>
       <Carousel data={imageBanner} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View>
@@ -57,7 +57,7 @@ const MarketplaceComponent = () => {
               See more >
             </Text>
           </View>
-          <PostPreviewList data={dataPostPreviewList} />
+          <PostPreviewList data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} />
 
           <View
             style={{
