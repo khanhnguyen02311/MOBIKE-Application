@@ -4,17 +4,17 @@ import MobikeImage from '../../common/image';
 
 export const { width, height } = Dimensions.get('window');
 
-const CarouselItem = ({ item, isUri, isImageID }) => {
+const CarouselItem = ({ item, isUri, isImageID, index }) => {
   if (isUri) {
     const { uri } = item;
-    return (<Image source={{ uri: uri }} style={[styles.image, { height: width / 1.5 }]} />);
+    return (<Image source={{ uri: uri }} style={[styles.image, { height: width / 1.5 }]} key={index} />);
   }
   else if (isImageID) {
-    return (<MobikeImage imageID={item.ID} style={[styles.image, { height: width / 1.5 }]} />);
+    return (<MobikeImage imageID={item.ID} style={[styles.image, { height: width / 1.5 }]} key={index} />);
   }
   else {
     const { url } = item;
-    return (<Image source={url} style={styles.image} />);
+    return (<Image source={url} style={styles.image} key={index} />);
   }
 
 };

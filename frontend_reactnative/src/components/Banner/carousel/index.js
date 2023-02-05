@@ -29,8 +29,8 @@ const Carousel = ({ data, isUri, isImageID }) => {
           scrollEventThrottle={16}
           decelerationRate={'normal'}
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => {
-            return <CarouselItem item={item} isUri={isUri} isImageID={isImageID} />;
+          renderItem={({ item, index }) => {
+            return <CarouselItem item={item} isUri={isUri} isImageID={isImageID} index={index} />;
           }}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
@@ -73,10 +73,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     bottom: 15,
-    backgroundColor: '#ffffff55',
+    // backgroundColor: '#ffffff55',
     alignSelf: 'center',
-    paddingVertical: 2,
-    paddingHorizontal: 5,   
+    paddingVertical: 1,
+    paddingHorizontal: 3,   
     borderRadius: 5,
   },
 });
