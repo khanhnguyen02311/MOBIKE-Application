@@ -229,4 +229,19 @@ export const UploadPost = async (
 
 }
 
+export const GetPersonalPost = async () => {
+    const token = getToken();
+    const postResponse = await HttpRequest.ProtectedGetRequest("personal/post/all", token);
+    if (postResponse.msg == "Completed") {
+        return postResponse.info;
+    }
+}
+
+export const GetPost = async (ID) => {
+    const postResponse = await HttpRequest.GetRequest("search/post/" + ID);
+    if (postResponse.msg == "Completed") {
+        return postResponse.info;
+    }
+}
+
 export default { me, isEmailExist, isUsernameExist, isPhoneExist };

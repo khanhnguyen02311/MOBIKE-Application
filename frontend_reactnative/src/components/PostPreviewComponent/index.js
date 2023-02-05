@@ -5,6 +5,7 @@ import { Text, View } from 'react-native';
 import { Root, Popup } from 'popup-ui'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -22,10 +23,12 @@ import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { MARKETPLACE, YOUR_POSTS } from '../../constants/routeNames';
 import MobikeImage from '../common/image';
+import { ADD_POST } from './../../constants/routeNames';
 
 const widthScreen = Dimensions.get('window').width;
 const PostPreviewComponent = ({
     form,
+    onPost
 }) => {
     console.log(form.images);
 
@@ -92,18 +95,22 @@ const PostPreviewComponent = ({
     const [showDetail, setShowDetail] = React.useState(false);
 
     //Post
-    const onPost = () => {
-        Popup.show({
-            type: 'Success',
-            title: 'Success',
-            button: true,
-            textBody: 'Your post has been posted successfully',
-            buttonText: 'OK',
-            callback: () => { Popup.hide(); onClose(); }
-        })
-    }
+    // const onPost = () => {
+    //     Popup.show({
+    //         type: 'Success',
+    //         title: 'Success',
+    //         button: true,
+    //         textBody: 'Your post has been posted successfully',
+    //         buttonText: 'OK',
+    //         callback: () => { Popup.hide(); onClose(); }
+    //     })
+    // }
 
     const { navigate } = useNavigation();
+
+    const onBackToEdit = () => {
+        navigate(ADD_POST);
+    }
     const onClose = () => {
         navigate(YOUR_POSTS);
     }
@@ -232,7 +239,6 @@ const PostPreviewComponent = ({
                         {/* Name & View Page */}
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <Text style={{ color: '#000', fontWeight: '500', fontSize: 14, flex: 1 }}>Huynh Duy Khang</Text>
-                            <Text style={{ color: colors.text, fontWeight: '400', fontSize: 12, fontStyle: 'italic', marginLeft: 10, }}>View page ></Text>
                         </View>
 
                         {/* Address */}
@@ -244,6 +250,9 @@ const PostPreviewComponent = ({
                     </View>
 
                 </View>
+
+                {/* Seperate */}
+                <View style={{ backgroundColor: '#F6F6F6', height: 8 }} />
 
                 <View style={{ height: 100 }} />
 
