@@ -30,6 +30,7 @@ import MobikeImage from '../common/image';
 import { TouchableWithoutFeedback } from 'react-native';
 import { useState } from 'react';
 import PostPreviewList from '../PostPreview/flatList';
+import { conditionNameFromID, brandNameFromID, lineupNameFromID, typeNameFromID, colorNameFromID, colorHexFromID, convertFirstCharacterToUppercase, formatPrice } from '../../utils/idToProperty';
 
 const widthScreen = Dimensions.get('window').width;
 const heightScreen = Dimensions.get('window').height;
@@ -182,75 +183,6 @@ const PostDetailComponent = ({
     ]
 
     const starAverage = 4.5;
-
-    //Brand
-    const brandNameFromID = (ID) => {
-        const brand = Store.getState().vehicleModels.VehicleBrands.find((item) => item.ID == ID);
-        if (brand)
-            return brand.Name;
-        else return '';
-    };
-
-    //Lineup
-    const lineupNameFromID = (ID) => {
-        const lineup = Store.getState().vehicleModels.VehicleLineUps.find((item) => item.ID == ID);
-        if (lineup)
-            return lineup.Lineup;
-        else return '';
-    };
-
-    //Type
-    const typeNameFromID = (ID) => {
-        const type = Store.getState().vehicleTypes.find((item) => item.ID == ID);
-        if (type)
-            return type.Type;
-        else return '';
-    };
-
-    //Color
-    const colorNameFromID = (ID) => {
-        const color = Store.getState().colors.find((item) => item.ID == ID);
-        if (color)
-            return convertFirstCharacterToUppercase(color.Name);
-        else return '';
-    };
-
-    const colorHexFromID = (ID) => {
-        const color = Store.getState().colors.find((item) => item.ID == ID);
-        if (color)
-            return '#' + color.Color_hex;
-        else return '';
-    };
-
-    const convertFirstCharacterToUppercase = (stringToConvert) => {
-        var firstCharacter = stringToConvert.substring(0, 1);
-        var restString = stringToConvert.substring(1);
-        return firstCharacter.toUpperCase() + restString;
-    }
-
-
-    //Condition
-    const conditionNameFromID = (ID) => {
-        const condition = Store.getState().vehicleConditions.find((item) => item.ID == ID);
-        if (condition)
-            return condition.Condition;
-        else return '';
-    };
-
-    // //Price
-    const formatPrice = (price) => {
-        if (price == undefined) return '';
-        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-
-    const [showDetail, setShowDetail] = React.useState(false);
-    const onShowDetail = () => {
-        setShowDetail(true);
-    }
-
-    const onHideDetail = () => {
-        setShowDetail(false);
-    }
 
     const renderStarRating = (rating) => {
         let stars = [];
