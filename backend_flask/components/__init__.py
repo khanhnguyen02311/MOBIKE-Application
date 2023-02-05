@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask_jwt_extended import JWTManager
 from flask_debugtoolbar import DebugToolbarExtension
 from .blueprints.utilities import logo, vehicle
@@ -28,6 +28,15 @@ def create_app():
     @App.route("/")
     def hello():
         return "<h1>Test running state.</h1>"
+    
+    
+    @App.route("/web/")
+    def web():
+        return send_from_directory('../web/test/build', 'index.html')
+    
+    @App.route("/web/<path:path>")
+    def serve_web(path):
+        return send_from_directory('../web/test/build', path)
     
     
     # Callback function to check if a JWT exists in the redis blocklist

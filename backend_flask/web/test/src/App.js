@@ -6,7 +6,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img
-          src="https://192.168.1.198:30001/image/get/16"
+          src="https://abcdavid-knguyen.ddns.net:30001/image/get/186"
           className="App-logo"
           alt="logo"
           
