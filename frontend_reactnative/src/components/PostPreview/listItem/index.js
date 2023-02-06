@@ -50,7 +50,7 @@ const PostPreview = ({
 
   const [postInfo, setPostInfo] = React.useState({});
   const getPost = async () => {
-    // console.log('PostPreview: ' + JSON.stringify(await GetPost(postID)));
+    console.log('PostPreview: ' + JSON.stringify(await GetPost(postID)));
     setPostInfo((await GetPost(postID)));
     setIsLoading(false);
   }

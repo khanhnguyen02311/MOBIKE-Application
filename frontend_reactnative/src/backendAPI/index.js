@@ -1,4 +1,4 @@
-import HttpRequest, {BigGetRequest, ProtectedUploadImage, UploadIdentityImage} from "./HttpRequest.js";
+import HttpRequest, { BigGetRequest, ProtectedUploadImage, UploadIdentityImage } from "./HttpRequest.js";
 import Store from "../redux/store";
 import { resolvePlugin } from "@babel/core";
 
@@ -14,21 +14,21 @@ export const me = async (token) => {
 export const isEmailExist = async (email: String) => {
     email = email || "";
     console.log("Checking email: " + email);
-    const response = await HttpRequest.GetRequest("gets/isemailexists/" + email );
+    const response = await HttpRequest.GetRequest("gets/isemailexists/" + email);
     return response.exists;
 }
 
 export const isUsernameExist = async (username: String) => {
     username = username || "";
     console.log("Checking username: " + username);
-    const response = await HttpRequest.GetRequest("gets/isusernameexists/" + username );
+    const response = await HttpRequest.GetRequest("gets/isusernameexists/" + username);
     return response.exists;
 }
 
 export const isPhoneExist = async (phone: String) => {
     phone = phone || "";
     console.log("Checking phone: " + phone);
-    const response = await HttpRequest.GetRequest("gets/isphoneexists/" + phone );
+    const response = await HttpRequest.GetRequest("gets/isphoneexists/" + phone);
     return response.exists;
 }
 
@@ -184,7 +184,7 @@ export const UploadPost = async (
     vehicleTypeID: Number,
     vehicleConditionID: Number,
     vehicleColorID: Number,
-    ) => {
+) => {
     const token = getToken();
     const pros = [];
     images.forEach(image => {
@@ -229,6 +229,7 @@ export const UploadPost = async (
 
 }
 
+
 export const GetPersonalPost = async () => {
     const token = getToken();
     const postResponse = await HttpRequest.ProtectedGetRequest("personal/post/all", token);
@@ -249,6 +250,13 @@ export const GetPost = async (ID) => {
     const postResponse = await HttpRequest.GetRequest("search/post/" + ID);
     if (postResponse.msg == "Completed") {
         return postResponse.info;
+    }
+}
+
+export const GetUserInfo = async (ID) => {
+    const infoResponse = await HttpRequest.GetRequest("search/user/" + ID);
+    if (infoResponse.msg == "Completed") {
+        return infoResponse.info;
     }
 }
 
