@@ -46,7 +46,7 @@ const App = () => {
         // console.log("Post data: " + JSON.stringify(await GetPost(3)));
         // console.log("\n\n\n")
         // console.log("Personal post data: " + JSON.stringify(await GetPersonalPost()));
-        console.log("Personal post detail: " + JSON.stringify(await GetPersonalPostDetail(4)));
+        // console.log("Personal post detail: " + JSON.stringify(await GetPersonalPostDetail(4)));
 
       } catch (error) {
         console.log("Sandbox error: " + error);

@@ -19,3 +19,5 @@ export const FILTERS_POP_UP = 'FiltersPopUp';
 export const FILTERS_POP_UP_MANUFACTURER = 'FilterPopUpManufacturer';
 export const FILTERS_POP_UP_NAVIGATOR = 'FiltersPopUpNavigator';
 export const LOADING = 'Loading';
+
+export const APPLICATION_ADMIN = 'ApplicationAdmin';

@@ -1,4 +1,4 @@
-import HttpRequest, {BigGetRequest, ProtectedUploadImage, UploadIdentityImage} from "./HttpRequest.js";
+import HttpRequest, { BigGetRequest, ProtectedUploadImage, UploadIdentityImage } from "./HttpRequest.js";
 import Store from "../redux/store";
 import { resolvePlugin } from "@babel/core";
 
@@ -6,7 +6,7 @@ import { resolvePlugin } from "@babel/core";
 export const me = async (token) => {
     const response = await HttpRequest.ProtectedGetRequest("auth/me", token);
     // console.log("Me: " + JSON.stringify(response));
-    if (response.ID) {
+    if (response.msg == "Completed") {
         return response
     }
 }
@@ -14,21 +14,21 @@ export const me = async (token) => {
 export const isEmailExist = async (email: String) => {
     email = email || "";
     console.log("Checking email: " + email);
-    const response = await HttpRequest.GetRequest("gets/isemailexists/" + email );
+    const response = await HttpRequest.GetRequest("gets/isemailexists/" + email);
     return response.exists;
 }
 
 export const isUsernameExist = async (username: String) => {
     username = username || "";
     console.log("Checking username: " + username);
-    const response = await HttpRequest.GetRequest("gets/isusernameexists/" + username );
+    const response = await HttpRequest.GetRequest("gets/isusernameexists/" + username);
     return response.exists;
 }
 
 export const isPhoneExist = async (phone: String) => {
     phone = phone || "";
     console.log("Checking phone: " + phone);
-    const response = await HttpRequest.GetRequest("gets/isphoneexists/" + phone );
+    const response = await HttpRequest.GetRequest("gets/isphoneexists/" + phone);
     return response.exists;
 }
 
@@ -184,7 +184,7 @@ export const UploadPost = async (
     vehicleTypeID: Number,
     vehicleConditionID: Number,
     vehicleColorID: Number,
-    ) => {
+) => {
     const token = getToken();
     const pros = [];
     images.forEach(image => {

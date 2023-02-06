@@ -4,6 +4,7 @@ import { setAll } from '../../redux/clientDatabase/personalInfo';
 import Store from '../../redux/store';
 import { login, logout } from '../../redux/slice/authSlice';
 import BackendAPI, { GetPersonalInfo } from '../../backendAPI';
+import permission from '../../redux/clientDatabase/permission';
 
 
 export const init = async () => {
@@ -19,12 +20,14 @@ export const init = async () => {
             const currentToken = await getCurrentToken();
             if (currentToken) {
                 const myinfo = await BackendAPI.me(currentToken);
-                console.log("Current acccount: " + JSON.stringify(myinfo));
-                if (myinfo) {
+                console.log("Current acccount: " + JSON.stringify(myinfo.user));
+                if (myinfo.msg === 'Completed') {
                     Store.dispatch(login({
-                        ID: myinfo.ID,
-                        token: currentToken
+                        ID: myinfo.user.ID,
+                        token: myinfo.token,
+                        permission: myinfo.user.ID_Permission
                     }))
+                    await setCurrentToken(myinfo.token);
                     await UpdatePersonalInfo();
                 }
             }
@@ -61,14 +64,17 @@ export const signIn = async (usernameOrEmail: String, password: String, savePass
         } else {
             addUID(response.uid);
         }
+        const myinfo = await BackendAPI.me(response.token);
+        if (myinfo.msg == Completed) {
+            Store.dispatch(login({
+                ID: myinfo.user.ID,
+                token: myinfo.token,
+                permission: myinfo.user.ID_Permission
+            }))
+            await UpdatePersonalInfo();
+        }
 
-        Store.dispatch(login({
-            ID: response.uid,
-            token: response.token
-        }))
-        await UpdatePersonalInfo();
-
-        return response.token;
+        return myinfo.token;
     } else if (response.msg == "Incompleted") {
         return response;
     }
