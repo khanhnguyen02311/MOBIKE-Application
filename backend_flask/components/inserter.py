@@ -308,6 +308,7 @@ def InsertTestdata():
         if output[0]:
             Session.commit()
             logging.warning(f"Account created, id = {output[1].ID}")
+            logging.warning(f"Address created, id = {output[2].ID}")
             acc = output[1]
             address = output[2]
             
@@ -331,7 +332,6 @@ def InsertTestdata():
                     temp_Session.add(new_vehicleinfo)
                     temp_Session.add(new_poststat)
                     temp_Session.flush()
-                
                     # add placeholder image to post
                     new_post = Post(
                         Title = row['Title'],
@@ -353,6 +353,7 @@ def InsertTestdata():
                     temp_Session.add(new_poststatus)
                     temp_Session.flush()
                     print(new_poststatus.ID)
+                    temp_Session.commit()
                 except Exception as e:
                     temp_Session.rollback()
                     logging.warning(f"Post index {index} failed, skipped. Error: {str(e)}")

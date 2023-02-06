@@ -7,5 +7,4 @@ if __name__ == "__main__":
     App.run(debug=True, threaded=True)
 
     # todo:
-    # import flask cors
     # reset table POSTSTATUS
