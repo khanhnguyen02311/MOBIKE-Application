@@ -175,16 +175,29 @@ def getallpost():
    
    
 @bppost.route("/post/<id>", methods=["GET"])
+@jwt_required()
 def getdetailpost(id):
+   current_user = get_jwt_identity()   
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
    postschema = dbs.PostSchema()
    vehicleschema = dbs.VehicleInfoSchema()
    statusschema = dbs.PostStatusSchema()
    addressschema = dbs.AddressSchema()
    Session = new_Scoped_session()
    try:      
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      
       post = Session.query(dbm.Post).options(sqlorm.joinedload(dbm.Post.rel_VehicleInfo),
                                              sqlorm.joinedload(dbm.Post.rel_Image),
                                              sqlorm.joinedload(dbm.Post.rel_Address)).get(id)
+      if post is None or post.ID_Account != current_user['ID']:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Post not found", "info": ""})
+         
       statuses = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == id).order_by(dbm.PostStatus.ID.desc()).all()
       json_statuses = {}
       for i, item in enumerate(statuses):
