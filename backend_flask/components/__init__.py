@@ -3,8 +3,10 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from components.dbsettings import new_Scoped_session
 import components.dbmodels as dbm
+from .blueprints.admin.application import appauth, validation
+from .blueprints.admin.system import grant, sysauth
 from .blueprints.utilities import logo, vehicle
-from .blueprints.testing import gets, admin, test, image
+from .blueprints.testing import gets, test, image, testadmin
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account, post
 from .blueprints.search import postsearch
@@ -78,7 +80,13 @@ def create_app():
     App.register_blueprint(test.bptest, url_prefix='/test')
     App.register_blueprint(image.bpimage, url_prefix='/image')
     App.register_blueprint(gets.bpget, url_prefix='/gets')
-    App.register_blueprint(admin.bpadmin, url_prefix='/admin')
+    App.register_blueprint(testadmin.bpadmin, url_prefix='/admin')
+    
+    App.register_blueprint(appauth.bpappadminauth, url_prefix='/admin/application')
+    App.register_blueprint(validation.bpappadminval, url_prefix='/admin/application')
+    
+    App.register_blueprint(sysauth.bpsysadminauth, url_prefix='/admin/system')
+    App.register_blueprint(grant.bpsysadmingrant, url_prefix='/admin/system')
     
     App.register_blueprint(signup.bpsignup, url_prefix='/auth')
     App.register_blueprint(signin.bpsignin, url_prefix='/auth')
