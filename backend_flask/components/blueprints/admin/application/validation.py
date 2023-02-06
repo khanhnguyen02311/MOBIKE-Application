@@ -66,6 +66,7 @@ def getinactivapost():
          .group_by(dbm.Post.ID)
          .order_by(desc(dbm.PostStatus.Time_updated))
          .filter(dbm.PostStatus.ID_Post == dbm.Post.ID)
+         .filter(dbm.PostStatus.Status == 0)
       )
 
       schema = dbs.PostSchema(many=True)
