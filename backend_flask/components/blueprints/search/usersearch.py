@@ -15,7 +15,10 @@ def searchusers():
    accschema = dbs.AccountSchema()
    Session = new_Scoped_session()
    try:
-      accounts = Session.query(dbm.Account).filter(dbm.Account.ID_Permission==4).join(dbm.Account.rel_AccountInfo).filter(func.lower(dbm.AccountInfo.Name).contains(func.lower(arg_searchstr))).all()
+      accounts = Session.query(dbm.Account).filter(dbm.Account.ID_Permission==4
+                        ).join(dbm.Account.rel_AccountInfo
+                        ).filter(func.lower(dbm.AccountInfo.Name).contains(func.lower(arg_searchstr))
+                        ).all()
       acc_list = []
       for i in accounts:
          temp = {}
