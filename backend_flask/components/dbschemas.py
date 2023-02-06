@@ -10,10 +10,8 @@ class AccountSchema(Schema):
         # include_fk = False   # default value: False
         
     ID = auto_field()
-    Username = auto_field()
     ID_Permission = auto_field()
     ID_AccountInfo = auto_field()
-    ID_AccountStat = auto_field()
 
 class PermissionSchema(Schema):
     class Meta:
