@@ -1,14 +1,18 @@
 from flask import Flask, jsonify, send_from_directory
 from flask_jwt_extended import JWTManager
-from flask_debugtoolbar import DebugToolbarExtension
 from flask_cors import CORS
+from components.dbsettings import new_Scoped_session
+import components.dbmodels as dbm
+from .blueprints.admin.application import appauth, validation
+from .blueprints.admin.system import grant, sysauth
 from .blueprints.utilities import logo, vehicle
-from .blueprints.testing import gets, admin, test, image
+from .blueprints.testing import gets, test, image, testadmin
 from .blueprints.authentication import signup, signin, signout
 from .blueprints.personal import account, post
 from .blueprints.search import postsearch
 from .config import FlaskConfig as fcfg
 from .security import oauth, blocklistJWT
+from .inserter import SetupAccount
 
 def create_app():
     App = Flask(__name__)
@@ -21,8 +25,11 @@ def create_app():
     # def after_request_callback(response):
     #     Session.remove()
     
+    Session = new_Scoped_session()
     try:
-        DebugToolbarExtension(App)
+        admin = Session.query(dbm.Account).filter(dbm.Account.ID_Permission == 1).all()
+        if admin != None:
+            new_admin = SetupAccount(Session, "admin@gmail.com", "serveradmin", "adminuser123", 1, 1, "Administrator", None, None)
     except Exception as e:
         print(e)
         pass
@@ -73,7 +80,13 @@ def create_app():
     App.register_blueprint(test.bptest, url_prefix='/test')
     App.register_blueprint(image.bpimage, url_prefix='/image')
     App.register_blueprint(gets.bpget, url_prefix='/gets')
-    App.register_blueprint(admin.bpadmin, url_prefix='/admin')
+    App.register_blueprint(testadmin.bpadmin, url_prefix='/admin')
+    
+    App.register_blueprint(appauth.bpappadminauth, url_prefix='/admin/application')
+    App.register_blueprint(validation.bpappadminval, url_prefix='/admin/application')
+    
+    App.register_blueprint(sysauth.bpsysadminauth, url_prefix='/admin/system')
+    App.register_blueprint(grant.bpsysadmingrant, url_prefix='/admin/system')
     
     App.register_blueprint(signup.bpsignup, url_prefix='/auth')
     App.register_blueprint(signin.bpsignin, url_prefix='/auth')
