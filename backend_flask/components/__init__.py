@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, send_from_directory
 from flask_jwt_extended import JWTManager
-from flask_debugtoolbar import DebugToolbarExtension
 from flask_cors import CORS
+from components.dbsettings import new_Scoped_session
+import components.dbmodels as dbm
 from .blueprints.utilities import logo, vehicle
 from .blueprints.testing import gets, admin, test, image
 from .blueprints.authentication import signup, signin, signout
@@ -9,6 +10,7 @@ from .blueprints.personal import account, post
 from .blueprints.search import postsearch
 from .config import FlaskConfig as fcfg
 from .security import oauth, blocklistJWT
+from .inserter import SetupAccount
 
 def create_app():
     App = Flask(__name__)
@@ -21,8 +23,11 @@ def create_app():
     # def after_request_callback(response):
     #     Session.remove()
     
+    Session = new_Scoped_session()
     try:
-        DebugToolbarExtension(App)
+        admin = Session.query(dbm.Account).filter(dbm.Account.ID_Permission == 1).all()
+        if admin != None:
+            new_admin = SetupAccount(Session, "admin@gmail.com", "serveradmin", "adminuser123", 1, 1, "Administrator", None, None)
     except Exception as e:
         print(e)
         pass
