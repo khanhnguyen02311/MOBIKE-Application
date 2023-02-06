@@ -9,7 +9,7 @@ from components.security import check_hash, make_hash
 bpsysadmingrant = Blueprint('bpsysadmingrant', __name__)
 
 
-@bpsysadmingrant.route('/grantpermission', method = ['POST'])
+@bpsysadmingrant.route('/grantpermission', methods = ['POST'])
 @jwt_required()
 def setpoststatus():
    current_user = get_jwt_identity()   

@@ -9,7 +9,7 @@ from components.security import check_hash, make_hash
 bpappadminval = Blueprint('bpappadminval', __name__)
 
 
-@bpappadminval.route('/status/set', method = ['POST'])
+@bpappadminval.route('/status/set', methods = ['POST'])
 @jwt_required()
 def setpoststatus():
    current_user = get_jwt_identity()   
