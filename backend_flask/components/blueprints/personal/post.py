@@ -174,6 +174,33 @@ def getallpost():
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
    
    
+@bppost.route("/post/<id>", methods=["GET"])
+def getdetailpost(id):
+   postschema = dbs.PostSchema()
+   vehicleschema = dbs.VehicleInfoSchema()
+   statusschema = dbs.PostStatusSchema()
+   Session = new_Scoped_session()
+   try:      
+      post = Session.query(dbm.Post).options(sqlorm.joinedload(dbm.Post.rel_VehicleInfo),
+                                             sqlorm.joinedload(dbm.Post.rel_Image),
+                                             sqlorm.joinedload(dbm.Post.rel_Address)).get(id)
+      statuses = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == id).order_by(dbm.PostStatus.ID.desc()).all()
+      json_statuses = {}
+      for i, item in enumerate(statuses):
+         json_statuses[i] = statusschema.dump(item)
+      json_data = {}
+      json_data['post'] = postschema.dump(post)
+      json_data['vehicleinfo'] = vehicleschema.dump(post.rel_VehicleInfo)
+      json_data['address'] = vehicleschema.dump(post.rel_Address)
+      json_data['statuses'] = json_statuses
+      Session.commit()
+      return jsonify({"msg": "Completed", "error": "", "info": json_data})
+         
+   except Exception as e:
+      Session.rollback()
+      return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
+   
+   
 @bppost.route("/post/<int:id>/edit", methods=["POST", "PUT"])
 @jwt_required()
 def editpost(id):

@@ -35,8 +35,6 @@ class AccountInfoSchema(Schema):
     Phone_number = auto_field()
     Identification_number = auto_field()
     ID_Image_Profile = auto_field()
-    ID_Image_Identity_Front = auto_field()
-    ID_Image_Identity_Back = auto_field()
     Time_created = auto_field()
     
 class AccountInfoSchemaShort(Schema):
@@ -44,6 +42,7 @@ class AccountInfoSchemaShort(Schema):
         model = dbm.AccountInfo
         load_instance = True
 
+    ID = auto_field()
     Name = auto_field()
     ID_Image_Profile = auto_field()
     
@@ -171,6 +170,17 @@ class PostSchema(Schema):
     rel_Image = auto_field()
     rel_Like = auto_field()
     rel_Rating = auto_field()
+    
+
+class PostStatusSchema(Schema):
+    class Meta:
+        model = dbm.PostStatus
+        load_instance = True
+    
+    ID = auto_field()
+    Status = auto_field()
+    Information = auto_field()
+    ID_Post = auto_field()
     
 class VehicleInfoSchema(Schema):
     class Meta:

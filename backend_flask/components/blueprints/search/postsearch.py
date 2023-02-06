@@ -51,6 +51,7 @@ bppostsearch = Blueprint("bppostsearch", __name__)
 def getdetailpost(id):
    postschema = dbs.PostSchema()
    vehicleschema = dbs.VehicleInfoSchema()
+   userschema = dbs.AccountInfoSchema()
    Session = new_Scoped_session()
    try:
       status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == id).order_by(dbm.PostStatus.ID.desc()).first()
@@ -58,14 +59,17 @@ def getdetailpost(id):
          return jsonify({"msg": "Completed", "error": "Post not found", "info": ""})
       
       post = Session.query(dbm.Post).options(sqlorm.joinedload(dbm.Post.rel_VehicleInfo),
+                                             sqlorm.joinedload(dbm.Post.rel_Account).subqueryload(dbm.Account.rel_AccountInfo),
                                              sqlorm.joinedload(dbm.Post.rel_Image),
                                              sqlorm.joinedload(dbm.Post.rel_Like),
-                                             sqlorm.joinedload(dbm.Post.rel_Comment),
-                                             sqlorm.joinedload(dbm.Post.rel_Rating)).get(id)
+                                             sqlorm.joinedload(dbm.Post.rel_Rating),
+                                             sqlorm.joinedload(dbm.Post.rel_Address)).get(id)
       
       json_data = {}
       json_data['post'] = postschema.dump(post)
+      json_data['user'] = userschema.dump(post.rel_Account.rel_AccountInfo)
       json_data['vehicleinfo'] = vehicleschema.dump(post.rel_VehicleInfo)
+      json_data['address'] = vehicleschema.dump(post.rel_Address)
       Session.commit()
       return jsonify({"msg": "Completed", "error": "", "info": json_data})
       
