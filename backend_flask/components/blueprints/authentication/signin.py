@@ -20,7 +20,8 @@ def me():
       if acc is not None:
          schema = dbs.AccountSchema()
          current_user = schema.dump(acc)
-      return jsonify(current_user)
+         access_token = create_access_token(identity=current_user)
+      return jsonify({"msg": "Completed", "user": current_user, "token": access_token})
    except Exception as e:
       return jsonify({"msg": "Incompleted", "error": str(e)})
 

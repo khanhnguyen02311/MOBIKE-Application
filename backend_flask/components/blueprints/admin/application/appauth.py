@@ -39,5 +39,3 @@ def signin():
    except Exception as e:
       Session.rollback()
       return signin_output("Incompleted", str(e), "")
-
-
