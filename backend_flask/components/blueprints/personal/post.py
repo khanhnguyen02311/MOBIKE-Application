@@ -8,7 +8,7 @@ from components.inserter import SaveImage
 bppost = Blueprint('bppost', __name__)
 
 
-@bppost.route("/post/vehicle/new", methods=['POST'])
+@bppost.route("/post/new/vehicle", methods=['POST'])
 @jwt_required()
 def newvehicle():
    current_user = get_jwt_identity()   
@@ -44,7 +44,7 @@ def newvehicle():
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
 
 
-@bppost.route("/post/image/new", methods=['POST'])
+@bppost.route("/post/new/image", methods=['POST'])
 @jwt_required()
 def newpostimage():
    current_user = get_jwt_identity()   
@@ -149,8 +149,8 @@ def getallpost():
       posts_inactive = {}
       posts_active = {}
       posts_sold = {}
-      posts_reported = {}
-      for index, item in enumerate(posts):
+      posts_deactivated = {}
+      for item in posts:
          status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == item.ID).order_by(dbm.PostStatus.ID.desc()).first()
          if status.Status == 0:
             posts_inactive[len(posts_inactive)] = schema.dump(item)
@@ -159,13 +159,13 @@ def getallpost():
          elif status.Status == 2:
             posts_sold[len(posts_sold)] = schema.dump(item)
          elif status.Status == 3:
-            posts_reported[len(posts_reported)] = schema.dump(item)
+            posts_deactivated[len(posts_deactivated)] = schema.dump(item)
       
       json_posts = {}
       json_posts['inactive'] = posts_inactive
       json_posts['active'] = posts_active
       json_posts['sold'] = posts_sold
-      json_posts['reported'] = posts_reported
+      json_posts['deactivated'] = posts_deactivated
       Session.close()
       return jsonify({"msg": "Completed", "error": "", "info": json_posts})
       
@@ -174,3 +174,85 @@ def getallpost():
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
    
    
+@bppost.route("/post/<int:id>/edit", methods=["POST", "PUT"])
+@jwt_required()
+def editpost(id):
+   current_user = get_jwt_identity()   
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+   
+   info = request.get_json()
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      
+      post = Session.query(dbm.Post).options(sqlorm.joinedload(dbm.Post.rel_VehicleInfo)).get(id)
+      if post is None or post.ID_Account != current_user['ID']:
+         return jsonify({"msg": "Incompleted", "error": "Post not found or not owned by your account", "info": ""})
+      
+      post.Title = info['P_title']
+      post.Content = info['P_content']
+      post.Pricetag = info['P_price']
+      post.ID_Address = info['P_address']
+      post.rel_Image = info['P_images']
+      
+      post.rel_VehicleInfo.Vehicle_name = info['V_name']
+      post.rel_VehicleInfo.Odometer = info['V_odometer']
+      post.rel_VehicleInfo.License_plate = info['V_license']
+      post.rel_VehicleInfo.Manufacture_year = info['V_mnf']
+      post.rel_VehicleInfo.Cubic_power = info['V_cubic']
+      post.rel_VehicleInfo.ID_VehicleBrand = info['V_brand']
+      post.rel_VehicleInfo.ID_VehicleLineup = info['V_lineup']
+      post.rel_VehicleInfo.ID_VehicleType = info['V_type']
+      post.rel_VehicleInfo.ID_Condition = info['V_condition']
+      post.rel_VehicleInfo.ID_Color = info['V_color']
+      
+      new_poststatus = dbm.PostStatus(
+         Status = 0,
+         ID_Post = info['P_ID'],
+         Information = "Post edited by user."
+      )
+      
+      Session.add(new_poststatus)
+      Session.commit()
+      return jsonify({"msg": "Completed", "error": "", "info": "Post edited, waiting for verification"})
+   
+   except Exception as e:
+      Session.rollback()
+      return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
+
+
+@bppost.route("/post/<int:id>/deactivate", methods=["POST", "PUT"])
+@jwt_required()
+def deactivatepost(id):
+   current_user = get_jwt_identity()
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+   
+   info = request.get_json()
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      
+      post = Session.query(dbm.Post).get(id)
+      if post is None or post.ID_Account != current_user['ID']:
+         return jsonify({"msg": "Incompleted", "error": "Post not found or not owned by your account", "info": ""})
+      
+      new_poststatus = dbm.PostStatus(
+         Status = 3,
+         ID_Post = info['P_ID'],
+         Information = "Post deactivated by user."
+      )
+      Session.add(new_poststatus)
+      Session.commit()
+      return jsonify({"msg": "Completed", "error": "", "info": "Post deactivated"})
+   
+   except Exception as e:
+      Session.rollback()
+      return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})

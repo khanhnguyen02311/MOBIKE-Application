@@ -3,7 +3,7 @@ from flask_jwt_extended import create_access_token
 from components.dbsettings import new_Scoped_session
 from components import dbmodels as dbm, dbschemas as dbs
 from components.security import make_hash
-from components.inserter import SaveImageFromURL, SetupAccount
+from components.inserter import SetupAccount
 
 bpsignup = Blueprint('bpsignup', __name__)
 
@@ -41,7 +41,7 @@ def signup():
          return signup_output("Completed", "", access_token)
       else:
          Session.rollback()
-         signup_output("Incompleted", output[1], "")
+         return signup_output("Incompleted", output[1], "")
    
    except Exception as e:
       Session.rollback()

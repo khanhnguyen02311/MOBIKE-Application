@@ -29,7 +29,7 @@ bpstatistics = Blueprint("bpstatistics", __name__)
 #                                              sqlorm.joinedload(dbm.Post.rel_Rating)).get(id)
       
 #       if post.ID_Account != acc.ID:
-#          return jsonify({"msg": "Incompleted", "error": "You cannot see statistics of other people's post", "info": ""})
+#          return jsonify({"msg": "Incompleted", "error": "You cannot see statistics of other user's post", "info": ""})
       
 #       json_data = {}
 #       #data['post']

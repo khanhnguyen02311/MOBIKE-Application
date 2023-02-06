@@ -39,6 +39,14 @@ class AccountInfoSchema(Schema):
     ID_Image_Identity_Back = auto_field()
     Time_created = auto_field()
     
+class AccountInfoSchemaShort(Schema):
+    class Meta:
+        model = dbm.AccountInfo
+        load_instance = True
+
+    Name = auto_field()
+    ID_Image_Profile = auto_field()
+    
 class AddressSchema(Schema):
     class Meta:
         model = dbm.Address
