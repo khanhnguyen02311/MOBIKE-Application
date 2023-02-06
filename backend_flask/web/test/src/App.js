@@ -7,6 +7,7 @@ import AppAdmin from './pages/AppAdmin';
 import SystemAdmin from './pages/SystemAdmin';
 import Khanh from './pages/Khanh';
 import { Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 function App() {
 	return (
@@ -14,28 +15,34 @@ function App() {
 			<nav>
 				<ul>
 					<li>
-						<Link to="/">Home</Link>
+						<Link to="/web/">Home</Link>
 					</li>
 					<li>
-						<Link to="/signin">Sign In</Link>
+						<Link to="/web/signin">Sign In</Link>
 					</li>
 					<li>
-						<Link to="/signup">Sign Up</Link>
+						<Link to="/web/signup">Sign Up</Link>
 					</li>
 					<li>
-						<Link to="/appadmin">App Admin</Link>
+						<Link to="/web/appadmin">App Admin</Link>
 					</li>
 					<li>
-						<Link to="/systemadmin">System Admin</Link>
+						<Link to="/web/systemadmin">System Admin</Link>
+					</li>
+					<li>
+						<Link to="/web">Web</Link>
 					</li>
 				</ul>
 			</nav>
 			<Routes>
 				<Route path="/" element={<Khanh />} />
-				<Route path="/signin" element={<SignIn />} />
-				<Route path="/signup" element={<SignUp />} />
-				<Route path="/appadmin" element={<AppAdmin />} />
-				<Route path="/systemadmin" element={<SystemAdmin />} />
+				<Route path="/web">
+					<Route index element={<div>Web Home</div>} />
+					<Route path="signin" element={<SignIn />} />
+					<Route path="signup" element={<SignUp />} />
+					<Route path="appadmin" element={<AppAdmin />} />
+					<Route path="systemadmin" element={<SystemAdmin />} />
+				</Route>
 				<Route path="*" element={<div>Not Found</div>} />
 			</Routes>
 		</div>
