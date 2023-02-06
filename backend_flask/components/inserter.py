@@ -278,8 +278,10 @@ def SetupAccount(Session, a_email, a_username, a_password, a_type, a_permission,
 def InsertTestAccount(Session):
     try:
         oldtestuser = Session.query(Account).filter(Account.Account_type==3).all()
+        print(oldtestuser)
         if oldtestuser is not None: 
-            Session.delete(oldtestuser)
+            for i in oldtestuser:
+                Session.delete(i)
             Session.flush()
         output = SetupAccount(Session, "testuser@email.com", "testuser", "testuserpassword", 3, 4, "Mobike Testuser", "0123456789", None)
         if output[0]:
