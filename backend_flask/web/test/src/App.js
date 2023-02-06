@@ -1,27 +1,45 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import { Routes, Route } from 'react-router';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import AppAdmin from './pages/AppAdmin';
+import SystemAdmin from './pages/SystemAdmin';
+import Khanh from './pages/Khanh';
+import { Link } from 'react-router-dom';
 
 function App() {
-  return (
-    <div className="App" width="100%">
-      <header className="App-header">
-        <img
-          src="https://abcdavid-knguyen.ddns.net:30001/image/get/186"
-          className="App-logo"
-          alt="KNguyen"
-        />
-        <a
-          className="App-link"
-          href="https://www.facebook.com/khanhkhanh66"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ margin: '50px 0px 0px 0px' }}
-        >
-          Nguyen Khanh
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<div>
+			<nav>
+				<ul>
+					<li>
+						<Link to="/">Home</Link>
+					</li>
+					<li>
+						<Link to="/signin">Sign In</Link>
+					</li>
+					<li>
+						<Link to="/signup">Sign Up</Link>
+					</li>
+					<li>
+						<Link to="/appadmin">App Admin</Link>
+					</li>
+					<li>
+						<Link to="/systemadmin">System Admin</Link>
+					</li>
+				</ul>
+			</nav>
+			<Routes>
+				<Route path="/" element={<Khanh />} />
+				<Route path="/signin" element={<SignIn />} />
+				<Route path="/signup" element={<SignUp />} />
+				<Route path="/appadmin" element={<AppAdmin />} />
+				<Route path="/systemadmin" element={<SystemAdmin />} />
+				<Route path="*" element={<div>Not Found</div>} />
+			</Routes>
+		</div>
+	);
 }
 
 export default App;
