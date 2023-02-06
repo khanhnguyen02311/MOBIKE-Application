@@ -46,9 +46,13 @@ def getdetailpost(id):
          return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
       posts = Session.query(dbm.Post).options(sqlorm.joinedload(dbm.Post.rel_Image)).filter(dbm.Post.ID_Account == id).all()
       
-      for i, item in enumerate(posts):
+      # for i, item in enumerate(posts):
+      #    status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == item.ID).order_by(dbm.PostStatus.ID.desc()).first()
+      #    if status == None or status.Status != 1: posts.pop(i)
+      
+      for item in posts[:]:
          status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == item.ID).order_by(dbm.PostStatus.ID.desc()).first()
-         if status == None or status.Status != 1: posts.pop(i)
+         if status == None or status.Status != 1: posts.remove(item)
       
       json_detail = {}
       json_detail['account'] = accschema.dump(acc)
