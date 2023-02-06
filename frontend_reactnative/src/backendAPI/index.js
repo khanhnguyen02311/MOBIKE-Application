@@ -229,6 +229,7 @@ export const UploadPost = async (
 
 }
 
+
 export const GetPersonalPost = async () => {
     const token = getToken();
     const postResponse = await HttpRequest.ProtectedGetRequest("personal/post/all", token);
@@ -249,6 +250,13 @@ export const GetPost = async (ID) => {
     const postResponse = await HttpRequest.GetRequest("search/post/" + ID);
     if (postResponse.msg == "Completed") {
         return postResponse.info;
+    }
+}
+
+export const GetUserInfo = async (ID) => {
+    const infoResponse = await HttpRequest.GetRequest("search/user/" + ID);
+    if (infoResponse.msg == "Completed") {
+        return infoResponse.info;
     }
 }
 

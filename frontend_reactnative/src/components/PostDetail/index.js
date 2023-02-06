@@ -193,6 +193,7 @@ const PostDetailComponent = ({
     useEffect(() => {
         if (isActivePost) {
             getPost();
+            getUserInfo();
         }
         else {
             getInactivePost();
@@ -200,15 +201,21 @@ const PostDetailComponent = ({
     }, []);
 
     const [postInfo, setPostInfo] = React.useState({});
+    const [userInfo, setUserInfo] = React.useState({});
     const getPost = async () => {
         console.log('Post Detail: ' + JSON.stringify(await GetPost(postID)));
         setPostInfo((await GetPost(postID)));
         setIsLoading(false);
     }
+    const getUserInfo = async () => {
+        console.log('User Info: ' + JSON.stringify(await GetUserInfo(postInfo.ID_Account)));
+        setUserInfo((await GetUserInfo(postInfo.ID_Account)));
+        setIsLoading(false);
+    }
 
     //Get inactive post data
     const getInactivePost = async () => {
-        console.log('Post Detail: ' + JSON.stringify(await GetPersonalPostDetail(postID)));
+        console.log('Personal Post Detail: ' + JSON.stringify(await GetPersonalPostDetail(postID)));
         setPostInfo((await GetPersonalPostDetail(postID)));
         setIsLoading(false);
     }
@@ -592,7 +599,7 @@ const PostDetailComponent = ({
                                     </Text>
                                     <Text style={{ fontSize: 12, fontWeight: '400', color: colors.text, fontStyle: 'italic' }}>See more ></Text>
                                 </View>
-                                <PostPreviewList data={[1, 2, 3]} />
+                                <PostPreviewList data={[4,5,3]} />
                             </View>
 
                             {/* Similar Posts */}
@@ -603,45 +610,23 @@ const PostDetailComponent = ({
                                     </Text>
                                     <Text style={{ fontSize: 12, fontWeight: '400', color: colors.text, fontStyle: 'italic' }}>See more ></Text>
                                 </View>
-                                <PostPreviewList data={[1, 2, 3]} />
+                                <PostPreviewList data={[4, 5, 3]} />
                             </View>
                         </View>
                         )
                         :
                         (
                             <View>
-                                {/* Seller Info */}
-                                <View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 12, marginLeft: 10, }}>
-
-                                    <MobikeImage imageID={store.getState().personalInfo.ID_Image_Profile} style={{ width: 48, height: 48, borderRadius: 500, borderWidth: 1, borderColor: '#e8e8e8' }} />
-
-                                    <View style={{ marginHorizontal: 15, flex: 1 }}>
-
-                                        {/* Name & View Page */}
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Text style={{ color: '#000', fontWeight: '500', fontSize: 14, flex: 1 }}>{store.getState().personalInfo.Name}</Text>
-                                            <Text style={{ color: colors.text, fontWeight: '400', fontSize: 12, fontStyle: 'italic', marginLeft: 10, }}>View page ></Text>
-                                        </View>
-
-                                        {/* Address */}
-                                        <View style={{ flexDirection: 'row', marginTop: 5, marginEnd: 15, alignItems: 'flex-start', flex: 1 }}>
-                                            <SimpleLineIcons name="location-pin" size={12} color={'#374957'} style={{ marginTop: 2 }} />
-                                            <Text style={{ color: '#555', fontWeight: '300', fontSize: 12, fontStyle: 'italic', marginLeft: 5 }}>{wardNameFromID(postInfo.address.ID_Ward) + ', ' + districtNameFromID(postInfo.address.ID_District) + ', ' + cityNameFromID(postInfo.address.ID_City)}</Text>
-                                        </View>
-
-                                    </View>
-
-                                </View>
 
                                 {/* Seperate */}
                                 <View style={{ backgroundColor: '#E8E8E8', height: 1 }} />
 
 
-                                {/* Other Posts */}
+                                {/* Statistics */}
                                 <View>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
                                         <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
-                                            <Text>Other Posts Of</Text>
+                                            <Text>Statistics</Text>
                                         </Text>
                                     </View>
                                 </View>
