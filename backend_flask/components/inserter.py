@@ -254,26 +254,6 @@ def InsertVehicleSupportTable():
         Session.rollback()
         return "Error: " + str(e)
     
-
-def SetupApplication(Session, a_email, a_username, a_password, a_type, a_permission, i_name, i_phone=None, i_image=None):
-   try:
-      account = dbm.Account(Username=a_username, Password=a_password, Email=a_email, Account_type=a_type, ID_Permission=a_permission)
-      accountinfo = dbm.AccountInfo(Name=i_name, Phone_number=i_phone)
-      accountstat = dbm.AccountStat()
-      if i_image != None: 
-         output = SaveImageFromURL(Session, i_image, 3)
-         if output[0]: accountinfo.ID_Image_Profile = output[1]
-      Session.add(accountstat)
-      Session.add(accountinfo)
-      Session.flush()
-      account.ID_AccountStat = accountstat.ID
-      account.ID_AccountInfo = accountinfo.ID
-      Session.add(account)
-      Session.flush()
-      return [True, account]
-   except Exception as e:
-      return [False, str(e)]
-    
     
 def SetupAccount(Session, a_email, a_username, a_password, a_type, a_permission, i_name, i_phone=None, i_image=None):
    try:
@@ -297,7 +277,7 @@ def SetupAccount(Session, a_email, a_username, a_password, a_type, a_permission,
     
 def InsertTestAccount(Session):
     try:
-        oldtestuser = Session.query(Account).filter(Account.Account_type==3).scalar()
+        oldtestuser = Session.query(Account).filter(Account.Account_type==3).all()
         if oldtestuser is not None: 
             Session.delete(oldtestuser)
             Session.flush()

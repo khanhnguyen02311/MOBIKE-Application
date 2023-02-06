@@ -7,7 +7,7 @@ from components import dbmodels as dbm, dbschemas as dbs
 bppostsearch = Blueprint("bppostsearch", __name__)
 
 
-# @bppostsearch.route("/post/all", methods=["POST"])
+# @bppostsearch.route("/post/search", methods=["POST"])
 # def searchposts():
 #    arg_searchstr = request.args.get('string', default = "", type = str)
 #    arg_page = request.args.get('page', default = 1, type = int)
