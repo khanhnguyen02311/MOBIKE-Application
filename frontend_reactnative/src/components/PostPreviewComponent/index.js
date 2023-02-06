@@ -153,18 +153,11 @@ const PostPreviewComponent = ({
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', paddingHorizontal: 5 }}>
                             <View style={{ width: widthScreen / 2 - 30 }}>
 
-                                {/* Name */}
+                                {/* Branch */}
                                 <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                    <MaterialIcons name='drive-file-rename-outline' size={18} color={colors.primary} />
-                                    <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Name : </Text>
-                                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.name}</Text>
-                                </View>
-
-                                {/* Lineup */}
-                                <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                    <MaterialIcons name='label' size={18} color={colors.primary} />
-                                    <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Lineup : </Text>
-                                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{lineupNameFromID(form.lineup)}</Text>
+                                    <MaterialIcons name='motorcycle' size={18} color={colors.primary} />
+                                    <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Branch : </Text>
+                                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{brandNameFromID(form.brand)}</Text>
                                 </View>
 
                                 {/* Condition */}
@@ -174,22 +167,30 @@ const PostPreviewComponent = ({
                                     <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{conditionNameFromID(form.condition)}</Text>
                                 </View>
 
-                                {/* Manufacturer Year */}
+                                {/* Cubic Power */}
                                 <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                    <Fontisto name='date' size={18} color={colors.primary} />
-                                    <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Year : </Text>
-                                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.manufacturerYear}</Text>
+                                    <MaterialIcons name='speed' size={18} color={colors.primary} />
+                                    <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>Cubic Power : </Text>
+                                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.cubicPower}</Text>
+                                </View>
+
+
+                                {/* Name */}
+                                <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+                                    <MaterialIcons name='drive-file-rename-outline' size={18} color={colors.primary} />
+                                    <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Name : </Text>
+                                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.name}</Text>
                                 </View>
 
                             </View>
                             <View style={{ width: widthScreen / 2 - 30 }}>
                                 <View>
 
-                                    {/* Branch */}
+                                    {/* Lineup */}
                                     <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                        <MaterialIcons name='motorcycle' size={18} color={colors.primary} />
-                                        <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Branch : </Text>
-                                        <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{brandNameFromID(form.brand)}</Text>
+                                        <MaterialIcons name='label' size={18} color={colors.primary} />
+                                        <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Lineup : </Text>
+                                        <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{lineupNameFromID(form.lineup)}</Text>
                                     </View>
 
                                     {/* Color */}
@@ -206,11 +207,11 @@ const PostPreviewComponent = ({
                                         <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.odometer}</Text>
                                     </View>
 
-                                    {/* Cubic Power */}
+                                    {/* Manufacturer Year */}
                                     <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                        <MaterialIcons name='speed' size={18} color={colors.primary} />
-                                        <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>Cubic Power : </Text>
-                                        <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.cubicPower}</Text>
+                                        <Fontisto name='date' size={18} color={colors.primary} />
+                                        <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Year : </Text>
+                                        <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{form.manufacturerYear}</Text>
                                     </View>
 
                                 </View>

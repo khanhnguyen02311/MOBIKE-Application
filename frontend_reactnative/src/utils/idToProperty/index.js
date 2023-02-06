@@ -59,3 +59,27 @@ export const formatPrice = (price) => {
     if (price == undefined) return '';
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
+
+//City
+export const cityNameFromID = (ID) => {
+    const city = Store.getState().locations.Cities.find((item) => item.ID == ID);
+    if (city)
+        return city.Name;
+    else return '';
+}
+
+//District
+export const districtNameFromID = (ID) => {
+    const district = Store.getState().locations.Districts.find((item) => item.ID == ID);
+    if (district)
+        return district.Name;
+    else return '';
+}
+
+//Ward
+export const wardNameFromID = (ID) => {
+    const ward = Store.getState().locations.Wards.find((item) => item.ID == ID);
+    if (ward)
+        return ward.Name;
+    else return '';
+}

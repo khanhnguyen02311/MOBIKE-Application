@@ -561,7 +561,7 @@ const AddPostComponent = ({ }) => {
 
     const launchImageLibrary = () => {
         let options = {
-            selectionLimit: 5,
+            selectionLimit: MAX_IMAGE - form.images.length,
             storageOptions: {
                 skipBackup: true,
                 path: 'images',

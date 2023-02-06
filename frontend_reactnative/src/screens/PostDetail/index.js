@@ -21,10 +21,10 @@ const PostDetail = ({
                 });
     }, [navigation]);
 
-    const selectedPost = useSelector(state => state.selectedPost.ID);
+    const selectedPost = useSelector(state => state.selectedPost);
 
     return (
-        <PostDetailComponent postID={selectedPost} />
+        <PostDetailComponent postID={selectedPost.ID} isActivePost={selectedPost.isActivePost} />
     );
 }
 

@@ -26,7 +26,6 @@ const PostDetailNavigator = () => {
         options={{
           header: ({ navigation }) => <Header
             title={'Post Detail'}
-            iconRight={'heart-outline'}
             onLeftClick={() => {
               navigation.goBack();
             }}
@@ -45,6 +44,7 @@ const PostDetailNavigator = () => {
           />
         }}
       />
+      
     </Stack.Navigator>
   );
 };

@@ -4,9 +4,10 @@ import colors from '../../assets/theme/colors';
 import { ADD_POST } from '../../constants/routeNames';
 import { useNavigation } from '@react-navigation/native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import ShowingRoute from './ShowingRoute';
-import PendingRoute from './PendingRoute';
-import UnavailableRoute from './UnavailableRoute';
+import ActiveRoute from './ActiveRoute';
+import InactiveRoute from './InactiveRoute';
+import DeactivatedRoute from './DeactivatedRoute';
+import SoldRoute from './SoldRoute';
 import { useWindowDimensions } from 'react-native';
 import Container from '../common/container';
 
@@ -19,15 +20,17 @@ const YourPostsComponent = () => {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'Showing', title: 'Showing' },
-    { key: 'Pending', title: 'Pending' },
-    { key: 'Unavailable', title: 'Unavailable' },
+    { key: 'Active', title: 'Active' },
+    { key: 'Inactive', title: 'Inactive' },
+    { key: 'Sold', title: 'Sold' },
+    { key: 'Deactivated', title: 'Deactivated' },
   ]);
 
   const renderScene = SceneMap({
-    Showing: ShowingRoute,
-    Pending: PendingRoute,
-    Unavailable: UnavailableRoute,
+    Active: ActiveRoute,
+    Inactive: InactiveRoute,
+    Sold: SoldRoute,
+    Deactivated: DeactivatedRoute,
   });
 
   const renderTabBar = props => (
@@ -36,7 +39,7 @@ const YourPostsComponent = () => {
       activeColor={colors.text}
       inactiveColor={'#8D8D8D'}
       indicatorStyle={{ backgroundColor: colors.secondary, height: 3, }}
-      labelStyle={{ fontSize: 14, fontWeight: '500', textTransform: 'none' }}
+      labelStyle={{ fontSize: 13, fontWeight: '500', textTransform: 'none' }}
       pressOpacity={0.8}
       pressColor={'#C0DAF155'}
       style={{ backgroundColor: 'white', elevation: 0, borderBottomWidth: 1, borderBottomColor: '#E8E8E8' }}
@@ -57,7 +60,7 @@ const YourPostsComponent = () => {
             borderRadius: 5,
             backgroundColor: colors.primary,
           }}>
-          <Text style={{color: colors.white}}>Add post</Text>
+          <Text style={{ color: colors.white }}>Add post</Text>
         </View>
       </TouchableWithoutFeedback>
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Alert, StyleSheet, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native';
 import { Text, View } from 'react-native';
@@ -30,16 +30,20 @@ import MobikeImage from '../common/image';
 import { TouchableWithoutFeedback } from 'react-native';
 import { useState } from 'react';
 import PostPreviewList from '../PostPreview/flatList';
-import { conditionNameFromID, brandNameFromID, lineupNameFromID, typeNameFromID, colorNameFromID, colorHexFromID, convertFirstCharacterToUppercase, formatPrice } from '../../utils/idToProperty';
+import { conditionNameFromID, brandNameFromID, lineupNameFromID, typeNameFromID, colorNameFromID, colorHexFromID, convertFirstCharacterToUppercase, formatPrice, wardNameFromID, districtNameFromID, cityNameFromID } from '../../utils/idToProperty';
+import { GetPersonalPostDetail, GetPost } from '../../backendAPI';
+import SkeletonContent from 'react-native-skeleton-content-nonexpo';
+import store from '../../redux/store';
 
 const widthScreen = Dimensions.get('window').width;
 const heightScreen = Dimensions.get('window').height;
 const PostDetailComponent = ({
     postID,
+    isActivePost,
 }) => {
     const { navigate } = useNavigation();
 
-    const postInfo = {
+    const post = {
         images: [{
             ID: '1',
         }, {
@@ -184,6 +188,86 @@ const PostDetailComponent = ({
 
     const starAverage = 4.5;
 
+    //Get post data
+    const [isLoading, setIsLoading] = React.useState(true);
+    useEffect(() => {
+        if (isActivePost) {
+            getPost();
+        }
+        else {
+            getInactivePost();
+        }
+    }, []);
+
+    const [postInfo, setPostInfo] = React.useState({});
+    const getPost = async () => {
+        console.log('Post Detail: ' + JSON.stringify(await GetPost(postID)));
+        setPostInfo((await GetPost(postID)));
+        setIsLoading(false);
+    }
+
+    //Get inactive post data
+    const getInactivePost = async () => {
+        console.log('Post Detail: ' + JSON.stringify(await GetPersonalPostDetail(postID)));
+        setPostInfo((await GetPersonalPostDetail(postID)));
+        setIsLoading(false);
+    }
+
+
+    const _renderSkeleton = () => (
+        <SkeletonContent
+            containerStyle={[styles.styleWrapper]}
+            highlightColor="#C0DAF155"
+            isLoading={isLoading}
+            layout={
+                [
+                    {
+                        key: 'image', width: widthScreen - 20,
+                        height: heightScreen / 3, borderRadius: 5,
+                        marginTop: 10,
+                    },
+                    {
+                        key: 'title', width: widthScreen - 20,
+                        height: 50,
+                        marginTop: 10, borderRadius: 5,
+                    },
+                    {
+                        key: 'detail', width: widthScreen - 40,
+                        height: 150,
+                        marginTop: 10, borderRadius: 5,
+                    },
+                    {
+                        key: 'detail_information', width: 60,
+                        height: 16,
+                        marginTop: 10,
+                        marginHorizontal: 20,
+                        alignSelf: 'flex-start', borderRadius: 5,
+                    },
+                    {
+                        key: 'detail_information_1', width: widthScreen - 100,
+                        height: 20,
+                        marginTop: 5, borderRadius: 5,
+                    },
+                    {
+                        key: 'detail_information_2', width: widthScreen - 100,
+                        height: 20,
+                        marginTop: 5, borderRadius: 5,
+                    },
+                    {
+                        key: 'detail_information_3', width: widthScreen - 100,
+                        height: 20,
+                        marginTop: 5, borderRadius: 5,
+                    },
+                    {
+                        key: 'detail_information_4', width: widthScreen - 100,
+                        height: 20,
+                        marginTop: 5, borderRadius: 5,
+                    },
+                ]}
+        />
+    )
+
+
     const renderStarRating = (rating) => {
         let stars = [];
         for (let i = 1; i <= 5; i++) {
@@ -200,71 +284,71 @@ const PostDetailComponent = ({
 
     const DetailRoute = () => (
         <View style={{ paddingHorizontal: 20, marginTop: 15 }}>
-            <ReadMore seeMoreStyle={{ color: colors.text, fontStyle: 'italic', }} seeLessStyle={{ color: colors.text, fontStyle: 'italic' }} style={{ color: '#384653', fontSize: 14, fontWeight: '400' }} numberOfLines={10}>{postInfo.content}</ReadMore>
+            <ReadMore seeMoreStyle={{ color: colors.text, fontStyle: 'italic', }} seeLessStyle={{ color: colors.text, fontStyle: 'italic' }} style={{ color: '#384653', fontSize: 14, fontWeight: '400' }} numberOfLines={10}>{postInfo.post.Content}</ReadMore>
             <View style={{ marginTop: 20 }}>
                 <Text style={{ marginBottom: 15, fontWeight: '500', color: '#000' }}>Detail Information</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', paddingHorizontal: 5 }}>
                     <View style={{ width: widthScreen / 2 - 30 }}>
 
-                        {/* Name */}
+                        {/* Brand */}
                         <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                            <AntDesign name='edit' size={18} color={colors.primary} />
-                            <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Name : </Text>
-                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{postInfo.name}</Text>
-                        </View>
-
-                        {/* Lineup */}
-                        <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                            <MaterialCommunityIcons name='label-multiple-outline' size={18} color={colors.primary} />
-                            <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Lineup : </Text>
-                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{lineupNameFromID(postInfo.lineup)}</Text>
+                            <MaterialIcons name='motorcycle' size={18} color={colors.primary} />
+                            <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Brand : </Text>
+                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{brandNameFromID(postInfo.vehicleinfo.ID_VehicleBrand)}</Text>
                         </View>
 
                         {/* Condition */}
                         <View style={{ flexDirection: 'row', marginBottom: 15 }}>
                             <MaterialCommunityIcons name='list-status' size={18} color={colors.primary} />
                             <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Condition : </Text>
-                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{conditionNameFromID(postInfo.condition)}</Text>
+                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{conditionNameFromID(postInfo.vehicleinfo.ID_Condition)}</Text>
                         </View>
 
-                        {/* Manufacturer Year */}
+                        {/* Cubic Power */}
                         <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                            <Fontisto name='date' size={18} color={colors.primary} />
-                            <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Year : </Text>
-                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{postInfo.manufacturerYear}</Text>
+                            <MaterialIcons name='speed' size={18} color={colors.primary} />
+                            <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>Cubic Power : </Text>
+                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{postInfo.vehicleinfo.Cubic_power}</Text>
+                        </View>
+
+                        {/* Name */}
+                        <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+                            <AntDesign name='edit' size={18} color={colors.primary} />
+                            <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Name : </Text>
+                            <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{postInfo.vehicleinfo.Vehicle_name}</Text>
                         </View>
 
                     </View>
                     <View style={{ width: widthScreen / 2 - 30 }}>
                         <View>
 
-                            {/* Brand */}
+                            {/* Lineup */}
                             <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                <MaterialIcons name='motorcycle' size={18} color={colors.primary} />
-                                <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Brand : </Text>
-                                <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{brandNameFromID(postInfo.brand)}</Text>
+                                <MaterialCommunityIcons name='label-multiple-outline' size={18} color={colors.primary} />
+                                <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Lineup : </Text>
+                                <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{lineupNameFromID(postInfo.vehicleinfo.ID_VehicleLineup)}</Text>
                             </View>
 
                             {/* Color */}
                             <View style={{ flexDirection: 'row', marginBottom: 15 }}>
                                 <Ionicons name='color-palette-outline' size={18} color={colors.primary} />
                                 <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>Color : </Text>
-                                <FontAwesome name='circle' size={18} color={colorHexFromID(postInfo.color)} style={{ marginLeft: 5 }} />
-                                <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{colorNameFromID(postInfo.color)}</Text>
+                                <FontAwesome name='circle' size={18} color={colorHexFromID(postInfo.vehicleinfo.ID_Color)} style={{ marginLeft: 5 }} />
+                                <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{colorNameFromID(postInfo.vehicleinfo.ID_Color)}</Text>
                             </View>
 
                             {/* Odometer */}
                             <View style={{ flexDirection: 'row', marginBottom: 15 }}>
                                 <Ionicons name='speedometer-outline' size={18} color={colors.primary} />
                                 <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>Odometer : </Text>
-                                <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{postInfo.odometer}</Text>
+                                <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{postInfo.vehicleinfo.Odometer}</Text>
                             </View>
 
-                            {/* Cubic Power */}
+                            {/* Manufacturer Year */}
                             <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-                                <MaterialIcons name='speed' size={18} color={colors.primary} />
-                                <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>Cubic Power : </Text>
-                                <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{postInfo.cubicPower}</Text>
+                                <Fontisto name='date' size={18} color={colors.primary} />
+                                <Text style={{ marginLeft: 5, color: '#555', fontWeight: '400' }}>Year : </Text>
+                                <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{postInfo.vehicleinfo.Manufacture_year}</Text>
                             </View>
 
                         </View>
@@ -274,7 +358,7 @@ const PostDetailComponent = ({
                 <View style={{ flexDirection: 'row', marginBottom: 15, paddingLeft: 7 }}>
                     <Octicons name='number' size={18} color={colors.primary} />
                     <Text style={{ marginLeft: 8, color: '#555', fontWeight: '400' }}>License Plate : </Text>
-                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{postInfo.licensePlate}</Text>
+                    <Text style={{ marginLeft: 5, color: '#000', fontWeight: '400', flex: 1 }}>{postInfo.vehicleinfo.License_plate}</Text>
                 </View>
             </View>
         </View>
@@ -359,151 +443,220 @@ const PostDetailComponent = ({
         />
     );
 
+    // //Saved post
+    // const [isSaved, setIsSaved] = useState(false);
+
+    // const onSetSaved = () => {
+    //     setIsSaved(!isSaved);
+    // }
 
     //Report
     const [reportModalVisible, setReportModalVisible] = useState(false);
 
     return (
         <View style={{ height: '100%', position: 'relative' }}>
-            <Container
-                keyboardShouldPersistTaps="always"
-                styleScrollView={{
-                    backgroundColor: '#FFFFFF'
-                }}
-            >
+            {isLoading ?
+                _renderSkeleton()
+                :
+                (<Container
+                    keyboardShouldPersistTaps="always"
+                    styleScrollView={{
+                        backgroundColor: '#FFFFFF'
+                    }}
+                >
 
-                {/* Image */}
-                <Carousel data={postInfo.images} isImageID={true} />
+                    {/* Image */}
+                    <Carousel data={postInfo.post.rel_Image} isImageID={true} havingBackground={true} />
 
-                <View style={{ paddingHorizontal: 20, marginTop: 5, }}>
+                    <View style={{ paddingHorizontal: 20, marginTop: 5, }}>
 
-                    {/* Type */}
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignSelf: 'flex-start' }}>
-                        <FontAwesome name="circle" size={8} color={colors.secondary} />
-                        <Text style={{ color: colors.text, fontSize: 12, marginLeft: 8, fontWeight: '500' }}>{typeNameFromID(postInfo.type)}</Text>
-                    </View>
-
-                    {/* Title */}
-                    <View style={{ alignSelf: 'flex-start', marginTop: 5, paddingHorizontal: 5 }}>
-                        <Text style={{ fontWeight: 'bold', color: '#000', fontSize: 16 }}>{postInfo.title}</Text>
-                    </View>
-
-                    {/* Price */}
-                    <View style={{ alignSelf: 'flex-start', marginTop: 5, paddingHorizontal: 5, flexDirection: 'row', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                        <Text style={{ fontWeight: 'bold', color: colors.textRed, fontSize: 18 }}>{formatPrice(postInfo.price) + ' VND'}</Text>
-
-                        {/* Star Average */}
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginRight: 5 }}>
-                                <Octicons name="star-fill" size={14} color={'#FCC72E'} />
-                                <Text style={{ color: '#000', fontSize: 12, marginLeft: 5, fontWeight: '500' }}>{starAverage}</Text>
-                            </View>
-                            <Text style={{ color: '#000', fontSize: 10, fontWeight: '300', fontStyle: 'italic' }}>/ {ratingPost.length} Reviews</Text>
-                        </View>
-                    </View>
-                </View>
-
-                <TabView
-                    navigationState={{ index, routes }}
-                    renderScene={() => null}
-                    onIndexChange={setIndex}
-                    initialLayout={{ width: layout.width }}
-                    renderTabBar={renderTabBar}
-                    style={{ marginTop: 5 }}
-                />
-
-                {index == 0 ? DetailRoute() : ReviewRoute()}
-
-                {/* Seperate */}
-                <View style={{ backgroundColor: '#F6F6F6', height: 8 }} />
-
-                {/* Report */}
-                <View style={{ backgroundColor: '#fff', flexDirection: 'row', paddingVertical: 15, marginHorizontal: 20 }} >
-                    <Octicons name="shield-check" size={36} color={colors.primary} style={{ marginRight: 20 }} />
-                    <Text style={{ fontSize: 14, fontWeight: '400', fontStyle: 'italic', flex: 1, alignSelf: 'center' }}>
-                        <Text>This post has been approved. If it has any problem, please </Text>
-                        <TouchableWithoutFeedback><Text style={{ color: colors.textRed }}>report here</Text></TouchableWithoutFeedback>
-                        <Text>.</Text>
-                    </Text>
-                </View>
-
-                {/* Seperate */}
-                <View style={{ backgroundColor: '#F6F6F6', height: 8 }} />
-
-                {/* Seller Info */}
-                <View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 12, marginLeft: 10, }}>
-
-                    <MobikeImage imageID={1} style={{ width: 48, height: 48, borderRadius: 500, borderWidth: 1, borderColor: '#e8e8e8' }} />
-
-                    <View style={{ marginHorizontal: 15, flex: 1 }}>
-
-                        {/* Name & View Page */}
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Text style={{ color: '#000', fontWeight: '500', fontSize: 14, flex: 1 }}>Huynh Duy Khang</Text>
-                            <Text style={{ color: colors.text, fontWeight: '400', fontSize: 12, fontStyle: 'italic', marginLeft: 10, }}>View page ></Text>
+                        {/* Type */}
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignSelf: 'flex-start' }}>
+                            <FontAwesome name="circle" size={8} color={colors.secondary} />
+                            <Text style={{ color: colors.text, fontSize: 12, marginLeft: 8, fontWeight: '500' }}>{typeNameFromID(postInfo.vehicleinfo.ID_VehicleType)}</Text>
                         </View>
 
-                        {/* Address */}
-                        <View style={{ flexDirection: 'row', marginTop: 5, marginEnd: 15, alignItems: 'flex-start', flex: 1 }}>
-                            <SimpleLineIcons name="location-pin" size={12} color={'#374957'} style={{ marginTop: 2 }} />
-                            <Text style={{ color: '#555', fontWeight: '300', fontSize: 12, fontStyle: 'italic', marginLeft: 5 }}>10/34, Thong Nhat Ward, Bien Hoa City, Dong Nai Province</Text>
+                        {/* Title */}
+                        <View style={{ alignSelf: 'flex-start', marginTop: 5, paddingHorizontal: 5 }}>
+                            <Text style={{ fontWeight: 'bold', color: '#000', fontSize: 16 }}>{postInfo.post.Title}</Text>
                         </View>
 
-                        {/* Feature */}
-                        <View style={{ flexDirection: 'row', marginTop: 5 }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-                                <Text style={{ fontSize: 12, color: colors.text }}>50</Text>
-                                <Text style={{ fontSize: 10, color: '#000', fontWeight: '300', marginStart: 5, marginRight: 15, }}>Posts</Text>
-                                <View style={{ height: '90%', width: 1, backgroundColor: '#e8e8e8' }} />
+                        {/* Price */}
+                        <View style={{ alignSelf: 'flex-end', marginTop: 5, paddingHorizontal: 5, flexDirection: 'row', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                            <Text style={{ fontWeight: 'bold', color: colors.textRed, fontSize: 18 }}>{formatPrice(postInfo.post.Pricetag) + ' VND'}</Text>
+
+                            {/* Star Average */}
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+
+                                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginRight: 5 }}>
+                                    <Octicons name="star-fill" size={14} color={'#FCC72E'} />
+                                    <Text style={{ color: '#000', fontSize: 12, marginLeft: 5, fontWeight: '500' }}>{starAverage}</Text>
+                                </View>
+                                <Text style={{ color: '#000', fontSize: 10, fontWeight: '300', fontStyle: 'italic' }}>/ {ratingPost.length} Reviews</Text>
                             </View>
 
-                            <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginStart: 12 }}>
-                                <Text style={{ fontSize: 12, color: colors.text }}>5.0</Text>
-                                <Text style={{ fontSize: 10, color: '#000', fontWeight: '300', marginStart: 5, marginRight: 15, }}>Rate</Text>
-                                <View style={{ height: '90%', width: 1, backgroundColor: '#e8e8e8' }} />
-                            </View>
-
-                            <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginStart: 12 }}>
-                                <Text style={{ fontSize: 12, color: colors.text }}>100%</Text>
-                                <Text style={{ fontSize: 10, color: '#000', fontWeight: '300', marginStart: 5, marginRight: 15, }}>Chat response rate</Text>
-                            </View>
+                            {/* <TouchableWithoutFeedback onPress={onSetSaved}>
+                                {!isSaved ?
+                                    (<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15, borderColor: colors.grey, padding: 3, paddingHorizontal: 7 }}>
+                                        <Ionicons name="heart-outline" size={16} color={colors.grey} />
+                                        <Text style={{ marginLeft: 5, fontSize: 12, color: "#4E4E4E" }}>Save post</Text>
+                                    </View>)
+                                    :
+                                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15, borderColor: "#FA808A", padding: 3, paddingHorizontal: 5 }}>
+                                        <Ionicons name="heart" size={16} color={'#FA808A'} />
+                                        <Text style={{ marginLeft: 5, fontSize: 12, color: "#4E4E4E" }}>Save post</Text>
+                                    </View>
+                                }
+                            </TouchableWithoutFeedback> */}
                         </View>
                     </View>
 
-                </View>
+                    <TabView
+                        navigationState={{ index, routes }}
+                        renderScene={() => null}
+                        onIndexChange={setIndex}
+                        initialLayout={{ width: layout.width }}
+                        renderTabBar={renderTabBar}
+                        style={{ marginTop: 5 }}
+                    />
 
-                {/* Seperate */}
-                <View style={{ backgroundColor: '#E8E8E8', height: 1 }} />
+                    {index == 0 ? DetailRoute() : ReviewRoute()}
 
-
-                {/* Other Posts */}
-                <View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
-                        <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
-                            <Text>Other Posts Of</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '300', color: '#000', fontStyle: 'italic' }}> Huynh Duy Khang</Text>
-                        </Text>
-                        <Text style={{ fontSize: 12, fontWeight: '400', color: colors.text, fontStyle: 'italic' }}>See more ></Text>
-                    </View>
-                    <PostPreviewList data={dataPostPreviewList} />
-                </View>
-
-                {/* Similar Posts */}
-                <View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
-                        <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
-                            Similar Posts
-                        </Text>
-                        <Text style={{ fontSize: 12, fontWeight: '400', color: colors.text, fontStyle: 'italic' }}>See more ></Text>
-                    </View>
-                    <PostPreviewList data={dataPostPreviewList} />
-                </View>
+                    {/* Seperate */}
+                    <View style={{ backgroundColor: '#F6F6F6', height: 8 }} />
 
 
-                <View style={{ backgroundColor: '#fff', height: 100 }} />
 
-            </Container>
+                    {isActivePost ?
+                        (<View>
+
+                            {/* Report */}
+                            <View style={{ backgroundColor: '#fff', flexDirection: 'row', paddingVertical: 15, marginHorizontal: 20 }} >
+                                <Octicons name="shield-check" size={36} color={colors.primary} style={{ marginRight: 20 }} />
+                                <Text style={{ fontSize: 14, fontWeight: '400', fontStyle: 'italic', flex: 1, alignSelf: 'center' }}>
+                                    <Text>This post has been approved. If it has any problem, please </Text>
+                                    <TouchableWithoutFeedback><Text style={{ color: colors.textRed }}>report here</Text></TouchableWithoutFeedback>
+                                    <Text>.</Text>
+                                </Text>
+                            </View>
+
+                            {/* Seperate */}
+                            <View style={{ backgroundColor: '#F6F6F6', height: 8 }} />
+                            {/* Seller Info */}
+                            < View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 12, marginLeft: 10, }}>
+
+                                <MobikeImage imageID={postInfo.user.ID_Image_Profile} style={{ width: 48, height: 48, borderRadius: 500, borderWidth: 1, borderColor: '#e8e8e8' }} />
+
+                                <View style={{ marginHorizontal: 15, flex: 1 }}>
+
+                                    {/* Name & View Page */}
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <Text style={{ color: '#000', fontWeight: '500', fontSize: 14, flex: 1 }}>{postInfo.user.Name}</Text>
+                                        <Text style={{ color: colors.text, fontWeight: '400', fontSize: 12, fontStyle: 'italic', marginLeft: 10, }}>View page ></Text>
+                                    </View>
+
+                                    {/* Address */}
+                                    <View style={{ flexDirection: 'row', marginTop: 5, marginEnd: 15, alignItems: 'flex-start', flex: 1 }}>
+                                        <SimpleLineIcons name="location-pin" size={12} color={'#374957'} style={{ marginTop: 2 }} />
+                                        <Text style={{ color: '#555', fontWeight: '300', fontSize: 12, fontStyle: 'italic', marginLeft: 5 }}>{wardNameFromID(postInfo.address.ID_Ward) + ', ' + districtNameFromID(postInfo.address.ID_District) + ', ' + cityNameFromID(postInfo.address.ID_City)}</Text>
+                                    </View>
+
+                                    {/* Feature */}
+                                    <View style={{ flexDirection: 'row', marginTop: 5, }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+                                            <Text style={{ fontSize: 12, color: colors.text }}>50</Text>
+                                            <Text style={{ fontSize: 10, color: '#000', fontWeight: '300', marginStart: 5, marginRight: 15, }}>Posts</Text>
+                                            <View style={{ height: '90%', width: 1, backgroundColor: '#e8e8e8' }} />
+                                        </View>
+
+                                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginStart: 12 }}>
+                                            <Text style={{ fontSize: 12, color: colors.text }}>5.0</Text>
+                                            <Text style={{ fontSize: 10, color: '#000', fontWeight: '300', marginStart: 5, marginRight: 15, }}>Rate</Text>
+                                            {/* <View style={{ height: '90%', width: 1, backgroundColor: '#e8e8e8' }} /> */}
+                                        </View>
+                                    </View>
+                                </View>
+
+                            </View>
+
+                            {/* Seperate */}
+                            <View style={{ backgroundColor: '#E8E8E8', height: 1 }} />
+
+
+                            {/* Other Posts */}
+                            <View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
+                                    <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
+                                        <Text>Other Posts Of</Text>
+                                        <Text style={{ fontSize: 16, fontWeight: '300', color: '#000', fontStyle: 'italic' }}>{'  ' + postInfo.user.Name}</Text>
+                                    </Text>
+                                    <Text style={{ fontSize: 12, fontWeight: '400', color: colors.text, fontStyle: 'italic' }}>See more ></Text>
+                                </View>
+                                <PostPreviewList data={[1, 2, 3]} />
+                            </View>
+
+                            {/* Similar Posts */}
+                            <View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
+                                    <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
+                                        Similar Posts
+                                    </Text>
+                                    <Text style={{ fontSize: 12, fontWeight: '400', color: colors.text, fontStyle: 'italic' }}>See more ></Text>
+                                </View>
+                                <PostPreviewList data={[1, 2, 3]} />
+                            </View>
+                        </View>
+                        )
+                        :
+                        (
+                            <View>
+                                {/* Seller Info */}
+                                <View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 12, marginLeft: 10, }}>
+
+                                    <MobikeImage imageID={store.getState().personalInfo.ID_Image_Profile} style={{ width: 48, height: 48, borderRadius: 500, borderWidth: 1, borderColor: '#e8e8e8' }} />
+
+                                    <View style={{ marginHorizontal: 15, flex: 1 }}>
+
+                                        {/* Name & View Page */}
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Text style={{ color: '#000', fontWeight: '500', fontSize: 14, flex: 1 }}>{store.getState().personalInfo.Name}</Text>
+                                            <Text style={{ color: colors.text, fontWeight: '400', fontSize: 12, fontStyle: 'italic', marginLeft: 10, }}>View page ></Text>
+                                        </View>
+
+                                        {/* Address */}
+                                        <View style={{ flexDirection: 'row', marginTop: 5, marginEnd: 15, alignItems: 'flex-start', flex: 1 }}>
+                                            <SimpleLineIcons name="location-pin" size={12} color={'#374957'} style={{ marginTop: 2 }} />
+                                            <Text style={{ color: '#555', fontWeight: '300', fontSize: 12, fontStyle: 'italic', marginLeft: 5 }}>{wardNameFromID(postInfo.address.ID_Ward) + ', ' + districtNameFromID(postInfo.address.ID_District) + ', ' + cityNameFromID(postInfo.address.ID_City)}</Text>
+                                        </View>
+
+                                    </View>
+
+                                </View>
+
+                                {/* Seperate */}
+                                <View style={{ backgroundColor: '#E8E8E8', height: 1 }} />
+
+
+                                {/* Other Posts */}
+                                <View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
+                                        <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
+                                            <Text>Other Posts Of</Text>
+                                        </Text>
+                                    </View>
+                                </View>
+
+                            </View>
+                        )
+                    }
+
+
+
+
+                    <View style={{ backgroundColor: '#fff', height: 100 }} />
+
+                </Container>)
+            }
 
         </View >
 
@@ -511,3 +664,11 @@ const PostDetailComponent = ({
 }
 
 export default PostDetailComponent;
+
+const styles = StyleSheet.create({
+    styleWrapper: {
+        backgroundColor: '#EDEDED',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});

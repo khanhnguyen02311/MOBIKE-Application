@@ -10,7 +10,7 @@ const CarouselItem = ({ item, isUri, isImageID, index }) => {
     return (<Image source={{ uri: uri }} style={[styles.image, { height: width / 1.5 }]} key={index} />);
   }
   else if (isImageID) {
-    return (<MobikeImage imageID={item.ID} style={[styles.image, { height: width / 1.5 }]} key={index} />);
+    return (<MobikeImage imageID={item} style={[styles.image, { height: width / 1.5 }]} key={index} />);
   }
   else {
     const { url } = item;

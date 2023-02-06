@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -8,60 +8,175 @@ import { POST_DETAIL, POST_DETAIL_NAVIGATOR } from '../../../constants/routeName
 import { brandNameFromID, formatPrice, typeNameFromID } from '../../../utils/idToProperty';
 import { selectPost } from '../../../redux/slice/selectedPostSlice';
 import { TouchableWithoutFeedback } from 'react-native';
+import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import { GetPersonalPostDetail, GetPost } from '../../../backendAPI';
+import SkeletonContent from 'react-native-skeleton-content-nonexpo';
+import colors from '../../../assets/theme/colors';
+
 
 const PostPreview = ({
   postID,
   index,
+  pressable = true,
+  styleWrapper,
+  isActivePost = true,
+  post,
+  ...props
 }) => {
 
-  const postInfo = {
-    images: [{
-      ID: '190',
-    }, {
-      ID: '2',
-    }, {
-      ID: '3',
-    }],
-    title: 'SC Project S1 KTM12-41T Slip On Titanium Exhaust | KTM Duke 790',
-    price: 945000000,
-    manufacturerYear: 2020,
-    type: 1,
-    brand: 1,
+  // const post = {
+  //   images: [{
+  //     ID: '190',
+  //   }, {
+  //     ID: '2',
+  //   }, {
+  //     ID: '3',
+  //   }],
+  //   title: 'SC Project S1 KTM12-41T Slip On Titanium Exhaust | KTM Duke 790',
+  //   price: 945000000,
+  //   manufacturerYear: 2020,
+  //   type: 1,
+  //   brand: 1,
+  // }
+
+  useEffect(() => {
+    if (isActivePost) {
+      getPost();
+    }
+    else {
+      getInactivePost();
+    }
+  }, []);
+
+  const [postInfo, setPostInfo] = React.useState({});
+  const getPost = async () => {
+    // console.log('PostPreview: ' + JSON.stringify(await GetPost(postID)));
+    setPostInfo((await GetPost(postID)));
+    setIsLoading(false);
   }
+
+  const getInactivePost = async () => {
+    setPostInfo((await GetPersonalPostDetail(postID)));
+    setIsLoading(false);
+  }
+
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const onNavigate = () => {
     navigate(POST_DETAIL_NAVIGATOR, { screen: POST_DETAIL });
-    dispatch(selectPost({ ID: '1' }));
+    dispatch(selectPost({ ID: postID, isActivePost: isActivePost }));
   };
-  return (
-    <TouchableWithoutFeedback onPress={onNavigate} key={index ? index : 0}>
-      <View
-        style={[styles.styleWrapper, index === 0 ? { marginStart: 20 } : null]}>
-        <MobikeImage imageID={postInfo.images[0].ID} style={styles.styleImage} />
 
-        <View style={styles.textWrapper}>
-          <Text
-            style={styles.styleTitle}
-            numberOfLines={1}
-            ellipsizeMode="tail">
-            {postInfo.title}
-          </Text>
-          <Text style={styles.styleInfo} numberOfLines={1} ellipsizeMode="tail">
-            <Text>{typeNameFromID(postInfo.type)}</Text>
-            <Text> - </Text>
-            <Text>{brandNameFromID(postInfo.brand)}</Text>
-          </Text>
+  const _renderContent = () => {
+    if (isActivePost) {
+      return (
+        <View
+          style={[styles.styleWrapper, index === 0 ? { marginStart: 20 } : null, styleWrapper]}>
+          <MobikeImage imageID={postInfo.post.rel_Image[0]} style={styles.styleImage} />
 
-          <Text style={styles.stylePrice}
-            numberOfLines={1}
-            ellipsizeMode="tail">
-            {formatPrice(postInfo.price) + ' VND'}
-          </Text>
+          <View style={styles.textWrapper}>
+            <Text
+              style={styles.styleTitle}
+              numberOfLines={1}
+              ellipsizeMode="tail">
+              {postInfo.post.Title}
+            </Text>
+            <Text style={styles.styleInfo} numberOfLines={1} ellipsizeMode="tail">
+              <Text>{typeNameFromID(postInfo.vehicleinfo.ID_VehicleType)}</Text>
+              <Text> - </Text>
+              <Text>{brandNameFromID(postInfo.vehicleinfo.ID_VehicleBrand)}</Text>
+            </Text>
 
+            <Text style={styles.stylePrice}
+              numberOfLines={1}
+              ellipsizeMode="tail">
+              {formatPrice(postInfo.post.Pricetag) + ' VND'}
+            </Text>
+
+          </View>
         </View>
-      </View>
+
+
+
+
+      );
+    } else {
+      return (
+        (
+          <View
+            style={[styles.styleWrapper, index === 0 ? { marginStart: 20 } : null, styleWrapper]}>
+            <MobikeImage imageID={postInfo.post.rel_Image[0]} style={styles.styleImage} />
+
+            <View style={styles.textWrapper}>
+              <Text
+                style={styles.styleTitle}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {postInfo.post.Title}
+              </Text>
+              <Text style={styles.styleInfo} numberOfLines={1} ellipsizeMode="tail">
+                <Text>{typeNameFromID(postInfo.vehicleinfo.ID_VehicleType)}</Text>
+                <Text> - </Text>
+                <Text>{brandNameFromID(postInfo.vehicleinfo.ID_VehicleBrand)}</Text>
+              </Text>
+
+
+              <Text style={styles.stylePrice}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {formatPrice(postInfo.post.Pricetag) + ' VND'}
+              </Text>
+
+            </View>
+          </View>
+        )
+      )
+    }
+  }
+
+  const _renderSkeleton = () => (
+    <SkeletonContent
+      containerStyle={[styles.styleWrapper, index === 0 ? { marginStart: 20 } : null, { backgroundColor: '#f5f5f5', }, styleWrapper]}
+      highlightColor="#C0DAF155"
+      isLoading={isLoading}
+      layout={
+        [
+          {
+            key: 'image', width: 135,
+            height: 135, borderRadius: 5,
+          },
+          {
+            key: 'title', width: 130,
+            height: 14,
+            marginTop: 10,
+          },
+          {
+            key: 'info', width: 130,
+            height: 10,
+            marginTop: 10,
+          },
+          {
+            key: 'price', width: 130,
+            height: 16,
+            marginTop: 10,
+          },
+        ]}
+    >
+      <Text>Your content</Text>
+      <Text>Other content</Text>
+    </SkeletonContent >
+  )
+
+  return (
+    <TouchableWithoutFeedback onPress={pressable ? onNavigate : null} key={postID} {...props}>
+      {
+        isLoading ?
+          _renderSkeleton()
+          : _renderContent()
+      }
+      {/* <Text>Hello</Text> */}
     </TouchableWithoutFeedback>
   )
 };

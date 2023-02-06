@@ -3,11 +3,11 @@ import React from 'react';
 import ListItem from '../listItem';
 
 const renderItem = ({ item, index }) => {
-  return <ListItem postID={item} index={index} />;
+  return <ListItem postID={item} index={index} key={index} />;
 };
 
-const keyExtractor = item => {
-  return item.id;
+const keyExtractor = (item, index) => {
+  return index;
 };
 
 const PostPreviewList = ({ data, ...props }) => {

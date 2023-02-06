@@ -8,7 +8,7 @@ import { setLoading } from './src/redux/slice/loadingSlice';
 import { Provider, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TokenStorage from './src/services/TokenStorage';
-import BackendAPI, { getPersonalInfo, GetPersonalPost, GetPost } from './src/backendAPI';
+import BackendAPI, { getPersonalInfo, GetPersonalPost, GetPost, GetPersonalPostDetail } from './src/backendAPI';
 import ClientDatabase from './src/services/ClientDatabase';
 import Requester, { BigGetRequest } from './src/backendAPI/HttpRequest';
 
@@ -34,7 +34,7 @@ const theme = {
 
 const App = () => {
   useEffect(() => {
-    // AsyncStorage.clear();
+    //AsyncStorage.clear();
     console.log('------------------------------Main------------------------------')
 
 
@@ -43,9 +43,10 @@ const App = () => {
         // const cities = await BigGetRequest("cities");
         // console.log(cities);
         console.log("......................Sandbox......................")
-        console.log("Post data: " + JSON.stringify(await GetPost(1)));
-        console.log("\n\n\n")
-        console.log("Personal post data: " + JSON.stringify(await GetPersonalPost()));
+        // console.log("Post data: " + JSON.stringify(await GetPost(3)));
+        // console.log("\n\n\n")
+        // console.log("Personal post data: " + JSON.stringify(await GetPersonalPost()));
+        console.log("Personal post detail: " + JSON.stringify(await GetPersonalPostDetail(4)));
 
       } catch (error) {
         console.log("Sandbox error: " + error);

@@ -237,6 +237,14 @@ export const GetPersonalPost = async () => {
     }
 }
 
+export const GetPersonalPostDetail = async (ID) => {
+    const token = getToken();
+    const postResponse = await HttpRequest.ProtectedGetRequest("personal/post/" + ID, token);
+    if (postResponse.msg == "Completed") {
+        return postResponse.info;
+    }
+}
+
 export const GetPost = async (ID) => {
     const postResponse = await HttpRequest.GetRequest("search/post/" + ID);
     if (postResponse.msg == "Completed") {

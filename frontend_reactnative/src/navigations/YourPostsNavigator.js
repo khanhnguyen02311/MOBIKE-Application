@@ -7,6 +7,7 @@ import {
   ADD_POST,
   FILTERS_POP_UP,
   LOADING,
+  POST_DETAIL_NAVIGATOR,
   POST_PREVIEW,
   YOUR_POSTS,
 } from '../constants/routeNames';
@@ -16,6 +17,7 @@ import Loading from '../screens/Loading';
 import Marketplace from '../screens/Marketplace';
 import YourPosts from '../screens/YourPosts';
 import PostPreview from '../screens/PostPreview';
+import PostDetailNavigator from './PostDetailNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +56,13 @@ const YourPostsNavigator = () => {
               }}
             />
           ),
+        }}
+      />
+      <Stack.Screen
+        name={POST_DETAIL_NAVIGATOR}
+        component={PostDetailNavigator}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

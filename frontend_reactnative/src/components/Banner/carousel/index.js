@@ -13,7 +13,7 @@ import CarouselItem from '../carouselItem';
 
 const { width, height } = Dimensions.get('window');
 
-const Carousel = ({ data, isUri, isImageID }) => {
+const Carousel = ({ data, isUri = false, isImageID = false, havingBackground = false }) => {
   const scrollX = new Animated.Value(0);
   let position = Animated.divide(scrollX, width);
   if (data && data.length) {
@@ -38,7 +38,7 @@ const Carousel = ({ data, isUri, isImageID }) => {
           )}
         />
 
-        <View style={styles.dotView}>
+        <View style={[styles.dotView, havingBackground && { backgroundColor: '#ffffff55', borderRadius: 10, }]}>
           {data.map((_, i) => {
             let opacity = position.interpolate({
               inputRange: [i - 1, i, i + 1],
@@ -55,7 +55,7 @@ const Carousel = ({ data, isUri, isImageID }) => {
                   backgroundColor: '#000',
                   margin: 2,
                   borderRadius: 5,
-                  
+
                 }}
               />
             );
@@ -73,11 +73,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     bottom: 15,
-    // backgroundColor: '#ffffff55',
     alignSelf: 'center',
     paddingVertical: 1,
-    paddingHorizontal: 3,   
-    borderRadius: 5,
+    paddingHorizontal: 3,
   },
 });
 

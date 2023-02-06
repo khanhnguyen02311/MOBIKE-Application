@@ -658,7 +658,7 @@ const EditProfileComponent = () => {
                       {addressList.length > 0 ? (
                         addressList.filter(item => !item.IsDeleted).map((item, index) =>
                         (
-                          <View key={item.ID}>
+                          <View key={index}>
                             <View
                               style={{
                                 flexDirection: 'row',
