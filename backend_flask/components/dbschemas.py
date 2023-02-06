@@ -37,14 +37,18 @@ class AccountInfoSchema(Schema):
     ID_Image_Profile = auto_field()
     Time_created = auto_field()
     
-class AccountInfoSchemaShort(Schema):
+class AccountInfoSchemaPublic(Schema):
     class Meta:
         model = dbm.AccountInfo
         load_instance = True
 
     ID = auto_field()
     Name = auto_field()
+    Gender = auto_field()
+    Phone_number = auto_field()
     ID_Image_Profile = auto_field()
+    Time_created = auto_field()
+    
     
 class AddressSchema(Schema):
     class Meta:
@@ -56,6 +60,18 @@ class AddressSchema(Schema):
     ID_City = auto_field()
     ID_District = auto_field()
     ID_Ward = auto_field()
+
+
+class AddressSchemaShort(Schema):
+    class Meta:
+        model = dbm.Address
+        load_instance = True
+        
+    ID = auto_field()
+    ID_City = auto_field()
+    ID_District = auto_field()
+    ID_Ward = auto_field()
+    
 
 class WardSchema(Schema):
     class Meta:

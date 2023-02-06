@@ -51,7 +51,8 @@ bppostsearch = Blueprint("bppostsearch", __name__)
 def getdetailpost(id):
    postschema = dbs.PostSchema()
    vehicleschema = dbs.VehicleInfoSchema()
-   userschema = dbs.AccountInfoSchema()
+   userschema = dbs.AccountInfoSchemaPublic()
+   addressschema = dbs.AddressSchemaShort()
    Session = new_Scoped_session()
    try:
       status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == id).order_by(dbm.PostStatus.ID.desc()).first()
@@ -69,7 +70,7 @@ def getdetailpost(id):
       json_data['post'] = postschema.dump(post)
       json_data['user'] = userschema.dump(post.rel_Account.rel_AccountInfo)
       json_data['vehicleinfo'] = vehicleschema.dump(post.rel_VehicleInfo)
-      json_data['address'] = vehicleschema.dump(post.rel_Address)
+      json_data['address'] = addressschema.dump(post.rel_Address)
       Session.commit()
       return jsonify({"msg": "Completed", "error": "", "info": json_data})
       
@@ -80,7 +81,7 @@ def getdetailpost(id):
    
 @bppostsearch.route("/post/<id>/ratings", methods=["GET"])
 def getpostratings(id):
-   schema = dbs.AccountInfoSchemaShort()
+   schema = dbs.AccountInfoSchemaPublic()
    Session = new_Scoped_session()
    try:
       status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == id).order_by(dbm.PostStatus.ID.desc()).first()
@@ -106,4 +107,5 @@ def getpostratings(id):
    except Exception as e:
       Session.rollback()
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
+   
    

@@ -179,6 +179,7 @@ def getdetailpost(id):
    postschema = dbs.PostSchema()
    vehicleschema = dbs.VehicleInfoSchema()
    statusschema = dbs.PostStatusSchema()
+   addressschema = dbs.AddressSchema()
    Session = new_Scoped_session()
    try:      
       post = Session.query(dbm.Post).options(sqlorm.joinedload(dbm.Post.rel_VehicleInfo),
@@ -191,7 +192,7 @@ def getdetailpost(id):
       json_data = {}
       json_data['post'] = postschema.dump(post)
       json_data['vehicleinfo'] = vehicleschema.dump(post.rel_VehicleInfo)
-      json_data['address'] = vehicleschema.dump(post.rel_Address)
+      json_data['address'] = addressschema.dump(post.rel_Address)
       json_data['statuses'] = json_statuses
       Session.commit()
       return jsonify({"msg": "Completed", "error": "", "info": json_data})
