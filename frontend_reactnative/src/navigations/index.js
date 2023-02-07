@@ -23,7 +23,7 @@ const AppNavContainer = () => {
       {isLoading ? (
         <LoadingNavigator />
       ) : isLoggedIn ? (
-        (true) ? (<BottomNavigator />) : ( (permission == 2) ? <ApplicationAdminNavigator/> : <View/>)
+        (permission == 4) ? (<BottomNavigator />) : ( (permission == 2) ? <ApplicationAdminNavigator/> : <View/>)
       ) : (
         <AuthenticationNavigator />
       )}

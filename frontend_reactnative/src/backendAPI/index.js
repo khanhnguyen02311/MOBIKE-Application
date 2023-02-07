@@ -340,6 +340,18 @@ export const RatePost = async (PostID, ratingPoint, content) => {
     return rateResponse.msg == "Completed";
 }
 
+export const DeactivatePost = async (ID) => {
+    const token = getToken();
+    const deactivateResponse = await HttpRequest.ProtectedPostRequest("personal/post/deactivate" + ID, token);
+    return deactivateResponse.msg == "Completed";
+}
+
+export const SoldPost = async (ID) => {
+    const token = getToken();
+    const soldResponse = await HttpRequest.ProtectedPostRequest("personal/post/sold" + ID, token);
+    return soldResponse.msg == "Completed";
+}
+
 export const AppAdminGetPost = async (ID) => {
     const token = getToken();
     const postResponse = await HttpRequest.ProtectedGetRequest("admin/application/post/" + ID, token);

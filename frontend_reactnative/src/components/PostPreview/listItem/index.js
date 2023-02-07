@@ -55,7 +55,6 @@ const PostPreview = ({
   //Get post
   const [postInfo, setPostInfo] = React.useState({});
   const getPost = async () => {
-    console.log('PostIDPreview: ' + postID)
     const post = await GetPost(postID);
     console.log('PostPreview: ' + JSON.stringify(post));
     setPostInfo(post);
@@ -71,7 +70,6 @@ const PostPreview = ({
   // Get inactive post by admin
   const getInactivePostByAdmin = async () => {
     const post = await AppAdminGetPost(postID);
-    console.log('Post Preview by Admin: ' + JSON.stringify(post));
     setPostInfo(post);
     setIsLoading(false);
   }

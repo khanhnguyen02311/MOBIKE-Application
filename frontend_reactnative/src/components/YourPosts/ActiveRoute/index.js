@@ -12,6 +12,7 @@ import { ADD_POST, POST_DETAIL, POST_DETAIL_NAVIGATOR } from '../../../constants
 import { selectPost } from '../../../redux/slice/selectedPostSlice';
 import Container from '../../common/container';
 import PostPreview from '../../PostPreview/listItem';
+import { ADD_POST } from './../../../constants/routeNames';
 
 const ActiveRoute = ({
     params,
