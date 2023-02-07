@@ -260,6 +260,44 @@ export const GetUserInfo = async (ID) => {
     }
 }
 
+export const PostFilter = (
+    title: string,
+    page: Number,
+    numperPage: Number,
+    asc: Boolean,
+    priceStart: Number,
+    priceEnd: Number,
+    brand: Number,
+    lineup: Number,
+    type: Number,
+    color: Number,
+    manufacturerYear: Number,
+    ) => {
+    const args = {
+        title: title || "",
+        page: page || 1,
+        numperpage: numperPage || 20,
+        order: asc ? "asc" : "desc",
+        pricestart: priceStart || -1,
+        priceend: priceEnd || -1,
+        brand: brand || -1,
+        lineup: lineup || -1,
+        type: type || -1,
+        color: color || -1,
+        mnfyear: manufacturerYear || -1,
+    }
+    return Object.keys(args).map(key => `${key}=${args[key]}`).join('&');
+}
+
+export const GetAllPosts = async (args: string) => {
+    const postResponse = await HttpRequest.GetRequest("search/post/all" + (args ? "?" + args : ""));
+    if (postResponse.msg == "Completed") {
+        return postResponse.info;
+    }
+}
+
+
+
 export const AppAdminGetPost = async (ID) => {
     const token = getToken();
     const postResponse = await HttpRequest.ProtectedGetRequest("admin/application/post/" + ID, token);
