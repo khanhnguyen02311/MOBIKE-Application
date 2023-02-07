@@ -364,8 +364,9 @@ def getLike():
          Session.close()
          return jsonify({"msg": "Incompleted", "error": "No likes", "info": ""})
       result = []
+      schema = dbs.PostSchemaShort()
       for like in likes:
-         result.append(like.rel_Post.to_dict())
+         result.append(schema.dump(like.rel_Post))
       return jsonify({"msg": "Completed", "error": "", "info": result})
    except Exception as e:
       Session.rollback()
