@@ -1,6 +1,7 @@
 import HttpRequest, { BigGetRequest, ProtectedUploadImage, UploadIdentityImage } from "./HttpRequest.js";
 import Store from "../redux/store";
 import { resolvePlugin } from "@babel/core";
+import { setLikedPosts } from "../redux/slice/likeSlice.js";
 
 
 export const me = async (token) => {
@@ -303,7 +304,41 @@ export const GetAllPosts = async (args: string) => {
     }
 }
 
+export const LikePost = async (ID) => {
+    const token = getToken();
+    const likeResponse = await HttpRequest.ProtectedPostRequest("personal/like/" + ID, {}, token);
+    await UpdateLikedPost();
+    return likeResponse.msg == "Completed";
+}
 
+export const UnlikePost = async (ID) => {
+    const token = getToken();
+    const unlikeResponse = await HttpRequest.ProtectedDeleteRequest("personal/like/" + ID, token);
+    await UpdateLikedPost();
+    return unlikeResponse.msg == "Completed";
+}
+
+export const GetLikedPosts = async () => {
+    const token = getToken();
+    const postResponse = await HttpRequest.ProtectedGetRequest("personal/like", token);
+    if (postResponse.msg == "Completed") {
+        return postResponse.info;
+    }
+}
+
+export const UpdateLikedPost = async () => {
+    Store.dispatch(setLikedPosts(await GetLikedPosts()));
+}
+
+export const RatePost = async (PostID, ratingPoint, content) => {
+    const token = getToken();
+    const body = {
+        ratingpoint: ratingPoint,
+        content: content,
+    }
+    const rateResponse = await HttpRequest.ProtectedPostRequest("personal/rate/" + PostID, body, token);
+    return rateResponse.msg == "Completed";
+}
 
 export const AppAdminGetPost = async (ID) => {
     const token = getToken();

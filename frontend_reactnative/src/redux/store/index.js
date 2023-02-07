@@ -11,6 +11,7 @@ import color from '../clientDatabase/color';
 import permission from '../clientDatabase/permission';
 import filterReducer from '../slice/filterSlice';
 import selectedPostReducer from '../slice/selectedPostSlice';
+import likeReducer from '../slice/likeSlice';
 
 
 const store = configureStore({
@@ -27,6 +28,7 @@ const store = configureStore({
     loading: loadingReducer,
     filter: filterReducer,
     selectedPost: selectedPostReducer,
+    like: likeReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
