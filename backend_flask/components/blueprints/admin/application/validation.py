@@ -61,7 +61,7 @@ def getinactivapost():
          Session.close()
          return jsonify({"msg": "Incompleted", "error": "No permission", "info": ""})
 
-      statuses = Session.query(dbm.PostStatus).order_by(dbm.PostStatus.Time_updated.desc()).all()
+      statuses = Session.query(dbm.PostStatus).order_by(dbm.PostStatus.ID.desc()).all()
 
       schema = dbs.PostStatusSchema(many=True)
       return jsonify({"msg": "Completed", "error": "", "info": schema.dump(statuses)})
