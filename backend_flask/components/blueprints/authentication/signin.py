@@ -21,7 +21,7 @@ def me():
          schema = dbs.AccountSchema()
          current_user = schema.dump(acc)
          access_token = create_access_token(identity=current_user)
-      return jsonify({"msg": "Completed", "user": current_user, "token": access_tokenoooooooooooooooooooooooooooo})
+      return jsonify({"msg": "Completed", "user": current_user, "token": access_token})
    except Exception as e:
       return jsonify({"msg": "Incompleted", "error": str(e)})
 
