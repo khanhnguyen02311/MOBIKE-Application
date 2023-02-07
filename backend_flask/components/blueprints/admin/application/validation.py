@@ -61,7 +61,7 @@ def getinactivapost():
          Session.close()
          return jsonify({"msg": "Incompleted", "error": "No permission", "info": ""})
 
-      statuses = Session.query(dbm.PostStatus).order_by(desc(dbm.PostStatus.Time_updated)).all()
+      statuses = Session.query(dbm.PostStatus).order_by(dbm.PostStatus.Time_updated).all()
 
       lastestStatus = []
       
