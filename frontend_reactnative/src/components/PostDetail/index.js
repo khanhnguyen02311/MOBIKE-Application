@@ -773,16 +773,6 @@ const PostDetailComponent = ({
             {!isAdmin && isActivePost &&
                 (
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginTop: 10, position: 'absolute', bottom: 0, backgroundColor: '#f5f5f5', height: 70, alignItems: 'center' }}>
-
-                        <FAB
-                            onPress={() => {
-                                
-                            }}
-                            label='Message'
-                            variant='extended'
-                            size='small'
-                            style={{ backgroundColor: colors.secondary, height: 50, paddingHorizontal: 10, }}
-                        />
                         <FAB
                             onPress={() => {
                                 Linking.openURL(`tel:${userInfo.accountinfo.Phone_number}`)
