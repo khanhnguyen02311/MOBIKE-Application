@@ -276,7 +276,7 @@ export const AppAdminGetInactivePost = async () => {
     }
 }
 
-export const AddAdminSetStatus = async (PostID, status, info) => {
+export const AppAdminSetStatus = async (PostID, status, info) => {
     const token = getToken();
     const body = {
         status: status,
