@@ -61,12 +61,14 @@ def getinactivapost():
          Session.close()
          return jsonify({"msg": "Incompleted", "error": "No permission", "info": ""})
 
-      statuses = Session.query(dbm.PostStatus).order_by(dbm.PostStatus.Time_updated).all()
+      statuses = Session.query(dbm.PostStatus).order_by(dbm.PostStatus.Time_updated.desc()).all()
 
       lastestStatus = []
+      post = []
       
       for status in statuses:
-         if (status.ID_Post not in lastestStatus):
+         if (status.ID_Post not in post):
+            post.append(status.ID_Post)
             lastestStatus.append(status)
             
       inactivatedStatuses = []
