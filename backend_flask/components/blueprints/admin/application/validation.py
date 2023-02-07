@@ -66,7 +66,7 @@ def getinactivapost():
       
       for status in statuses:
          if (status.ID_Post not in lastestStatus):
-            lastestStatus.append(status.ID_Post)
+            lastestStatus.append(status)
             
       inactivatedStatuses = []
       
