@@ -39,6 +39,7 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import ReportBottomSheetContent from './ReportBottomSheetContent';
 import TextInputOutline from '../common/textInputOutline-Kohana';
 import { Keyboard } from 'react-native';
+import { Linking } from 'react-native'
 
 const widthScreen = Dimensions.get('window').width;
 const heightScreen = Dimensions.get('window').height;
@@ -512,6 +513,7 @@ const PostDetailComponent = ({
         setMessage(content);
     };
 
+
     return (
         <View style={{ height: '100%', position: 'relative' }}>
             <Animated.View
@@ -551,7 +553,7 @@ const PostDetailComponent = ({
                             <View style={{ alignSelf: 'flex-end', marginTop: 5, paddingHorizontal: 5, flexDirection: 'row', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
                                 <Text style={{ fontWeight: 'bold', color: colors.textRed, fontSize: 18 }}>{formatPrice(postInfo.post.Pricetag) + ' VND'}</Text>
 
-                                {/* Star Average */}
+                                {/* Star Average
                                 {!isAdmin &&
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
 
@@ -560,7 +562,7 @@ const PostDetailComponent = ({
                                             <Text style={{ color: '#000', fontSize: 12, marginLeft: 5, fontWeight: '500' }}>{starAverage}</Text>
                                         </View>
                                         <Text style={{ color: '#000', fontSize: 10, fontWeight: '300', fontStyle: 'italic' }}>/ {ratingPost.length} Reviews</Text>
-                                    </View>}
+                                    </View>} */}
 
                             </View>
                         </View>
@@ -589,7 +591,7 @@ const PostDetailComponent = ({
                         {(isActivePost && !isAdmin) ?
                             (<View>
 
-                                {/* Report */}
+                                {/* Report
                                 <View style={{ backgroundColor: '#fff', flexDirection: 'row', paddingVertical: 15, marginHorizontal: 20 }} >
                                     <Octicons name="shield-check" size={36} color={colors.primary} style={{ marginRight: 20 }} />
                                     <Text style={{ fontSize: 14, fontWeight: '400', fontStyle: 'italic', flex: 1, alignSelf: 'center' }}>
@@ -597,10 +599,10 @@ const PostDetailComponent = ({
                                         <TouchableWithoutFeedback onPress={() => changeReportBottomSheetVisibility(true)}><Text style={{ color: colors.textRed }}>report here</Text></TouchableWithoutFeedback>
                                         <Text>.</Text>
                                     </Text>
-                                </View>
+                                </View> */}
 
-                                {/* Seperate */}
-                                <View style={{ backgroundColor: '#F6F6F6', height: 8 }} />
+                                {/* Seperate
+                                <View style={{ backgroundColor: '#F6F6F6', height: 8 }} /> */}
                                 {/* Seller Info */}
                                 < View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 12, marginLeft: 10, }}>
 
@@ -678,12 +680,12 @@ const PostDetailComponent = ({
                                     {!isAdmin ?
 
                                         (< View >
-                                            {/* Statistics */}
+                                            {/* Statistics
                                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
                                                 <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
                                                     <Text>Statistics</Text>
                                                 </Text>
-                                            </View>
+                                            </View> */}
                                         </View>)
                                         :
                                         (
@@ -718,7 +720,7 @@ const PostDetailComponent = ({
 
                                                     <FAB
                                                         onPress={() => {
-
+                                                            
                                                         }}
                                                         label='Decline'
                                                         variant='extended'
@@ -754,7 +756,7 @@ const PostDetailComponent = ({
                 }
             </Animated.View >
 
-            {/*Report Bottom Sheet*/}
+            {/* Report Bottom Sheet
             <BottomSheet
                 ref={reportBottomSheet}
                 snapPoints={[500, 0]}
@@ -766,7 +768,7 @@ const PostDetailComponent = ({
                 enabledGestureInteraction={true}
                 renderHeader={_renderHeader}
                 renderContent={_renderReportContent}
-            />
+            /> */}
 
             {!isAdmin && isActivePost &&
                 (
@@ -774,15 +776,16 @@ const PostDetailComponent = ({
 
                         <FAB
                             onPress={() => {
-
+                                
                             }}
                             label='Message'
                             variant='extended'
                             size='small'
-                            style={{ backgroundColor: colors.secondary, height: 50,paddingHorizontal: 10, }}
+                            style={{ backgroundColor: colors.secondary, height: 50, paddingHorizontal: 10, }}
                         />
                         <FAB
                             onPress={() => {
+                                Linking.openURL(`tel:${userInfo.accountinfo.Phone_number}`)
                             }}
                             label='Call'
                             variant='extended'

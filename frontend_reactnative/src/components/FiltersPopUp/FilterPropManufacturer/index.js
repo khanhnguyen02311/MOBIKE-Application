@@ -28,7 +28,7 @@ import { StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 UIManager.setLayoutAnimationEnabledExperimental(true);
-const FilterPropManufacturerComponent = () => {
+const FilterPropManufacturerComponent = ({ onPress }) => {
 
   //Toogle show/hide filter options
   const [show, setShow] = useState(false);
@@ -47,7 +47,7 @@ const FilterPropManufacturerComponent = () => {
 
   return (
     <FilterPropFrameComponent
-      type={'Manufacturer'}
+      type={'Brand & Lineup'}
       animate={true}
       show={show}
       onToggle={onToggle}>
@@ -73,7 +73,7 @@ const FilterPropManufacturerComponent = () => {
             </View>
           );
         })} */}
-        <TouchableWithoutFeedback onPress={onNavigate}>
+        <TouchableWithoutFeedback onPress={onPress}>
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontStyle: 'italic', color: colors.primary, marginBottom: 5 }}>Choose from list ></Text>
           </View>

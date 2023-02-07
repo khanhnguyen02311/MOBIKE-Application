@@ -13,15 +13,23 @@ const initialState = {
     min: 0,
     max: 0,
   },
-  manufacturer: []
+  manufacturer: [],
+
+  asc: true,
+  title: undefined,
+  brand: undefined,
+  lineup: undefined,
+  type: undefined,
+  color: undefined,
+  manufacturerYear: undefined,
 };
 
 const filterSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    setName: (state, action) => {
-      state.name = action.payload;
+    setTitle: (state, action) => {
+      state.title = action.payload;
     },
     setVehicleTypesAdd: (state, action) => {
       state.vehicleTypes.push(action.payload);
@@ -58,6 +66,23 @@ const filterSlice = createSlice({
         state.manufacturer.push(temp);
     },
 
+    setBrand: (state, action) => {
+      state.brand = action.payload;
+    },
+    setLineup: (state, action) => {
+      state.lineup = action.payload;
+    },
+    setType: (state, action) => {
+      state.type = action.payload;
+    },
+    setColor: (state, action) => {
+      state.color = action.payload;
+    },
+    setManufacturerYear: (state, action) => {
+      state.manufacturerYear = action.payload;
+    },
+
+
     setInitial: () => {
       return initialState;
     },
@@ -65,12 +90,17 @@ const filterSlice = createSlice({
 });
 
 export const {
-  setName,
+  setTitle,
   setVehicleTypesAdd,
   setVehicleTypesRemove,
   setPriceRange,
   setMinMaxText,
   setManufacturer,
   setInitial,
+  setBrand,
+  setLineup,
+  setType,
+  setColor,
+  setManufacturerYear,
 } = filterSlice.actions;
 export default filterSlice.reducer;

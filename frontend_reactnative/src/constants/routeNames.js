@@ -1,4 +1,5 @@
 export const MARKETPLACE = 'Marketplace';
+export const PRODUCT_LIST = 'ProductList';
 export const MARKETPLACE_NAVIGATOR = 'MarketplaceNavigator';
 export const SEE_ALL_REVIEWS = 'SeeAllReviews';
 export const POST_DETAIL = 'PostDetail';

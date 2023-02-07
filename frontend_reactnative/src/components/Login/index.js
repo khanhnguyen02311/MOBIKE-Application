@@ -108,7 +108,7 @@ const LoginComponent = ({
               }}
             />
 
-            <View style={{ alignSelf: 'center', paddingTop: 50 }}>
+            {/* <View style={{ alignSelf: 'center', paddingTop: 50 }}>
               <Text
                 style={{ alignSelf: 'center', paddingBottom: 10, fontSize: 12 }}>
                 Or login with:
@@ -128,7 +128,7 @@ const LoginComponent = ({
                   />
                 </TouchableWithoutFeedback>
               </View>
-            </View>
+            </View> */}
           </View>
         </View>
         <View>

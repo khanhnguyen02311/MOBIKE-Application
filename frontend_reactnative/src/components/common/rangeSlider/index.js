@@ -142,7 +142,7 @@ const RangeSlider = ({
     }
 
     return {
-      text: `$ ${val}`,
+      text: `${val}m VND`,
     };
   });
   const maxLabelText = useAnimatedProps(() => {
@@ -154,7 +154,7 @@ const RangeSlider = ({
     }
 
     return {
-      text: `$ ${val}`,
+      text: `${val}m VND`,
     };
   });
   return (
@@ -170,7 +170,7 @@ const RangeSlider = ({
               style={styles.labelText}
               defaultValue={0}
               animatedProps={minLabelText}
-              value={'$ ' + minValue}
+              value={minValue + 'm VND'}
               editable={false}
             />
           </Animated.View>
@@ -184,7 +184,7 @@ const RangeSlider = ({
               defaultValue={0}
               animatedProps={maxLabelText}
               editable={false}
-              value={'$ ' + maxValue}
+              value={maxValue+'m VND'}
             />
           </Animated.View>
         </Animated.View>
