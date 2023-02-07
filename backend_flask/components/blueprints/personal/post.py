@@ -174,6 +174,7 @@ def getallpost():
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
    
    
+   
 @bppost.route("/post/<int:id>", methods=["GET"])
 @jwt_required()
 def getdetailpost(id):
