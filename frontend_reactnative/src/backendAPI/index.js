@@ -260,4 +260,31 @@ export const GetUserInfo = async (ID) => {
     }
 }
 
+export const AppAdminGetPost = async (ID) => {
+    const token = getToken();
+    const postResponse = await HttpRequest.ProtectedGetRequest("admin/application/post/" + ID, token);
+    if (postResponse.msg == "Completed") {
+        return postResponse.info;
+    }
+}
+
+export const AppAdminGetInactivePost = async () => {
+    const token = getToken();
+    const postResponse = await HttpRequest.ProtectedGetRequest("admin/application/post/inactive", token);
+    if (postResponse.msg == "Completed") {
+        return postResponse.info;
+    }
+}
+
+export const AddAdminSetStatus = async (PostID, status, info) => {
+    const token = getToken();
+    const body = {
+        status: status,
+        info: info,
+        post: PostID,
+    }
+    const postResponse = await HttpRequest.ProtectedPostRequest("admin/application/status/set", body, token);
+    return postResponse.msg == "Completed";
+}
+
 export default { me, isEmailExist, isUsernameExist, isPhoneExist };
