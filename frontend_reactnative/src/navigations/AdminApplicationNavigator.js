@@ -8,6 +8,7 @@ import {
   APPLICATION_ADMIN,
   FILTERS_POP_UP,
   LOADING,
+  POST_DETAIL_NAVIGATOR,
   POST_PREVIEW,
   YOUR_POSTS,
 } from '../constants/routeNames';
@@ -18,6 +19,7 @@ import Marketplace from '../screens/Marketplace';
 import YourPosts from '../screens/YourPosts';
 import PostPreview from '../screens/PostPreview';
 import ApplicationAdmin from './../screens/ApplicationAdmin/index';
+import PostDetailNavigator from './PostDetailNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +31,13 @@ const ApplicationAdminNavigator = () => {
         component={ApplicationAdmin}
         options={{ headerShown: false }}
       //options={{header: () => <HeaderSearch />}}
+      />
+      <Stack.Screen
+        name={POST_DETAIL_NAVIGATOR}
+        component={PostDetailNavigator}
+        options={{
+          headerShown: false,
+        }}
       />
     </Stack.Navigator>
   );

@@ -8,6 +8,7 @@ const initialState = {
   // VehicleType: null,
   // VehicleBrand: null,
   isActivePost: null,
+  isAdmin: null,
 };
 
 export const selectedPostSlice = createSlice({
@@ -22,6 +23,7 @@ export const selectedPostSlice = createSlice({
       // state.VehicleType = action.payload.VehicleType;
       // state.VehicleBrand = action.payload.VehicleBrand;
       state.isActivePost = action.payload.isActivePost;
+      state.isAdmin = action.payload.isAdmin;
     },
   },
 });

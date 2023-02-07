@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import PostDetailComponent from '../../components/PostDetail';
+import store from '../../redux/store';
 
 const PostDetail = ({
     navigation,
@@ -21,10 +22,10 @@ const PostDetail = ({
                 });
     }, [navigation]);
 
-    const selectedPost = useSelector(state => state.selectedPost);
+    const selectedPost = store.getState().selectedPost;
 
     return (
-        <PostDetailComponent postID={selectedPost.ID} isActivePost={selectedPost.isActivePost} />
+        <PostDetailComponent postID={selectedPost.ID} isActivePost={selectedPost.isActivePost} isAdmin={selectedPost.isAdmin} />
     );
 }
 

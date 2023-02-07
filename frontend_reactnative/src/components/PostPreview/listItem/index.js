@@ -9,7 +9,7 @@ import { brandNameFromID, formatPrice, typeNameFromID } from '../../../utils/idT
 import { selectPost } from '../../../redux/slice/selectedPostSlice';
 import { TouchableWithoutFeedback } from 'react-native';
 import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
-import { GetPersonalPostDetail, GetPost } from '../../../backendAPI';
+import { AppAdminGetPost, GetPersonalPostDetail, GetPost } from '../../../backendAPI';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 import colors from '../../../assets/theme/colors';
 
@@ -21,6 +21,7 @@ const PostPreview = ({
   styleWrapper,
   isActivePost = true,
   post,
+  isAdmin = false,
   ...props
 }) => {
 
@@ -40,7 +41,10 @@ const PostPreview = ({
   // }
 
   useEffect(() => {
-    if (isActivePost) {
+    if (isAdmin) {
+      getInactivePostByAdmin();
+    }
+    else if (isActivePost) {
       getPost();
     }
     else {
@@ -48,15 +52,27 @@ const PostPreview = ({
     }
   }, []);
 
+  //Get post
   const [postInfo, setPostInfo] = React.useState({});
   const getPost = async () => {
-    console.log('PostPreview: ' + JSON.stringify(await GetPost(postID)));
-    setPostInfo((await GetPost(postID)));
+    console.log('PostIDPreview: ' + postID)
+    const post = await GetPost(postID);
+    console.log('PostPreview: ' + JSON.stringify(post));
+    setPostInfo(post);
     setIsLoading(false);
   }
 
+  //Get inactive post
   const getInactivePost = async () => {
     setPostInfo((await GetPersonalPostDetail(postID)));
+    setIsLoading(false);
+  }
+
+  // Get inactive post by admin
+  const getInactivePostByAdmin = async () => {
+    const post = await AppAdminGetPost(postID);
+    console.log('Post Preview by Admin: ' + JSON.stringify(post));
+    setPostInfo(post);
     setIsLoading(false);
   }
 
@@ -65,8 +81,8 @@ const PostPreview = ({
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const onNavigate = () => {
+    dispatch(selectPost({ ID: postID, isActivePost: isActivePost, isAdmin: isAdmin }));
     navigate(POST_DETAIL_NAVIGATOR, { screen: POST_DETAIL });
-    dispatch(selectPost({ ID: postID, isActivePost: isActivePost }));
   };
 
   const _renderContent = () => {
@@ -97,10 +113,6 @@ const PostPreview = ({
 
           </View>
         </View>
-
-
-
-
       );
     } else {
       return (

@@ -4,7 +4,9 @@ import { useEffect } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import { Text, View } from 'react-native';
 import ContextMenu from 'react-native-context-menu-view';
+import { FAB } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
+import colors from '../../../assets/theme/colors';
 import { GetPersonalPost } from '../../../backendAPI';
 import { POST_DETAIL, POST_DETAIL_NAVIGATOR } from '../../../constants/routeNames';
 import { selectPost } from '../../../redux/slice/selectedPostSlice';
@@ -33,48 +35,56 @@ const ActiveRoute = ({
 
     const [activePostList, setActivePostList] = React.useState({});
     return (
-        <Container
-            keyboardShouldPersistTaps="always"
-            styleScrollView={{ backgroundColor: '#FFFFFF' }}>
-            <View style={{ marginLeft: 13, }}>
+        <View style={{ height: '100%' }}>
+            <Container
+                keyboardShouldPersistTaps="always"
+                styleScrollView={{ backgroundColor: '#FFFFFF' }}>
+                <View style={{ marginLeft: 13, }}>
 
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
 
-                    {Object.keys(activePostList).map((key, index) => {
-                        return (
-                            <ContextMenu
-                                actions={[{ title: "View Detail", }, { title: "Sold" }, { title: "Deactivated" },]}
-                                onPress={(e) => {
-                                    if (e.nativeEvent.index == 0) {
-                                        onViewDetail(activePostList[key].ID);
-                                    } else if (e.nativeEvent.index == 1) {
-                                        console.log('Sold');
-                                    } else if (e.nativeEvent.index == 2) {
-                                        console.log('Deactivated');
-                                    }
-                                }}
-                                dropdownMenuMode={true}
-                                key={index}
-                            >
-                                <PostPreview
-                                    postID={activePostList[key].ID}
-                                    styleWrapper={{ marginTop: 13, }}
-                                    post={{
-                                        ID_Image: activePostList[key].rel_Image[0],
-                                        Title: activePostList[key].Title,
-                                        Time_created: activePostList[key].Time_created,
-                                        Pricetag: activePostList[key].Pricetag,
+                        {Object.keys(activePostList).map((key, index) => {
+                            return (
+                                <ContextMenu
+                                    actions={[{ title: "View Detail", }, { title: "Sold" }, { title: "Deactivated" },]}
+                                    onPress={(e) => {
+                                        if (e.nativeEvent.index == 0) {
+                                            onViewDetail(activePostList[key].ID);
+                                        } else if (e.nativeEvent.index == 1) {
+                                            console.log('Sold');
+                                        } else if (e.nativeEvent.index == 2) {
+                                            console.log('Deactivated');
+                                        }
                                     }}
-                                    isActivePost={false}
-                                    pressable={false} />
-                            </ContextMenu>
-                        )
-                    })}
+                                    dropdownMenuMode={true}
+                                    key={index}
+                                >
+                                    <PostPreview
+                                        postID={activePostList[key].ID}
+                                        styleWrapper={{ marginTop: 13, }}
+                                        post={{
+                                            ID_Image: activePostList[key].rel_Image[0],
+                                            Title: activePostList[key].Title,
+                                            Time_created: activePostList[key].Time_created,
+                                            Pricetag: activePostList[key].Pricetag,
+                                        }}
+                                        isActivePost={false}
+                                        pressable={false} />
+                                </ContextMenu>
+                            )
+                        })}
+
+                    </View>
 
                 </View>
+            </Container>
 
-            </View>
-        </Container>
+            <FAB
+                icon="plus"
+                style={{ position: 'absolute', margin: 16, right: 0, bottom: 0, backgroundColor: colors.secondary }}
+                onPress={() => console.log('Pressed')}
+            />
+        </View>
     )
 };
 

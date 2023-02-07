@@ -48,7 +48,7 @@ const YourPostsComponent = () => {
   return (
     <View style={{ height: '100%' }}>
 
-      <TouchableWithoutFeedback
+      {/* <TouchableWithoutFeedback
         onPress={() => {
           navigate(ADD_POST);
         }}>
@@ -62,7 +62,7 @@ const YourPostsComponent = () => {
           }}>
           <Text style={{ color: colors.white }}>Add post</Text>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback> */}
 
       <TabView
         navigationState={{ index, routes }}

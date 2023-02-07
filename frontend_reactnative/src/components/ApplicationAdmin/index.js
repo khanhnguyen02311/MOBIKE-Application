@@ -2,9 +2,14 @@ import { View, Text, useWindowDimensions } from 'react-native'
 import React from 'react'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import colors from '../../assets/theme/colors';
-const PostRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
-);
+import PostRoute from './PostRoute';
+// const PostRoute = () => (
+//     <View style={{ height: '100%', backgroundColor: 'red' }}>
+//         {isLoading ?
+//                     _renderSkeleton()
+//                     :
+//     </View>
+// );
 
 const ReportRoute = () => (
     <View style={{ flex: 1, backgroundColor: '#673ab7' }} />

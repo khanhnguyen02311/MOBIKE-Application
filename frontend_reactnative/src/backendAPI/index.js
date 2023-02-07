@@ -270,7 +270,7 @@ export const AppAdminGetPost = async (ID) => {
 
 export const AppAdminGetInactivePost = async () => {
     const token = getToken();
-    const postResponse = await HttpRequest.ProtectedGetRequest("admin/application/post/inactive", token);
+    const postResponse = await HttpRequest.ProtectedGetRequest("admin/application/inactiveposts", token);
     if (postResponse.msg == "Completed") {
         return postResponse.info;
     }

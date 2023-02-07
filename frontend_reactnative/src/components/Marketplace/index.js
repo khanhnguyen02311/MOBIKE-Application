@@ -57,7 +57,7 @@ const MarketplaceComponent = () => {
               See more >
             </Text>
           </View>
-          <PostPreviewList data={[4, 5, 3]} />
+          <PostPreviewList data={[4,5,10]} />
 
           <View
             style={{
@@ -86,7 +86,7 @@ const MarketplaceComponent = () => {
               See more >
             </Text>
           </View>
-          <PostPreviewList data={[4, 5, 3]} />
+          {/* <PostPreviewList data={[4, 5, 3]} /> */}
           <View
             style={{
               flexDirection: 'row',
@@ -114,7 +114,7 @@ const MarketplaceComponent = () => {
               See more >
             </Text>
           </View>
-          <PostPreviewList data={[4, 5, 3,]} />
+          {/* <PostPreviewList data={[4, 5, 3,]} /> */}
         </View>
       </TouchableWithoutFeedback>
     </Container>
