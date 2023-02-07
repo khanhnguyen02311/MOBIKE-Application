@@ -60,18 +60,11 @@ def getinactivapost():
          Session.close()
          return jsonify({"msg": "Incompleted", "error": "No permission", "info": ""})
 
-      last_statuses = (
-         Session.query(dbm.PostStatus)
-         .join(dbm.Post)
-         .group_by(dbm.Post.ID)
-         .order_by(desc(dbm.PostStatus.Time_updated))
-         .filter(dbm.PostStatus.ID_Post == dbm.Post.ID)
-         .filter(dbm.PostStatus.Status == 0)
-      )
+      statuses = Session.query(dbm.PostStatus).order_by(desc(dbm.PostStatus.ID)).all()
 
       schema = dbs.PostSchema(many=True)
       
-      return jsonify({"msg": "Completed", "error": "", "info": schema.dump(last_statuses)})
+      return jsonify({"msg": "Completed", "error": "", "info": schema.dump(statuses)})
 
    except Exception as e:
       Session.rollback()
