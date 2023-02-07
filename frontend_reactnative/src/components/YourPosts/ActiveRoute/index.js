@@ -12,6 +12,7 @@ import { POST_DETAIL, POST_DETAIL_NAVIGATOR } from '../../../constants/routeName
 import { selectPost } from '../../../redux/slice/selectedPostSlice';
 import Container from '../../common/container';
 import PostPreview from '../../PostPreview/listItem';
+import { ADD_POST } from './../../../constants/routeNames';
 
 const ActiveRoute = ({
     params,
@@ -82,7 +83,7 @@ const ActiveRoute = ({
             <FAB
                 icon="plus"
                 style={{ position: 'absolute', margin: 16, right: 0, bottom: 0, backgroundColor: colors.secondary }}
-                onPress={() => console.log('Pressed')}
+                onPress={() => navigate(ADD_POST)}
             />
         </View>
     )

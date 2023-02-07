@@ -23,7 +23,7 @@ import { Dimensions } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { FAB, Modal, Portal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { MARKETPLACE, SEE_ALL_REVIEWS, YOUR_POSTS } from '../../constants/routeNames';
+import { APPLICATION_ADMIN, MARKETPLACE, SEE_ALL_REVIEWS, YOUR_POSTS } from '../../constants/routeNames';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { height } from '../Banner/carouselItem';
 import MobikeImage from '../common/image';
@@ -39,6 +39,8 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import ReportBottomSheetContent from './ReportBottomSheetContent';
 import TextInputOutline from '../common/textInputOutline-Kohana';
 import { Keyboard } from 'react-native';
+import { AppAdminSetStatus } from '../../backendAPI';
+
 
 const widthScreen = Dimensions.get('window').width;
 const heightScreen = Dimensions.get('window').height;
@@ -242,6 +244,16 @@ const PostDetailComponent = ({
         console.log('Post Detail by admin: ' + JSON.stringify(post));
         setPostInfo(post);
         setIsLoading(false);
+    }
+
+    const OnApprovePost = () => {
+        ApprovePost();
+    }
+
+    const ApprovePost = async () => {
+        const approveRes = await AppAdminSetStatus(postID, 1, message);
+        console.log('Approve post: ' + JSON.stringify(approveRes));
+        navigate(APPLICATION_ADMIN);
     }
 
     const _renderSkeleton = () => (
@@ -513,292 +525,295 @@ const PostDetailComponent = ({
     };
 
     return (
-        <View style={{ height: '100%', position: 'relative' }}>
-            <Animated.View
-                style={{
-                    flex: 1,
-                    opacity: Animated.add(0.3, Animated.multiply(fall, 1.0)),
-                    height: '100%',
-                }}
-            >
-                {isLoading ?
-                    _renderSkeleton()
-                    :
-                    (<Container
-                        keyboardShouldPersistTaps="always"
-                        styleScrollView={{
-                            backgroundColor: '#FFFFFF'
-                        }}
-                    >
+        <Root>
+            <View style={{ height: '100%', position: 'relative' }}>
+                <Animated.View
+                    style={{
+                        flex: 1,
+                        opacity: Animated.add(0.3, Animated.multiply(fall, 1.0)),
+                        height: '100%',
+                    }}
+                >
+                    {isLoading ?
+                        _renderSkeleton()
+                        :
+                        (<Container
+                            keyboardShouldPersistTaps="always"
+                            styleScrollView={{
+                                backgroundColor: '#FFFFFF'
+                            }}
+                        >
 
-                        {/* Image */}
-                        <Carousel data={postInfo.post.rel_Image} isImageID={true} havingBackground={true} />
+                            {/* Image */}
+                            <Carousel data={postInfo.post.rel_Image} isImageID={true} havingBackground={true} />
 
-                        <View style={{ paddingHorizontal: 20, marginTop: 5, }}>
+                            <View style={{ paddingHorizontal: 20, marginTop: 5, }}>
 
-                            {/* Type */}
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignSelf: 'flex-start' }}>
-                                <FontAwesome name="circle" size={8} color={colors.secondary} />
-                                <Text style={{ color: colors.text, fontSize: 12, marginLeft: 8, fontWeight: '500' }}>{typeNameFromID(postInfo.vehicleinfo.ID_VehicleType)}</Text>
-                            </View>
-
-                            {/* Title */}
-                            <View style={{ alignSelf: 'flex-start', marginTop: 5, paddingHorizontal: 5 }}>
-                                <Text style={{ fontWeight: 'bold', color: '#000', fontSize: 16 }}>{postInfo.post.Title}</Text>
-                            </View>
-
-                            {/* Price */}
-                            <View style={{ alignSelf: 'flex-end', marginTop: 5, paddingHorizontal: 5, flexDirection: 'row', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                                <Text style={{ fontWeight: 'bold', color: colors.textRed, fontSize: 18 }}>{formatPrice(postInfo.post.Pricetag) + ' VND'}</Text>
-
-                                {/* Star Average */}
-                                {!isAdmin &&
-                                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-
-                                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginRight: 5 }}>
-                                            <Octicons name="star-fill" size={14} color={'#FCC72E'} />
-                                            <Text style={{ color: '#000', fontSize: 12, marginLeft: 5, fontWeight: '500' }}>{starAverage}</Text>
-                                        </View>
-                                        <Text style={{ color: '#000', fontSize: 10, fontWeight: '300', fontStyle: 'italic' }}>/ {ratingPost.length} Reviews</Text>
-                                    </View>}
-
-                            </View>
-                        </View>
-
-                        {isAdmin && <View style={{ height: 1, backgroundColor: '#E8E8E8', marginTop: 20, }} />}
-
-                        {!isAdmin &&
-                            <TabView
-                                navigationState={{ index, routes }}
-                                renderScene={() => null}
-                                onIndexChange={setIndex}
-                                initialLayout={{ width: layout.width }}
-                                renderTabBar={renderTabBar}
-                                style={{ marginTop: 5 }}
-                            />}
-
-                        {index == 0 ? DetailRoute() : ReviewRoute()}
-
-
-
-                        {/* Seperate */}
-                        <View style={{ backgroundColor: '#F6F6F6', height: 8 }} />
-
-
-
-                        {(isActivePost && !isAdmin) ?
-                            (<View>
-
-                                {/* Report */}
-                                <View style={{ backgroundColor: '#fff', flexDirection: 'row', paddingVertical: 15, marginHorizontal: 20 }} >
-                                    <Octicons name="shield-check" size={36} color={colors.primary} style={{ marginRight: 20 }} />
-                                    <Text style={{ fontSize: 14, fontWeight: '400', fontStyle: 'italic', flex: 1, alignSelf: 'center' }}>
-                                        <Text>This post has been approved. If it has any problem, please </Text>
-                                        <TouchableWithoutFeedback onPress={() => changeReportBottomSheetVisibility(true)}><Text style={{ color: colors.textRed }}>report here</Text></TouchableWithoutFeedback>
-                                        <Text>.</Text>
-                                    </Text>
+                                {/* Type */}
+                                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignSelf: 'flex-start' }}>
+                                    <FontAwesome name="circle" size={8} color={colors.secondary} />
+                                    <Text style={{ color: colors.text, fontSize: 12, marginLeft: 8, fontWeight: '500' }}>{typeNameFromID(postInfo.vehicleinfo.ID_VehicleType)}</Text>
                                 </View>
 
-                                {/* Seperate */}
-                                <View style={{ backgroundColor: '#F6F6F6', height: 8 }} />
-                                {/* Seller Info */}
-                                < View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 12, marginLeft: 10, }}>
+                                {/* Title */}
+                                <View style={{ alignSelf: 'flex-start', marginTop: 5, paddingHorizontal: 5 }}>
+                                    <Text style={{ fontWeight: 'bold', color: '#000', fontSize: 16 }}>{postInfo.post.Title}</Text>
+                                </View>
 
-                                    <MobikeImage imageID={postInfo.user.ID_Image_Profile} style={{ width: 48, height: 48, borderRadius: 500, borderWidth: 1, borderColor: '#e8e8e8' }} />
+                                {/* Price */}
+                                <View style={{ alignSelf: 'flex-end', marginTop: 5, paddingHorizontal: 5, flexDirection: 'row', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                                    <Text style={{ fontWeight: 'bold', color: colors.textRed, fontSize: 18 }}>{formatPrice(postInfo.post.Pricetag) + ' VND'}</Text>
 
-                                    <View style={{ marginHorizontal: 15, flex: 1 }}>
+                                    {/* Star Average */}
+                                    {!isAdmin &&
+                                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
 
-                                        {/* Name & View Page */}
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Text style={{ color: '#000', fontWeight: '500', fontSize: 14, flex: 1 }}>{postInfo.user.Name}</Text>
-                                            <Text style={{ color: colors.text, fontWeight: '400', fontSize: 12, fontStyle: 'italic', marginLeft: 10, }}>View page ></Text>
-                                        </View>
-
-                                        {/* Address */}
-                                        <View style={{ flexDirection: 'row', marginTop: 5, marginEnd: 15, alignItems: 'flex-start', flex: 1 }}>
-                                            <SimpleLineIcons name="location-pin" size={12} color={'#374957'} style={{ marginTop: 2 }} />
-                                            <Text style={{ color: '#555', fontWeight: '300', fontSize: 12, fontStyle: 'italic', marginLeft: 5 }}>{wardNameFromID(postInfo.address.ID_Ward) + ', ' + districtNameFromID(postInfo.address.ID_District) + ', ' + cityNameFromID(postInfo.address.ID_City)}</Text>
-                                        </View>
-
-                                        {/* Feature */}
-                                        <View style={{ flexDirection: 'row', marginTop: 5, }}>
-                                            <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-                                                <Text style={{ fontSize: 12, color: colors.text }}>50</Text>
-                                                <Text style={{ fontSize: 10, color: '#000', fontWeight: '300', marginStart: 5, marginRight: 15, }}>Posts</Text>
-                                                <View style={{ height: '90%', width: 1, backgroundColor: '#e8e8e8' }} />
+                                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginRight: 5 }}>
+                                                <Octicons name="star-fill" size={14} color={'#FCC72E'} />
+                                                <Text style={{ color: '#000', fontSize: 12, marginLeft: 5, fontWeight: '500' }}>{starAverage}</Text>
                                             </View>
+                                            <Text style={{ color: '#000', fontSize: 10, fontWeight: '300', fontStyle: 'italic' }}>/ {ratingPost.length} Reviews</Text>
+                                        </View>}
 
-                                            <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginStart: 12 }}>
-                                                <Text style={{ fontSize: 12, color: colors.text }}>5.0</Text>
-                                                <Text style={{ fontSize: 10, color: '#000', fontWeight: '300', marginStart: 5, marginRight: 15, }}>Rate</Text>
-                                                {/* <View style={{ height: '90%', width: 1, backgroundColor: '#e8e8e8' }} /> */}
-                                            </View>
-                                        </View>
+                                </View>
+                            </View>
+
+                            {isAdmin && <View style={{ height: 1, backgroundColor: '#E8E8E8', marginTop: 20, }} />}
+
+                            {!isAdmin &&
+                                <TabView
+                                    navigationState={{ index, routes }}
+                                    renderScene={() => null}
+                                    onIndexChange={setIndex}
+                                    initialLayout={{ width: layout.width }}
+                                    renderTabBar={renderTabBar}
+                                    style={{ marginTop: 5 }}
+                                />}
+
+                            {index == 0 ? DetailRoute() : ReviewRoute()}
+
+
+
+                            {/* Seperate */}
+                            <View style={{ backgroundColor: '#F6F6F6', height: 8 }} />
+
+
+
+                            {(isActivePost && !isAdmin) ?
+                                (<View>
+
+                                    {/* Report */}
+                                    <View style={{ backgroundColor: '#fff', flexDirection: 'row', paddingVertical: 15, marginHorizontal: 20 }} >
+                                        <Octicons name="shield-check" size={36} color={colors.primary} style={{ marginRight: 20 }} />
+                                        <Text style={{ fontSize: 14, fontWeight: '400', fontStyle: 'italic', flex: 1, alignSelf: 'center' }}>
+                                            <Text>This post has been approved. If it has any problem, please </Text>
+                                            <TouchableWithoutFeedback onPress={() => changeReportBottomSheetVisibility(true)}><Text style={{ color: colors.textRed }}>report here</Text></TouchableWithoutFeedback>
+                                            <Text>.</Text>
+                                        </Text>
                                     </View>
 
-                                </View>
+                                    {/* Seperate */}
+                                    <View style={{ backgroundColor: '#F6F6F6', height: 8 }} />
+                                    {/* Seller Info */}
+                                    < View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 12, marginLeft: 10, }}>
 
-                                {/* Seperate */}
-                                <View style={{ backgroundColor: '#E8E8E8', height: 1 }} />
+                                        <MobikeImage imageID={postInfo.user.ID_Image_Profile} style={{ width: 48, height: 48, borderRadius: 500, borderWidth: 1, borderColor: '#e8e8e8' }} />
 
-                                {/* Other Posts */}
-                                {postList.length > 0 ?
-                                    (
-                                        <View>
-                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
-                                                <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
-                                                    <Text>Other Posts Of</Text>
-                                                    <Text style={{ fontSize: 16, fontWeight: '300', color: '#000', fontStyle: 'italic' }}>{'  ' + postInfo.user.Name}</Text>
-                                                </Text>
-                                                <Text style={{ fontSize: 12, fontWeight: '400', color: colors.text, fontStyle: 'italic' }}>See more ></Text>
+                                        <View style={{ marginHorizontal: 15, flex: 1 }}>
+
+                                            {/* Name & View Page */}
+                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                                <Text style={{ color: '#000', fontWeight: '500', fontSize: 14, flex: 1 }}>{postInfo.user.Name}</Text>
+                                                <Text style={{ color: colors.text, fontWeight: '400', fontSize: 12, fontStyle: 'italic', marginLeft: 10, }}>View page ></Text>
                                             </View>
-                                            <PostPreviewList data={postList} extraData={selectedPost} />
-                                        </View>
-                                    ) : null}
 
-                                {/* Similar Posts
-                            <View>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
-                                    <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
-                                        Similar Posts
-                                    </Text>
-                                    <Text style={{ fontSize: 12, fontWeight: '400', color: colors.text, fontStyle: 'italic' }}>See more ></Text>
-                                </View>
-                                <PostPreviewList data={[4, 5, 3]} />
-                            </View> */}
-                            </View>
-                            )
-                            :
-                            (
-                                <View>
+                                            {/* Address */}
+                                            <View style={{ flexDirection: 'row', marginTop: 5, marginEnd: 15, alignItems: 'flex-start', flex: 1 }}>
+                                                <SimpleLineIcons name="location-pin" size={12} color={'#374957'} style={{ marginTop: 2 }} />
+                                                <Text style={{ color: '#555', fontWeight: '300', fontSize: 12, fontStyle: 'italic', marginLeft: 5 }}>{wardNameFromID(postInfo.address.ID_Ward) + ', ' + districtNameFromID(postInfo.address.ID_District) + ', ' + cityNameFromID(postInfo.address.ID_City)}</Text>
+                                            </View>
+
+                                            {/* Feature */}
+                                            <View style={{ flexDirection: 'row', marginTop: 5, }}>
+                                                <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+                                                    <Text style={{ fontSize: 12, color: colors.text }}>50</Text>
+                                                    <Text style={{ fontSize: 10, color: '#000', fontWeight: '300', marginStart: 5, marginRight: 15, }}>Posts</Text>
+                                                    <View style={{ height: '90%', width: 1, backgroundColor: '#e8e8e8' }} />
+                                                </View>
+
+                                                <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginStart: 12 }}>
+                                                    <Text style={{ fontSize: 12, color: colors.text }}>5.0</Text>
+                                                    <Text style={{ fontSize: 10, color: '#000', fontWeight: '300', marginStart: 5, marginRight: 15, }}>Rate</Text>
+                                                    {/* <View style={{ height: '90%', width: 1, backgroundColor: '#e8e8e8' }} /> */}
+                                                </View>
+                                            </View>
+                                        </View>
+
+                                    </View>
 
                                     {/* Seperate */}
                                     <View style={{ backgroundColor: '#E8E8E8', height: 1 }} />
 
-                                    {!isAdmin ?
-
-                                        (< View >
-                                            {/* Statistics */}
-                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
-                                                <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
-                                                    <Text>Statistics</Text>
-                                                </Text>
-                                            </View>
-                                        </View>)
-                                        :
+                                    {/* Other Posts */}
+                                    {postList.length > 0 ?
                                         (
-                                            <View style={{ paddingVertical: 20 }}>
-                                                {/* Approve */}
-                                                <TextInputOutline
-                                                    label={'Message to user'}
-                                                    inputPadding={6}
-                                                    borderWidthtoTop={0}
-                                                    containerStyle={{
-                                                        height: 56,
-                                                        borderColor: '#555',
-                                                        marginHorizontal: '5%',
-                                                        marginTop: 10,
-                                                    }}
-                                                    labelStyle={{ fontSize: 12 }}
-                                                    numberOfLines={2}
-                                                    multiline={true}
-                                                    inputStyle={{
-                                                        textAlignVertical: 'top',
-                                                        paddingHorizontal: 16,
-                                                        paddingVertical: 8,
-                                                        fontSize: 14,
-                                                    }}
-                                                    labelContainerStyle={{ padding: 13 }}
-                                                    value={message}
-                                                    onChangeText={value => {
-                                                        onSetMessage(value);
-                                                    }}
-                                                />
-                                                <View style={{ flexDirection: 'row', alignSelf: 'center', justifyContent: 'space-around', width: '100%', marginTop: 10, }}>
-
-                                                    <FAB
-                                                        onPress={() => {
-
-                                                        }}
-                                                        label='Decline'
-                                                        variant='extended'
-                                                        size='small'
-                                                        style={{ backgroundColor: '#DDD', marginBottom: 50, }}
-                                                    />
-                                                    <FAB
-                                                        onPress={() => {
-                                                        }}
-                                                        label='Approve'
-                                                        variant='extended'
-                                                        size='small'
-                                                        style={{
-                                                            backgroundColor: colors.secondary,
-                                                            marginBottom: 50,
-                                                        }} />
+                                            <View>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
+                                                    <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
+                                                        <Text>Other Posts Of</Text>
+                                                        <Text style={{ fontSize: 16, fontWeight: '300', color: '#000', fontStyle: 'italic' }}>{'  ' + postInfo.user.Name}</Text>
+                                                    </Text>
+                                                    <Text style={{ fontSize: 12, fontWeight: '400', color: colors.text, fontStyle: 'italic' }}>See more ></Text>
                                                 </View>
-
-                                                <View style={{ backgroundColor: '#fff', height: 200 }} />
+                                                <PostPreviewList data={postList} extraData={selectedPost} />
                                             </View>
-                                        )}
+                                        ) : null}
+
+                                    {/* Similar Posts
+                                <View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
+                                        <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
+                                            Similar Posts
+                                        </Text>
+                                        <Text style={{ fontSize: 12, fontWeight: '400', color: colors.text, fontStyle: 'italic' }}>See more ></Text>
+                                    </View>
+                                    <PostPreviewList data={[4, 5, 3]} />
+                                </View> */}
                                 </View>
+                                )
+                                :
+                                (
+                                    <View>
 
-                            )
-                        }
+                                        {/* Seperate */}
+                                        <View style={{ backgroundColor: '#E8E8E8', height: 1 }} />
+
+                                        {!isAdmin ?
+
+                                            (< View >
+                                                {/* Statistics */}
+                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15, marginHorizontal: 20, marginBottom: 5, }}>
+                                                    <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>
+                                                        <Text>Statistics</Text>
+                                                    </Text>
+                                                </View>
+                                            </View>)
+                                            :
+                                            (
+                                                <View style={{ paddingVertical: 20 }}>
+                                                    {/* Approve */}
+                                                    <TextInputOutline
+                                                        label={'Message to user'}
+                                                        inputPadding={6}
+                                                        borderWidthtoTop={0}
+                                                        containerStyle={{
+                                                            height: 56,
+                                                            borderColor: '#555',
+                                                            marginHorizontal: '5%',
+                                                            marginTop: 10,
+                                                        }}
+                                                        labelStyle={{ fontSize: 12 }}
+                                                        numberOfLines={2}
+                                                        multiline={true}
+                                                        inputStyle={{
+                                                            textAlignVertical: 'top',
+                                                            paddingHorizontal: 16,
+                                                            paddingVertical: 8,
+                                                            fontSize: 14,
+                                                        }}
+                                                        labelContainerStyle={{ padding: 13 }}
+                                                        value={message}
+                                                        onChangeText={value => {
+                                                            onSetMessage(value);
+                                                        }}
+                                                    />
+                                                    <View style={{ flexDirection: 'row', alignSelf: 'center', justifyContent: 'space-around', width: '100%', marginTop: 10, }}>
+
+                                                        {/* <FAB
+                                                            onPress={() => {
+
+                                                            }}
+                                                            label='Decline'
+                                                            variant='extended'
+                                                            size='small'
+                                                            style={{ backgroundColor: '#DDD', marginBottom: 50, }}
+                                                        /> */}
+                                                        <FAB
+                                                            onPress={() => {
+                                                                OnApprovePost();
+                                                            }}
+                                                            label='Approve'
+                                                            variant='extended'
+                                                            size='small'
+                                                            style={{
+                                                                backgroundColor: colors.secondary,
+                                                                marginBottom: 50,
+                                                            }} />
+                                                    </View>
+
+                                                    <View style={{ backgroundColor: '#fff', height: 200 }} />
+                                                </View>
+                                            )}
+                                    </View>
+
+                                )
+                            }
 
 
 
 
-                        <View style={{ backgroundColor: '#fff', height: 100 }} />
+                            <View style={{ backgroundColor: '#fff', height: 100 }} />
 
-                    </Container>)
+                        </Container>)
+                    }
+                </Animated.View >
+
+                {/*Report Bottom Sheet*/}
+                <BottomSheet
+                    ref={reportBottomSheet}
+                    snapPoints={[500, 0]}
+                    initialSnap={1}
+                    callbackNode={fall}
+                    onCloseEnd={() => {
+                        changeReportBottomSheetVisibility(false);
+                    }}
+                    enabledGestureInteraction={true}
+                    renderHeader={_renderHeader}
+                    renderContent={_renderReportContent}
+                />
+
+                {!isAdmin && isActivePost &&
+                    (
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginTop: 10, position: 'absolute', bottom: 0, backgroundColor: '#f5f5f5', height: 70, alignItems: 'center' }}>
+
+                            <FAB
+                                onPress={() => {
+
+                                }}
+                                label='Message'
+                                variant='extended'
+                                size='small'
+                                style={{ backgroundColor: colors.secondary, height: 50, paddingHorizontal: 10, }}
+                            />
+                            <FAB
+                                onPress={() => {
+                                }}
+                                label='Call'
+                                variant='extended'
+                                size='small'
+                                style={{
+                                    backgroundColor: "#59FB69",
+                                    Bottom: 0,
+                                    paddingHorizontal: 30,
+                                    height: 50,
+                                }} />
+                        </View>
+
+                    )
                 }
-            </Animated.View >
 
-            {/*Report Bottom Sheet*/}
-            <BottomSheet
-                ref={reportBottomSheet}
-                snapPoints={[500, 0]}
-                initialSnap={1}
-                callbackNode={fall}
-                onCloseEnd={() => {
-                    changeReportBottomSheetVisibility(false);
-                }}
-                enabledGestureInteraction={true}
-                renderHeader={_renderHeader}
-                renderContent={_renderReportContent}
-            />
-
-            {!isAdmin && isActivePost &&
-                (
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginTop: 10, position: 'absolute', bottom: 0, backgroundColor: '#f5f5f5', height: 70, alignItems: 'center' }}>
-
-                        <FAB
-                            onPress={() => {
-
-                            }}
-                            label='Message'
-                            variant='extended'
-                            size='small'
-                            style={{ backgroundColor: colors.secondary, height: 50,paddingHorizontal: 10, }}
-                        />
-                        <FAB
-                            onPress={() => {
-                            }}
-                            label='Call'
-                            variant='extended'
-                            size='small'
-                            style={{
-                                backgroundColor: "#59FB69",
-                                Bottom: 0,
-                                paddingHorizontal: 30,
-                                height: 50,
-                            }} />
-                    </View>
-
-                )
-            }
-
-        </View >
+            </View >
+        </Root>
     );
 }
 

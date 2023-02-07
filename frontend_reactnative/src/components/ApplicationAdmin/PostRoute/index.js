@@ -6,6 +6,9 @@ import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 import { AppAdminGetInactivePost } from '../../../backendAPI';
 import Container from '../../common/container';
 import PostPreview from '../../PostPreview/listItem';
+import { FAB } from 'react-native-paper';
+import colors from '../../../assets/theme/colors';
+import { useNavigation } from '@react-navigation/native';
 
 const PostRoute = ({
     params,
@@ -14,19 +17,34 @@ const PostRoute = ({
         getAppAdminGetInactivePost();
     }, [])
 
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        const focusListener = navigation.addListener('focus', () => {
+            refresh();
+        });
+        return () => {
+            focusListener.remove();
+        };
+    }, []);
+
     const getAppAdminGetInactivePost = async () => {
         const post = await AppAdminGetInactivePost();
-        console.log('Admin Get Inactive Post: ' + JSON.stringify(post));
-        let tmp = [];
+        const tmp = [];
         for (let i = 0; i < post.length; i++) {
             tmp.push(post[i].ID_Post);
         }
         console.log('Admin Get Inactive Post: ' + JSON.stringify(tmp));
-        setInactivePostList(tmp);
+        setInactivePostList((preState) => tmp);
         setIsLoading(false);
     }
 
-    const [inactivePostList, setInactivePostList] = React.useState({});
+    const refresh = () => {
+        setIsLoading(true);
+        getAppAdminGetInactivePost();
+    }
+
+    const [inactivePostList, setInactivePostList] = React.useState([]);
 
     const [isLoading, setIsLoading] = React.useState(true);
     const loadingArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -65,35 +83,45 @@ const PostRoute = ({
         )
     }
     return (
-        <Container
-            keyboardShouldPersistTaps="always"
-            styleScrollView={{
-                backgroundColor: '#FFFFFF'
-            }}
-        >
-            <View style={{ marginLeft: 13, }}>
+        <View style={{ height: '100%' }}>
+            <Container
+                keyboardShouldPersistTaps="always"
+                styleScrollView={{
+                    backgroundColor: '#FFFFFF'
+                }}
+            >
+                <View style={{ marginLeft: 13, }}>
 
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-                    {
-                        isLoading ? loadingArray.map((item, index) => (<RenderSkeleton key={index} index={index} />))
-                            :
-                            inactivePostList.map((item, index) => {
-                                return (
-                                    <PostPreview
-                                        postID={item}
-                                        key={index}
-                                        styleWrapper={{ marginTop: 13, }}
-                                        isAdmin={true}
-                                        pressable={true} />
-                                )
-                            })
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+                        {
+                            isLoading ? loadingArray.map((item, index) => (<RenderSkeleton key={index} index={index} />))
+                                :
+                                inactivePostList.map((item, index) => {
+                                    return (
+                                        <PostPreview
+                                            postID={item}
+                                            key={index}
+                                            styleWrapper={{ marginTop: 13, }}
+                                            isAdmin={true}
+                                            isActivePost={false}
+                                            pressable={true} />
+                                    )
+                                })
 
-                    }
+                        }
 
+                    </View>
                 </View>
-            </View>
-        </Container>
-
+            </Container>
+            <FAB
+                onPress={refresh}
+                icon="refresh"
+                style={{ backgroundColor: colors.secondary, position: 'absolute', margin: 16, right: 0, bottom: 0 }}
+                variant='extended'
+                size='small'
+            >
+            </FAB>
+        </View>
     )
 };
 
