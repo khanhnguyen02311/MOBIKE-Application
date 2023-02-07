@@ -62,9 +62,21 @@ def getinactivapost():
 
       statuses = Session.query(dbm.PostStatus).order_by(desc(dbm.PostStatus.ID)).all()
 
+      lastestStatus = []
+      
+      for status in statuses:
+         if (status.ID_Post not in lastestStatus):
+            lastestStatus.append(status.ID_Post)
+            
+      inactivatedStatuses = []
+      
+      for status in lastestStatus:
+         if (status.Status == 0):
+            inactivatedStatuses.append(status)
+
       schema = dbs.PostStatusSchema(many=True)
       
-      return jsonify({"msg": "Completed", "error": "", "info": schema.dump(statuses)})
+      return jsonify({"msg": "Completed", "error": "", "info": schema.dump(inactivatedStatuses)})
 
    except Exception as e:
       Session.rollback()
