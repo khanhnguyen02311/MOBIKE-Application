@@ -84,7 +84,7 @@ const LineupBottomSheetContent = ({
     };
     return (
         <View style={{ backgroundColor: '#fff', height: '100%' }}>
-            <Animated.View layout={Layout.stiffness(100).damping(10).duration(300)}>
+            {/* <Animated.View layout={Layout.stiffness(100).damping(10).duration(300)}>
                 <View style={styles.selectedSectionLabel}>
                     <Text style={styles.selectedLabel}>Selected Lineup</Text>
                 </View>
@@ -128,7 +128,7 @@ const LineupBottomSheetContent = ({
                             })}
                         </View>)}
                 </Animated.View>
-            </Animated.View>
+            </Animated.View> */}
             <Animated.View
                 layout={Layout.stiffness(100).damping(10).duration(300)}
                 style={styles.selectedSectionContent}>

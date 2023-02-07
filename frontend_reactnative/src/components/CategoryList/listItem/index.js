@@ -1,4 +1,4 @@
-import {Gesture} from 'react-native-gesture-handler';
+import { Gesture } from 'react-native-gesture-handler';
 import {
   View,
   Text,
@@ -9,15 +9,16 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import colors from '../../../assets/theme/colors';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setVehicleTypesAdd,
   setVehicleTypesRemove,
 } from '../../../redux/slice/filterSlice';
+import { PRODUCT_LIST } from '../../../constants/routeNames';
 
-const ListItem = ({item, index, type}) => {
+const ListItem = ({ item, index, type }) => {
   const navigation = useNavigation();
   let path = item.url;
   const vehicleTypes = useSelector(state => state.filter.vehicleTypes);
@@ -28,19 +29,21 @@ const ListItem = ({item, index, type}) => {
   const [isSelected, setIsSelected] = React.useState(isInSelectdList);
   const selectedColor = colors.secondary;
 
+  const { navigate } = useNavigation();
   const choose = type == 'choose';
   const onPress = choose
     ? () => {
-        if (!isSelected) {
-          dispatch(setVehicleTypesAdd(item.id));
-        } else {
-          dispatch(setVehicleTypesRemove(item.id));
-        }
-        setIsSelected(!isSelected);
+      if (!isSelected) {
+        dispatch(setVehicleTypesAdd(item.ID));
+      } else {
+        dispatch(setVehicleTypesRemove(item.ID));
       }
+      setIsSelected(!isSelected);
+    }
     : () => {
-        // navigation.navigate(PRODUCT_LIST, {title: title, index: index});
-      };
+      dispatch(setVehicleTypesAdd(item.ID));
+      navigate(PRODUCT_LIST);
+    };
 
   return (
     <View style={styles.styleWrapper}>
@@ -53,15 +56,15 @@ const ListItem = ({item, index, type}) => {
                 backgroundColor: isSelected ? selectedColor : '#d9d9d9',
               },
             ]}>
-            <Image source={path} style={styles.styleImage} />
+            <Image source={require('../../../assets/images/category.png')} style={styles.styleImage} />
           </View>
 
           <Text
             style={[
               styles.styleTitle,
-              choose && {color: isSelected ? '#3B8AD3' : 'black'},
+              choose && { color: isSelected ? '#3B8AD3' : 'black' },
             ]}>
-            {item.title}
+            {item.Type}
           </Text>
         </View>
       </TouchableWithoutFeedback>

@@ -12,12 +12,19 @@ import colors from '../../assets/theme/colors'
 import LineupBottomSheetContent from '../FilterPopUpManufacturer/LineupBottomSheetContent'
 import { useDispatch, useSelector } from 'react-redux'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import { setManufacturer } from '../../redux/slice/filterSlice'
+import { setBrand, setLineup, setManufacturer } from '../../redux/slice/filterSlice'
+import { useNavigation } from '@react-navigation/native'
+import { FILTERS_POP_UP } from '../../constants/routeNames'
+import store from '../../redux/store'
 
 const heightScreen = Dimensions.get('window').height;
 const heightTabBar = heightScreen / 12;
 const FilterPopUpManufacturerComponent = () => {
 
+  const dataBrand = store.getState().vehicleModels.VehicleBrands;
+  const dataLineup = store.getState().vehicleModels.VehicleLineups;
+  console.log('dataBrand: ' + JSON.stringify(dataBrand));
+  console.log('dataLineup: ' + JSON.stringify(dataLineup));
   //Search bar
   const [searchData, setSearchData] = useState(data);
   const onTextChange = (text) => {
@@ -35,6 +42,7 @@ const FilterPopUpManufacturerComponent = () => {
     }
   };
 
+
   //OnSelectManufacturer
   const [selectedManufacturer, setSelectedManufacturer] = useState({ value: [] });
   const [selectedLineup, setSelectedLineup] = useState([]);
@@ -45,11 +53,17 @@ const FilterPopUpManufacturerComponent = () => {
     let temp = selectedManufacturerFilter.filter((i) => i.id === item.id);
     if (temp[0]) setSelectedLineup(temp[0].value);
     else setSelectedLineup([]);
+    dispatch(setBrand(item.id));
   }
 
+  const { navigate } = useNavigation();
   const onChooseLineup = (item) => {
-    if (selectedLineup.indexOf(item.id) === -1) return setSelectedLineup([...selectedLineup, item.id]);
-    else return setSelectedLineup(selectedLineup.filter((id) => id !== item.id));
+
+    changeBottomSheetVisibility(false);
+    dispatch(setLineup(item.id));
+    navigate(FILTERS_POP_UP);
+    // if (selectedLineup.indexOf(item.id) === -1) return setSelectedLineup([...selectedLineup, item.id]);
+    // else return setSelectedLineup(selectedLineup.filter((id) => id !== item.id));
   };
 
   const selectedManufacturerFilter = useSelector(state => state.filter.manufacturer);

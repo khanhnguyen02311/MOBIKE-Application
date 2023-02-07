@@ -10,7 +10,7 @@ const renderItem = ({item, index}) => {
 };
 
 const keyExtractor = item => {
-  return item.id;
+  return item.ID;
 };
 
 const CategoryList = ({data, type, ...props}) => {

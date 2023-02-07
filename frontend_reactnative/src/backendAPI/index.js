@@ -273,21 +273,28 @@ export const PostFilter = (
     type: Number,
     color: Number,
     manufacturerYear: Number,
-    ) => {
+) => {
     const args = {
-        title: title || "",
-        page: page || 1,
-        numperpage: numperPage || 20,
+        string: title,
+        page: page,
+        numperpage: numperPage,
         order: asc ? "asc" : "desc",
-        pricestart: priceStart || -1,
-        priceend: priceEnd || -1,
-        brand: brand || -1,
-        lineup: lineup || -1,
-        type: type || -1,
-        color: color || -1,
-        mnfyear: manufacturerYear || -1,
+        pricestart: priceStart,
+        priceend: undefined,
+        brand: brand,
+        lineup: lineup,
+        type: type,
+        color: color,
+        mnfyear: manufacturerYear,
     }
-    return Object.keys(args).map(key => `${key}=${args[key]}`).join('&');
+    const argsString = Object.keys(args).map(key => { if (args[key]) return `${key}=${args[key]}` });
+    let stringBuilder = "";
+    argsString.forEach(arg => {
+        if (arg) stringBuilder += arg + "&";
+    })
+    // Remove last "&"
+    stringBuilder = stringBuilder.substring(0, stringBuilder.length - 1);
+    return stringBuilder;
 }
 
 export const GetAllPosts = async (args: string) => {

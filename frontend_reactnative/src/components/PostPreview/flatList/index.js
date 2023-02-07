@@ -7,7 +7,7 @@ const renderItem = ({ item, index }) => {
 };
 
 const keyExtractor = (item, index) => {
-  return index;
+  return item;
 };
 
 const PostPreviewList = ({ data, ...props }) => {

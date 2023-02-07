@@ -8,7 +8,7 @@ import { FAB } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import colors from '../../../assets/theme/colors';
 import { GetPersonalPost } from '../../../backendAPI';
-import { POST_DETAIL, POST_DETAIL_NAVIGATOR } from '../../../constants/routeNames';
+import { ADD_POST, POST_DETAIL, POST_DETAIL_NAVIGATOR } from '../../../constants/routeNames';
 import { selectPost } from '../../../redux/slice/selectedPostSlice';
 import Container from '../../common/container';
 import PostPreview from '../../PostPreview/listItem';
