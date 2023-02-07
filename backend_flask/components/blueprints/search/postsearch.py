@@ -39,7 +39,7 @@ def searchposts():
                   arg_mnfyear == -1 or dbm.VehicleInfo.Manufacture_year == arg_mnfyear,
                   func.lower(dbm.Post.Title).contains(func.lower(arg_searchstr)),
                   arg_pricestart == -1 or dbm.Post.Pricetag >= arg_pricestart,
-                  arg_priceend == -1 or dbm.Post.Pricetag >= arg_priceend
+                  arg_priceend == -1 or dbm.Post.Pricetag <= arg_priceend
          ).order_by(query_orderby).all()
       post_list = []
       for i in posts:

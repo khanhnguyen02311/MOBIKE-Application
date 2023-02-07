@@ -393,8 +393,10 @@ def ratePost(id):
       if rating != None:
          Session.close()
          return jsonify({"msg": "Incompleted", "error": "Already rated", "info": ""})
+      
       ratingpoint = request.json['ratingpoint']
       content = request.json['content']
+      
       rating = dbm.Rating(ID_Post = id, ID_Account = current_user['ID'], Rating_point = ratingpoint, Content = content)
       Session.add(rating)
       Session.commit()
