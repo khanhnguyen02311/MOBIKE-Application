@@ -265,8 +265,7 @@ def editpost(id):
       Session.rollback()
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
 
-
-@bppost.route("/post/<int:id>/deactivate", methods=["POST", "PUT"])
+@bppost.route("/post/deactivate/<id:int>", methods=["POST", "PUT"])
 @jwt_required()
 def deactivatepost(id):
    current_user = get_jwt_identity()
@@ -293,6 +292,38 @@ def deactivatepost(id):
       Session.add(new_poststatus)
       Session.commit()
       return jsonify({"msg": "Completed", "error": "", "info": "Post deactivated"})
+   
+   except Exception as e:
+      Session.rollback()
+      return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
+   
+@bppost.route("/post/sold/<id:int>", methods=["POST", "PUT"])
+@jwt_required()
+def soldpost(id):
+   current_user = get_jwt_identity()
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+   
+   info = request.get_json()
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      
+      post = Session.query(dbm.Post).get(id)
+      if post is None or post.ID_Account != current_user['ID']:
+         return jsonify({"msg": "Incompleted", "error": "Post not found or not owned by your account", "info": ""})
+      
+      new_poststatus = dbm.PostStatus(
+         Status = 2,
+         ID_Post = info['P_ID'],
+         Information = "Post sold by user."
+      )
+      Session.add(new_poststatus)
+      Session.commit()
+      return jsonify({"msg": "Completed", "error": "", "info": "Post sold"})
    
    except Exception as e:
       Session.rollback()
