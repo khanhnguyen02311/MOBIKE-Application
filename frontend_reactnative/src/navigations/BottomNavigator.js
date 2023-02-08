@@ -62,11 +62,11 @@ const BottomNavigator = () => {
         component={YourPostsNavigator}
         options={{tabBarLabel: 'Your posts'}}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name={NOTIFICATIONS}
         component={Notifications}
         options={{tabBarLabel: 'Notifications'}}
-      />
+      /> */}
       <Tab.Screen
         name={PROFILE_NAVIGATOR}
         component={ProfileNavigator}

@@ -617,13 +617,13 @@ const PostDetailComponent = ({
                                     {/* Seperate
                                 <View style={{ backgroundColor: '#F6F6F6', height: 8 }} /> */}
                                     {/* Seller Info */}
-                                    < View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 12, marginLeft: 10, }}>
+                                    {/* < View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 12, marginLeft: 10, }}>
 
-                                        {/* Price */}
+                                        
                                         <View style={{ alignSelf: 'flex-end', marginTop: 5, paddingHorizontal: 5, flexDirection: 'row', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
                                             <Text style={{ fontWeight: 'bold', color: colors.textRed, fontSize: 18 }}>{formatPrice(postInfo.post.Pricetag) + ' VND'}</Text>
 
-                                            {/* Star Average */}
+                                            
                                             {!isAdmin &&
                                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
 
@@ -635,7 +635,7 @@ const PostDetailComponent = ({
                                                 </View>}
 
                                         </View>
-                                    </View>
+                                    </View> */}
 
                                     {isAdmin && <View style={{ height: 1, backgroundColor: '#E8E8E8', marginTop: 20, }} />}
 

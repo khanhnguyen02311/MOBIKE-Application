@@ -32,9 +32,9 @@ const ProfileComponent = () => {
         </View>
       </TouchableWithoutFeedback>
 
-      <View style={{ height: 2, width: '90%', backgroundColor: '#d8d8d8', marginVertical: 10, }} />
+      {/* <View style={{ height: 2, width: '90%', backgroundColor: '#d8d8d8', marginVertical: 10, }} /> */}
 
-      <TouchableWithoutFeedback onPress={() => signOut()}>
+      {/* <TouchableWithoutFeedback onPress={() => signOut()}>
         <View
           style={{
             flexDirection: 'row',
@@ -46,7 +46,7 @@ const ProfileComponent = () => {
           <Text style={{ color: '#000', fontSize: 18 }}>Saved Post</Text>
           <Text style={{ color: '#000', fontSize: 18 }}>></Text>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback> */}
 
       <View style={{ height: 2, width: '90%', backgroundColor: '#d8d8d8', marginVertical: 10, }} />
 
