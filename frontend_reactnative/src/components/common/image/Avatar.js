@@ -3,9 +3,7 @@ import React from 'react'
 
 export default function Avatar({ ID, style }) {
     return (
-        <View>
-            <Image source={{ uri: AvatarLinks[(ID - 1) % 20] }} style={[{ resizeMode: "contain" }, style]} />
-        </View>
+          <Image source={{ uri: AvatarLinks[(ID - 1) % 20] }} style={[{ resizeMode: "contain" }, style]} />
     )
 }
 

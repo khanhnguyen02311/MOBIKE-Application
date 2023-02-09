@@ -274,6 +274,15 @@ export const GetPost = async (ID) => {
 }
 
 export const GetUserInfo = async (ID) => {
+    if (!IsUsingDatabase) {
+        const user = MockData.UserInfo.find(user => user.ID == ID % 20 + 1);
+        return {
+            accountinfo: {
+                ...user,
+            },
+            posts: MockData.Post.filter(post => post.ID_Account == user.ID),
+        }
+    }
     const infoResponse = await HttpRequest.GetRequest("search/user/" + ID);
     if (infoResponse.msg == "Completed") {
         return infoResponse.info;

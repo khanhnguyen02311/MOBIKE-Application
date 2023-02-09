@@ -57,11 +57,11 @@ const BottomNavigator = () => {
         component={MarketplaceNavigator}
         options={{tabBarLabel: 'Marketplace'}}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name={YOUR_POSTS_NAVIGATOR}
         component={YourPostsNavigator}
         options={{tabBarLabel: 'Your posts'}}
-      />
+      /> */}
       {/* <Tab.Screen
         name={NOTIFICATIONS}
         component={Notifications}
