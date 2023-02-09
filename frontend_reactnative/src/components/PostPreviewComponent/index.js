@@ -233,7 +233,7 @@ const PostPreviewComponent = ({
                 {/* Address */}
                 <View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 12, marginLeft: 10, }}>
 
-                    <MobikeImage imageID={1} style={{ width: 48, height: 48, borderRadius: 500, borderWidth: 1, borderColor: '#e8e8e8' }} />
+                    <MobikeImage.Avatar ID={1} style={{ width: 48, height: 48, borderRadius: 500, borderWidth: 1, borderColor: '#e8e8e8' }} />
 
                     <View style={{ marginHorizontal: 15, flex: 1 }}>
 

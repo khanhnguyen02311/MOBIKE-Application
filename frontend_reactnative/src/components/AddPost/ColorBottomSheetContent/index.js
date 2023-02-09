@@ -6,7 +6,6 @@ import TextInputOutline from '../../common/textInputOutline-Kohana';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwnesome from 'react-native-vector-icons/FontAwesome';
 import { Image } from 'react-native';
-import MobikeImage from '../../common/image';
 import { useState } from 'react';
 import Animated, { Layout } from 'react-native-reanimated';
 import { ScrollView } from 'react-native-gesture-handler';

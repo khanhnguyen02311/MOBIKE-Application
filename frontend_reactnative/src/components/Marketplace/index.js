@@ -17,6 +17,8 @@ import { GetAllPosts } from '../../backendAPI';
 import { useEffect } from 'react';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 import { StyleSheet } from 'react-native';
+import { Image } from 'react-native';
+import PostImage from '../common/image/Post';
 
 const MarketplaceComponent = () => {
 
@@ -42,6 +44,10 @@ const MarketplaceComponent = () => {
 
   const [postList, setPostList] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+
+  useEffect(() => {
+    console.log('postList: ', postList);
+  }, [postList])
 
   const loadingArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const RenderSkeleton = (index) => {
@@ -129,13 +135,18 @@ const MarketplaceComponent = () => {
               </Text>
             </TouchableWithoutFeedback>
           </View>
-          {isLoading ?
+          {false ?
             <View style={{ flexDirection: 'row' }}>
               {loadingArray.map((item, index) => RenderSkeleton(index))}
             </View>
 
-            : <PostPreviewList data={postList} />}
-{/* 
+            :
+
+            // <View/>
+            // <Image style={{ width: 100, height: 100 }} source={require('../../assets/images/S1.jpg')} />
+            <PostPreviewList data={postList} />
+          }
+          {/* 
           <View
             style={{
               flexDirection: 'row',

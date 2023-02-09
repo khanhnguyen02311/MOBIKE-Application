@@ -131,7 +131,7 @@ const BrandBottomSheetContent = ({
                                 }}>
                                 <View style={{ width: widthScreen / 4 - 2, marginBottom: 5, padding: 10 }}>
                                     <View style={{ borderWidth: 1, borderColor: flag ? colors.primary : '#f2f2f2', borderRadius: 10, alignItems: 'center', justifyContent: 'center', padding: 5 }}>
-                                        <MobikeImage style={{ width: widthScreen / 4 - 30, height: widthScreen / 4 - 30 }} imageID={item.ID_Image} />
+                                        <MobikeImage.BrandLogo style={{ width: widthScreen / 4 - 30, height: widthScreen / 4 - 30 }} ID={item.ID_Image} />
                                         <View style={{ flexDirection: 'row' }}>
                                             <Text style={{ color: flag ? colors.primary : 'black', textAlignVertical: 'center', fontSize: 12, textAlign: 'center' }}>
                                                 {item.Name}

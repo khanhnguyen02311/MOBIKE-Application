@@ -95,7 +95,7 @@ const SeeAllReviewsComponent = ({
                 (
                     < View key={index} >
                         <View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 8, marginLeft: 10, }}>
-                            <MobikeImage imageID={item.User_Info.ID_Avatar} style={{ width: 40, height: 40, borderRadius: 500 }} />
+                            <MobikeImage.Avatar ID={item.User_Info.ID_Avatar} style={{ width: 40, height: 40, borderRadius: 500 }} />
                             <View style={{ marginHorizontal: 15, flex: 1 }}>
 
                                 {/* Name & Time Created */}

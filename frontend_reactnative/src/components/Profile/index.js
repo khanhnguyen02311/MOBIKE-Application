@@ -12,7 +12,7 @@ const ProfileComponent = () => {
   const userInfo = store.getState().personalInfo;
   return (
     <View style={{ height: '100%', alignItems: 'center' }}>
-      <MobikeImage style={{ height: 100, width: 100, borderRadius: 500, marginTop: 30 }} imageID={userInfo.ID_Image_Profile} />
+      <MobikeImage.Avatar style={{ height: 100, width: 100, borderRadius: 500, marginTop: 30 }} imageID={userInfo.ID_Image_Profile} />
       <Text style={{ color: '#000', fontSize: 18, marginTop: 10, }}>{userInfo.Name}</Text>
 
       <View style={{ height: 2, width: '90%', backgroundColor: '#d8d8d8', marginVertical: 10, }} />

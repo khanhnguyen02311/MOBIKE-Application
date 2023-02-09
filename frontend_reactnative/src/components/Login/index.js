@@ -20,7 +20,6 @@ import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Checkbox } from 'react-native-paper';
-import MobikeImage from '../common/image';
 
 const LoginComponent = ({
   onChange,

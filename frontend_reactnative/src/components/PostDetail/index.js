@@ -422,7 +422,7 @@ const PostDetailComponent = ({
                 (
                     < View key={index} >
                         <View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 8, marginLeft: 10, }}>
-                            <MobikeImage imageID={item.User_Info.ID_Avatar} style={{ width: 40, height: 40, borderRadius: 500 }} />
+                            <MobikeImage.Avatar ID={item.User_Info.ID_Avatar} style={{ width: 40, height: 40, borderRadius: 500 }} />
                             <View style={{ marginHorizontal: 15, flex: 1 }}>
 
                                 {/* Name & Time Created */}
@@ -676,7 +676,7 @@ const PostDetailComponent = ({
                                             {/* Seller Info */}
                                             < View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 12, marginLeft: 10, }}>
 
-                                                <MobikeImage imageID={postInfo.user.ID_Image_Profile} style={{ width: 48, height: 48, borderRadius: 500, borderWidth: 1, borderColor: '#e8e8e8' }} />
+                                                <MobikeImage.Avatar ID={postInfo.user.ID_Image_Profile} style={{ width: 48, height: 48, borderRadius: 500, borderWidth: 1, borderColor: '#e8e8e8' }} />
 
                                                 <View style={{ marginHorizontal: 15, flex: 1 }}>
 

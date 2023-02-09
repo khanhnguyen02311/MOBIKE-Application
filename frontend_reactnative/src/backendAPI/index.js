@@ -2,7 +2,10 @@ import HttpRequest, { BigGetRequest, ProtectedUploadImage, UploadIdentityImage }
 import Store from "../redux/store";
 import { resolvePlugin } from "@babel/core";
 import { setLikedPosts } from "../redux/slice/likeSlice.js";
+import MockData from "../MockData";
+import VehicleInfo from './../MockData/VehicleInfo';
 
+const IsUsingDatabase = false
 
 export const me = async (token) => {
     const response = await HttpRequest.ProtectedGetRequest("auth/me", token);
@@ -248,6 +251,22 @@ export const GetPersonalPostDetail = async (ID) => {
 }
 
 export const GetPost = async (ID) => {
+    if (!IsUsingDatabase) {
+        const post = MockData.Post.find(post => post.ID == ID);
+        const address = MockData.Address.find(address => address.ID == post.ID_Address);
+        const user = MockData.UserInfo.find(user => user.ID == post.ID_Account);
+        console.log("Finding vehicle info with ID: " + post.ID_VehicleInfo + "")
+        const vehicleInfo = MockData.VehicleInfo.find(vehicleInfo => vehicleInfo.ID == post.ID_VehicleInfo);
+        return {
+            address: address,
+            post: {
+                ...post,
+                rel_Image: [post.ID]
+            },
+            user: user,
+            vehicleinfo: vehicleInfo,
+        }
+    }
     const postResponse = await HttpRequest.GetRequest("search/post/" + ID);
     if (postResponse.msg == "Completed") {
         return postResponse.info;
@@ -298,6 +317,16 @@ export const PostFilter = (
 }
 
 export const GetAllPosts = async (args: string) => {
+    if (!IsUsingDatabase) {
+        return MockData.Post.map(post => {
+            return {
+                ID: post.ID,
+                Title: post.Title,
+                Pricetag: post.Price,
+                rel_Image: [post.ID]
+            }
+        })
+    }
     const postResponse = await HttpRequest.GetRequest("search/post/all" + (args ? "?" + args : ""));
     if (postResponse.msg == "Completed") {
         return postResponse.info;

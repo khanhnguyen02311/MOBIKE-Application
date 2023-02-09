@@ -88,7 +88,7 @@ const PostPreview = ({
       return (
         <View
           style={[styles.styleWrapper, index === 0 ? { marginStart: 20 } : null, styleWrapper]}>
-          <MobikeImage imageID={postInfo.post.rel_Image[0]} style={styles.styleImage} />
+          <MobikeImage.PostImage ID={postInfo.post.rel_Image[0]} style={styles.styleImage} />
 
           <View style={styles.textWrapper}>
             <Text
@@ -117,7 +117,7 @@ const PostPreview = ({
         (
           <View
             style={[styles.styleWrapper, index === 0 ? { marginStart: 20 } : null, styleWrapper]}>
-            <MobikeImage imageID={postInfo.post.rel_Image[0]} style={styles.styleImage} />
+            <MobikeImage.PostImage ID={postInfo.post.rel_Image[0]} style={styles.styleImage} />
 
             <View style={styles.textWrapper}>
               <Text
