@@ -19,6 +19,7 @@ const VEHICLETYPES = 'VehicleTypes';
 const VEHICLECONDITIONS = 'VehicleConditions';
 const COLORS = 'Colors';
 
+const IsUsingDatabase = false
 
 export const init = async () => {
     try {
@@ -88,6 +89,9 @@ const updateAndLoadClientDatabase = async () => {
 }
 
 const updateLocations = async () => {
+    if (!IsUsingDatabase) {
+        return JSON.parse(await AsyncStorage.getItem(LOCATIONS));
+    }
     try {
         const onlineLocationsVersion = (await getVersion(LOCATIONS)).Version;
         // console.log('Online locations version: ' + onlineLocationsVersion);
@@ -154,6 +158,9 @@ const updateLocations = async () => {
 }
 
 const updateVehicleBrands = async () => {
+    if (!IsUsingDatabase) {
+        return JSON.parse(await AsyncStorage.getItem(VEHICLEBRANDS));
+    }
     try {
         const onlineVehicleBrandsVersion = (await getVersion(VEHICLEBRANDS)).Version;
         // console.log('Online vehicle brands version: ' + onlineVehicleBrandsVersion);
@@ -186,6 +193,9 @@ const updateVehicleBrands = async () => {
 }
 
 const updateVehicleLineups = async () => {
+    if (!IsUsingDatabase) {
+        return JSON.parse(await AsyncStorage.getItem(VEHICLELINEUPS));
+    }
     try {
         const onlineVehicleLineupsVersion = (await getVersion(VEHICLELINEUPS)).Version;
         // console.log('Online vehicle lineups version: ' + onlineVehicleLineupsVersion);
@@ -218,6 +228,9 @@ const updateVehicleLineups = async () => {
 }
 
 const updateVehicleTypes = async () => {
+    if (!IsUsingDatabase) {
+        return JSON.parse(await AsyncStorage.getItem(VEHICLETYPES));
+    }
     try {
         const onlineVehicleTypesVersion = (await getVersion(VEHICLETYPES)).Version;
         // console.log('Online vehicle types version: ' + onlineVehicleTypesVersion);
@@ -249,6 +262,9 @@ const updateVehicleTypes = async () => {
 }
 
 const updateVehicleConditions = async () => {
+    if (!IsUsingDatabase) {
+        return JSON.parse(await AsyncStorage.getItem(VEHICLECONDITIONS));
+    }
     try {
         const onlineVehicleConditionsVersion = (await getVersion(VEHICLECONDITIONS)).Version;
         // console.log('Online vehicle conditions version: ' + onlineVehicleConditionsVersion);
@@ -280,6 +296,9 @@ const updateVehicleConditions = async () => {
 }
 
 const updateColors = async () => {
+    if (!IsUsingDatabase) {
+        return JSON.parse(await AsyncStorage.getItem(COLORS));
+    }
     try {
         const onlineColorsVersion = (await getVersion(COLORS)).Version;
         // console.log('Online colors version: ' + onlineColorsVersion);
@@ -311,6 +330,9 @@ const updateColors = async () => {
 }
 
 const updatePermissions = async () => {
+    if (!IsUsingDatabase) {
+        return JSON.parse(await AsyncStorage.getItem(PERMISSIONS));
+    }
     try {
         const onlinePermissionsVersion = (await getVersion(PERMISSIONS)).Version;
         // console.log('Online permissions version: ' + onlinePermissionsVersion);
@@ -342,6 +364,9 @@ const updatePermissions = async () => {
 }
 
 const updateImageTypes = async () => {
+    if (!IsUsingDatabase) {
+        return JSON.parse(await AsyncStorage.getItem(IMAGETYPES));
+    }
     try {
         const onlineImageTypesVersion = (await getVersion(IMAGETYPES)).Version;
         // console.log('Online image types version: ' + onlineImageTypesVersion);

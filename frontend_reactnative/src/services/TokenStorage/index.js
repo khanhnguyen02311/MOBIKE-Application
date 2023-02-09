@@ -9,29 +9,34 @@ import permission from '../../redux/clientDatabase/permission';
 
 export const init = async () => {
     try {
-        let isTokenStorageInitialized = await AsyncStorage.getItem('TokenStorageInitted');
-        if (!isTokenStorageInitialized) {
-            console.log('Initializing token storage');
-            AsyncStorage.setItem('TokenStorageInitted', '1');
-            AsyncStorage.setItem('CurrentToken', '');
-            let tokenStorage = {}
-            AsyncStorage.setItem('TokenStorage', JSON.stringify(tokenStorage));
-        } else {
-            const currentToken = await getCurrentToken();
-            if (currentToken) {
-                const myinfo = await BackendAPI.me(currentToken);
-                console.log("Current acccount: " + JSON.stringify(myinfo.user));
-                if (myinfo.msg === 'Completed') {
-                    Store.dispatch(login({
-                        ID: myinfo.user.ID,
-                        token: myinfo.token,
-                        permission: myinfo.user.ID_Permission
-                    }))
-                    await setCurrentToken(myinfo.token);
-                    await UpdatePersonalInfo();
-                }
-            }
-        }
+        // let isTokenStorageInitialized = await AsyncStorage.getItem('TokenStorageInitted');
+        // if (!isTokenStorageInitialized) {
+        //     console.log('Initializing token storage');
+        //     AsyncStorage.setItem('TokenStorageInitted', '1');
+        //     AsyncStorage.setItem('CurrentToken', '');
+        //     let tokenStorage = {}
+        //     AsyncStorage.setItem('TokenStorage', JSON.stringify(tokenStorage));
+        // } else {
+        //     const currentToken = await getCurrentToken();
+        //     if (currentToken) {
+        //         const myinfo = await BackendAPI.me(currentToken);
+        //         console.log("Current acccount: " + JSON.stringify(myinfo.user));
+        //         if (myinfo.msg === 'Completed') {
+        //             Store.dispatch(login({
+        //                 ID: myinfo.user.ID,
+        //                 token: myinfo.token,
+        //                 permission: myinfo.user.ID_Permission
+        //             }))
+        //             await setCurrentToken(myinfo.token);
+        //             await UpdatePersonalInfo();
+        //         }
+        //     }
+        // }
+        Store.dispatch(login({
+            ID: 1,
+            token: "123",
+            permission: 4
+        }));
     } catch (e) {
         console.log("Init token storage error: " + e);
     }
