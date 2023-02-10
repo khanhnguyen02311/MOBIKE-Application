@@ -28,6 +28,7 @@ export const AUCTION = 'Auction';
 export const AUCTION_NAVIGATOR = 'AuctionNavigator';
 export const AUCTION_DETAIL = 'AuctionDetail';
 export const SEE_ALL_BID = 'SeeAllBid';
+export const PLACE_BID = 'PlaceBid';
 export const AUCTION_DETAIL_NAVIGATOR = 'AuctionDetailNavigator';
 
 //Profile

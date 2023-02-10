@@ -8,6 +8,7 @@ import {
   AUCTION_DETAIL,
   FILTERS_POP_UP,
   LOADING,
+  PLACE_BID,
   POST_DETAIL,
   POST_PREVIEW,
   SEE_ALL_BID,
@@ -15,6 +16,7 @@ import {
   YOUR_POSTS,
 } from '../constants/routeNames';
 import AuctionDetail from '../screens/AuctionDetail';
+import PlaceBid from '../screens/PlaceBid';
 import PostDetail from '../screens/PostDetail';
 import SeeAllBid from '../screens/SeeAllBid';
 import SeeAllReviews from '../screens/SeeAllReviews';
@@ -45,6 +47,20 @@ const AuctionDetailNavigator = () => {
           header: ({ navigation }) => (
             <Header
               title={'History'}
+              onLeftClick={() => {
+                navigation.goBack();
+              }}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name={PLACE_BID}
+        component={PlaceBid}
+        options={{
+          header: ({ navigation }) => (
+            <Header
+              title={'Place a Bid'}
               onLeftClick={() => {
                 navigation.goBack();
               }}

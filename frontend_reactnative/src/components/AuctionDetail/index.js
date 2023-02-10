@@ -32,6 +32,7 @@ import { useNavigation } from '@react-navigation/native';
 import {
     APPLICATION_ADMIN,
     MARKETPLACE,
+    PLACE_BID,
     SEE_ALL_BID,
     SEE_ALL_REVIEWS,
     YOUR_POSTS,
@@ -284,60 +285,60 @@ const AuctionDetailComponent = ({ postID, isActivePost, isAdmin }) => {
     const starAverage = 4.5;
 
     //Get post data
-    const [isLoading, setIsLoading] = React.useState(true);
-    useEffect(() => {
-        if (isAdmin) {
-            getInactivePostByAdmin();
-        } else if (isActivePost) {
-            getData();
-        } else {
-            getInactivePost();
-        }
-    }, []);
+    const [isLoading, setIsLoading] = React.useState(false);
+    // useEffect(() => {
+    //     if (isAdmin) {
+    //         getInactivePostByAdmin();
+    //     } else if (isActivePost) {
+    //         getData();
+    //     } else {
+    //         getInactivePost();
+    //     }
+    // }, []);
 
-    const getData = async () => {
-        const post = await GetPost(postID);
-        // console.log('Post Detail: ' + JSON.stringify(post));
-        setPostInfo(prevPost => post);
-        const user = await GetUserInfo(post.user.ID);
-        // console.log('User Info: ' + JSON.stringify(user));
-        let tmp = Array.from(user.posts.filter(item => item.ID != postID));
-        let tmp2 = tmp.map(item => {
-            return item.ID;
-        });
-        setPostList(tmp2);
-        setUserInfo(user);
-        setIsLoading(false);
-    };
+    // const getData = async () => {
+    //     const post = await GetPost(postID);
+    //     // console.log('Post Detail: ' + JSON.stringify(post));
+    //     setPostInfo(prevPost => post);
+    //     const user = await GetUserInfo(post.user.ID);
+    //     // console.log('User Info: ' + JSON.stringify(user));
+    //     let tmp = Array.from(user.posts.filter(item => item.ID != postID));
+    //     let tmp2 = tmp.map(item => {
+    //         return item.ID;
+    //     });
+    //     setPostList(tmp2);
+    //     setUserInfo(user);
+    //     setIsLoading(false);
+    // };
 
-    const [postInfo, setPostInfo] = React.useState({});
-    const [userInfo, setUserInfo] = React.useState({});
-    const [postList, setPostList] = React.useState([]);
+    // const [postInfo, setPostInfo] = React.useState({});
+    // const [userInfo, setUserInfo] = React.useState({});
+    // const [postList, setPostList] = React.useState([]);
 
-    //Get inactive post data
-    const getInactivePost = async () => {
-        const post = await GetPersonalPostDetail(postID);
-        console.log('Personal Post Detail: ' + JSON.stringify(post));
-        setPostInfo(post);
-        setIsLoading(false);
-    };
+    // //Get inactive post data
+    // const getInactivePost = async () => {
+    //     const post = await GetPersonalPostDetail(postID);
+    //     console.log('Personal Post Detail: ' + JSON.stringify(post));
+    //     setPostInfo(post);
+    //     setIsLoading(false);
+    // };
 
-    const getInactivePostByAdmin = async () => {
-        const post = await AppAdminGetPost(postID);
-        console.log('Post Detail by admin: ' + JSON.stringify(post));
-        setPostInfo(post);
-        setIsLoading(false);
-    };
+    // const getInactivePostByAdmin = async () => {
+    //     const post = await AppAdminGetPost(postID);
+    //     console.log('Post Detail by admin: ' + JSON.stringify(post));
+    //     setPostInfo(post);
+    //     setIsLoading(false);
+    // };
 
-    const OnApprovePost = () => {
-        ApprovePost();
-    };
+    // const OnApprovePost = () => {
+    //     ApprovePost();
+    // };
 
-    const ApprovePost = async () => {
-        const approveRes = await AppAdminSetStatus(postID, 1, message);
-        console.log('Approve post: ' + JSON.stringify(approveRes));
-        navigate(APPLICATION_ADMIN);
-    };
+    // const ApprovePost = async () => {
+    //     const approveRes = await AppAdminSetStatus(postID, 1, message);
+    //     console.log('Approve post: ' + JSON.stringify(approveRes));
+    //     navigate(APPLICATION_ADMIN);
+    // };
 
     const _renderSkeleton = () => (
         <SkeletonContent
@@ -794,8 +795,8 @@ const AuctionDetailComponent = ({ postID, isActivePost, isAdmin }) => {
         setMessage(content);
     };
 
-    const OnBuyNowPress = () => {
-        console.log('Buy now');
+    const OnPlaceBidPress = () => {
+        navigate(PLACE_BID);
     };
 
 
@@ -1168,7 +1169,7 @@ const AuctionDetailComponent = ({ postID, isActivePost, isAdmin }) => {
                         }}>
                         <TouchableWithoutFeedback
                             onPress={() => {
-                                OnBuyNowPress();
+                                OnPlaceBidPress();
                             }}>
                             <View
                                 style={{
