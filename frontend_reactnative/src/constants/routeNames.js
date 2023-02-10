@@ -22,3 +22,14 @@ export const FILTERS_POP_UP_NAVIGATOR = 'FiltersPopUpNavigator';
 export const LOADING = 'Loading';
 
 export const APPLICATION_ADMIN = 'ApplicationAdmin';
+
+//Auction
+export const AUCTION = 'Auction';
+export const AUCTION_NAVIGATOR = 'AuctionNavigator';
+export const AUCTION_DETAIL = 'AuctionDetail';
+export const SEE_ALL_BID = 'SeeAllBid';
+export const AUCTION_DETAIL_NAVIGATOR = 'AuctionDetailNavigator';
+
+//Profile
+export const MY_ORDERS = 'MyOrders';
+export const MY_BIDS = 'MyBids';

@@ -2,6 +2,7 @@ import {View, Text} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
+  AUCTION_NAVIGATOR,
   MARKETPLACE,
   MARKETPLACE_NAVIGATOR,
   NOTIFICATIONS,
@@ -14,10 +15,12 @@ import Marketplace from '../screens/Marketplace';
 import Notifications from '../screens/Notifications';
 import Profile from '../screens/Profile';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HeaderSearch from '../components/HeaderSearch';
 import MarketplaceNavigator from './MarketplaceNavigator';
 import YourPostsNavigator from './YourPostsNavigator';
 import ProfileNavigator from './ProfileNavigator';
+import AuctionNavigator from './AuctionNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,8 +35,15 @@ const BottomNavigator = () => {
             iconName = focused ? 'cart' : 'cart-outline';
           } else if (route.name === YOUR_POSTS_NAVIGATOR) {
             iconName = focused ? 'browsers-outline' : 'browsers-outline';
-          } else if (route.name === NOTIFICATIONS) {
-            iconName = focused ? 'notifications' : 'notifications-outline';
+          } else if (route.name === AUCTION_NAVIGATOR) {
+            iconName = focused ? 'hand-coin' : 'hand-coin-outline';
+            return (
+              <MaterialCommunityIcon
+                name={iconName}
+                size={size}
+                color={color}
+              />
+            );
           } else if (route.name === PROFILE_NAVIGATOR) {
             iconName = focused ? 'person' : 'person-outline';
           }
@@ -62,11 +72,11 @@ const BottomNavigator = () => {
         component={YourPostsNavigator}
         options={{tabBarLabel: 'Your posts'}}
       /> */}
-      {/* <Tab.Screen
-        name={NOTIFICATIONS}
-        component={Notifications}
-        options={{tabBarLabel: 'Notifications'}}
-      /> */}
+      <Tab.Screen
+        name={AUCTION_NAVIGATOR}
+        component={AuctionNavigator}
+        options={{tabBarLabel: 'Auction'}}
+      />
       <Tab.Screen
         name={PROFILE_NAVIGATOR}
         component={ProfileNavigator}

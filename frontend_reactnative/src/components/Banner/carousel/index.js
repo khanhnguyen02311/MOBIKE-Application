@@ -18,6 +18,7 @@ const Carousel = ({
   isUri = false,
   isImageID = false,
   havingBackground = false,
+  style = false,
 }) => {
   const scrollX = new Animated.Value(0);
   let position = Animated.divide(scrollX, width);
@@ -41,6 +42,7 @@ const Carousel = ({
                 isUri={isUri}
                 isImageID={isImageID}
                 index={index}
+                style={style}
               />
             );
           }}
