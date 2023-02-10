@@ -23,7 +23,6 @@ import PostImage from '../common/image/Post';
 const MarketplaceComponent = () => {
 
   const dataType = store.getState().vehicleTypes;
-  console.log('dataType', dataType);
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
 
@@ -33,7 +32,6 @@ const MarketplaceComponent = () => {
 
   const getFilterPostList = async () => {
     const postListTmp = await GetAllPosts();
-    console.log('postList: ' + JSON.stringify(postListTmp));
     let tmp = []
     for (let i = 0; i < postListTmp.length; i++) {
       tmp.push(postListTmp[i].ID);
@@ -44,10 +42,6 @@ const MarketplaceComponent = () => {
 
   const [postList, setPostList] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-
-  useEffect(() => {
-    console.log('postList: ', postList);
-  }, [postList])
 
   const loadingArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const RenderSkeleton = (index) => {

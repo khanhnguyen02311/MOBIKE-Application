@@ -22,6 +22,6 @@ export default function PostImage({ ID, style }) {
             break;
     }
     return (
-        <Image source={path} style={[{ resizeMode: 'contain' }, style]} />
+        <Image source={path} style={[{ resizeMode: 'cover' }, style]} />
     )
 }

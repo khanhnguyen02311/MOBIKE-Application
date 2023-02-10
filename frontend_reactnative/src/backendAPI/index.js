@@ -255,7 +255,7 @@ export const GetPost = async (ID) => {
         const post = MockData.Post.find(post => post.ID == ID);
         const address = MockData.Address.find(address => address.ID == post.ID_Address);
         const user = MockData.UserInfo.find(user => user.ID == post.ID_Account);
-        console.log("Finding vehicle info with ID: " + post.ID_VehicleInfo + "")
+        // console.log("Finding vehicle info with ID: " + post.ID_VehicleInfo + "")
         const vehicleInfo = MockData.VehicleInfo.find(vehicleInfo => vehicleInfo.ID == post.ID_VehicleInfo);
         return {
             address: address,
