@@ -59,10 +59,7 @@ const LoginComponent = ({onChange, onSubmit, onTest, OnSigninWithGoogle}) => {
               iconColor={'#90B4D3'}
               inputPadding={12}
               borderWidthtoTop={0}
-              inputType="password"
-              onChangeText={value => {
-                onChange({name: 'password', value});
-              }}
+              onChangeText={value => {}}
             />
 
             <View

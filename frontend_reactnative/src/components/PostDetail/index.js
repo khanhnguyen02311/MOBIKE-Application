@@ -69,6 +69,7 @@ import {Keyboard} from 'react-native';
 import {AppAdminSetStatus} from '../../backendAPI';
 
 import {Linking} from 'react-native';
+import { CHECKOUT } from './../../constants/routeNames';
 
 const widthScreen = Dimensions.get('window').width;
 const heightScreen = Dimensions.get('window').height;
@@ -228,7 +229,7 @@ const PostDetailComponent = ({postID, isActivePost, isAdmin}) => {
     },
   ];
 
-  const starAverage = 4.5;
+  const starAverage = 4.7;
 
   //Get post data
   const [isLoading, setIsLoading] = React.useState(true);
@@ -666,7 +667,7 @@ const PostDetailComponent = ({postID, isActivePost, isAdmin}) => {
         {/* View All */}
         <View
           style={{height: 40, justifyContent: 'center', alignItems: 'center'}}>
-          <TouchableNativeFeedback onPress={onNavigate}>
+          <TouchableWithoutFeedback onPress={onNavigate}>
             <Text
               style={{
                 color: colors.text,
@@ -676,7 +677,7 @@ const PostDetailComponent = ({postID, isActivePost, isAdmin}) => {
               }}>
               {'See all (' + ratingPost.length + ') >'}
             </Text>
-          </TouchableNativeFeedback>
+          </TouchableWithoutFeedback>
         </View>
       </View>
     );
@@ -753,7 +754,7 @@ const PostDetailComponent = ({postID, isActivePost, isAdmin}) => {
   };
 
   const OnBuyNowPress = () => {
-    console.log('Buy now');
+    navigate(CHECKOUT)
   };
 
   return (
