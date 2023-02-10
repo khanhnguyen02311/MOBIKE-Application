@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import Container from '../common/container';
 import FilterPropNameComponent from './FilterPropName';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {
   setBrand,
   setInitial,
@@ -15,10 +15,10 @@ import FilterPropPriceRangeComponent from './FilterPropPriceRange';
 import data from '../../data/dataCategoryList';
 import FilterPropManufacturerComponent from './FilterPropManufacturer';
 import FilterPropManufacturerYearComponent from './FilterPropManufacturerYear';
-import { FAB } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import {FAB} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 import colors from '../../assets/theme/colors';
-import { PRODUCT_LIST } from '../../constants/routeNames';
+import {PRODUCT_LIST} from '../../constants/routeNames';
 import store from '../../redux/store';
 import Animated from 'react-native-reanimated';
 import BrandBottomSheetContent from '../AddPost/BrandBottomSheetContent';
@@ -41,10 +41,10 @@ const FiltersPopUpComponent = () => {
         maxPosition: sliderWidth,
       }),
     );
-    dispatch(setMinMaxText({ min: min, max: max }));
+    dispatch(setMinMaxText({min: min, max: max}));
   }, []);
 
-  const { navigate } = useNavigation();
+  const {navigate} = useNavigation();
 
   const filter = store.getState().filter;
 
@@ -68,7 +68,7 @@ const FiltersPopUpComponent = () => {
     <BrandBottomSheetContent
       onSetBrand_Lineup={onSetBrand_Lineup}
       onCloseBottomSheet={() => {
-        changeBottomSheetVisibility(false)
+        changeBottomSheetVisibility(false);
       }}
       initialValue={{
         brand: filter.brand,
@@ -80,18 +80,16 @@ const FiltersPopUpComponent = () => {
   const onSetBrand_Lineup = (brand, lineup) => {
     dispatch(setBrand(brand));
     dispatch(setLineup(lineup));
-  }
+  };
   return (
-    <View style={{ height: '100%' }}>
+    <View style={{height: '100%'}}>
       <Animated.View
         style={{
           flex: 1,
           opacity: Animated.add(0.3, Animated.multiply(fall, 1.0)),
           height: '100%',
-        }}
-      >
-
-        <Container styleScrollView={{ backgroundColor: 'white' }}>
+        }}>
+        <Container styleScrollView={{backgroundColor: 'white'}}>
           <FilterPropNameComponent />
           <FilterPropVehicleTypesComponent data={data} />
           <FilterPropPriceRangeComponent
@@ -100,25 +98,39 @@ const FiltersPopUpComponent = () => {
             sliderWidth={sliderWidth}
             step={step}
           />
-          <FilterPropManufacturerComponent onPress={() => changeBottomSheetVisibility(true)} />
+          <FilterPropManufacturerComponent
+            onPress={() => changeBottomSheetVisibility(true)}
+          />
           <FilterPropManufacturerYearComponent />
-          <View style={{ marginTop: 100 }}></View>
+          <View style={{marginTop: 100}} />
         </Container>
         {/*Brand Bottom Sheet*/}
 
-
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginTop: 10, position: 'absolute', bottom: 0, backgroundColor: '#f5f5f5', height: 70, alignItems: 'center' }}>
-
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            width: '100%',
+            marginTop: 10,
+            position: 'absolute',
+            bottom: 0,
+            backgroundColor: '#f5f5f5',
+            height: 70,
+            alignItems: 'center',
+          }}>
           <FAB
             onPress={() => {
               navigate(PRODUCT_LIST);
             }}
-            label='Apply'
-            variant='extended'
-            size='small'
-            style={{ backgroundColor: colors.secondary, height: 50, paddingHorizontal: 10, }}
+            label="Apply"
+            variant="extended"
+            size="small"
+            style={{
+              backgroundColor: colors.secondary,
+              height: 50,
+              paddingHorizontal: 10,
+            }}
           />
-
         </View>
       </Animated.View>
       <BottomSheet
@@ -175,7 +187,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#fff',
     shadowColor: '#333333',
-    shadowOffset: { width: -1, height: -3 },
+    shadowOffset: {width: -1, height: -3},
     shadowRadius: 2,
     shadowOpacity: 0.4,
     paddingTop: 20,

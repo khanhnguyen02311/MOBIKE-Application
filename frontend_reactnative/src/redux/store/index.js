@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import authReducer from '../slice/authSlice';
 import loadingReducer from '../slice/loadingSlice';
 import personalInfo from '../clientDatabase/personalInfo';
@@ -12,7 +12,6 @@ import permission from '../clientDatabase/permission';
 import filterReducer from '../slice/filterSlice';
 import selectedPostReducer from '../slice/selectedPostSlice';
 import likeReducer from '../slice/likeSlice';
-
 
 const store = configureStore({
   reducer: {

@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Text, TouchableWithoutFeedback } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Text, TouchableWithoutFeedback} from 'react-native';
 import Header from '../components/common/header';
 import HeaderSearch from '../components/HeaderSearch';
 import {
@@ -24,27 +24,30 @@ const PostDetailNavigator = () => {
         name={POST_DETAIL}
         component={PostDetail}
         options={{
-          header: ({ navigation }) => <Header
-            title={'Post Detail'}
-            onLeftClick={() => {
-              navigation.goBack();
-            }}
-          />
+          header: ({navigation}) => (
+            <Header
+              title={'Post Detail'}
+              onLeftClick={() => {
+                navigation.goBack();
+              }}
+            />
+          ),
         }}
       />
       <Stack.Screen
         name={SEE_ALL_REVIEWS}
         component={SeeAllReviews}
         options={{
-          header: ({ navigation }) => <Header
-            title={'Reviews'}
-            onLeftClick={() => {
-              navigation.goBack();
-            }}
-          />
+          header: ({navigation}) => (
+            <Header
+              title={'Reviews'}
+              onLeftClick={() => {
+                navigation.goBack();
+              }}
+            />
+          ),
         }}
       />
-      
     </Stack.Navigator>
   );
 };

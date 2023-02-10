@@ -1,9 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  Keyboard,
-} from 'react-native';
+import {View, Text, Image, Keyboard} from 'react-native';
 // import React, {useEffect, useState} from 'react';
 // import Container from '../../components/common/container';
 // import {REGISTRATION} from '../../constants/routeNames';
@@ -17,25 +12,26 @@ import HttpRequest from '../../backendAPI/HttpRequest';
 import TokenStorage from '../../services/TokenStorage';
 import React from 'react';
 
-import { Linking } from 'react-native';
+import {Linking} from 'react-native';
 
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 import LoginComponent from '../../components/Login';
 
-import { authorize } from 'react-native-app-auth';
+import {authorize} from 'react-native-app-auth';
 import auth from './../../context/reducers/auth';
-import { Popup, Root } from 'popup-ui';
+import {Popup, Root} from 'popup-ui';
 
 const config = {
   issuer: 'https://accounts.google.com',
-  clientId: '681579473082-k52dgdcgg1vte6tlp9krmj75dbefecel.apps.googleusercontent.com',
-  redirectUrl: 'https://abcdavid-knguyen.ddns.net:30001/auth/signin/google/authorize',
+  clientId:
+    '681579473082-k52dgdcgg1vte6tlp9krmj75dbefecel.apps.googleusercontent.com',
+  redirectUrl:
+    'https://abcdavid-knguyen.ddns.net:30001/auth/signin/google/authorize',
   scopes: ['openid', 'profile', 'email'],
 };
 
-
-const Login = ({ navigation }) => {
+const Login = ({navigation}) => {
   // const [username, setUsername] = useState({});
   // const [password, setPassword] = useState({});
 
@@ -59,24 +55,23 @@ const Login = ({ navigation }) => {
   const [form, setForm] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const onChange = ({ name, value }) => {
-    setForm({ ...form, [name]: value });
+  const onChange = ({name, value}) => {
+    setForm({...form, [name]: value});
   };
 
   const login = async () => {
     console.log('Login Submitted');
     const res = await TokenStorage.signIn(form.username, form.password);
-    if (res.msg == "Incompleted") {
+    if (res.msg == 'Incompleted') {
       Popup.show({
-        type: "Warning",
-        title: "Login Failed",
+        type: 'Warning',
+        title: 'Login Failed',
         button: true,
-        buttonText: "Try again",
-        background: "#a0a0a080",
-        callback: () => Popup.hide()
-      })
+        buttonText: 'Try again',
+        background: '#a0a0a080',
+        callback: () => Popup.hide(),
+      });
     }
-
   };
 
   const onSubmit = () => {
@@ -86,10 +81,7 @@ const Login = ({ navigation }) => {
 
   const onTest = () => {
     console.log('Test');
-
   };
-
-
 
   // const openURL = async (url: string) => {
   //   try {
@@ -112,10 +104,17 @@ const Login = ({ navigation }) => {
     // } catch (error) {
     //   console.error(error);
     // }
-  }
+  };
 
   return (
-    <Root><LoginComponent onChange={onChange} onSubmit={onSubmit} onTest={onTest} OnSigninWithGoogle={OnSigninWithGoogle} /></Root>
+    <Root>
+      <LoginComponent
+        onChange={onChange}
+        onSubmit={onSubmit}
+        onTest={onTest}
+        OnSigninWithGoogle={OnSigninWithGoogle}
+      />
+    </Root>
   );
 };
 

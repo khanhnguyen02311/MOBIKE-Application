@@ -25,7 +25,7 @@ const LoadingComponent = () => {
           top: 70,
           alignItems: 'center',
         }}>
-        <LoadingText/>
+        <LoadingText />
         <Image source={require('../../assets/images/loading-wheel.gif')} />
         {/* <Button onPress={() => onChangingLoading()} title="setLoading" /> */}
       </View>

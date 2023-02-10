@@ -184,7 +184,7 @@ const RangeSlider = ({
               defaultValue={0}
               animatedProps={maxLabelText}
               editable={false}
-              value={maxValue+'m VND'}
+              value={maxValue + 'm VND'}
             />
           </Animated.View>
         </Animated.View>

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import TextInputOutline from '../../components/common/textInputOutline-Kohana';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -15,7 +15,7 @@ import Container from '../../components/common/container';
 import * as ImagePicker from 'react-native-image-picker';
 import AddPostComponent from '../../components/AddPost';
 
-const AddPost = ({ navigation }) => {
+const AddPost = ({navigation}) => {
   useEffect(() => {
     navigation.getParent()?.setOptions({
       tabBarStyle: {
@@ -24,13 +24,11 @@ const AddPost = ({ navigation }) => {
     });
     return () =>
       navigation.getParent()?.setOptions({
-        tabBarStyle: { backgroundColor: '#EDF8FF', minHeight: 56, maxHeight: 80 },
+        tabBarStyle: {backgroundColor: '#EDF8FF', minHeight: 56, maxHeight: 80},
       });
   }, [navigation]);
 
-  return (
-    <AddPostComponent />
-  );
+  return <AddPostComponent />;
 };
 
 export default AddPost;

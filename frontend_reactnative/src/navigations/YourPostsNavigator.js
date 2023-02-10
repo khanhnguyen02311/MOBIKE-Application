@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Text, TouchableWithoutFeedback } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Text, TouchableWithoutFeedback} from 'react-native';
 import Header from '../components/common/header';
 import HeaderSearch from '../components/HeaderSearch';
 import {
@@ -27,14 +27,14 @@ const YourPostsNavigator = () => {
       <Stack.Screen
         name={YOUR_POSTS}
         component={YourPosts}
-        options={{ headerShown: false }}
-      //options={{header: () => <HeaderSearch />}}
+        options={{headerShown: false}}
+        //options={{header: () => <HeaderSearch />}}
       />
       <Stack.Screen
         name={ADD_POST}
         component={AddPost}
         options={{
-          header: ({ navigation }) => (
+          header: ({navigation}) => (
             <Header
               title={'Add New Post'}
               onLeftClick={() => {
@@ -48,7 +48,7 @@ const YourPostsNavigator = () => {
         name={POST_PREVIEW}
         component={PostPreview}
         options={{
-          header: ({ navigation }) => (
+          header: ({navigation}) => (
             <Header
               title={'Post Preview'}
               onLeftClick={() => {

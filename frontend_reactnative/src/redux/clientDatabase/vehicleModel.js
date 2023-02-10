@@ -1,23 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-    VehicleBrands: [],
-    VehicleLineUps: []
-}
+  VehicleBrands: [],
+  VehicleLineUps: [],
+};
 
 export const vehicleModelSlice = createSlice({
-    name: "vehicleModels",
-    initialState,
-    reducers: {
-        setVehicleBrands: (state, action) => {
-            state.VehicleBrands = action.payload;
-        },
+  name: 'vehicleModels',
+  initialState,
+  reducers: {
+    setVehicleBrands: (state, action) => {
+      state.VehicleBrands = action.payload;
+    },
 
-        setVehicleLineUps: (state, action) => {
-            state.VehicleLineUps = action.payload;
-        }
-    }
-})
+    setVehicleLineUps: (state, action) => {
+      state.VehicleLineUps = action.payload;
+    },
+  },
+});
 
 export default vehicleModelSlice.reducer;
 

@@ -239,4 +239,4 @@ export default VehicleInfo = JSON.parse(`[{
     "ID_Condition": 1,
     "ID_Color": 1
   }]
-  `)
+  `);

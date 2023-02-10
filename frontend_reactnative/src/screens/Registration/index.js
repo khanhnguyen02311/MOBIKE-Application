@@ -88,34 +88,42 @@ const Registration = ({navigation}) => {
     if (value !== '') {
       // email
       if (name === 'email') {
-        checkEmail()
+        checkEmail();
       }
 
       //username
       else if (name === 'username') {
-        checkUsername()
+        checkUsername();
       }
 
       //phone
       else if (name === 'phone') {
-        checkPhone()
+        checkPhone();
       }
 
-      console.log("Error list: ", errors);
+      console.log('Error list: ', errors);
     }
-  }
+  };
 
   const signUp = async () => {
-
-    if (errors.email || errors.username || errors.password || errors.confirmPassword) {     
+    if (
+      errors.email ||
+      errors.username ||
+      errors.password ||
+      errors.confirmPassword
+    ) {
       return;
     }
 
-    const response = await TokenStorage.signUp(form.username, form.email, form.phone, form.password);
+    const response = await TokenStorage.signUp(
+      form.username,
+      form.email,
+      form.phone,
+      form.password,
+    );
 
     console.log(response);
-  }
-
+  };
 
   const checkEmail = async () => {
     let exists = await BackendAPI.isEmailExist(form.email);
@@ -131,12 +139,17 @@ const Registration = ({navigation}) => {
         return prev;
       });
       isEmailChecked = true;
-      if (isUsernameChecked && isPhoneChecked && isSubmitted && !isSignUpRequestSent) {
+      if (
+        isUsernameChecked &&
+        isPhoneChecked &&
+        isSubmitted &&
+        !isSignUpRequestSent
+      ) {
         isSignUpRequestSent = true;
         signUp();
       }
     }
-  }
+  };
 
   const checkUsername = async () => {
     let exists = await BackendAPI.isUsernameExist(form.username);
@@ -152,14 +165,19 @@ const Registration = ({navigation}) => {
         return prev;
       });
       isUsernameChecked = true;
-      if (isEmailChecked && isPhoneChecked && isSubmitted && !isSignUpRequestSent) {
+      if (
+        isEmailChecked &&
+        isPhoneChecked &&
+        isSubmitted &&
+        !isSignUpRequestSent
+      ) {
         isSignUpRequestSent = true;
         signUp();
       }
     }
-  }
+  };
 
-  const checkPhone= async () => {
+  const checkPhone = async () => {
     let exists = await BackendAPI.isPhoneExist(form.phone);
     if (exists) {
       setErrors(prev => {
@@ -173,12 +191,17 @@ const Registration = ({navigation}) => {
         return prev;
       });
       isPhoneChecked = true;
-      if (isEmailChecked && isEmailChecked && isSubmitted && !isSignUpRequestSent) {
+      if (
+        isEmailChecked &&
+        isEmailChecked &&
+        isSubmitted &&
+        !isSignUpRequestSent
+      ) {
         isSignUpRequestSent = true;
         signUp();
       }
     }
-  }
+  };
 
   const onSubmit = () => {
     //validation
@@ -249,7 +272,18 @@ const Registration = ({navigation}) => {
     checkUsername();
     checkPhone();
 
-    console.log("Submit: " + isSubmitted + "\nEmail: " + isEmailChecked + "\nUsername: " + isUsernameChecked + "\nPhone: " + isPhoneChecked + "\nRequest: " + isSignUpRequestSent);
+    console.log(
+      'Submit: ' +
+        isSubmitted +
+        '\nEmail: ' +
+        isEmailChecked +
+        '\nUsername: ' +
+        isUsernameChecked +
+        '\nPhone: ' +
+        isPhoneChecked +
+        '\nRequest: ' +
+        isSignUpRequestSent,
+    );
 
     if (isEmailChecked && isUsernameChecked && isPhoneChecked) {
       isSignUpRequestSent = true;

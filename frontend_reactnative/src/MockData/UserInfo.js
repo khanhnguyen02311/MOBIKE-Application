@@ -139,4 +139,4 @@ export default UserInfo = JSON.parse(`[{
     "ID_Image_Profile": 20,
     "Time_created": "SXA"
   }]
-  `)
+  `);

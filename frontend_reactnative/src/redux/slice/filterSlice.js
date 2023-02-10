@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   name: '',
@@ -54,16 +54,18 @@ const filterSlice = createSlice({
       let temp = action.payload.manufacturer;
       for (let i = 0; i <= state.manufacturer.length - 1; i++) {
         if (state.manufacturer[i].id === temp.id) {
-          if (temp.value.length === 0) state.manufacturer.splice(i, 1);
-          else {
+          if (temp.value.length === 0) {
+            state.manufacturer.splice(i, 1);
+          } else {
             state.manufacturer[i].value = temp.value;
             flag = true;
           }
           break;
         }
       }
-      if (!flag)
+      if (!flag) {
         state.manufacturer.push(temp);
+      }
     },
 
     setBrand: (state, action) => {
@@ -81,7 +83,6 @@ const filterSlice = createSlice({
     setManufacturerYear: (state, action) => {
       state.manufacturerYear = action.payload;
     },
-
 
     setInitial: () => {
       return initialState;

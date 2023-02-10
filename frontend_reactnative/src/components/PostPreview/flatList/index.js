@@ -1,8 +1,8 @@
-import { View, Text, FlatList, ScrollView } from 'react-native';
+import {View, Text, FlatList, ScrollView} from 'react-native';
 import React from 'react';
 import ListItem from '../listItem';
 
-const renderItem = ({ item, index }) => {
+const renderItem = ({item, index}) => {
   return <ListItem postID={item} index={index} key={index} />;
 };
 
@@ -10,7 +10,7 @@ const keyExtractor = (item, index) => {
   return item;
 };
 
-const PostPreviewList = ({ data, ...props }) => {
+const PostPreviewList = ({data, ...props}) => {
   return (
     // <ScrollView horizontal showsHorizontalScrollIndicator={false}>
     <FlatList

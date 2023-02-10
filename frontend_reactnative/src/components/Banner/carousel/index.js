@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,9 +11,14 @@ import colors from '../../../assets/theme/colors';
 import data from '../../../data/imageBanner';
 import CarouselItem from '../carouselItem';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-const Carousel = ({ data, isUri = false, isImageID = false, havingBackground = false }) => {
+const Carousel = ({
+  data,
+  isUri = false,
+  isImageID = false,
+  havingBackground = false,
+}) => {
   const scrollX = new Animated.Value(0);
   let position = Animated.divide(scrollX, width);
   if (data && data.length) {
@@ -29,16 +34,30 @@ const Carousel = ({ data, isUri = false, isImageID = false, havingBackground = f
           scrollEventThrottle={16}
           decelerationRate={'normal'}
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item, index }) => {
-            return <CarouselItem item={item} isUri={isUri} isImageID={isImageID} index={index} />;
+          renderItem={({item, index}) => {
+            return (
+              <CarouselItem
+                item={item}
+                isUri={isUri}
+                isImageID={isImageID}
+                index={index}
+              />
+            );
           }}
           onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            { useNativeDriver: false },
+            [{nativeEvent: {contentOffset: {x: scrollX}}}],
+            {useNativeDriver: false},
           )}
         />
 
-        <View style={[styles.dotView, havingBackground && { backgroundColor: '#ffffff55', borderRadius: 10, }]}>
+        <View
+          style={[
+            styles.dotView,
+            havingBackground && {
+              backgroundColor: '#ffffff55',
+              borderRadius: 10,
+            },
+          ]}>
           {data.map((_, i) => {
             let opacity = position.interpolate({
               inputRange: [i - 1, i, i + 1],
@@ -55,7 +74,6 @@ const Carousel = ({ data, isUri = false, isImageID = false, havingBackground = f
                   backgroundColor: '#000',
                   margin: 2,
                   borderRadius: 5,
-
                 }}
               />
             );

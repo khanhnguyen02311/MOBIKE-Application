@@ -1,4 +1,4 @@
-import { View, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import {View, Text, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import React from 'react';
 import Container from '../common/container';
 import colors from '../../assets/theme/colors';
@@ -9,30 +9,29 @@ import dataPostPreviewList from '../../data/dataPostPreviewList';
 import CategoryList from '../CategoryList/flatList';
 import PostPreviewList from '../PostPreview/flatList';
 import store from '../../redux/store';
-import { useNavigation } from '@react-navigation/native';
-import { PRODUCT_LIST } from '../../constants/routeNames';
-import { useDispatch } from 'react-redux';
-import { setInitial } from '../../redux/slice/filterSlice';
-import { GetAllPosts } from '../../backendAPI';
-import { useEffect } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {PRODUCT_LIST} from '../../constants/routeNames';
+import {useDispatch} from 'react-redux';
+import {setInitial} from '../../redux/slice/filterSlice';
+import {GetAllPosts} from '../../backendAPI';
+import {useEffect} from 'react';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
-import { StyleSheet } from 'react-native';
-import { Image } from 'react-native';
+import {StyleSheet} from 'react-native';
+import {Image} from 'react-native';
 import PostImage from '../common/image/Post';
 
 const MarketplaceComponent = () => {
-
   const dataType = store.getState().vehicleTypes;
-  const { navigate } = useNavigation();
+  const {navigate} = useNavigation();
   const dispatch = useDispatch();
 
   useEffect(() => {
     getFilterPostList();
-  }, [])
+  }, []);
 
   const getFilterPostList = async () => {
     const postListTmp = await GetAllPosts();
-    let tmp = []
+    let tmp = [];
     for (let i = 0; i < postListTmp.length; i++) {
       tmp.push(postListTmp[i].ID);
     }
@@ -44,46 +43,52 @@ const MarketplaceComponent = () => {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const loadingArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const RenderSkeleton = (index) => {
+  const RenderSkeleton = index => {
     return (
       <SkeletonContent
-        containerStyle={[styles.styleWrapper, index == 0 ? { marginLeft: 20 } : null, { backgroundColor: '#f5f5f5', }]
-        }
+        containerStyle={[
+          styles.styleWrapper,
+          index == 0 ? {marginLeft: 20} : null,
+          {backgroundColor: '#f5f5f5'},
+        ]}
         highlightColor="#C0DAF155"
         isLoading={isLoading}
-        layout={
-          [
-            {
-              key: 'image', width: 135,
-              height: 135, borderRadius: 5,
-            },
-            {
-              key: 'title', width: 130,
-              height: 14,
-              marginTop: 10,
-            },
-            {
-              key: 'info', width: 130,
-              height: 10,
-              marginTop: 10,
-            },
-            {
-              key: 'price', width: 130,
-              height: 16,
-              marginTop: 10,
-            },
-          ]}
-      >
+        layout={[
+          {
+            key: 'image',
+            width: 135,
+            height: 135,
+            borderRadius: 5,
+          },
+          {
+            key: 'title',
+            width: 130,
+            height: 14,
+            marginTop: 10,
+          },
+          {
+            key: 'info',
+            width: 130,
+            height: 10,
+            marginTop: 10,
+          },
+          {
+            key: 'price',
+            width: 130,
+            height: 16,
+            marginTop: 10,
+          },
+        ]}>
         <Text>Your content</Text>
         <Text>Other content</Text>
-      </SkeletonContent >
-    )
-  }
+      </SkeletonContent>
+    );
+  };
 
   return (
     <Container
       keyboardShouldPersistTaps="always"
-      styleScrollView={{ backgroundColor: '#FFFFFF' }}>
+      styleScrollView={{backgroundColor: '#FFFFFF'}}>
       <Carousel data={imageBanner} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View>
@@ -117,7 +122,11 @@ const MarketplaceComponent = () => {
               }}>
               Most Recently
             </Text>
-            <TouchableWithoutFeedback onPress={() => { navigate(PRODUCT_LIST); dispatch(setInitial) }}>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                navigate(PRODUCT_LIST);
+                dispatch(setInitial);
+              }}>
               <Text
                 style={{
                   fontSize: 12,
@@ -125,22 +134,20 @@ const MarketplaceComponent = () => {
                   color: colors.primary,
                   fontStyle: 'italic',
                 }}>
-              See more >
+                See more >
               </Text>
             </TouchableWithoutFeedback>
           </View>
-          {false ?
-            <View style={{ flexDirection: 'row' }}>
+          {false ? (
+            <View style={{flexDirection: 'row'}}>
               {loadingArray.map((item, index) => RenderSkeleton(index))}
             </View>
-
-            :
-
+          ) : (
             // <View/>
             // <Image style={{ width: 100, height: 100 }} source={require('../../assets/images/S1.jpg')} />
             <PostPreviewList data={postList} />
-          }
-          {/* 
+          )}
+          {/*
           <View
             style={{
               flexDirection: 'row',

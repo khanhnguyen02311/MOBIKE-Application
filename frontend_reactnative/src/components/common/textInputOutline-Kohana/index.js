@@ -68,7 +68,7 @@ export default class TextInputOutline extends BaseInput {
       //add when change border of container
       ...props
     } = this.props;
-    const { focusedAnim, value, visibility = true } = this.state;
+    const {focusedAnim, value, visibility = true} = this.state;
 
     handleChangeVisibility = () =>
       this.setState({
@@ -116,7 +116,8 @@ export default class TextInputOutline extends BaseInput {
                 }}>
                 <Icon name={iconName} color={iconColor} size={iconSize} />
               </Animated.View>
-            </TouchableWithoutFeedback>)}
+            </TouchableWithoutFeedback>
+          )}
           <TouchableWithoutFeedback onPress={this.focus}>
             <Animated.View
               style={{

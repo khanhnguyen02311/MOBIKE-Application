@@ -30,8 +30,11 @@ const Input = ({
     if (focused) {
       return colors.primary;
     }
-    if (error) return colors.danger;
-    else return colors.grey;
+    if (error) {
+      return colors.danger;
+    } else {
+      return colors.grey;
+    }
   };
   return (
     <View style={styles.inputContainer}>

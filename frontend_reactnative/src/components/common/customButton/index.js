@@ -21,13 +21,21 @@ const CustomButton = ({
   ...props
 }) => {
   const getBgColor = () => {
-    if (primary) return colors.primary;
+    if (primary) {
+      return colors.primary;
+    }
 
-    if (danger) return colors.danger;
+    if (danger) {
+      return colors.danger;
+    }
 
-    if (secondary) return colors.secondary;
+    if (secondary) {
+      return colors.secondary;
+    }
 
-    if (disabled) return colors.grey;
+    if (disabled) {
+      return colors.grey;
+    }
 
     return colors.grey;
   };

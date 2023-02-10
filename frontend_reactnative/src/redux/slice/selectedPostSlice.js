@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   ID: null,
@@ -28,6 +28,6 @@ export const selectedPostSlice = createSlice({
   },
 });
 
-export const { selectPost } = selectedPostSlice.actions;
+export const {selectPost} = selectedPostSlice.actions;
 
 export default selectedPostSlice.reducer;

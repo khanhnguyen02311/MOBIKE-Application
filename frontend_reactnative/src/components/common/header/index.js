@@ -1,14 +1,14 @@
-import { Gesture } from 'react-native-gesture-handler';
-import { View, Text, TouchableWithoutFeedback, BackHandler } from 'react-native';
+import {Gesture} from 'react-native-gesture-handler';
+import {View, Text, TouchableWithoutFeedback, BackHandler} from 'react-native';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import colors from '../../../assets/theme/colors';
-import { MARKETPLACE } from '../../../constants/routeNames';
-import { Dimensions } from 'react-native';
+import {MARKETPLACE} from '../../../constants/routeNames';
+import {Dimensions} from 'react-native';
 const heightScreen = Dimensions.get('window').height;
-const Header = ({ title, iconRight, textRight, onClickRight, onLeftClick }) => {
+const Header = ({title, iconRight, textRight, onClickRight, onLeftClick}) => {
   return (
     <View
       style={{
@@ -23,7 +23,7 @@ const Header = ({ title, iconRight, textRight, onClickRight, onLeftClick }) => {
           name="arrow-left"
           size={20}
           color="#292D32"
-          style={{ marginLeft: 15 }}
+          style={{marginLeft: 15}}
         />
       </TouchableWithoutFeedback>
 
@@ -43,7 +43,7 @@ const Header = ({ title, iconRight, textRight, onClickRight, onLeftClick }) => {
               name={iconRight}
               size={26}
               color="#292D32"
-              style={{ marginRight: 15 }}
+              style={{marginRight: 15}}
             />
           ) : (
             <Text
@@ -58,7 +58,7 @@ const Header = ({ title, iconRight, textRight, onClickRight, onLeftClick }) => {
           )}
         </TouchableWithoutFeedback>
       ) : (
-        <View style={{ width: 35 }} />
+        <View style={{width: 35}} />
       )}
     </View>
   );

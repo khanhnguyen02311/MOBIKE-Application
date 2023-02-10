@@ -1,4 +1,4 @@
-import { Gesture } from 'react-native-gesture-handler';
+import {Gesture} from 'react-native-gesture-handler';
 import {
   View,
   Text,
@@ -8,33 +8,28 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Container from '../../components/common/container';
-import { FORGOTPASSWORD, REGISTRATION } from '../../constants/routeNames';
+import {FORGOTPASSWORD, REGISTRATION} from '../../constants/routeNames';
 import TextInputOutline from '../../components/common/textInputOutline-Kohana';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { login } from '../../redux/slice/authSlice';
+import {login} from '../../redux/slice/authSlice';
 import CustomButton from '../../components/common/customButton';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 import styles from './styles';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Checkbox } from 'react-native-paper';
+import {Checkbox} from 'react-native-paper';
 
-const LoginComponent = ({
-  onChange,
-  onSubmit,
-  onTest,
-  OnSigninWithGoogle,
-}) => {
-  const { navigate } = useNavigation();
+const LoginComponent = ({onChange, onSubmit, onTest, OnSigninWithGoogle}) => {
+  const {navigate} = useNavigation();
   const [checked, setChecked] = useState();
   const [image, setimage] = useState(require('../../assets/images/MoBike.png'));
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View
-        style={[styles.wrapper, { height: '100%', backgroundColor: 'white' }]}>
+        style={[styles.wrapper, {height: '100%', backgroundColor: 'white'}]}>
         <View>
           <Image
             source={require('../../assets/images/MoBike.png')}
@@ -53,10 +48,10 @@ const LoginComponent = ({
               inputPadding={12}
               borderWidthtoTop={0}
               onChangeText={value => {
-                onChange({ name: 'username', value });
+                onChange({name: 'username', value});
               }}
             />
-            
+
             <TextInputOutline
               label={'Password'}
               iconClass={MaterialCommunityIcons}
@@ -66,7 +61,7 @@ const LoginComponent = ({
               borderWidthtoTop={0}
               inputType="password"
               onChangeText={value => {
-                onChange({ name: 'password', value });
+                onChange({name: 'password', value});
               }}
             />
 
@@ -78,19 +73,19 @@ const LoginComponent = ({
                 paddingTop: 5,
                 paddingBottom: 20,
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Checkbox
                   status={checked ? 'checked' : 'unchecked'}
                   onPress={() => {
                     setChecked(!checked);
                   }}
                 />
-                <Text style={{ fontSize: 12 }}>Remember my account</Text>
+                <Text style={{fontSize: 12}}>Remember my account</Text>
               </View>
 
               <TouchableWithoutFeedback
                 onPress={() => navigate(FORGOTPASSWORD)}>
-                <Text style={{ fontSize: 12 }}>Forgot Password ?</Text>
+                <Text style={{fontSize: 12}}>Forgot Password ?</Text>
               </TouchableWithoutFeedback>
             </View>
 
@@ -98,7 +93,7 @@ const LoginComponent = ({
               onPress={onSubmit}
               title="Sign in"
               primary
-              styleTitle={{ fontSize: 18, fontWeight: 'bold' }}
+              styleTitle={{fontSize: 18, fontWeight: 'bold'}}
               styleWrapper={{
                 borderRadius: 62,
                 width: '50%',
@@ -132,7 +127,7 @@ const LoginComponent = ({
         </View>
         <View>
           <TouchableWithoutFeedback onPress={() => navigate(REGISTRATION)}>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{flexDirection: 'row'}}>
               <Text
                 style={{
                   fontSize: 14,
@@ -142,7 +137,7 @@ const LoginComponent = ({
                 }}>
                 Join us now!
               </Text>
-              <Text style={{ fontSize: 14, fontStyle: 'italic' }}>
+              <Text style={{fontSize: 14, fontStyle: 'italic'}}>
                 Create your account here
               </Text>
             </View>

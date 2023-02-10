@@ -29,7 +29,7 @@ const FiltersPopUp = ({navigation}) => {
   //   header: () => <Header title={'Filters'} textRight={'Reset'} />,
   // });
 
-  return <FiltersPopUpComponent></FiltersPopUpComponent>;
+  return <FiltersPopUpComponent />;
 };
 
 export default FiltersPopUp;

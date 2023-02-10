@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Text, TouchableWithoutFeedback } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Text, TouchableWithoutFeedback} from 'react-native';
 import Header from '../components/common/header';
 import HeaderSearch from '../components/HeaderSearch';
 import {
@@ -29,8 +29,8 @@ const ApplicationAdminNavigator = () => {
       <Stack.Screen
         name={APPLICATION_ADMIN}
         component={ApplicationAdmin}
-        options={{ headerShown: false }}
-      //options={{header: () => <HeaderSearch />}}
+        options={{headerShown: false}}
+        //options={{header: () => <HeaderSearch />}}
       />
       <Stack.Screen
         name={POST_DETAIL_NAVIGATOR}

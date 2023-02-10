@@ -14,6 +14,4 @@ export default StyleSheet.create({
   loaderSection: {
     flexDirection: 'row',
   },
-
-
 });

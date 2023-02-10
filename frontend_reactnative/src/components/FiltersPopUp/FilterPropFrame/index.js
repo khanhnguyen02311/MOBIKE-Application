@@ -1,6 +1,6 @@
-import { View, Text, TouchableWithoutFeedback } from 'react-native';
-import Animated, { Easing, EasingNode, Layout } from 'react-native-reanimated';
-import React, { useEffect, useRef, useState } from 'react';
+import {View, Text, TouchableWithoutFeedback} from 'react-native';
+import Animated, {Easing, EasingNode, Layout} from 'react-native-reanimated';
+import React, {useEffect, useRef, useState} from 'react';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import TextInputOutline from '../../common/textInputOutline-Kohana';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -43,35 +43,39 @@ const FilterPropFrameComponent = ({
         }}>
         <Animated.Text
           layout={Layout.stiffness(100).damping(10).duration(durationLayout)}
-          style={styleLabel ? styleLabel : {
-            marginStart: 25,
-            color: 'black',
-            fontSize: 16,
-            fontStyle: 'italic',
-            fontWeight: '700',
-          }}>
+          style={
+            styleLabel
+              ? styleLabel
+              : {
+                  marginStart: 25,
+                  color: 'black',
+                  fontSize: 16,
+                  fontStyle: 'italic',
+                  fontWeight: '700',
+                }
+          }>
           {type}
         </Animated.Text>
         <TouchableWithoutFeedback onPress={toggle}>
           <Animated.View
-            layout={Layout.stiffness(100)
-              .damping(10)
-              .duration(durationLayout)}
-            style={{ marginEnd: 25, transform: [{ rotateZ: rotate }] }}>
+            layout={Layout.stiffness(100).damping(10).duration(durationLayout)}
+            style={{marginEnd: 25, transform: [{rotateZ: rotate}]}}>
             <SimpleLineIcon name="arrow-down" size={15} color={'black'} />
           </Animated.View>
         </TouchableWithoutFeedback>
       </View>
       {show && children}
-      {divider && <Animated.View
-        layout={Layout.stiffness(100).damping(10).duration(durationLayout)}
-        style={{
-          backgroundColor: '#A9A9A9',
-          height: 1,
-          marginStart: 25,
-          marginTop: show ? 10 : 6,
-        }}
-      />}
+      {divider && (
+        <Animated.View
+          layout={Layout.stiffness(100).damping(10).duration(durationLayout)}
+          style={{
+            backgroundColor: '#A9A9A9',
+            height: 1,
+            marginStart: 25,
+            marginTop: show ? 10 : 6,
+          }}
+        />
+      )}
     </Animated.View>
   );
 };

@@ -1,29 +1,29 @@
-import { View, Text, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import {View, Text, TouchableWithoutFeedback, Dimensions} from 'react-native';
 import React from 'react';
 import colors from '../../assets/theme/colors';
-import { ADD_POST } from '../../constants/routeNames';
-import { useNavigation } from '@react-navigation/native';
-import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
+import {ADD_POST} from '../../constants/routeNames';
+import {useNavigation} from '@react-navigation/native';
+import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import ActiveRoute from './ActiveRoute';
 import InactiveRoute from './InactiveRoute';
 import DeactivatedRoute from './DeactivatedRoute';
 import SoldRoute from './SoldRoute';
-import { useWindowDimensions } from 'react-native';
+import {useWindowDimensions} from 'react-native';
 import Container from '../common/container';
 
 const heightScreen = Dimensions.get('window').height;
 
 const YourPostsComponent = () => {
-  const { navigate } = useNavigation();
+  const {navigate} = useNavigation();
 
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'Active', title: 'Active' },
-    { key: 'Inactive', title: 'Inactive' },
-    { key: 'Sold', title: 'Sold' },
-    { key: 'Deactivated', title: 'Deactivated' },
+    {key: 'Active', title: 'Active'},
+    {key: 'Inactive', title: 'Inactive'},
+    {key: 'Sold', title: 'Sold'},
+    {key: 'Deactivated', title: 'Deactivated'},
   ]);
 
   const renderScene = SceneMap({
@@ -38,16 +38,20 @@ const YourPostsComponent = () => {
       {...props}
       activeColor={colors.text}
       inactiveColor={'#8D8D8D'}
-      indicatorStyle={{ backgroundColor: colors.secondary, height: 3, }}
-      labelStyle={{ fontSize: 13, fontWeight: '500', textTransform: 'none' }}
+      indicatorStyle={{backgroundColor: colors.secondary, height: 3}}
+      labelStyle={{fontSize: 13, fontWeight: '500', textTransform: 'none'}}
       pressOpacity={0.8}
       pressColor={'#C0DAF155'}
-      style={{ backgroundColor: 'white', elevation: 0, borderBottomWidth: 1, borderBottomColor: '#E8E8E8' }}
+      style={{
+        backgroundColor: 'white',
+        elevation: 0,
+        borderBottomWidth: 1,
+        borderBottomColor: '#E8E8E8',
+      }}
     />
   );
   return (
-    <View style={{ height: '100%' }}>
-
+    <View style={{height: '100%'}}>
       {/* <TouchableWithoutFeedback
         onPress={() => {
           navigate(ADD_POST);
@@ -65,14 +69,12 @@ const YourPostsComponent = () => {
       </TouchableWithoutFeedback> */}
 
       <TabView
-        navigationState={{ index, routes }}
+        navigationState={{index, routes}}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
+        initialLayout={{width: layout.width}}
         renderTabBar={renderTabBar}
       />
-
-
     </View>
   );
 };

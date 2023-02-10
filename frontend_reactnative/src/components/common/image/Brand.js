@@ -1,15 +1,19 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import {View, Text} from 'react-native';
+import React from 'react';
 
-export default function BrandLogo({ ID, style }) {
+export default function BrandLogo({ID, style}) {
   return (
     <View>
-      <Image source={{ uri: logo[(ID - 1) % 145] }} style={[{ resizeMode: 'contain' }, style]} />
+      <Image
+        source={{uri: logo[(ID - 1) % 145]}}
+        style={[{resizeMode: 'contain'}, style]}
+      />
     </View>
-  )
+  );
 }
 
-const logo = JSON.parse(`[
+const logo = JSON.parse(
+  `[
     {
       "id": 1,
       "logo": "https://cdn.okxe.vn/moto/logo/active/2021/Aprilia.png"
@@ -554,5 +558,5 @@ const logo = JSON.parse(`[
       "id": 145,
       "logo": "https://cdn.okxe.vn/moto/logo/active/linh_1639388345.png"
     }
-  ]`).map((item) => item.logo);
-
+  ]`,
+).map(item => item.logo);

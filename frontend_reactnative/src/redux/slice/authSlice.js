@@ -18,12 +18,12 @@ export const authSlice = createSlice({
       // state.isLoggedIn = state.ID != null && state.token != null
       state.isLoggedIn = state.token != null;
     },
-    logout: (state) => {
+    logout: state => {
       state.ID = null;
       state.token = null;
       state.permission = null;
       state.isLoggedIn = false;
-    }
+    },
   },
 });
 
