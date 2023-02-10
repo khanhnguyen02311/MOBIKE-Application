@@ -29,7 +29,10 @@ const ProfileComponent = () => {
         }}
       />
 
-      <TouchableWithoutFeedback onPress={() => navigate(EDIT_PTOFILE)}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          // navigate(EDIT_PTOFILE)
+        }}>
         <View
           style={{
             flexDirection: 'row',
@@ -68,7 +71,10 @@ const ProfileComponent = () => {
         }}
       />
 
-      <TouchableWithoutFeedback onPress={() => signOut()}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          //signOut()
+        }}>
         <View
           style={{
             flexDirection: 'row',
