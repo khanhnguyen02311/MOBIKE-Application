@@ -1,5 +1,6 @@
 import {View, Text} from 'react-native';
 import React from 'react';
+import { Image } from 'react-native';
 
 export default function BrandLogo({ID, style}) {
   return (

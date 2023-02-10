@@ -1,22 +1,22 @@
-import {View, Text, TouchableWithoutFeedback} from 'react-native';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import React from 'react';
 import colors from '../../assets/theme/colors';
-import {signOut} from '../../services/TokenStorage';
-import {EDIT_ACCOUNT, EDIT_PTOFILE} from '../../constants/routeNames';
-import {useNavigation} from '@react-navigation/native';
+import { signOut } from '../../services/TokenStorage';
+import { EDIT_ACCOUNT, EDIT_PTOFILE, MY_BIDS, MY_ORDERS } from '../../constants/routeNames';
+import { useNavigation } from '@react-navigation/native';
 import store from '../../redux/store';
 import MobikeImage from '../common/image';
 
 const ProfileComponent = () => {
-  const {navigate} = useNavigation();
+  const { navigate } = useNavigation();
   const userInfo = store.getState().personalInfo;
   return (
-    <View style={{height: '100%', alignItems: 'center'}}>
+    <View style={{ height: '100%', alignItems: 'center' }}>
       <MobikeImage.Avatar
-        style={{height: 100, width: 100, borderRadius: 500, marginTop: 30}}
+        style={{ height: 100, width: 100, borderRadius: 500, marginTop: 30 }}
         ID={1}
       />
-      <Text style={{color: '#000', fontSize: 18, marginTop: 10}}>
+      <Text style={{ color: '#000', fontSize: 18, marginTop: 10 }}>
         {userInfo.Name}
       </Text>
 
@@ -41,14 +41,14 @@ const ProfileComponent = () => {
             paddingHorizontal: 20,
             marginVertical: 10,
           }}>
-          <Text style={{color: '#000', fontSize: 18}}>Edit Profile</Text>
-          <Text style={{color: '#000', fontSize: 18}}>></Text>
+          <Text style={{ color: '#000', fontSize: 18 }}>Edit Profile</Text>
+          <Text style={{ color: '#000', fontSize: 18 }}>></Text>
         </View>
       </TouchableWithoutFeedback>
 
-      {/* <View style={{ height: 2, width: '90%', backgroundColor: '#d8d8d8', marginVertical: 10, }} /> */}
+      <View style={{ height: 2, width: '90%', backgroundColor: '#d8d8d8', marginVertical: 10, }} />
 
-      {/* <TouchableWithoutFeedback onPress={() => signOut()}>
+      <TouchableWithoutFeedback onPress={() => { navigate(MY_ORDERS) }}>
         <View
           style={{
             flexDirection: 'row',
@@ -57,10 +57,27 @@ const ProfileComponent = () => {
             paddingHorizontal: 20,
             marginVertical: 10,
           }}>
-          <Text style={{ color: '#000', fontSize: 18 }}>Saved Post</Text>
+          <Text style={{ color: '#000', fontSize: 18 }}>My Orders</Text>
           <Text style={{ color: '#000', fontSize: 18 }}>></Text>
         </View>
-      </TouchableWithoutFeedback> */}
+      </TouchableWithoutFeedback>
+
+      <View style={{ height: 2, width: '90%', backgroundColor: '#d8d8d8', marginVertical: 10, }} />
+
+      <TouchableWithoutFeedback onPress={() => { navigate(MY_BIDS) }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+            paddingHorizontal: 20,
+            marginVertical: 10,
+          }}>
+          <Text style={{ color: '#000', fontSize: 18 }}>My Bids</Text>
+          <Text style={{ color: '#000', fontSize: 18 }}>></Text>
+        </View>
+      </TouchableWithoutFeedback>
+
 
       <View
         style={{
@@ -83,8 +100,8 @@ const ProfileComponent = () => {
             paddingHorizontal: 20,
             marginVertical: 10,
           }}>
-          <Text style={{color: '#000', fontSize: 18}}>Logout</Text>
-          <Text style={{color: '#000', fontSize: 18}}>></Text>
+          <Text style={{ color: '#000', fontSize: 18 }}>Logout</Text>
+          <Text style={{ color: '#000', fontSize: 18 }}>></Text>
         </View>
       </TouchableWithoutFeedback>
     </View>

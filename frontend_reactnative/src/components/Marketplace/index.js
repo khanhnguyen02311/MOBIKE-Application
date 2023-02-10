@@ -19,6 +19,10 @@ import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 import {StyleSheet} from 'react-native';
 import {Image} from 'react-native';
 import PostImage from '../common/image/Post';
+import {useSelector} from 'react-redux';
+import {getPosts} from '../../redux/slice/postSlice';
+import {getPosts as getPostsFromAPI} from '../../backendAPI';
+import {useState} from 'react';
 
 const MarketplaceComponent = () => {
   const dataType = store.getState().vehicleTypes;
@@ -54,12 +58,7 @@ const MarketplaceComponent = () => {
         highlightColor="#C0DAF155"
         isLoading={isLoading}
         layout={[
-          {
-            key: 'image',
-            width: 135,
-            height: 135,
-            borderRadius: 5,
-          },
+          {key: 'image', width: 135, height: 135, borderRadius: 5},
           {
             key: 'title',
             width: 130,
