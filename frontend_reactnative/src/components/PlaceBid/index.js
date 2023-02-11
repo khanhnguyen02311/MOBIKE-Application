@@ -6,8 +6,11 @@ import { Image } from 'react-native'
 import colors from '../../assets/theme/colors'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import IonIcons from 'react-native-vector-icons/Ionicons'
 import TextInputOutline from '../common/textInputOutline-Kohana'
 import MobikeImage from '../common/image';
+import { useNavigation } from '@react-navigation/native'
+import { AUCTION_DETAIL, AUCTION_DETAIL_NAVIGATOR } from '../../constants/routeNames'
 
 const PlaceBidComponent = () => {
 
@@ -252,6 +255,12 @@ const PlaceBidComponent = () => {
         );
     };
 
+
+    const { navigate } = useNavigation();
+    const onSubmit = () => {
+        navigate(AUCTION_DETAIL);
+    }
+
     return (
         <View style={{ height: '100%', position: 'relative' }}>
             <Container
@@ -300,8 +309,78 @@ const PlaceBidComponent = () => {
 
                 <_renderBid />
 
-                <View style={{ height: 200 }}></View>
+                <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#EDEDED', width: '90%', alignSelf: 'center', marginTop: 20, paddingVertical: 5 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
+                        <IonIcons name="information-circle" size={20} color="#FFE456" />
+                        <Text style={{ fontSize: 12, color: "#000", fontWeight: '500', marginLeft: 3 }}>Notes</Text>
+                    </View>
+                    <Text style={{ fontSize: 12, color: "#8D8D8D", fontWeight: '400', marginLeft: 30, marginRight: 5, marginBottom: 10 }}>Placing this bid will start a 6 hour auction for the vehicle. </Text>
+                </View>
+
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 40, alignItems: 'center' }}>
+                    <View style={{ height: 1, width: 10, backgroundColor: '#8D8D8D' }} />
+                    <Text style={{ fontSize: 16, color: colors.primary, fontWeight: '500' }}>  OR  </Text>
+                    <View style={{ height: 1, width: 10, backgroundColor: '#8D8D8D' }} />
+                </View>
+
+                <Text style={[styles.textInfo, { alignSelf: 'center', marginTop: 30, }]}>You can buy the vehicle right away at the price</Text>
+
+                <Text style={{ fontSize: 22, color: '#FA3E3E', fontWeight: '600', alignSelf: 'center', marginTop: 15, }}>$7,000</Text>
+
+                <TouchableWithoutFeedback>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginTop: 15, width: '40%', height: 50, backgroundColor: '#A8FDBB', borderRadius: 10 }}>
+                        <Text style={{ fontSize: 16, color: "#23D05E", fontWeight: 'bold' }}>Buy Now ></Text>
+                    </View>
+                </TouchableWithoutFeedback>
+
+                <View style={{ height: 100 }}></View>
             </Container>
+
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                    width: '100%',
+                    marginTop: 10,
+                    position: 'absolute',
+                    bottom: 0,
+                    backgroundColor: '#FFF',
+                    height: 70,
+                    borderTopWidth: 1,
+                    borderTopColor: '#EDEDED',
+                    alignItems: 'center',
+                }}>
+                <View
+                    style={{
+                        width: '90%',
+                        height: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                    <TouchableWithoutFeedback
+                        onPress={onSubmit}>
+                        <View
+                            style={{
+                                backgroundColor: colors.secondary,
+                                width: '100%',
+                                height: '60%',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: 10,
+                            }}>
+                            <Text
+                                style={{
+                                    color: colors.text,
+                                    fontSize: 15,
+                                    fontWeight: '500',
+                                }}>
+                                Submit Bid
+                            </Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+            </View>
+
         </View>
     )
 }

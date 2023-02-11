@@ -46,6 +46,7 @@ export default function InfoBox(
             {
                 content.map((item, index) => (
                     <View
+                        key={index}
                         style={{
                             flexDirection: 'row',
                             justifyContent: 'space-between',

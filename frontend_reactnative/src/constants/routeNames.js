@@ -35,3 +35,10 @@ export const AUCTION_DETAIL_NAVIGATOR = 'AuctionDetailNavigator';
 //Profile
 export const MY_ORDERS = 'MyOrders';
 export const MY_BIDS = 'MyBids';
+
+//Review
+export const REVIEW = 'Review';
+export const REVIEW_DETAIL = 'ReviewDetail';
+export const SEE_ALL_COMMENT = 'SeeAllComment';
+export const REVIEW_NAVIGATOR = 'ReviewNavigator';
+export const REVIEW_DETAIL_NAVIGATOR = 'ReviewDetailNavigator';
