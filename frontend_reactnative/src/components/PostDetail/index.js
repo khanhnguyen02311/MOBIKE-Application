@@ -639,18 +639,6 @@ const PostDetailComponent = ({
 
                                     {isAdmin && <View style={{ height: 1, backgroundColor: '#E8E8E8', marginTop: 20, }} />}
 
-                                    {!isAdmin &&
-                                        <TabView
-                                            navigationState={{ index, routes }}
-                                            renderScene={() => null}
-                                            onIndexChange={setIndex}
-                                            initialLayout={{ width: layout.width }}
-                                            renderTabBar={renderTabBar}
-                                            style={{ marginTop: 5 }}
-                                        />}
-
-                                    {index == 0 ? DetailRoute() : ReviewRoute()}
-
 
 
                                     {/* Seperate */}
