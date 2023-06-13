@@ -51,7 +51,7 @@ def searchposts():
       elif len(post_list) < (arg_page - 1) * arg_numperpage:
          output = post_list[(arg_page * arg_numperpage) : len(post_list)]
       else: output = post_list[(arg_page - 1) * arg_numperpage : arg_page * arg_numperpage]
-      return jsonify({"msg": len(posts), "error": "", "info": output})
+      return jsonify({"msg": "Completed", "error": "", "info": output})
       
    except Exception as e:
       Session.rollback()
