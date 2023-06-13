@@ -14,8 +14,8 @@ def searchposts():
    arg_page = request.args.get('page', default = 1, type = int)
    arg_numperpage = request.args.get('numperpage', default = 20, type = int)
    # arg_sortby = request.args.get('sortby', default = "", type = str)
-   arg_timeorder = request.args.get('timeorder', default = "asc", type = str)
-   arg_priceorder = request.args.get('priceorder', default = "asc", type = str)
+   arg_ordertype = request.args.get('ordertype', default = "time", type = str)
+   arg_order = request.args.get('order', default = "asc", type = str)
    arg_pricestart = request.args.get('pricestart', default = -1, type = int)
    arg_priceend = request.args.get('priceend', default = -1, type = int)
    arg_type = request.args.get('type', default = -1, type = int)
@@ -28,11 +28,9 @@ def searchposts():
    try:
       # if arg_sortby == "rating": query_orderby = dbm.Post.rel_Rating
       # elif arg_sortby == "like": query_orderby = dbm.Post.rel_Like
-      time_orderby = dbm.Post.ID
-      price_orderby = dbm.Post.Pricetag
       
-      time_orderby = time_orderby.asc() if arg_timeorder == "asc" else time_orderby.desc()
-      price_orderby = price_orderby.asc() if arg_priceorder == "asc" else price_orderby.desc()
+      query_orderby = dbm.Post.ID if arg_ordertype == "time" else dbm.Post.Pricetag
+      query_orderby = query_orderby.asc() if arg_order == "asc" else query_orderby.desc()
       
       posts = Session.query(dbm.Post
          ).join(dbm.Post.rel_VehicleInfo
@@ -44,7 +42,7 @@ def searchposts():
                   func.lower(dbm.Post.Title).contains(func.lower(arg_searchstr)),
                   arg_pricestart == -1 or dbm.Post.Pricetag >= arg_pricestart,
                   arg_priceend == -1 or dbm.Post.Pricetag <= arg_priceend
-         ).order_by(time_orderby, price_orderby).all()
+         ).order_by(query_orderby).all()
       post_list = []
       for i in posts:
          status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == i.ID).order_by(dbm.PostStatus.ID.desc()).first()
