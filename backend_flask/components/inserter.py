@@ -1,5 +1,5 @@
 from flask import jsonify
-import openpyxl, unicodedata
+import openpyxl, unicodedata, random
 from .dbmodels import *
 from .dbschemas import *
 from .dbsettings import new_Scoped_session
@@ -275,7 +275,7 @@ def SetupAccount(Session, a_email, a_username, a_password, a_type, a_permission,
       return [False, str(e)]
 
     
-def InsertTestAccount(Session):
+def InsertTestAccount(Session, i):
     try:
         oldtestuser = Session.query(Account).filter(Account.Account_type==3).all()
         print(oldtestuser)
@@ -283,7 +283,7 @@ def InsertTestAccount(Session):
             for i in oldtestuser:
                 Session.delete(i)
             Session.flush()
-        output = SetupAccount(Session, "testuser@email.com", "testuser", "testuserpassword", 3, 4, "Mobike Testuser", "0123456789", None)
+        output = SetupAccount(Session, f"testuser{i}@email.com", f"testuser{i}", "testuserpassword", 3, 4, f"Mobike Testuser {i}", "0123456789", None)
         if output[0]:
             new_address = dbm.Address(
                 Detail_address="Test address", 
@@ -306,7 +306,7 @@ def InsertTestdata():
     posts = posts.replace({np.nan: None})
     Session = new_Scoped_session()
     try:
-        output = InsertTestAccount(Session)
+        output = InsertTestAccount(Session, 1)
         if output[0]:
             Session.commit()
             logging.warning(f"Account created, id = {output[1].ID}")
@@ -365,3 +365,36 @@ def InsertTestdata():
         return [True, acc.ID]
     except Exception as e:
         return [False, str(e)]
+    
+
+def InsertTestdata2(idtestuser1):
+    Session = new_Scoped_session()
+    output = InsertTestAccount(Session, 2)
+    if output[0] == False:
+        Session.rollback()
+        return [False, output[1]]
+    Session = new_Scoped_session()
+    try:
+        posts = Session.query(dbm.Post).filter(dbm.Post.ID_Account == idtestuser1).all()
+        for i in posts:
+            new_rating_1 = dbm.Rating(
+                ID_Account = output[1].ID,
+                ID_Post = i.ID,
+                Content = "Test rating 1 for development",
+                Rating_point = random.randint(1, 10)
+            )
+            new_rating_2 = dbm.Rating(
+                ID_Account = output[1].ID,
+                ID_Post = i.ID,
+                Content = "Test rating 2 for development",
+                Rating_point = random.randint(1, 10)
+            )
+            Session.add(new_rating_1)
+            Session.add(new_rating_2)
+            Session.flush()
+        Session.commit()
+        return [True, output]
+    except Exception as e:
+        Session.rollback()
+        return [False, str(e)]
+    

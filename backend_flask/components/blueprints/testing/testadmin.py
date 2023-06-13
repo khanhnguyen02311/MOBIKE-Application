@@ -23,9 +23,11 @@ def insertvehiclesupport():
 @bpadmin.route('/inserttestdata', methods = ['POST'])
 def inserttestdata():
     print("Inserting testdata...")
-    output = InsertTestdata()
-    if output[0]: return "Done"
-    else: return output[1]
+    output1 = InsertTestdata()
+    if output1[1]: return f"Error on 1: {output1[1]}"
+    output2 = InsertTestdata2()
+    if output2[1]: return f"Error on 2: {output2[1]}"
+    else: return jsonify({"testaccount1" : output1[0], "testaccount2" : output2[0]})
 
 @bpadmin.route('/insertlocations', methods = ['POST'])
 def insertlocations():
