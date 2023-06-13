@@ -47,7 +47,7 @@ def searchposts():
          if status.Status == 1: post_list.append(schema.dump(i))
       Session.commit()
       if len(post_list) < arg_page * arg_numperpage:
-         output = []
+         output = post_list
       elif len(post_list) < (arg_page - 1) * arg_numperpage:
          output = post_list[(arg_page * arg_numperpage) : len(post_list)]
       else: output = post_list[(arg_page - 1) * arg_numperpage : arg_page * arg_numperpage]
