@@ -12,7 +12,7 @@ bppostsearch = Blueprint("bppostsearch", __name__)
 def searchposts():
    arg_searchstr = request.args.get('string', default = "", type = str)
    arg_page = request.args.get('page', default = 1, type = int)
-   arg_numperpage = request.args.get('numperpage', default = 20, type = int)
+   arg_numperpage = request.args.get('numperpage', default = 40, type = int)
    # arg_sortby = request.args.get('sortby', default = "", type = str)
    arg_ordertype = request.args.get('ordertype', default = "time", type = str)
    arg_order = request.args.get('order', default = "asc", type = str)
@@ -23,6 +23,8 @@ def searchposts():
    arg_lineup = request.args.get('lineup', default = -1, type = int)
    arg_color = request.args.get('color', default = -1, type = int)
    arg_mnfyear = request.args.get('mnfyear', default = -1, type = int)
+   arg_condition = request.args.get('condition', default = -1, type = int)
+   
    schema = dbs.PostSchemaShort()
    Session = new_Scoped_session()
    try:
@@ -41,7 +43,8 @@ def searchposts():
                   arg_mnfyear == -1 or dbm.VehicleInfo.Manufacture_year == arg_mnfyear,
                   func.lower(dbm.Post.Title).contains(func.lower(arg_searchstr)),
                   arg_pricestart == -1 or dbm.Post.Pricetag >= arg_pricestart,
-                  arg_priceend == -1 or dbm.Post.Pricetag <= arg_priceend
+                  arg_priceend == -1 or dbm.Post.Pricetag <= arg_priceend,
+                  arg_condition == -1 or dbm.VehicleInfo.ID_Condition == arg_condition
          ).order_by(query_orderby).all()
       post_list = []
       for i in posts:
