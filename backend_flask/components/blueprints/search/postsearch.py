@@ -12,7 +12,7 @@ bppostsearch = Blueprint("bppostsearch", __name__)
 def searchposts():
    arg_searchstr = request.args.get('string', default = "", type = str)
    arg_page = request.args.get('page', default = 1, type = int)
-   arg_numperpage = request.args.get('numperpage', default = 40, type = int)
+   arg_numperpage = request.args.get('numperpage', default = 30, type = int)
    # arg_sortby = request.args.get('sortby', default = "", type = str)
    arg_ordertype = request.args.get('ordertype', default = "time", type = str)
    arg_order = request.args.get('order', default = "asc", type = str)
