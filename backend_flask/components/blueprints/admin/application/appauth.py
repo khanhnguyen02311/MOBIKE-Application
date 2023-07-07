@@ -6,7 +6,6 @@ from components import dbmodels as dbm, dbschemas as dbs
 from components.security import check_hash, make_hash
 
 bpappadminauth = Blueprint('bpappadminauth', __name__)
-    
 def signin_output(message, error, access_token):
    return jsonify({
       "msg": message, 
@@ -40,5 +39,3 @@ def signin():
    except Exception as e:
       Session.rollback()
       return signin_output("Incompleted", str(e), "")
-
-

@@ -194,6 +194,7 @@ class PostStatusSchema(Schema):
     ID = auto_field()
     Status = auto_field()
     Information = auto_field()
+    Time_updated = auto_field()
     ID_Post = auto_field()
     
 class VehicleInfoSchema(Schema):

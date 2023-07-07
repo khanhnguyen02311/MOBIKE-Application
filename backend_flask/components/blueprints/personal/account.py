@@ -288,3 +288,119 @@ def delavatar():
    except Exception as e:
       Session.rollback()
       return jsonify({'msg': 'Incompleted', 'error': str(e), "info": ""})
+   
+@bpaccount.route('/like/<int:id>', methods = ['POST'])
+@jwt_required()
+def likePost(id):
+   current_user = get_jwt_identity()
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      post = Session.query(dbm.Post).get(id)
+      if post == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Post not found", "info": ""})
+      like = Session.query(dbm.Like).filter(dbm.Like.ID_Post == id, dbm.Like.ID_Account == current_user['ID']).first()
+      if like != None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Already liked", "info": ""})
+      like = dbm.Like(ID_Post = id, ID_Account = current_user['ID'])
+      Session.add(like)
+      Session.commit()
+      return jsonify({"msg": "Completed", "error": "", "info": ""})
+   except Exception as e:
+      Session.rollback()
+      return jsonify({'msg': 'Incompleted', 'error': str(e), "info": ""})
+   
+@bpaccount.route('/like/<int:id>', methods = ['DELETE'])
+@jwt_required()
+def unlikePost(id):
+   current_user = get_jwt_identity()
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      post = Session.query(dbm.Post).get(id)
+      if post == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Post not found", "info": ""})
+      like = Session.query(dbm.Like).filter(dbm.Like.ID_Post == id, dbm.Like.ID_Account == current_user['ID']).first()
+      if like == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Not liked", "info": ""})
+      Session.delete(like)
+      Session.commit()
+      return jsonify({"msg": "Completed", "error": "", "info": ""})
+   except Exception as e:
+      Session.rollback()
+      return jsonify({'msg': 'Incompleted', 'error': str(e), "info": ""})
+
+@bpaccount.route('/like', methods = ['GET'])
+@jwt_required()
+def getLike():
+   current_user = get_jwt_identity()
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      likes = Session.query(dbm.Like).options(sqlorm.joinedload(dbm.Like.rel_Post)).filter(dbm.Like.ID_Account == current_user['ID']).all()
+      if likes == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "No likes", "info": ""})
+      result = []
+      schema = dbs.PostSchemaShort()
+      for like in likes:
+         result.append(schema.dump(like.rel_Post))
+      return jsonify({"msg": "Completed", "error": "", "info": result})
+   except Exception as e:
+      Session.rollback()
+      return jsonify({'msg': 'Incompleted', 'error': str(e), "info": ""})
+   
+@bpaccount.route('/rate/<int:id>', methods = ['POST'])
+@jwt_required()
+def ratePost(id):
+   current_user = get_jwt_identity()
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      post = Session.query(dbm.Post).get(id)
+      if post == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Post not found", "info": ""})
+      rating = Session.query(dbm.Rating).filter(dbm.Rating.ID_Post == id, dbm.Rating.ID_Account == current_user['ID']).first()
+      if rating != None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Already rated", "info": ""})
+      
+      ratingpoint = request.json['ratingpoint']
+      content = request.json['content']
+      
+      rating = dbm.Rating(ID_Post = id, ID_Account = current_user['ID'], Rating_point = ratingpoint, Content = content)
+      Session.add(rating)
+      Session.commit()
+      return jsonify({"msg": "Completed", "error": "", "info": ""})
+   except Exception as e:
+      Session.rollback()
+      return jsonify({'msg': 'Incompleted', 'error': str(e), "info": ""})

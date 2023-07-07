@@ -13,7 +13,17 @@ bpsignin = Blueprint('bpsignin', __name__)
 @jwt_required()
 def me():
    current_user = get_jwt_identity()
-   return jsonify(current_user)
+   Session = new_Scoped_session()
+   try: 
+      acc = Session.query(dbm.Account).filter(dbm.Account.ID == current_user["ID"]).first()
+      Session.close()
+      if acc is not None:
+         schema = dbs.AccountSchema()
+         current_user = schema.dump(acc)
+         access_token = create_access_token(identity=current_user)
+      return jsonify({"msg": "Completed", "user": current_user, "token": access_token})
+   except Exception as e:
+      return jsonify({"msg": "Incompleted", "error": str(e)})
 
 def signin_output(message, error, access_token):
    return jsonify({

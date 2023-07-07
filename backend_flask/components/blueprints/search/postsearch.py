@@ -12,8 +12,9 @@ bppostsearch = Blueprint("bppostsearch", __name__)
 def searchposts():
    arg_searchstr = request.args.get('string', default = "", type = str)
    arg_page = request.args.get('page', default = 1, type = int)
-   arg_numperpage = request.args.get('numperpage', default = 20, type = int)
+   arg_numperpage = request.args.get('numperpage', default = 30, type = int)
    # arg_sortby = request.args.get('sortby', default = "", type = str)
+   arg_ordertype = request.args.get('ordertype', default = "time", type = str)
    arg_order = request.args.get('order', default = "asc", type = str)
    arg_pricestart = request.args.get('pricestart', default = -1, type = int)
    arg_priceend = request.args.get('priceend', default = -1, type = int)
@@ -22,12 +23,15 @@ def searchposts():
    arg_lineup = request.args.get('lineup', default = -1, type = int)
    arg_color = request.args.get('color', default = -1, type = int)
    arg_mnfyear = request.args.get('mnfyear', default = -1, type = int)
+   arg_condition = request.args.get('condition', default = -1, type = int)
+   
    schema = dbs.PostSchemaShort()
    Session = new_Scoped_session()
    try:
       # if arg_sortby == "rating": query_orderby = dbm.Post.rel_Rating
       # elif arg_sortby == "like": query_orderby = dbm.Post.rel_Like
-      query_orderby = dbm.Post.ID
+      
+      query_orderby = dbm.Post.ID if arg_ordertype == "time" else dbm.Post.Pricetag
       query_orderby = query_orderby.asc() if arg_order == "asc" else query_orderby.desc()
       
       posts = Session.query(dbm.Post
@@ -39,19 +43,15 @@ def searchposts():
                   arg_mnfyear == -1 or dbm.VehicleInfo.Manufacture_year == arg_mnfyear,
                   func.lower(dbm.Post.Title).contains(func.lower(arg_searchstr)),
                   arg_pricestart == -1 or dbm.Post.Pricetag >= arg_pricestart,
-                  arg_priceend == -1 or dbm.Post.Pricetag >= arg_priceend
+                  arg_priceend == -1 or dbm.Post.Pricetag <= arg_priceend,
+                  arg_condition == -1 or dbm.VehicleInfo.ID_Condition == arg_condition
          ).order_by(query_orderby).all()
       post_list = []
       for i in posts:
          status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == i.ID).order_by(dbm.PostStatus.ID.desc()).first()
          if status.Status == 1: post_list.append(schema.dump(i))
       Session.commit()
-      if len(post_list) < arg_page * arg_numperpage:
-         output = []
-      elif len(post_list) < (arg_page - 1) * arg_numperpage:
-         output = post_list[(arg_page * arg_numperpage) : len(post_list)]
-      else: output = post_list[(arg_page - 1) * arg_numperpage : arg_page * arg_numperpage]
-      return jsonify({"msg": "Completed", "error": "", "info": output})
+      return jsonify({"msg": "Completed", "error": "", "info": post_list[(arg_page - 1) * arg_numperpage : arg_page * arg_numperpage]})
       
    except Exception as e:
       Session.rollback()
