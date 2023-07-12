@@ -206,10 +206,11 @@ def getdetailpost(id):
       ratings = Session.query(dbm.Rating).filter(dbm.Rating.ID_Post == id).all()
       json_ratings = {}
       for index, item in enumerate(ratings):
+         temp = {}
          temp['accountinfo'] = accountinfoschema.dump(item.rel_Account.rel_AccountInfo)
          temp['account'] = item.ID_Account
          temp['rating'] = ratingschema.dump(item)
-         json_ratings[index] = temp         
+         json_ratings[index] = temp
          
       statuses = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == id).order_by(dbm.PostStatus.ID.desc()).all()
       json_statuses = {}
