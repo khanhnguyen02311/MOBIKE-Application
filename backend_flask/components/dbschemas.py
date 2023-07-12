@@ -214,6 +214,15 @@ class VehicleInfoSchema(Schema):
     ID_Condition = auto_field()
     ID_Color = auto_field()
     
+class PostStatSchema(Schema):
+    class Meta:
+        model = dbm.PostStat
+        load_instance = True
+        
+    View_amount = auto_field()
+    Like_amount = auto_field()
+    Contact_amount = auto_field()
+    Rating_amount = auto_field()
     
 class ViewSchema(Schema):
     class Meta:
@@ -225,15 +234,15 @@ class ViewSchema(Schema):
     Time_created = auto_field()
     
 
-class CommentSchema(Schema):
-    class Meta:
-        model = dbm.Comment
-        load_instance = True
+# class CommentSchema(Schema):
+#     class Meta:
+#         model = dbm.Comment
+#         load_instance = True
         
-    ID = auto_field()
-    ID_Account = auto_field()
-    Content = auto_field()
-    Time_created = auto_field()
+#     ID = auto_field()
+#     ID_Account = auto_field()
+#     Content = auto_field()
+#     Time_created = auto_field()
     
     
 class LikeSchema(Schema):

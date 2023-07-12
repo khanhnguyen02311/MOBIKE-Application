@@ -22,7 +22,7 @@ def signin():
       password = request.json["password"]
       
       acc = Session.query(dbm.Account).filter(dbm.Account.Email==username_or_email, dbm.Account.ID_Permission==2).first() or \
-            Session.query(dbm.Account).filter(dbm.Account.Username==username_or_email, dbm.Account.Account_type==2).first()
+            Session.query(dbm.Account).filter(dbm.Account.Username==username_or_email, dbm.Account.ID_Permission==2).first()
          
       if (acc != None):
          result = check_hash(acc.Password, password)

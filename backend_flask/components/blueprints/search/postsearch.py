@@ -64,6 +64,7 @@ def getdetailpost(id):
    vehicleschema = dbs.VehicleInfoSchema()
    userschema = dbs.AccountInfoSchemaPublic()
    addressschema = dbs.AddressSchemaShort()
+   ratingschema = dbs.RatingSchema()
    Session = new_Scoped_session()
    try:
       status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == id).order_by(dbm.PostStatus.ID.desc()).first()
@@ -74,7 +75,6 @@ def getdetailpost(id):
                                              sqlorm.joinedload(dbm.Post.rel_Account).subqueryload(dbm.Account.rel_AccountInfo),
                                              sqlorm.joinedload(dbm.Post.rel_Image),
                                              sqlorm.joinedload(dbm.Post.rel_Like),
-                                             sqlorm.joinedload(dbm.Post.rel_Rating),
                                              sqlorm.joinedload(dbm.Post.rel_Address)).get(id)
       
       json_data = {}
@@ -92,7 +92,8 @@ def getdetailpost(id):
    
 @bppostsearch.route("/post/<id>/ratings", methods=["GET"])
 def getpostratings(id):
-   schema = dbs.AccountInfoSchemaPublic()
+   accountinfoschema = dbs.AccountInfoSchemaPublic()
+   ratingschema = dbs.RatingSchema()
    Session = new_Scoped_session()
    try:
       status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == id).order_by(dbm.PostStatus.ID.desc()).first()
@@ -107,9 +108,9 @@ def getpostratings(id):
       
       for index, item in enumerate(ratings):
          temp = {}
-         temp['accountinfo'] = schema.dump(item.rel_Account.rel_AccountInfo)
+         temp['accountinfo'] = accountinfoschema.dump(item.rel_Account.rel_AccountInfo)
          temp['account'] = item.ID_Account
-         temp['rating'] = item.Rating
+         temp['rating'] = ratingschema.dump(item)
          json_ratings[index] = temp
       
       Session.commit()
@@ -120,3 +121,35 @@ def getpostratings(id):
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
    
    
+
+@bppostsearch.route("/post/<id>/personals", methods=["GET"])
+@jwt_required()
+def getpostpersonals(id):
+   current_user = get_jwt_identity()   
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+   ratingschema = dbs.RatingSchema()
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      
+      existed_like = Session.query(dbm.Like).filter(dbm.Like.ID_Account == current_user['ID'],
+                                                   dbm.Like.ID_Post == id).first()
+      existed_contact = Session.query(dbm.Contact).filter(dbm.Contact.ID_Account == current_user['ID'],
+                                                         dbm.Contact.ID_Post == id).first()
+      json_data = {}
+      json_data['contacted'] = False if existed_contact == None else True
+      json_data['liked'] = False if existed_like == None else True
+      rating = Session.query(dbm.Rating).filter(dbm.Rating.ID_Post == id, 
+                                                dbm.Rating.ID_Account == current_user['ID']).first()
+      json_data['rating'] = ratingschema.dump(rating) if rating != None else {}
+      
+      Session.close()
+      return jsonify({"msg": "Completed", "error": "", "info": json_data})
+   
+   except Exception as e:
+      Session.rollback()
+      return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})

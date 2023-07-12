@@ -181,10 +181,13 @@ def getdetailpost(id):
    current_user = get_jwt_identity()   
    if current_user is None:
       return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+   accountinfoschema = dbs.AccountInfoSchemaPublic()
    postschema = dbs.PostSchema()
    vehicleschema = dbs.VehicleInfoSchema()
    statusschema = dbs.PostStatusSchema()
+   statschema = dbs.PostStatSchema()
    addressschema = dbs.AddressSchema()
+   ratingschema = dbs.RatingSchema()
    Session = new_Scoped_session()
    try:      
       acc = Session.query(dbm.Account).get(current_user['ID'])
@@ -192,12 +195,21 @@ def getdetailpost(id):
          Session.close()
          return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
       
-      post = Session.query(dbm.Post).options(sqlorm.joinedload(dbm.Post.rel_VehicleInfo),
+      post = Session.query(dbm.Post).options(sqlorm.joinedload(dbm.Post.rel_PostStat),
+                                             sqlorm.joinedload(dbm.Post.rel_VehicleInfo),
                                              sqlorm.joinedload(dbm.Post.rel_Image),
                                              sqlorm.joinedload(dbm.Post.rel_Address)).get(id)
       if post is None or post.ID_Account != current_user['ID']:
          Session.close()
          return jsonify({"msg": "Incompleted", "error": "Post not found", "info": ""})
+      
+      ratings = Session.query(dbm.Rating).filter(dbm.Rating.ID_Post == id).all()
+      json_ratings = {}
+      for index, item in enumerate(ratings):
+         temp['accountinfo'] = accountinfoschema.dump(item.rel_Account.rel_AccountInfo)
+         temp['account'] = item.ID_Account
+         temp['rating'] = ratingschema.dump(item)
+         json_ratings[index] = temp         
          
       statuses = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post == id).order_by(dbm.PostStatus.ID.desc()).all()
       json_statuses = {}
@@ -208,6 +220,8 @@ def getdetailpost(id):
       json_data['vehicleinfo'] = vehicleschema.dump(post.rel_VehicleInfo)
       json_data['address'] = addressschema.dump(post.rel_Address)
       json_data['statuses'] = json_statuses
+      json_data['stat'] = statschema.dump(post.rel_PostStat)
+      json_data['ratings'] = json_ratings
       Session.commit()
       return jsonify({"msg": "Completed", "error": "", "info": json_data})
          

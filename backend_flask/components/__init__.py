@@ -8,10 +8,10 @@ from .blueprints.admin.system import grant, sysauth
 from .blueprints.utilities import logo, vehicle
 from .blueprints.testing import gets, test, image, testadmin
 from .blueprints.authentication import signup, signin, signout
-from .blueprints.personal import account, post
+from .blueprints.personal import account, post, statistics, preferences
 from .blueprints.search import postsearch, usersearch
 from .config import FlaskConfig as fcfg
-from .security import oauth, blocklistJWT
+from .security import oauth, blocklistJWT, make_hash
 from .inserter import SetupAccount
 
 def create_app():
@@ -28,8 +28,10 @@ def create_app():
     Session = new_Scoped_session()
     try:
         admin = Session.query(dbm.Account).filter(dbm.Account.ID_Permission == 1).all()
-        if admin != None:
-            new_admin = SetupAccount(Session, "admin@gmail.com", "serveradmin", "adminuser123", 1, 1, "Administrator", None, None)
+        if len(admin) == 0:
+            new_admin = SetupAccount(Session, "admin@gmail.com", "serveradmin", make_hash("adminuser123"), 1, 1, "Administrator", None, None)
+            if new_admin[0] == True: Session.commit()
+            else: Session.rollback()
     except Exception as e:
         print(e)
         pass
@@ -94,6 +96,8 @@ def create_app():
     
     App.register_blueprint(account.bpaccount, url_prefix='/personal')
     App.register_blueprint(post.bppost, url_prefix='/personal')
+    # App.register_blueprint(statistics.bpstatistics, url_prefix='/personal/statistics')
+    App.register_blueprint(preferences.bppreferences, url_prefix='/personal/preferences')
     
     App.register_blueprint(vehicle.bpvehicle, url_prefix='/utilities')
     App.register_blueprint(logo.bplogo, url_prefix='/utilities')

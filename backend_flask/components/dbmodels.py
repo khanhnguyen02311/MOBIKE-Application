@@ -89,8 +89,11 @@ class Account (Base):
     ## View reference
     rel_View = relationship("View", cascade='save-update, merge, delete', back_populates="rel_Account")
     
-    ## Comment reference
-    rel_Comment = relationship("Comment", cascade='save-update, merge, delete', back_populates="rel_Account")
+    ## Contact reference
+    rel_Contact = relationship("Contact", cascade='save-update, merge, delete', back_populates="rel_Account")
+    
+    # ## Comment reference
+    # rel_Comment = relationship("Comment", cascade='save-update, merge, delete', back_populates="rel_Account")
     
     ## ChatParticipant reference
     rel_ChatParticipant = relationship("ChatParticipant", back_populates="rel_Account")
@@ -187,8 +190,11 @@ class Post (Base):
     ## View reference
     rel_View = relationship("View", cascade='save-update, merge, delete', back_populates="rel_Post")
     
-    ## Comment reference
-    rel_Comment = relationship("Comment", cascade='save-update, merge, delete', back_populates="rel_Post")
+    ## Contact reference
+    rel_Contact = relationship("Contact", cascade='save-update, merge, delete', back_populates="rel_Post")
+    
+    # ## Comment reference
+    # rel_Comment = relationship("Comment", cascade='save-update, merge, delete', back_populates="rel_Post")
     
     ## ChatRoom reference
     rel_ChatRoom = relationship("ChatRoom", cascade='save-update, merge, delete', back_populates="rel_Post")
@@ -251,6 +257,7 @@ class PostStat (Base):
     View_amount = Column(ms.INTEGER, nullable=False, default=0)
     Like_amount = Column(ms.INTEGER, nullable=False, default=0)
     Contact_amount = Column(ms.INTEGER, nullable=False, default=0)
+    Rating_amount = Column(ms.INTEGER, nullable=False, default=0)
     
     ## Post reference
     rel_Post = relationship("Post", back_populates="rel_PostStat", uselist=False)
@@ -269,7 +276,6 @@ class Rating (Base):
     
     ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
     rel_Account = relationship("Account", back_populates="rel_Rating")
-    
     
     
 # ==============================================================================
@@ -296,20 +302,33 @@ class View (Base):
     
     ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
     rel_Account = relationship("Account", back_populates="rel_View")
-        
-        
+    
+
 # ==============================================================================
-class Comment (Base):
-    __tablename__ = 'COMMENT'
+class Contact (Base):
+    __tablename__ = 'CONTACT'
     ID = Column(ms.INTEGER, primary_key=True)
-    Content = Column(ms.NVARCHAR(512), nullable=False)
     Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
     
     ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
-    rel_Post = relationship("Post", back_populates="rel_Comment")
+    rel_Post = relationship("Post", back_populates="rel_Contact")
     
     ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
-    rel_Account = relationship("Account", back_populates="rel_Comment")
+    rel_Account = relationship("Account", back_populates="rel_Contact")
+        
+        
+# # ==============================================================================
+# class Comment (Base):
+#     __tablename__ = 'COMMENT'
+#     ID = Column(ms.INTEGER, primary_key=True)
+#     Content = Column(ms.NVARCHAR(512), nullable=False)
+#     Time_created = Column(ms.DATETIME, nullable=False, default=datetime.now(timezone.utc))
+    
+#     ID_Post = Column(ms.INTEGER, ForeignKey("POST.ID"), nullable=False)
+#     rel_Post = relationship("Post", back_populates="rel_Comment")
+    
+#     ID_Account = Column(ms.INTEGER, ForeignKey("ACCOUNT.ID"), nullable=False)
+#     rel_Account = relationship("Account", back_populates="rel_Comment")
     
     
 # ==============================================================================
