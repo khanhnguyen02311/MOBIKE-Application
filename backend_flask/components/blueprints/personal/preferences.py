@@ -138,7 +138,7 @@ def editrating():
       return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
    
 
-@bppreferences.route("/rating/del", methods=['DEL'])
+@bppreferences.route("/rating/del", methods=['DELETE'])
 @jwt_required()
 def delrating():
    current_user = get_jwt_identity()   
