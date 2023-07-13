@@ -269,7 +269,7 @@ def editpost(id):
       
       new_poststatus = dbm.PostStatus(
          Status = 0,
-         ID_Post = info['P_ID'],
+         ID_Post = id,
          Information = "Post edited by user."
       )
       
@@ -289,7 +289,6 @@ def deactivatepost(id):
    if current_user is None:
       return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
    
-   info = request.get_json()
    Session = new_Scoped_session()
    try:
       acc = Session.query(dbm.Account).get(current_user['ID'])
@@ -299,16 +298,72 @@ def deactivatepost(id):
       
       post = Session.query(dbm.Post).get(id)
       if post is None or post.ID_Account != current_user['ID']:
+         Session.close()
          return jsonify({"msg": "Incompleted", "error": "Post not found or not owned by your account", "info": ""})
+      
+      status = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post==id).order_by(dbm.PostStatus.ID.desc()).first()
+      if status.Status == 3:
+         Session.close()
+         return jsonify({"msg": "Completed", "error": "", "info": "Post already deactivated"})
       
       new_poststatus = dbm.PostStatus(
          Status = 3,
-         ID_Post = info['P_ID'],
+         ID_Post = id,
          Information = "Post deactivated by user."
       )
       Session.add(new_poststatus)
       Session.commit()
       return jsonify({"msg": "Completed", "error": "", "info": "Post deactivated"})
+   
+   except Exception as e:
+      Session.rollback()
+      return jsonify({"msg": "Incompleted", "error": str(e), "info": ""})
+   
+
+@bppost.route("/post/<int:id>/sold", methods=["POST", "PUT"])
+@jwt_required()
+def soldpost(id):
+   current_user = get_jwt_identity()
+   if current_user is None:
+      return jsonify({"msg": "Incompleted", "error": "Invalid token", "info": ""})
+   
+   Session = new_Scoped_session()
+   try:
+      acc = Session.query(dbm.Account).get(current_user['ID'])
+      if acc == None:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Account not found", "info": ""})
+      
+      post = Session.query(dbm.Post).get(id)
+      if post is None or post.ID_Account != current_user['ID']:
+         Session.close()
+         return jsonify({"msg": "Incompleted", "error": "Post not found or not owned by your account", "info": ""})
+      
+      statuses = Session.query(dbm.PostStatus).filter(dbm.PostStatus.ID_Post==id).all()
+      print(statuses)
+      
+      if statuses[-1].Status == 3:
+         Session.close()
+         return jsonify({"msg": "Completed", "error": "", "info": "Post already deactivated"})
+      
+      elif statuses[-1].Status == 2:
+         msg = "Post status reverted successfully."
+         new_poststatus = dbm.PostStatus(
+            Status = statuses[-2].Status,
+            ID_Post = id,
+            Information = "Post status reverted to previous."
+         )
+      else: 
+         msg = "Post status set to sold successfully."
+         new_poststatus = dbm.PostStatus(
+            Status = 2,
+            ID_Post = id,
+            Information = "Post status set to sold by user."
+         )
+         
+      Session.add(new_poststatus)
+      Session.commit()
+      return jsonify({"msg": "Completed", "error": "", "info": msg})
    
    except Exception as e:
       Session.rollback()
