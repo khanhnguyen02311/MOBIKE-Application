@@ -1,23 +1,23 @@
-import {Gesture} from 'react-native-gesture-handler';
-import {View, Text, TouchableWithoutFeedback} from 'react-native';
+import {View, TouchableWithoutFeedback} from 'react-native';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TextInputOutline from '../common/textInputOutline-Kohana';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import colors from '../../assets/theme/colors';
-import {YOUR_POSTS, FILTERS_POP_UP} from '../../constants/routeNames';
+import {
+  FILTERS_POP_UP_NAVIGATOR,
+} from '../../constants/routeNames';
 import {useNavigation} from '@react-navigation/native';
 const HeaderSearch = () => {
   const {navigate} = useNavigation();
   return (
     <View
       style={{
-        height: 70,
+        height: 60,
         flexDirection: 'row',
         backgroundColor: colors.secondary,
-        alignItems: 'flex-end',
+        alignItems: 'center',
         justifyContent: 'center',
-        paddingBottom: 10,
       }}>
       <TextInputOutline
         label={'Search (by name)'}
@@ -27,7 +27,7 @@ const HeaderSearch = () => {
         inputPadding={6}
         borderWidthtoTop={0}
         bigContainerStyle={{flex: 1, marginStart: 15, marginBottom: 0}}
-        containerStyle={{height: 44, borderColor: '#305080'}}
+        containerStyle={{height: 44, borderColor: '#555'}}
         labelStyle={{fontSize: 12}}
         inputStyle={{fontSize: 14}}
         labelContainerStyle={{padding: 13}}
@@ -35,9 +35,9 @@ const HeaderSearch = () => {
       />
       <TouchableWithoutFeedback
         onPress={() => {
-          navigate(FILTERS_POP_UP);
+          navigate(FILTERS_POP_UP_NAVIGATOR);
         }}>
-        <View style={{paddingBottom: 10, paddingHorizontal: 20}}>
+        <View style={{paddingHorizontal: 20}}>
           <SimpleLineIcon name="equalizer" size={24} color="#292D32" />
         </View>
       </TouchableWithoutFeedback>
