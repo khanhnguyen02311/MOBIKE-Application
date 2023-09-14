@@ -22,7 +22,7 @@ class FlaskConfig:
    DEBUG_TOOLBAR_ENABLED = True
 
 class SQLAlchemyConfig:
-   SQLALCHEMY_DATABASE_URL = "mysql+mysqldb://" + DB_USERNAME + ":" + DB_PASSWORD + "@localhost:3306/" + DB_NAME # + "?unix_socket=/var/run/mysqld/mysqld.sock&charset=utf8mb4" 
+   SQLALCHEMY_DATABASE_URL = "mysql+mysqldb://" + DB_USERNAME + ":" + DB_PASSWORD + "@mysql:3306/" + DB_NAME # + "?unix_socket=/var/run/mysqld/mysqld.sock&charset=utf8mb4" 
    # (IsTrueServer and "?unix_socket=/var/run/mysqld/mysqld.sock&charset=utf8mb4" or "")
    ECHO = False
    AUTO_FLUSH = True

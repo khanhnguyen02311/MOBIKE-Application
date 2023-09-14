@@ -11,17 +11,17 @@ services:
   # MAIN BACKEND
   main-be-server:
     extends:
-      file: ./backend_flask/docker-compose.yaml
+      file: ./backend_flask/docker-compose.yml
       service: app
   
   mysql:
     extends:
-      file: ./backend_flask/docker-compose.yaml
+      file: ./backend_flask/docker-compose.yml
       service: mysql
 
   redis:
     extends:
-      file: ./backend_flask/docker-compose.yaml
+      file: ./backend_flask/docker-compose.yml
       service: redis
 
   # CHAT SERVER
