@@ -1,42 +1,47 @@
-# "docker compose --env-file ./../../.env config"         to check the compose configs
-# "docker compose --env-file ./../../.env up -d"          to run the compose file
-# "docker compose --env-file ./../../.env stop"           to stop the containers
-# "docker compose --env-file ./../../.env down --volumes" to remove the containers & networks & data volumes
-
-
-version: '2.19'
+version: '4'
 
 services:
   app:
-    image: mobike-backend:v1
-    restart: no
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
     links:
       - mysql
       - redis
-    expose:
-      - '10000'
+    environment:
+      DBUSERNAME: ${DBUSERNAME}
+      DBPASSWORD: ${DBPASSWORD}
+      DBNAME: ${DBNAME}
     ports:
-      - '10000:10000'
+      - 10000:10000
+    networks:
+      - main-be
     depends_on:
       - mysql
       - redis
 
   mysql:
     image: mysql
-    restart: no
+    restart: unless-stopped
     ports:
-      - '3309:3306'
+      - 3309:3306
+    networks:
+      - main-be
     environment:
-      - 'MYSQL_DATABASE=${DBUSERNAME}'
-      - 'MYSQL_USER=${DBUSERNAME}'
-      - 'MYSQL_ROOT_PASSWORD=${DBPASSWORD}'
+      MYSQL_DATABASE: ${DBUSERNAME}
+      MYSQL_USER: ${DBUSERNAME}
+      MYSQL_ROOT_PASSWORD: ${DBPASSWORD}
 
   redis:
     image: redis:7
-    restart: no
+    restart: unless-stopped
     ports:
-      - '6379:6379'
+      - 6379:6379
+    networks:
+      - main-be
     command: 'redis-server --save 60 1 --loglevel warning --requirepass ${REDISPASSWORD}'
 
-  
-
+networks:
+  main-be:
+    driver: bridge

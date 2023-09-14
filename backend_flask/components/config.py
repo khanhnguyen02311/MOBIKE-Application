@@ -15,14 +15,6 @@ DB_NAME = environ.get('DBNAME')
 
 IsTrueServer = True
 
-# if (platform.system() == "Windows"):
-#    IsTrueServer = False
-#    DB_NAME = "flask"
-#    DB_USERNAME = "root"
-#    DB_PASSWORD = "123456789"
-#    STORAGE_PATH = ".\Storage\\"
-
-
 class FlaskConfig:
    SECRET_KEY = environ.get('SECRET_KEY')
    JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')

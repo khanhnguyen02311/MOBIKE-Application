@@ -1,5 +1,30 @@
 version: '4'
+
+networks:
+  main-be:
+    driver: bridge
+  chat-server-networks:
+    driver: bridge
+
 services:
+
+  # MAIN BACKEND
+  main-be-server:
+    extends:
+      file: ./backend_flask/docker-compose.yaml
+      service: app
+  
+  mysql:
+    extends:
+      file: ./backend_flask/docker-compose.yaml
+      service: mysql
+
+  redis:
+    extends:
+      file: ./backend_flask/docker-compose.yaml
+      service: redis
+
+  # CHAT SERVER
   chat-server-main:
     extends:
       file: ./chatserver_express/docker-compose.yaml
@@ -9,7 +34,3 @@ services:
     extends:
       file: ./chatserver_express/docker-compose.yaml
       service: mongo
-
-networks:
-  chat-server-networks:
-    driver: bridge

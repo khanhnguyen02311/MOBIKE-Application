@@ -1,5 +1,3 @@
-# docker build -t mobike-backend:v1 .
-
 FROM python:3
 
 WORKDIR /app
