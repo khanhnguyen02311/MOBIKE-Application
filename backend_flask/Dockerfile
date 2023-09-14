@@ -1,9 +1,13 @@
-FROM alpine3.17
+# docker build -t mobike-backend:v1 .
+
+FROM python:3
 
 WORKDIR /app
 
 COPY . .
 
-RUN pip install -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 CMD ["python", "main.py"]
+
+EXPOSE 10000

@@ -1,0 +1,42 @@
+# "docker compose --env-file ./../../.env config"         to check the compose configs
+# "docker compose --env-file ./../../.env up -d"          to run the compose file
+# "docker compose --env-file ./../../.env stop"           to stop the containers
+# "docker compose --env-file ./../../.env down --volumes" to remove the containers & networks & data volumes
+
+
+version: '2.19'
+
+services:
+  app:
+    image: mobike-backend:v1
+    restart: no
+    links:
+      - mysql
+      - redis
+    expose:
+      - '10000'
+    ports:
+      - '10000:10000'
+    depends_on:
+      - mysql
+      - redis
+
+  mysql:
+    image: mysql
+    restart: no
+    ports:
+      - '3309:3306'
+    environment:
+      - 'MYSQL_DATABASE=${DBUSERNAME}'
+      - 'MYSQL_USER=${DBUSERNAME}'
+      - 'MYSQL_ROOT_PASSWORD=${DBPASSWORD}'
+
+  redis:
+    image: redis:7
+    restart: no
+    ports:
+      - '6379:6379'
+    command: 'redis-server --save 60 1 --loglevel warning --requirepass ${REDISPASSWORD}'
+
+  
+
